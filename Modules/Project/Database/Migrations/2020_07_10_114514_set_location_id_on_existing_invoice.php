@@ -4,7 +4,7 @@ use App\BusinessLocation;
 use Illuminate\Database\Migrations\Migration;
 use Modules\Project\Entities\ProjectTransaction;
 
-class SetLocationIdOnExistingInvoice extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -41,4 +41,4 @@ class SetLocationIdOnExistingInvoice extends Migration
     {
         //
     }
-}
+};

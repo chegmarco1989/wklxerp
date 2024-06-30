@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AddPayrollColumnsToTransactionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -64,4 +64,4 @@ class AddPayrollColumnsToTransactionsTable extends Migration
     public function down()
     {
     }
-}
+};

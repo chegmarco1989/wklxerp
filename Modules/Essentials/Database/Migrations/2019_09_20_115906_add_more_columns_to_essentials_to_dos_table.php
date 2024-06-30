@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Essentials\Entities\ToDo;
 use Spatie\Permission\Models\Permission;
 
-class AddMoreColumnsToEssentialsToDosTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -56,4 +56,4 @@ class AddMoreColumnsToEssentialsToDosTable extends Migration
     {
         Schema::dropIfExists('essentials_todos_users');
     }
-}
+};

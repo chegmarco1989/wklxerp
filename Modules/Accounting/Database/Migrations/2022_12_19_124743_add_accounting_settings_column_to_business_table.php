@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAccountingSettingsColumnToBusinessTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,4 +28,4 @@ class AddAccountingSettingsColumnToBusinessTable extends Migration
         Schema::table('business', function (Blueprint $table) {
         });
     }
-}
+};

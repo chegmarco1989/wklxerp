@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class AddManufacturingModuleVersionToSystemTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -26,4 +26,4 @@ class AddManufacturingModuleVersionToSystemTable extends Migration
     public function down()
     {
     }
-}
+};

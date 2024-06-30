@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class AddAccountingModuleVersionToSystemTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -31,4 +31,4 @@ class AddAccountingModuleVersionToSystemTable extends Migration
     {
         //
     }
-}
+};
