@@ -2,8 +2,8 @@
 
 namespace Modules\Hms\Entities;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HmsRoomType extends Model
@@ -16,11 +16,12 @@ class HmsRoomType extends Model
     {
         return $this->hasMany(HmsRoom::class);
     }
+
     public function Pricings()
     {
         return $this->hasMany(HmsRoomTypePricing::class);
     }
-    
+
     public function media()
     {
         return $this->morphMany(\App\Media::class, 'model');

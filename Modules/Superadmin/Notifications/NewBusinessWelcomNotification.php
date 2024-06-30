@@ -44,11 +44,11 @@ class NewBusinessWelcomNotification extends Notification
         $mail_data = $this->email_data;
 
         return (new MailMessage)
-                    ->subject($mail_data['subject'])
-                    ->view(
-                        'emails.plain_html',
-                        ['content' => $mail_data['body']]
-                    );
+            ->subject($mail_data['subject'])
+            ->view(
+                'emails.plain_html',
+                ['content' => $mail_data['body']]
+            );
     }
 
     /**

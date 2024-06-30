@@ -64,7 +64,6 @@ class ImportOpeningStockController extends Controller
     /**
      * Imports the uploaded file to database.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -106,13 +105,13 @@ class ImportOpeningStockController extends Controller
                     if (! empty($value[0])) {
                         $sku = $value[0];
                         $product_info = Variation::where('sub_sku', $sku)
-                                ->join('products AS P', 'variations.product_id', '=', 'P.id')
-                                ->leftjoin('tax_rates AS TR', 'P.tax', 'TR.id')
-                                ->where('P.business_id', $business_id)
-                                ->select(['P.id', 'variations.id as variation_id',
-                                    'P.enable_stock', 'TR.amount as tax_percent',
-                                    'TR.id as tax_id', ])
-                                ->first();
+                            ->join('products AS P', 'variations.product_id', '=', 'P.id')
+                            ->leftjoin('tax_rates AS TR', 'P.tax', 'TR.id')
+                            ->where('P.business_id', $business_id)
+                            ->select(['P.id', 'variations.id as variation_id',
+                                'P.enable_stock', 'TR.amount as tax_percent',
+                                'TR.id as tax_id', ])
+                            ->first();
                         if (empty($product_info)) {
                             $is_valid = false;
                             $error_msg = "Product with sku $sku not found in row no. $row_no";
@@ -132,8 +131,8 @@ class ImportOpeningStockController extends Controller
                     if (! empty(trim($value[1]))) {
                         $location_name = trim($value[1]);
                         $location = BusinessLocation::where('name', $location_name)
-                                            ->where('business_id', $business_id)
-                                            ->first();
+                            ->where('business_id', $business_id)
+                            ->first();
                         if (empty($location)) {
                             $is_valid = false;
                             $error_msg = "Location with name '$location_name' not found in row no. $row_no";
@@ -167,10 +166,10 @@ class ImportOpeningStockController extends Controller
 
                     //Check for tra, location_id, opening_stock_product_id, type=opening stock.
                     $os_transaction = Transaction::where('business_id', $business_id)
-                            ->where('location_id', $location->id)
-                            ->where('type', 'opening_stock')
-                            ->where('opening_stock_product_id', $product_info->id)
-                            ->first();
+                        ->where('location_id', $location->id)
+                        ->where('type', 'opening_stock')
+                        ->where('opening_stock_product_id', $product_info->id)
+                        ->first();
 
                     $this->addOpeningStock($opening_stock, $product_info, $business_id, $unit_cost_before_tax, $os_transaction);
 

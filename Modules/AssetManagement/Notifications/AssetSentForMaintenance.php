@@ -44,11 +44,11 @@ class AssetSentForMaintenance extends Notification
         $data = $this->notificationInfo;
 
         $mail = (new MailMessage)
-                    ->subject($data['subject'])
-                    ->view(
-                        'emails.plain_html',
-                        ['content' => $data['body']]
-                    );
+            ->subject($data['subject'])
+            ->view(
+                'emails.plain_html',
+                ['content' => $data['body']]
+            );
 
         return $mail;
     }

@@ -6,7 +6,6 @@ use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Laravel\Passport\Passport;
 
@@ -32,12 +31,12 @@ class ClientController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $clients = Passport::client()
-                    ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
-                    ->where('u.business_id', $business_id)
-                    ->where('password_client', 1)
-                    ->select('oauth_clients.*')
-                    ->get()
-                    ->makeVisible('secret');
+            ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
+            ->where('u.business_id', $business_id)
+            ->where('password_client', 1)
+            ->select('oauth_clients.*')
+            ->get()
+            ->makeVisible('secret');
 
         return view('connector::clients.index')->with(compact('clients', 'is_demo'));
     }
@@ -55,7 +54,6 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -116,7 +114,6 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -139,10 +136,10 @@ class ClientController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $clients = Passport::client()
-                        ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
-                        ->where('u.business_id', $business_id)
-                        ->where('oauth_clients.id', $id)
-                        ->delete();
+            ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
+            ->where('u.business_id', $business_id)
+            ->where('oauth_clients.id', $id)
+            ->delete();
 
         $output = ['success' => true,
             'msg' => __('lang_v1.deleted_success'),

@@ -57,7 +57,6 @@ class PageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -124,7 +123,6 @@ class PageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request, $id)
@@ -141,8 +139,8 @@ class PageController extends Controller
 
             $input['menu_order'] = empty($input['menu_order']) ? 0 : $input['menu_order'];
             $is_slug_exists = SuperadminFrontendPage::where('id', '!=', $id)
-                                    ->where('slug', $input['slug'])
-                                    ->exists();
+                ->where('slug', $input['slug'])
+                ->exists();
 
             if (! $is_slug_exists) {
                 SuperadminFrontendPage::where('id', $id)->update($input);

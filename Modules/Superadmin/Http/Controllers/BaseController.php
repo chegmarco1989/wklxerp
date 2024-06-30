@@ -66,7 +66,7 @@ class BaseController extends Controller
      *
      * @return object
      */
-    public function _add_subscription($code,$price, $business_id, $package, $gateway, $payment_transaction_id, $user_id, $is_superadmin = false)
+    public function _add_subscription($code, $price, $business_id, $package, $gateway, $payment_transaction_id, $user_id, $is_superadmin = false)
     {
         if (! is_object($package)) {
             $package = Package::active()->find($package);
@@ -119,7 +119,7 @@ class BaseController extends Controller
 
             if (! empty($email) && $is_notif_enabled == 1) {
                 Notification::route('mail', $email)
-                ->notify(new NewSubscriptionNotification($subscription));
+                    ->notify(new NewSubscriptionNotification($subscription));
             }
         }
 

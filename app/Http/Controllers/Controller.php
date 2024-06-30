@@ -47,7 +47,7 @@ class Controller extends BaseController
     /**
      * Returns a went wrong response.
      *
-     * @param  object  $exception = null
+     * @param  object  $exception  = null
      * @return \Illuminate\Http\Response
      */
     public function respondWentWrong($exception = null)
@@ -63,7 +63,7 @@ class Controller extends BaseController
     /**
      * Returns a 200 response.
      *
-     * @param  object  $message = null
+     * @param  object  $message  = null
      * @return \Illuminate\Http\Response
      */
     public function respondSuccess($message = null, $additional_data = [])

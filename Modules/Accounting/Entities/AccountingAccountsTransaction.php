@@ -48,7 +48,7 @@ class AccountingAccountsTransaction extends Model
                 'transaction_payment_id' => $data['transaction_payment_id'],
             ],
             ['accounting_account_id' => $data['accounting_account_id'], 'amount' => $data['amount'],
-                'type' => $data['type'], 'sub_type' => $data['sub_type'], 'created_by' => $data['created_by'], 'operation_date' => $data['operation_date'], 'note' => $data['note']
+                'type' => $data['type'], 'sub_type' => $data['sub_type'], 'created_by' => $data['created_by'], 'operation_date' => $data['operation_date'], 'note' => $data['note'],
             ]
         );
     }

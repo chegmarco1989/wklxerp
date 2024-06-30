@@ -13,7 +13,6 @@ class SetSessionData
      * Checks if session data is set or not for a user. If data is not set then set it.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)

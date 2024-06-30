@@ -49,10 +49,10 @@ class ContactLoginController extends Controller
 
         if ($request->ajax()) {
             $query = User::with('contact')
-                    ->where('business_id', $business_id)
-                    ->whereHas('contact', function ($q) {
-                        $q->whereNotNull('id');
-                    });
+                ->where('business_id', $business_id)
+                ->whereHas('contact', function ($q) {
+                    $q->whereNotNull('id');
+                });
 
             if (! empty($request->get('contact_id'))) {
                 $query->where('crm_contact_id', $request->get('contact_id'));
@@ -65,8 +65,8 @@ class ContactLoginController extends Controller
             $users = $query->select('username', 'email', 'id', 'crm_contact_id', 'surname', 'first_name', 'last_name', 'crm_department', 'crm_designation');
 
             return Datatables::of($users)
-                    ->addColumn('action', function ($row) {
-                        $html = '<div class="btn-group">
+                ->addColumn('action', function ($row) {
+                    $html = '<div class="btn-group">
                                     <button class="btn btn-info dropdown-toggle btn-xs" type="button"  data-toggle="dropdown" aria-expanded="false">
                                         '.__('messages.action').'
                                         <span class="caret"></span>
@@ -90,8 +90,8 @@ class ContactLoginController extends Controller
                                     </ul>
                                 </div>';
 
-                        return $html;
-                    })
+                    return $html;
+                })
                 ->editColumn('name', function ($row) {
                     return $row->surname.' '.$row->first_name.' '.$row->last_name;
                 })
@@ -132,7 +132,6 @@ class ContactLoginController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -149,8 +148,8 @@ class ContactLoginController extends Controller
             $input['business_id'] = $business_id;
 
             $input['allow_login'] = ! empty($request->input('allow_login')) ? 1 : 0;
-			
-			$input['name'] = $input['surname'] . " " . $input['first_name'];									// AJOUTE
+
+            $input['name'] = $input['surname'].' '.$input['first_name'];									// AJOUTE
 
             $user = $this->crmUtil->creatContactPerson($input);
 
@@ -204,8 +203,8 @@ class ContactLoginController extends Controller
             }
 
             $user = User::where('business_id', $business_id)
-                        ->where('crm_contact_id', $crm_contact_id)
-                        ->findOrFail($id);
+                ->where('crm_contact_id', $crm_contact_id)
+                ->findOrFail($id);
 
             return view('crm::contact_login.edit')
                 ->with(compact('user', 'contacts'));
@@ -215,7 +214,6 @@ class ContactLoginController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -236,12 +234,12 @@ class ContactLoginController extends Controller
             }
 
             $input['crm_contact_id'] = $request->get('crm_contact_id');
-			
-			$input['name'] = $input['surname'] . " " . $input['first_name'];									// AJOUTE
+
+            $input['name'] = $input['surname'].' '.$input['first_name'];									// AJOUTE
 
             $user = User::where('business_id', $business_id)
-                        ->where('id', $id)
-                        ->update($input);
+                ->where('id', $id)
+                ->update($input);
 
             $output = [
                 'success' => true,
@@ -277,8 +275,8 @@ class ContactLoginController extends Controller
                 $crm_contact_id = request()->get('crm_contact_id');
 
                 $user = User::where('business_id', $business_id)
-                            ->where('crm_contact_id', $crm_contact_id)
-                            ->findOrFail($id);
+                    ->where('crm_contact_id', $crm_contact_id)
+                    ->findOrFail($id);
 
                 $user->delete();
 
@@ -325,10 +323,10 @@ class ContactLoginController extends Controller
 
         if ($request->ajax()) {
             $query = CrmContactPersonCommission::join('users as u', 'u.id', 'crm_contact_person_commissions.contact_person_id')
-                    ->where('u.business_id', $business_id)
-                    ->join('contacts as c', 'u.crm_contact_id', '=', 'c.id')
-                    ->join('transactions as t', 't.id', '=', 'crm_contact_person_commissions.transaction_id')
-                    ->join('business_locations as bl', 't.location_id', '=', 'bl.id');
+                ->where('u.business_id', $business_id)
+                ->join('contacts as c', 'u.crm_contact_id', '=', 'c.id')
+                ->join('transactions as t', 't.id', '=', 'crm_contact_person_commissions.transaction_id')
+                ->join('business_locations as bl', 't.location_id', '=', 'bl.id');
 
             if (! empty($request->get('crm_contact_id'))) {
                 $query->where('u.id', $request->get('crm_contact_id'));
@@ -379,8 +377,8 @@ class ContactLoginController extends Controller
         }
 
         $crm_contact_persons = User::where('business_id', $business_id)
-                    ->whereNotNull('crm_contact_id')
-                    ->pluck('username', 'id');
+            ->whereNotNull('crm_contact_id')
+            ->pluck('username', 'id');
 
         $business_locations = BusinessLocation::forDropdown($business_id);
 

@@ -26,7 +26,7 @@ class Brands extends Model
      * Return list of brands for a business
      *
      * @param  int  $business_id
-     * @param  bool  $show_none = false
+     * @param  bool  $show_none  = false
      * @return array
      */
     public static function forDropdown($business_id, $show_none = false, $filter_use_for_repair = false)
@@ -38,7 +38,7 @@ class Brands extends Model
         }
 
         $brands = $query->orderBy('name', 'asc')
-                    ->pluck('name', 'id');
+            ->pluck('name', 'id');
 
         if ($show_none) {
             $brands->prepend(__('lang_v1.none'), '');

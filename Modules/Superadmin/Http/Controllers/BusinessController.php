@@ -11,7 +11,6 @@ use App\Utils\ModuleUtil;
 use App\VariationLocationDetails;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\Superadmin\Entities\Package;
@@ -52,34 +51,34 @@ class BusinessController extends BaseController
             $date_today = \Carbon::today();
             $businesses = Business::leftjoin('subscriptions AS s', function ($join) use ($date_today) {
                 $join->on('business.id', '=', 's.business_id')
-                                    ->whereDate('s.start_date', '<=', $date_today)
-                                    ->whereDate('s.end_date', '>=', $date_today)
-                                    ->where('s.status', 'approved');
+                    ->whereDate('s.start_date', '<=', $date_today)
+                    ->whereDate('s.end_date', '>=', $date_today)
+                    ->where('s.status', 'approved');
             })
-                            ->leftjoin('packages as p', 's.package_id', '=', 'p.id')
-                            ->leftjoin('business_locations as bl', 'business.id', '=', 'bl.business_id')
-                            ->leftjoin('users as u', 'u.id', '=', 'business.owner_id')
-                            ->leftjoin('users as creator', 'creator.id', '=', 'business.created_by')
-                            ->select(
-                                    'business.id',
-                                    'business.name',
-                                    DB::raw("CONCAT(COALESCE(u.surname, ''), ' ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as owner_name"),
-                                    'u.email as owner_email',
-                                    'u.contact_number',
-                                    'bl.mobile',
-                                    'bl.alternate_number',
-                                    'bl.city',
-                                    'bl.state',
-                                    'bl.country',
-                                    'bl.landmark',
-                                    'bl.zip_code',
-                                    'business.is_active',
-                                    's.start_date',
-                                    's.end_date',
-                                    'p.name as package_name',
-                                    'business.created_at',
-                                    DB::raw("CONCAT(COALESCE(creator.surname, ''), ' ', COALESCE(creator.first_name, ''), ' ', COALESCE(creator.last_name, '')) as biz_creator")
-                                )->groupBy('business.id');
+                ->leftjoin('packages as p', 's.package_id', '=', 'p.id')
+                ->leftjoin('business_locations as bl', 'business.id', '=', 'bl.business_id')
+                ->leftjoin('users as u', 'u.id', '=', 'business.owner_id')
+                ->leftjoin('users as creator', 'creator.id', '=', 'business.created_by')
+                ->select(
+                    'business.id',
+                    'business.name',
+                    DB::raw("CONCAT(COALESCE(u.surname, ''), ' ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as owner_name"),
+                    'u.email as owner_email',
+                    'u.contact_number',
+                    'bl.mobile',
+                    'bl.alternate_number',
+                    'bl.city',
+                    'bl.state',
+                    'bl.country',
+                    'bl.landmark',
+                    'bl.zip_code',
+                    'business.is_active',
+                    's.start_date',
+                    's.end_date',
+                    'p.name as package_name',
+                    'business.created_at',
+                    DB::raw("CONCAT(COALESCE(creator.surname, ''), ' ', COALESCE(creator.first_name, ''), ' ', COALESCE(creator.last_name, '')) as biz_creator")
+                )->groupBy('business.id');
 
             if (! empty(request()->package_id)) {
                 $businesses->where('p.id', request()->package_id);
@@ -95,7 +94,7 @@ class BusinessController extends BaseController
             } elseif ($subscription_status == 'expired') {
                 $businesses->where(function ($q) {
                     $q->whereDate('s.end_date', '<', \Carbon::today())
-                    ->orWhereNull('s.end_date');
+                        ->orWhereNull('s.end_date');
                 });
             } elseif ($subscription_status == 'subscribed') {
                 $businesses->whereNotNull('s.start_date');
@@ -152,7 +151,7 @@ class BusinessController extends BaseController
                 ->filterColumn('business_contact_number', function ($query, $keyword) {
                     $query->where(function ($q) use ($keyword) {
                         $q->where('bl.mobile', 'like', "%{$keyword}%")
-                        ->orWhere('bl.alternate_number', 'like', "%{$keyword}%");
+                            ->orWhere('bl.alternate_number', 'like', "%{$keyword}%");
                     });
                 })
                 ->addColumn('current_subscription', '{{$package_name ?? ""}} @if(!empty($start_date) && !empty($end_date)) ({{@format_date($start_date)}} - {{@format_date($end_date)}}) @endif')
@@ -256,7 +255,6 @@ class BusinessController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -377,7 +375,6 @@ class BusinessController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request)
@@ -481,10 +478,10 @@ class BusinessController extends BaseController
             $user_id = request()->session()->get('user.id');
 
             $users = User::where('business_id', $business_id)
-                        ->where('id', '!=', $user_id)
-                        ->where('is_cmmsn_agnt', 0)
-                        ->select(['id', 'username',
-                            DB::raw("CONCAT(COALESCE(surname, ''), ' ', COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) as full_name"), 'email', ]);
+                ->where('id', '!=', $user_id)
+                ->where('is_cmmsn_agnt', 0)
+                ->select(['id', 'username',
+                    DB::raw("CONCAT(COALESCE(surname, ''), ' ', COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) as full_name"), 'email', ]);
 
             return Datatables::of($users)
                 ->addColumn(

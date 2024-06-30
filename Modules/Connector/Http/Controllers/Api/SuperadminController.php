@@ -11,6 +11,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group Superadmin
+ *
  * @authenticated
  *
  * APIs for superadmin module

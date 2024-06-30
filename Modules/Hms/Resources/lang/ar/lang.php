@@ -1,4 +1,5 @@
 <?php
+
 return [
     'hms' => 'نظام إدارة الفنادق',
     'type' => 'نوع الإقامة',
@@ -82,7 +83,7 @@ return [
     'calendar' => 'التقويم',
     'new_booking' => 'حجز جديد',
     'unavailable' => 'غير متاح',
-    'unavailable_type' => 'نوع غير متاح', 
+    'unavailable_type' => 'نوع غير متاح',
     'edit_unavailable' => 'تعديل الغير متاح',
     'add_unavailable' => 'إضافة الغير متاح',
     'booking_Id' => 'معرف الحجز',

@@ -20,23 +20,23 @@ class AccountingServiceProvider extends ServiceProvider
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
-        $this->app['events']->listen(\App\Events\SellCreatedOrModified::class, 
-        \Modules\Accounting\Listeners\MapSellTransaction::class);
+        $this->app['events']->listen(\App\Events\SellCreatedOrModified::class,
+            \Modules\Accounting\Listeners\MapSellTransaction::class);
 
-        $this->app['events']->listen(\App\Events\TransactionPaymentAdded::class, 
-        \Modules\Accounting\Listeners\MapPaymentTransaction::class);
+        $this->app['events']->listen(\App\Events\TransactionPaymentAdded::class,
+            \Modules\Accounting\Listeners\MapPaymentTransaction::class);
 
-        $this->app['events']->listen(\App\Events\TransactionPaymentUpdated::class, 
-        \Modules\Accounting\Listeners\MapPaymentTransaction::class);
+        $this->app['events']->listen(\App\Events\TransactionPaymentUpdated::class,
+            \Modules\Accounting\Listeners\MapPaymentTransaction::class);
 
-        $this->app['events']->listen(\App\Events\TransactionPaymentDeleted::class, 
-        \Modules\Accounting\Listeners\MapPaymentTransaction::class);
+        $this->app['events']->listen(\App\Events\TransactionPaymentDeleted::class,
+            \Modules\Accounting\Listeners\MapPaymentTransaction::class);
 
-        $this->app['events']->listen(\App\Events\PurchaseCreatedOrModified::class, 
-        \Modules\Accounting\Listeners\MapPurchaseTransaction::class);
+        $this->app['events']->listen(\App\Events\PurchaseCreatedOrModified::class,
+            \Modules\Accounting\Listeners\MapPurchaseTransaction::class);
 
-        $this->app['events']->listen(\App\Events\ExpenseCreatedOrModified::class, 
-        \Modules\Accounting\Listeners\MapExpenseTransactions::class);
+        $this->app['events']->listen(\App\Events\ExpenseCreatedOrModified::class,
+            \Modules\Accounting\Listeners\MapExpenseTransactions::class);
     }
 
     /**

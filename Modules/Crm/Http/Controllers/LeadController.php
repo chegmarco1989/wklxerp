@@ -25,7 +25,6 @@ class LeadController extends Controller
     /**
      * Constructor
      *
-     * @param  Util  $commonUtil
      * @return void
      */
     public function __construct(Util $commonUtil, ModuleUtil $moduleUtil, CrmUtil $crmUtil)
@@ -202,12 +201,12 @@ class LeadController extends Controller
                     ->filterColumn('address', function ($query, $keyword) {
                         $query->where(function ($q) use ($keyword) {
                             $q->where('address_line_1', 'like', "%{$keyword}%")
-                            ->orWhere('address_line_2', 'like', "%{$keyword}%")
-                            ->orWhere('city', 'like', "%{$keyword}%")
-                            ->orWhere('state', 'like', "%{$keyword}%")
-                            ->orWhere('country', 'like', "%{$keyword}%")
-                            ->orWhere('zip_code', 'like', "%{$keyword}%")
-                            ->orWhereRaw("CONCAT(COALESCE(address_line_1, ''), ', ', COALESCE(address_line_2, ''), ', ', COALESCE(city, ''), ', ', COALESCE(state, ''), ', ', COALESCE(country, '') ) like ?", ["%{$keyword}%"]);
+                                ->orWhere('address_line_2', 'like', "%{$keyword}%")
+                                ->orWhere('city', 'like', "%{$keyword}%")
+                                ->orWhere('state', 'like', "%{$keyword}%")
+                                ->orWhere('country', 'like', "%{$keyword}%")
+                                ->orWhere('zip_code', 'like', "%{$keyword}%")
+                                ->orWhereRaw("CONCAT(COALESCE(address_line_1, ''), ', ', COALESCE(address_line_2, ''), ', ', COALESCE(city, ''), ', ', COALESCE(state, ''), ', ', COALESCE(country, '') ) like ?", ["%{$keyword}%"]);
                         });
                     })
                     ->rawColumns(['action', 'crm_source', 'crm_life_stage', 'leadUsers', 'last_follow_up', 'upcoming_follow_up', 'created_at', 'name'])
@@ -301,7 +300,7 @@ class LeadController extends Controller
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $users = User::forDropdown($business_id, false, false, false, true);
         $sources = Category::forDropdown($business_id, 'source');
         $life_stages = Category::forDropdown($business_id, 'life_stage');
@@ -318,7 +317,6 @@ class LeadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -389,7 +387,7 @@ class LeadController extends Controller
         }
 
         $query = CrmContact::with('leadUsers', 'Source', 'lifeStage')
-                    ->where('business_id', $business_id);
+            ->where('business_id', $business_id);
 
         if (! $can_access_all_leads && $can_access_own_leads) {
             $query->OnlyOwnLeads();
@@ -421,7 +419,7 @@ class LeadController extends Controller
         }
 
         $query = CrmContact::with('leadUsers')
-                    ->where('business_id', $business_id);
+            ->where('business_id', $business_id);
 
         if (! $can_access_all_leads && $can_access_own_leads) {
             $query->OnlyOwnLeads();
@@ -442,7 +440,6 @@ class LeadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */

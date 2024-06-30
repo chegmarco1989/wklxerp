@@ -71,7 +71,7 @@ class CommonResourceController extends ApiController
 
         //Accounts
         $accounts = Account::where('business_id', $business_id)
-                        ->get();
+            ->get();
 
         return CommonResource::collection($accounts);
     }
@@ -414,7 +414,7 @@ class CommonResourceController extends ApiController
         $user = Auth::user();
 
         $business = Business::with(['locations', 'currency', 'printers'])
-                        ->findOrFail($user->business_id);
+            ->findOrFail($user->business_id);
 
         return new BusinessResource($business);
     }
@@ -610,6 +610,7 @@ class CommonResourceController extends ApiController
      *
      * @bodyParam lat decimal required Lattitude of the location Example: 41.40338
      * @bodyParam lon decimal required Longitude of the location Example: 2.17403
+     *
      * @response {
         "address": "Radhanath Mullick Ln, Tiretta Bazaar, Bow Bazaar, Kolkata, West Bengal, 700 073, India"
     }

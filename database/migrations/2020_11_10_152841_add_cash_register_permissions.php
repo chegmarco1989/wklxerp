@@ -13,9 +13,9 @@ return new class extends Migration
     public function up()
     {
         $exising_permissions = Permission::whereIn('name',
-                            ['view_cash_register', 'close_cash_register'])
-                                    ->pluck('name')
-                                    ->toArray();
+            ['view_cash_register', 'close_cash_register'])
+            ->pluck('name')
+            ->toArray();
 
         if (! in_array('view_cash_register', $exising_permissions)) {
             Permission::create(['name' => 'view_cash_register']);

@@ -2,8 +2,6 @@
 
 namespace Modules\AiAssistance\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use Illuminate\Routing\Controller;
@@ -29,7 +27,7 @@ class DataController extends Controller
                 'label' => __('aiassistance::lang.aiassistance_max_token'),
                 'default' => false,
                 'field_type' => 'number',
-                'tooltip' => __('aiassistance::lang.max_token_tooltip')
+                'tooltip' => __('aiassistance::lang.max_token_tooltip'),
             ],
         ];
     }
@@ -71,7 +69,7 @@ class DataController extends Controller
                 'value' => 'aiassistance.access_aiassistance_module',
                 'label' => __('aiassistance::lang.access_aiassistance_module'),
                 'default' => false,
-            ]      
+            ],
         ];
     }
 }

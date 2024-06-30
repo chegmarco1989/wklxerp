@@ -1,4 +1,5 @@
 <?php
+
 return [
     'accounting' => 'Contabilidade',
     'accounting_module' => 'Módulo de contabilidade',
@@ -159,7 +160,7 @@ return [
     'ordinary_shares_desc' => 'Corporações usam Ações ordinárias para acompanhar suas ações ordinárias nas mãos dos acionistas. O valor dessa conta deve ser o valor declarado (ou par) das ações.',
     'other_comprehensive_income' => 'Outra renda abrangente',
     'other_comprehensive_income_desc' => 'Use Outra renda abrangente para registrar o aumento ou redução na renda de vários negócios que ainda não foi absorvida pela empresa.',
-    "owner's_equity" => "Patrimônio líquido dos proprietários",
+    "owner's_equity" => 'Patrimônio líquido dos proprietários',
     "owner's_equity_desc" => 'Corporações usam o Patrimônio líquido dos proprietários para mostrar o lucro líquido acumulado ou prejuízo de seu negócio no início do ano financeiro.',
     'paid-in_capital_or_surplus' => 'Capital integralizado ou excedente',
     'paid-in_capital_or_surplus_desc' => 'Corporações usam Capital integralizado para rastrear os valores recebidos dos acionistas em troca de ações que estão acima do valor nominal das ações.',
@@ -167,7 +168,7 @@ return [
     'partner_contributions_desc' => 'Parcerias usam Contribuições de parceiros para registrar os valores que os parceiros contribuem para a parceria durante o ano.',
     'partner_distributions' => 'Distribuições de parceiros',
     'partner_distributions_desc' => 'As Parcerias usam Distribuições de parceiros para registrar os valores distribuídos pela parceria aos seus parceiros durante o ano. Não use esta conta para pagamentos regulares aos parceiros por juros ou serviço. Para pagamentos regulares, use uma conta de Pagamentos garantidos (uma conta de Despesa em Despesas de folha de pagamento), em vez disso.',
-    "partner's_equity" => "Patrimônio líquido dos parceiros",
+    "partner's_equity" => 'Patrimônio líquido dos parceiros',
     "partner's_equity_desc" => 'As Parcerias usam o Patrimônio líquido dos parceiros para mostrar o lucro remanescente na parceria para cada parceiro no final do ano anterior.',
     'preferred_shares' => 'Ações preferenciais',
     'preferred_shares_desc' => 'Corporações usam essa conta para rastrear suas ações preferenciais nas mãos de acionistas. O valor desta conta deve ser o valor nominal das ações.',
@@ -357,7 +358,7 @@ return [
     'balance_sheet' => 'Balanço',
     'balance_sheet_description' => 'Este relatório dá-lhe uma visão imediata das suas contas numa determinada data. Pode chamá-la de vista "instantâneo" da posição atual (dia) do exercício financeiro.',
     'assets' => 'Ativos',
-    'liab_owners_capital' => "Passivos e Capital dos Proprietários",
+    'liab_owners_capital' => 'Passivos e Capital dos Proprietários',
     'total_liab_owners' => 'Total de passivos e capital dos proprietários',
     'total_assets' => 'Total de ativos',
     'account_setting' => 'Configurações de contabilidade',

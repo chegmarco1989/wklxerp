@@ -16,7 +16,7 @@ class ModuleUtil extends Util
     /**
      * This function check if a module is installed or not.
      *
-     * @param  string  $module_name (Exact module name, with first letter capital)
+     * @param  string  $module_name  (Exact module name, with first letter capital)
      * @return bool
      */
     public function isModuleInstalled($module_name)
@@ -131,7 +131,7 @@ class ModuleUtil extends Util
      *
      * @param  int  $business_id
      * @param  string  $permission
-     * @param  string  $callback_function = null
+     * @param  string  $callback_function  = null
      * @return bool
      */
     public function hasThePermissionInSubscription($business_id, $permission, $callback_function = null)
@@ -209,7 +209,7 @@ class ModuleUtil extends Util
     public function countBusinessLocation($business_id)
     {
         $count = BusinessLocation::where('business_id', $business_id)
-                                ->count();
+            ->count();
 
         return $count;
     }
@@ -217,8 +217,8 @@ class ModuleUtil extends Util
     public function countUsers($business_id)
     {
         $count = User::where('business_id', $business_id)
-                                    ->where('allow_login', 1)
-                                    ->count();
+            ->where('allow_login', 1)
+            ->count();
 
         return $count;
     }
@@ -239,8 +239,8 @@ class ModuleUtil extends Util
     public function countInvoice($business_id, $start_dt, $end_dt)
     {
         $query = Transaction::where('business_id', $business_id)
-                            ->where('type', 'sell')
-                            ->where('status', 'final');
+            ->where('type', 'sell')
+            ->where('status', 'final');
 
         if (! empty($start_dt) && ! empty($start_dt)) {
             $query->whereBetween('created_at', [$start_dt, $end_dt]);
@@ -277,7 +277,7 @@ class ModuleUtil extends Util
      *
      * @param  string  $type
      * @param  int  $business_id
-     * @param  int  $total_rows default 0
+     * @param  int  $total_rows  default 0
      * @return bool
      */
     public function isQuotaAvailable($type, $business_id, $total_rows = 0)
@@ -351,7 +351,7 @@ class ModuleUtil extends Util
      *
      * @param  string  $type
      * @param  int  $business_id
-     * @param  string  $redirect_url = null
+     * @param  string  $redirect_url  = null
      * @return \Illuminate\Http\Response
      */
     public function quotaExpiredResponse($type, $business_id, $redirect_url = null)
@@ -374,14 +374,14 @@ class ModuleUtil extends Util
             ];
 
             return redirect($redirect_url)
-                    ->with('status', $response_array);
+                ->with('status', $response_array);
         } elseif ($type == 'products') {
             $response_array = ['success' => 0,
                 'msg' => __('superadmin::lang.max_products'),
             ];
 
             return redirect($redirect_url)
-                    ->with('status', $response_array);
+                ->with('status', $response_array);
         } elseif ($type == 'invoices') {
             $response_array = ['success' => 0,
                 'msg' => __('superadmin::lang.max_invoices'),
@@ -412,7 +412,7 @@ class ModuleUtil extends Util
      * required by any module which will be included during adding
      * or updating a resource
      *
-     * @param  string  $function_name function name to be called to get data from
+     * @param  string  $function_name  function name to be called to get data from
      * @return array
      */
     public function getModuleFormField($function_name)
@@ -433,7 +433,7 @@ class ModuleUtil extends Util
     public function getApiSettings($api_token)
     {
         $settings = \Modules\Ecommerce\Entities\EcomApiSetting::where('api_token', $api_token)
-                                ->first();
+            ->first();
 
         return $settings;
     }
@@ -442,7 +442,7 @@ class ModuleUtil extends Util
      * This function returns the installed version, available version
      * and uses comparator to check if update is available or not.
      *
-     * @param  string  $module_name (Exact module name, with first letter capital)
+     * @param  string  $module_name  (Exact module name, with first letter capital)
      * @return array
      */
     public function getModuleVersionInfo($module_name)
@@ -517,7 +517,7 @@ class ModuleUtil extends Util
 
         $module_data = [];
         foreach ($modules_data as $module => $data) {
-            foreach ($data  as $key => $value) {
+            foreach ($data as $key => $value) {
                 //key is category type
                 //check if category type is duplicate
                 if (! in_array($key, $category_types)) {

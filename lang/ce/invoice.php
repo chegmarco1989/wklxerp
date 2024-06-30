@@ -61,5 +61,5 @@ return [
     'number_type' => '编号类型',
     'sequential' => '顺序',
     'random' => '随机',
-    'number_type_tooltip' => '顺序将按顺序生成编号，如1,2,3,4 <br/> 随机将随机生成编号'
+    'number_type_tooltip' => '顺序将按顺序生成编号，如1,2,3,4 <br/> 随机将随机生成编号',
 ];

@@ -47,13 +47,13 @@ class BudgetController extends Controller
         $accounts = [];
         if ($fy_year != null) {
             $accounts = AccountingAccount::where('business_id', $business_id)
-                                ->where('status', 'active')
-                                ->select('name', 'id', 'account_primary_type')
-                                ->get();
+                ->where('status', 'active')
+                ->select('name', 'id', 'account_primary_type')
+                ->get();
 
             $budget = AccountingBudget::whereIn('accounting_account_id', $accounts->pluck('id'))
-                                ->where('financial_year', $fy_year)
-                                ->get();
+                ->where('financial_year', $fy_year)
+                ->get();
 
             if (count($budget) == 0) {
                 return redirect(action([\Modules\Accounting\Http\Controllers\BudgetController::class, 'create']).
@@ -69,7 +69,7 @@ class BudgetController extends Controller
             if (request()->input('view_type') == 'monthly') {
                 if (request()->input('format') == 'pdf') {
                     $html = view('accounting::budget.partials.budget_monthly_pdf')->with(compact('accounts',
-                    'budget', 'months', 'fy_year', 'account_types'))->render();
+                        'budget', 'months', 'fy_year', 'account_types'))->render();
 
                     $output_file_name = 'Budget-'.$fy_year.'-Monthly.pdf';
 
@@ -92,7 +92,7 @@ class BudgetController extends Controller
             } elseif (request()->input('view_type') == 'quarterly') {
                 if (request()->input('format') == 'pdf') {
                     $html = view('accounting::budget.partials.budget_quarterly_pdf')->with(compact('accounts',
-                    'budget', 'fy_year', 'account_types'))->render();
+                        'budget', 'fy_year', 'account_types'))->render();
 
                     $output_file_name = 'Budget-'.$fy_year.'-Quarterly.pdf';
 
@@ -115,7 +115,7 @@ class BudgetController extends Controller
             } elseif (request()->input('view_type') == 'yearly') {
                 if (request()->input('format') == 'pdf') {
                     $html = view('accounting::budget.partials.budget_yearly_pdf')->with(compact('accounts',
-                    'budget', 'fy_year', 'account_types'))->render();
+                        'budget', 'fy_year', 'account_types'))->render();
 
                     $output_file_name = 'Budget-'.$fy_year.'-Yearly.pdf';
 
@@ -139,7 +139,7 @@ class BudgetController extends Controller
         }
 
         return view('accounting::budget.index')->with(compact('accounts', 'budget', 'months', 'fy_year',
-                'account_types'));
+            'account_types'));
     }
 
     private function getFinancialYearMonths()
@@ -188,14 +188,14 @@ class BudgetController extends Controller
         $fy_year = request()->input('financial_year');
 
         $accounts = AccountingAccount::where('business_id', $business_id)
-                                ->where('status', 'active')
-                                ->select('name', 'id')
-                                ->get();
+            ->where('status', 'active')
+            ->select('name', 'id')
+            ->get();
         $months = $this->getFinancialYearMonths();
 
         $budget = AccountingBudget::whereIn('accounting_account_id', $accounts->pluck('id'))
-                                ->where('financial_year', $fy_year)
-                                ->get();
+            ->where('financial_year', $fy_year)
+            ->get();
 
         return view('accounting::budget.create')->with(compact('fy_year', 'accounts', 'months', 'budget'));
     }
@@ -203,7 +203,6 @@ class BudgetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -268,7 +267,6 @@ class BudgetController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */

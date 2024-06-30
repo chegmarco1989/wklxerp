@@ -20,9 +20,9 @@ class CustomerGroup extends Model
     /**
      * Return list of customer group for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
-     * @param $prepend_all = false (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
+     * @param  $prepend_all  = false (boolean)
      * @return array
      */
     public static function forDropdown($business_id, $prepend_none = true, $prepend_all = false)

@@ -51,7 +51,5 @@ return [
     'persuasive' => '有说服力',
     'professional' => '专业',
     'casual' => '随意',
-    'witty' => '风趣'
+    'witty' => '风趣',
 ];
-
-?>

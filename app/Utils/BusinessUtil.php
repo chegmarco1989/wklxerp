@@ -15,8 +15,6 @@ use App\Unit;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use App\VariationLocationDetails;
-
 
 class BusinessUtil extends Util
 {
@@ -145,8 +143,8 @@ class BusinessUtil extends Util
     public function allCurrencies()
     {
         $currencies = Currency::select('id', DB::raw("concat(country, ' - ',currency, '(', code, ') ') as info"))
-                ->orderBy('country')
-                ->pluck('info', 'id');
+            ->orderBy('country')
+            ->pluck('info', 'id');
 
         return $currencies;
     }
@@ -225,18 +223,18 @@ class BusinessUtil extends Util
     public function getDetails($business_id)
     {
         $details = Business::leftjoin('tax_rates AS TR', 'business.default_sales_tax', 'TR.id')
-                        ->leftjoin('currencies AS cur', 'business.currency_id', 'cur.id')
-                        ->select(
-                            'business.*',
-                            'cur.code as currency_code',
-                            'cur.symbol as currency_symbol',
-                            'thousand_separator',
-                            'decimal_separator',
-                            'TR.amount AS tax_calculation_amount',
-                            'business.default_sales_discount'
-                        )
-                        ->where('business.id', $business_id)
-                        ->first();
+            ->leftjoin('currencies AS cur', 'business.currency_id', 'cur.id')
+            ->select(
+                'business.*',
+                'cur.code as currency_code',
+                'cur.symbol as currency_symbol',
+                'thousand_separator',
+                'decimal_separator',
+                'TR.amount AS tax_calculation_amount',
+                'business.default_sales_discount'
+            )
+            ->where('business.id', $business_id)
+            ->first();
 
         return $details;
     }
@@ -283,22 +281,22 @@ class BusinessUtil extends Util
      *
      * @param  int  $business_id
      * @param  array  $location_details
-     * @param  int  $invoice_layout_id default null
+     * @param  int  $invoice_layout_id  default null
      * @return location object
      */
     public function addLocation($business_id, $location_details, $invoice_scheme_id = null, $invoice_layout_id = null)
     {
         if (empty($invoice_scheme_id)) {
             $layout = InvoiceLayout::where('is_default', 1)
-                                    ->where('business_id', $business_id)
-                                    ->first();
+                ->where('business_id', $business_id)
+                ->first();
             $invoice_layout_id = $layout->id;
         }
 
         if (empty($invoice_scheme_id)) {
             $scheme = InvoiceScheme::where('is_default', 1)
-                                    ->where('business_id', $business_id)
-                                    ->first();
+                ->where('business_id', $business_id)
+                ->first();
             $invoice_scheme_id = $scheme->id;
         }
 
@@ -340,7 +338,7 @@ class BusinessUtil extends Util
      * Return the invoice layout details
      *
      * @param  int  $business_id
-     * @param  array  $layout_id = null
+     * @param  array  $layout_id  = null
      * @return location object
      */
     public function invoiceLayout($business_id, $layout_id = null)
@@ -353,9 +351,10 @@ class BusinessUtil extends Util
         //If layout is not found (deleted) then get the default layout for the business
         if (empty($layout)) {
             $layout = InvoiceLayout::where('business_id', $business_id)
-                        ->where('is_default', 1)
-                        ->first();
+                ->where('is_default', 1)
+                ->first();
         }
+
         //$output = []
         return $layout;
     }
@@ -370,7 +369,7 @@ class BusinessUtil extends Util
     public function printerConfig($business_id, $printer_id)
     {
         $printer = Printer::where('business_id', $business_id)
-                    ->find($printer_id);
+            ->find($printer_id);
 
         $output = [];
 
@@ -438,5 +437,4 @@ class BusinessUtil extends Util
     {
         return ['url' => '', 'send_to_param_name' => 'to', 'msg_param_name' => 'text', 'request_method' => 'post', 'param_1' => '', 'param_val_1' => '', 'param_2' => '', 'param_val_2' => '', 'param_3' => '', 'param_val_3' => '', 'param_4' => '', 'param_val_4' => '', 'param_5' => '', 'param_val_5' => ''];
     }
-
 }

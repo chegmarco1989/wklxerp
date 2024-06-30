@@ -2,8 +2,6 @@
 
 namespace Modules\Accounting\Listeners;
 
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use App\BusinessLocation;
 
 class MapExpenseTransactions
@@ -29,29 +27,29 @@ class MapExpenseTransactions
         $business_location = BusinessLocation::find($event->expense->location_id);
         $accounting_default_map = json_decode($business_location->accounting_default_map, true);
         // if expense category is selected
-        if(!empty($event->expense->expense_category_id)){
-            
-                $deposit_to = isset($accounting_default_map['expense_'.$event->expense->expense_category_id]['deposit_to']) ? $accounting_default_map['expense_'.$event->expense->expense_category_id]['deposit_to'] : null;
+        if (! empty($event->expense->expense_category_id)) {
 
-                $payment_account = isset($accounting_default_map['expense_'.$event->expense->expense_category_id]['payment_account']) ? $accounting_default_map['expense_'.$event->expense->expense_category_id]['payment_account'] : null;
-            // if expense category is selected but value is null 
-            if(is_null($deposit_to) || is_null($payment_account)){
+            $deposit_to = isset($accounting_default_map['expense_'.$event->expense->expense_category_id]['deposit_to']) ? $accounting_default_map['expense_'.$event->expense->expense_category_id]['deposit_to'] : null;
+
+            $payment_account = isset($accounting_default_map['expense_'.$event->expense->expense_category_id]['payment_account']) ? $accounting_default_map['expense_'.$event->expense->expense_category_id]['payment_account'] : null;
+            // if expense category is selected but value is null
+            if (is_null($deposit_to) || is_null($payment_account)) {
                 $deposit_to = isset($accounting_default_map['expense']['deposit_to']) ? $accounting_default_map['expense']['deposit_to'] : null;
                 $payment_account = isset($accounting_default_map['expense']['payment_account']) ? $accounting_default_map['expense']['payment_account'] : null;
             }
-               
-        }else{
+
+        } else {
 
             $deposit_to = isset($accounting_default_map['expense']['deposit_to']) ? $accounting_default_map['expense']['deposit_to'] : null;
             $payment_account = isset($accounting_default_map['expense']['payment_account']) ? $accounting_default_map['expense']['payment_account'] : null;
         }
 
         //if expense is deleted then delete the mapping
-        if(isset($event->isDeleted) && $event->isDeleted){
+        if (isset($event->isDeleted) && $event->isDeleted) {
             $accountingUtil = new \Modules\Accounting\Utils\AccountingUtil();
             $accountingUtil->deleteMap($event->expense->id, null);
         } else {
-            if(!is_null($deposit_to) && !is_null($payment_account)){
+            if (! is_null($deposit_to) && ! is_null($payment_account)) {
                 $type = 'expense';
                 $id = $event->expense->id;
                 $user_id = request()->session()->get('user.id');

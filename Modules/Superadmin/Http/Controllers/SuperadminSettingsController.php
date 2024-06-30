@@ -116,7 +116,6 @@ class SuperadminSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request)
@@ -149,7 +148,7 @@ class SuperadminSettingsController extends Controller
                 System::updateOrCreate(
                     ['key' => $key],
                     ['value' => $setting]
-                            );
+                );
             }
 
             $env_settings = $request->only(['APP_NAME', 'APP_TITLE',

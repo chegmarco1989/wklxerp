@@ -73,7 +73,6 @@ class ProposalTemplateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -151,7 +150,6 @@ class ProposalTemplateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -174,8 +172,8 @@ class ProposalTemplateController extends Controller
     private function __getProposalTemplate($business_id)
     {
         $proposal_template = ProposalTemplate::with(['media'])
-                                ->where('business_id', $business_id)
-                                ->first();
+            ->where('business_id', $business_id)
+            ->first();
 
         return $proposal_template;
     }
@@ -228,7 +226,7 @@ class ProposalTemplateController extends Controller
 
             DB::beginTransaction();
             $proposal_template = ProposalTemplate::where('business_id', $business_id)
-                                        ->first();
+                ->first();
 
             $proposal_template->subject = $input['subject'];
             $proposal_template->body = $input['body'];

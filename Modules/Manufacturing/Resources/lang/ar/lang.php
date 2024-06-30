@@ -1,6 +1,6 @@
 <?php
 
-return[
+return [
     'manufacturing_module' => 'وحدة التصنيع',
     'manufacturing' => 'تصنيع',
     'recipe' => 'وصفة',

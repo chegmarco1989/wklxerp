@@ -27,7 +27,7 @@ Route::middleware('web', 'auth', 'language', 'AdminSidebarMenu', 'superadmin')->
 
     Route::resource('/coupons', 'Modules\Superadmin\Http\Controllers\CouponController');
     Route::get('/coupons/{id}/destroy', [Modules\Superadmin\Http\Controllers\CouponController::class, 'destroy']);
-    
+
     Route::get('/settings', [Modules\Superadmin\Http\Controllers\SuperadminSettingsController::class, 'edit']);
     Route::put('/settings', [Modules\Superadmin\Http\Controllers\SuperadminSettingsController::class, 'update']);
     Route::get('/edit-subscription/{id}', [Modules\Superadmin\Http\Controllers\SuperadminSubscriptionsController::class, 'editSubscription']);
@@ -46,7 +46,6 @@ Route::middleware('web', 'SetSessionData', 'auth', 'language', 'timezone', 'Admi
     Route::post('/paypal-express-checkout', [Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'paypalExpressCheckout'])->name('paypalExpressCheckout');
 
     Route::post('/capture-paypal-order', [Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'capturePaypalOrder'])->name('capturePaypalOrder');
-
 
     Route::get('/subscription/post-flutterwave-payment', [Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'postFlutterwavePaymentCallback']);
 

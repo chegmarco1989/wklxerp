@@ -87,10 +87,10 @@ class ProjectController extends Controller
                 if (! empty(request()->get('end_date'))) {
                     if (request()->get('end_date') == 'overdue') {
                         $projects->where('end_date', '<', Carbon::today())
-                                ->where('status', '!=', 'completed');
+                            ->where('status', '!=', 'completed');
                     } elseif (request()->get('end_date') == 'today') {
                         $projects->where('end_date', Carbon::today())
-                                ->where('status', '!=', 'completed');
+                            ->where('status', '!=', 'completed');
                     } elseif (request()->get('end_date') == 'less_than_one_week') {
                         $projects->whereBetween('end_date', [Carbon::today(), Carbon::today()->addWeek()])
                             ->where('status', '!=', 'completed');
@@ -107,7 +107,7 @@ class ProjectController extends Controller
 
                 if ($project_view == 'list_view') {
                     $projects = $projects->latest()
-                                ->simplePaginate(10);
+                        ->simplePaginate(10);
 
                     //check if user is lead/admin for the project
                     foreach ($projects as $key => $project) {
@@ -121,8 +121,8 @@ class ProjectController extends Controller
 
                     //dynamically render projects
                     $projects_html = view('project::project.partials.index')
-                    ->with(compact('projects'))
-                    ->render();
+                        ->with(compact('projects'))
+                        ->render();
                 } elseif ($project_view == 'kanban') {
                     $projects = $projects->get()->groupBy('status');
                     //sort projects based on status
@@ -295,7 +295,6 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -397,18 +396,18 @@ class ProjectController extends Controller
 
         //Get time project details.
         $query = Project::with('customer', 'members', 'categories')
-                        ->withCount(['tasks as incomplete_task' => function ($query) {
-                            $query->where('status', '!=', 'completed');
-                        },
-                            'documentsAndnote as note_and_documents_count' => function ($query) use ($user_id) {
-                                $query->where('is_private', 0)
-                                ->orWhere(function ($query) use ($user_id) {
-                                    $query->where('is_private', 1)
-                                        ->where('created_by', $user_id);
-                                });
-                            },
-                        ])
-                        ->where('business_id', $business_id);
+            ->withCount(['tasks as incomplete_task' => function ($query) {
+                $query->where('status', '!=', 'completed');
+            },
+                'documentsAndnote as note_and_documents_count' => function ($query) use ($user_id) {
+                    $query->where('is_private', 0)
+                        ->orWhere(function ($query) use ($user_id) {
+                            $query->where('is_private', 1)
+                                ->where('created_by', $user_id);
+                        });
+                },
+            ])
+            ->where('business_id', $business_id);
 
         //if not admin, check if project is assigned to user or not
         if (! $this->commonUtil->is_admin(auth()->user(), $business_id)) {
@@ -422,7 +421,7 @@ class ProjectController extends Controller
         //Get time log details.
         $timelog = ProjectTimeLog::where('project_id', $id)
             ->select(DB::raw('SUM(TIMESTAMPDIFF(SECOND, start_datetime, end_datetime)) as total_seconds'))
-           ->first();
+            ->first();
 
         //Invoice paid.
         $invoice = ProjectTransaction::leftJoin('transaction_payments as TP', 'transactions.id', '=', 'TP.transaction_id')
@@ -487,8 +486,8 @@ class ProjectController extends Controller
         $statuses = Project::statusDropdown();
         $categories = ProjectCategory::forDropdown($business_id, 'project');
         $project = Project::with('members', 'categories')
-                        ->where('business_id', $business_id)
-                        ->findOrFail($id);
+            ->where('business_id', $business_id)
+            ->findOrFail($id);
 
         return view('project::project.edit')
             ->with(compact('users', 'customers', 'statuses', 'project', 'categories'));
@@ -497,7 +496,6 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request, $id)
@@ -518,7 +516,7 @@ class ProjectController extends Controller
             array_push($members, $request->input('lead_id'));
 
             $project = Project::where('business_id', $business_id)
-                            ->findOrFail($id);
+                ->findOrFail($id);
 
             $project->update($input);
             $project_members = $project->members()->sync($members);
@@ -585,7 +583,7 @@ class ProjectController extends Controller
 
         try {
             $project = Project::where('business_id', $business_id)
-                            ->findOrFail($id);
+                ->findOrFail($id);
 
             $project->delete();
 
@@ -608,7 +606,6 @@ class ProjectController extends Controller
     /**
      * Update the project settings.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function postSettings(Request $request)
@@ -627,7 +624,7 @@ class ProjectController extends Controller
             $project_id = $request->get('project_id');
             $business_id = request()->session()->get('user.business_id');
             $project = Project::where('business_id', $business_id)
-                        ->findOrFail($project_id);
+                ->findOrFail($project_id);
 
             DB::beginTransaction();
 
@@ -658,7 +655,7 @@ class ProjectController extends Controller
 
         return redirect()->action([\Modules\Project\Http\Controllers\ProjectController::class, 'show'],
             [$project_id]
-            )->with('status', $output);
+        )->with('status', $output);
     }
 
     /**
@@ -673,7 +670,7 @@ class ProjectController extends Controller
             $status = request()->get('status');
 
             $project = Project::where('business_id', $business_id)
-                            ->findOrFail($id);
+                ->findOrFail($id);
 
             $project->status = $status;
             $project->save();

@@ -9,6 +9,7 @@ use Modules\Connector\Transformers\BusinessLocationResource;
 
 /**
  * @group Business Location management
+ *
  * @authenticated
  *
  * APIs for managing business locations
@@ -120,6 +121,7 @@ class BusinessLocationController extends ApiController
      * Get the specified business location
      *
      * @urlParam location required  comma separated ids of the business location Example: 1
+     *
      * @response {
             "data": [
                 {
@@ -208,8 +210,8 @@ class BusinessLocationController extends ApiController
         $location_ids = explode(',', $location_ids);
 
         $locations = BusinessLocation::where('business_id', $business_id)
-                        ->whereIn('id', $location_ids)
-                        ->get();
+            ->whereIn('id', $location_ids)
+            ->get();
 
         return BusinessLocationResource::collection($locations);
     }

@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'welcome' => 'Welkom bij Worklx ERP, :username',
+    'welcome' => 'Welkom bij Worklx ERP, :username',
     'greeting' => 'Hallo :username',
     'line' => 'Uw account is succesvol aangemaakt op Worklx ERP',
     'action' => 'Dashboard bekijken',

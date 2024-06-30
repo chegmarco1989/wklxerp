@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('cash_register_id')->unsigned();
             $table->foreign('cash_register_id')->references('id')->on('cash_registers')
-                    ->onDelete('cascade');
+                ->onDelete('cascade');
             $table->decimal('amount', 22, 4)->default(0);
             $table->enum('pay_method', ['cash', 'card', 'cheque', 'bank_transfer', 'other']);
             $table->enum('type', ['debit', 'credit']);

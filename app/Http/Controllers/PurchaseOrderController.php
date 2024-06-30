@@ -84,33 +84,33 @@ class PurchaseOrderController extends Controller
         $business_id = request()->session()->get('user.business_id');
         if (request()->ajax()) {
             $purchase_orders = Transaction::leftJoin('contacts', 'transactions.contact_id', '=', 'contacts.id')
-                    ->join(
-                        'business_locations AS BS',
-                        'transactions.location_id',
-                        '=',
-                        'BS.id'
-                    )
-                    ->leftJoin('purchase_lines as pl', 'transactions.id', '=', 'pl.transaction_id')
-                    ->leftJoin('users as u', 'transactions.created_by', '=', 'u.id')
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'purchase_order')
-                    ->select(
-                        'transactions.id',
-                        'transactions.document',
-                        'transactions.transaction_date',
-                        'transactions.ref_no',
-                        'transactions.status',
-                        'contacts.name',
-                        'contacts.supplier_business_name',
-                        'transactions.final_total',
-                        'BS.name as location_name',
-                        'transactions.pay_term_number',
-                        'transactions.pay_term_type',
-                        'transactions.shipping_status',
-                        DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) as added_by"),
-                        DB::raw('SUM(pl.quantity - pl.po_quantity_purchased) as po_qty_remaining')
-                    )
-                    ->groupBy('transactions.id');
+                ->join(
+                    'business_locations AS BS',
+                    'transactions.location_id',
+                    '=',
+                    'BS.id'
+                )
+                ->leftJoin('purchase_lines as pl', 'transactions.id', '=', 'pl.transaction_id')
+                ->leftJoin('users as u', 'transactions.created_by', '=', 'u.id')
+                ->where('transactions.business_id', $business_id)
+                ->where('transactions.type', 'purchase_order')
+                ->select(
+                    'transactions.id',
+                    'transactions.document',
+                    'transactions.transaction_date',
+                    'transactions.ref_no',
+                    'transactions.status',
+                    'contacts.name',
+                    'contacts.supplier_business_name',
+                    'transactions.final_total',
+                    'BS.name as location_name',
+                    'transactions.pay_term_number',
+                    'transactions.pay_term_type',
+                    'transactions.shipping_status',
+                    DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) as added_by"),
+                    DB::raw('SUM(pl.quantity - pl.po_quantity_purchased) as po_qty_remaining')
+                )
+                ->groupBy('transactions.id');
 
             $permitted_locations = auth()->user()->permitted_locations();
             if ($permitted_locations != 'all') {
@@ -137,7 +137,7 @@ class PurchaseOrderController extends Controller
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $purchase_orders->whereDate('transactions.transaction_date', '>=', $start)
-                            ->whereDate('transactions.transaction_date', '<=', $end);
+                    ->whereDate('transactions.transaction_date', '<=', $end);
             }
 
             if (! auth()->user()->can('purchase_order.view_all') && auth()->user()->can('purchase_order.view_own')) {
@@ -222,7 +222,7 @@ class PurchaseOrderController extends Controller
                 })
                 ->setRowAttr([
                     'data-href' => function ($row) {
-                        return  action([\App\Http\Controllers\PurchaseOrderController::class, 'show'], [$row->id]);
+                        return action([\App\Http\Controllers\PurchaseOrderController::class, 'show'], [$row->id]);
                     }, ])
                 ->rawColumns(['final_total', 'action', 'ref_no', 'name', 'status', 'shipping_status'])
                 ->make(true);
@@ -252,8 +252,8 @@ class PurchaseOrderController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $taxes = TaxRate::where('business_id', $business_id)
-                        ->ExcludeForTaxGroup()
-                        ->get();
+            ->ExcludeForTaxGroup()
+            ->get();
 
         $business_locations = BusinessLocation::forDropdown($business_id, false, true);
         $bl_attributes = $business_locations['attributes'];
@@ -290,7 +290,6 @@ class PurchaseOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -448,20 +447,20 @@ class PurchaseOrderController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $taxes = TaxRate::where('business_id', $business_id)
-                            ->pluck('name', 'id');
+            ->pluck('name', 'id');
         $query = Transaction::where('business_id', $business_id)
-                                ->where('id', $id)
-                                ->with(
-                                    'contact',
-                                    'purchase_lines',
-                                    'purchase_lines.product',
-                                    'purchase_lines.product.unit',
-                                    'purchase_lines.variations',
-                                    'purchase_lines.variations.product_variation',
-                                    'purchase_lines.sub_unit',
-                                    'location',
-                                    'tax'
-                                );
+            ->where('id', $id)
+            ->with(
+                'contact',
+                'purchase_lines',
+                'purchase_lines.product',
+                'purchase_lines.product.unit',
+                'purchase_lines.variations',
+                'purchase_lines.variations.product_variation',
+                'purchase_lines.sub_unit',
+                'location',
+                'tax'
+            );
         if (! auth()->user()->can('purchase_order.view_all') && auth()->user()->can('purchase_order.view_own')) {
             $query->where('transactions.created_by', request()->session()->get('user.id'));
         }
@@ -485,16 +484,16 @@ class PurchaseOrderController extends Controller
         }
 
         $activities = Activity::forSubject($purchase)
-           ->with(['causer', 'subject'])
-           ->latest()
-           ->get();
+            ->with(['causer', 'subject'])
+            ->latest()
+            ->get();
 
         $shipping_statuses = $this->transactionUtil->shipping_statuses();
         $status_color_in_activity = $this->purchaseOrderStatuses;
         $po_statuses = $this->purchaseOrderStatuses;
 
         return view('purchase_order.show')
-                ->with(compact('taxes', 'purchase', 'purchase_taxes', 'activities', 'shipping_statuses', 'status_color_in_activity', 'po_statuses'));
+            ->with(compact('taxes', 'purchase', 'purchase_taxes', 'activities', 'shipping_statuses', 'status_color_in_activity', 'po_statuses'));
     }
 
     /**
@@ -516,22 +515,22 @@ class PurchaseOrderController extends Controller
         $currency_details = $this->transactionUtil->purchaseCurrencyDetails($business_id);
 
         $taxes = TaxRate::where('business_id', $business_id)
-                            ->ExcludeForTaxGroup()
-                            ->get();
+            ->ExcludeForTaxGroup()
+            ->get();
         $query = Transaction::where('business_id', $business_id)
-                    ->where('id', $id)
-                    ->with(
-                        'contact',
-                        'purchase_lines',
-                        'purchase_lines.product',
-                        'purchase_lines.product.unit',
-                        //'purchase_lines.product.unit.sub_units',
-                        'purchase_lines.variations',
-                        'purchase_lines.variations.product_variation',
-                        'location',
-                        'purchase_lines.sub_unit',
-                        'purchase_lines.purchase_requisition_line'
-                    );
+            ->where('id', $id)
+            ->with(
+                'contact',
+                'purchase_lines',
+                'purchase_lines.product',
+                'purchase_lines.product.unit',
+                //'purchase_lines.product.unit.sub_units',
+                'purchase_lines.variations',
+                'purchase_lines.variations.product_variation',
+                'location',
+                'purchase_lines.sub_unit',
+                'purchase_lines.purchase_requisition_line'
+            );
 
         if (! auth()->user()->can('purchase_order.view_all') && auth()->user()->can('purchase_order.view_own')) {
             $query->where('transactions.created_by', request()->session()->get('user.id'));
@@ -575,16 +574,16 @@ class PurchaseOrderController extends Controller
         $purchase_requisitions = null;
         if (! empty($common_settings['enable_purchase_requisition'])) {
             $purchase_requisitions = Transaction::where('business_id', $business_id)
-                                        ->where('type', 'purchase_requisition')
-                                        ->where('location_id', $purchase->location_id)
-                                        ->where(function ($q) use ($purchase) {
-                                            $q->where('status', '!=', 'completed');
+                ->where('type', 'purchase_requisition')
+                ->where('location_id', $purchase->location_id)
+                ->where(function ($q) use ($purchase) {
+                    $q->where('status', '!=', 'completed');
 
-                                            if (! empty($purchase->purchase_requisition_ids)) {
-                                                $q->orWhereIn('id', $purchase->purchase_requisition_ids);
-                                            }
-                                        })
-                                        ->pluck('ref_no', 'id');
+                    if (! empty($purchase->purchase_requisition_ids)) {
+                        $q->orWhereIn('id', $purchase->purchase_requisition_ids);
+                    }
+                })
+                ->pluck('ref_no', 'id');
         }
 
         return view('purchase_order.edit')
@@ -607,7 +606,6 @@ class PurchaseOrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -745,13 +743,13 @@ class PurchaseOrderController extends Controller
                 $business_id = request()->session()->get('user.business_id');
 
                 $transaction = Transaction::where('business_id', $business_id)
-                                ->where('type', 'purchase_order')
-                                ->with('purchase_lines')
-                                ->findOrFail($id);
+                    ->where('type', 'purchase_order')
+                    ->with('purchase_lines')
+                    ->findOrFail($id);
 
                 //unset purchase_order_line_id if set
                 PurchaseLine::whereIn('purchase_order_line_id', $transaction->purchase_lines->pluck('id'))
-                        ->update(['purchase_order_line_id' => null]);
+                    ->update(['purchase_order_line_id' => null]);
 
                 $log_properities = [
                     'id' => $transaction->id,
@@ -782,11 +780,11 @@ class PurchaseOrderController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $purchase_orders = Transaction::where('business_id', $business_id)
-                        ->where('type', 'purchase_order')
-                        ->whereIn('status', ['partial', 'ordered'])
-                        ->where('contact_id', $contact_id)
-                        ->select('ref_no as text', 'id')
-                        ->get();
+            ->where('type', 'purchase_order')
+            ->whereIn('status', ['partial', 'ordered'])
+            ->where('contact_id', $contact_id)
+            ->select('ref_no as text', 'id')
+            ->get();
 
         return $purchase_orders;
     }
@@ -803,22 +801,22 @@ class PurchaseOrderController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $taxes = TaxRate::where('business_id', $business_id)
-                                ->get();
+            ->get();
 
         $purchase = Transaction::where('business_id', $business_id)
-                    ->where('id', $id)
-                    ->with(
-                        'contact',
-                        'purchase_lines',
-                        'purchase_lines.product',
-                        'purchase_lines.product.brand',
-                        'purchase_lines.product.category',
-                        'purchase_lines.variations',
-                        'purchase_lines.variations.product_variation',
-                        'location',
-                        'payment_lines'
-                    )
-                    ->first();
+            ->where('id', $id)
+            ->with(
+                'contact',
+                'purchase_lines',
+                'purchase_lines.product',
+                'purchase_lines.product.brand',
+                'purchase_lines.product.category',
+                'purchase_lines.variations',
+                'purchase_lines.variations.product_variation',
+                'location',
+                'payment_lines'
+            )
+            ->first();
 
         $location_details = BusinessLocation::find($purchase->location_id);
         $invoice_layout = $this->businessUtil->invoiceLayout($business_id, $location_details->invoice_layout_id);
@@ -834,8 +832,8 @@ class PurchaseOrderController extends Controller
         $last_purchase = Transaction::where('purchase_order_ids', 'like', '%"'.$purchase->id.'"%')->orderBy('transaction_date', 'desc')->first();
         //Generate pdf
         $body = view('purchase_order.receipts.download_pdf')
-                    ->with(compact('purchase', 'invoice_layout', 'location_details', 'logo', 'total_in_words', 'custom_labels', 'taxes', 'last_purchase'))
-                    ->render();
+            ->with(compact('purchase', 'invoice_layout', 'location_details', 'logo', 'total_in_words', 'custom_labels', 'taxes', 'last_purchase'))
+            ->render();
 
         $mpdf = new \Mpdf\Mpdf(['tempDir' => public_path('uploads/temp'),
             'mode' => 'utf-8',
@@ -873,7 +871,7 @@ class PurchaseOrderController extends Controller
         if ($request->ajax()) {
             $business_id = request()->session()->get('user.business_id');
             $transaction = Transaction::where('business_id', $business_id)
-                                ->findOrFail($id);
+                ->findOrFail($id);
 
             $status = $transaction->status;
             $statuses = $this->purchaseOrderStatuses;
@@ -899,7 +897,7 @@ class PurchaseOrderController extends Controller
             try {
                 $business_id = request()->session()->get('user.business_id');
                 $transaction = Transaction::where('business_id', $business_id)
-                                ->findOrFail($id);
+                    ->findOrFail($id);
 
                 $transaction_before = $transaction->replicate();
 

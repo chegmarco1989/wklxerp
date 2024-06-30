@@ -6,6 +6,7 @@ use App\Business;
 use App\BusinessLocation;
 use App\Contact;
 use App\CustomerGroup;
+use App\Events\ContactCreatedOrModified;
 use App\Notifications\CustomerNotification;
 use App\PurchaseLine;
 use App\Transaction;
@@ -21,7 +22,6 @@ use Excel;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 use Yajra\DataTables\Facades\DataTables;
-use App\Events\ContactCreatedOrModified;
 
 class ContactController extends Controller
 {
@@ -38,7 +38,6 @@ class ContactController extends Controller
     /**
      * Constructor
      *
-     * @param  Util  $commonUtil
      * @return void
      */
     public function __construct(
@@ -266,12 +265,12 @@ class ContactController extends Controller
             ->filterColumn('address', function ($query, $keyword) {
                 $query->where(function ($q) use ($keyword) {
                     $q->where('address_line_1', 'like', "%{$keyword}%")
-                    ->orWhere('address_line_2', 'like', "%{$keyword}%")
-                    ->orWhere('city', 'like', "%{$keyword}%")
-                    ->orWhere('state', 'like', "%{$keyword}%")
-                    ->orWhere('country', 'like', "%{$keyword}%")
-                    ->orWhere('zip_code', 'like', "%{$keyword}%")
-                    ->orWhereRaw("CONCAT(COALESCE(address_line_1, ''), ', ', COALESCE(address_line_2, ''), ', ', COALESCE(city, ''), ', ', COALESCE(state, ''), ', ', COALESCE(country, '') ) like ?", ["%{$keyword}%"]);
+                        ->orWhere('address_line_2', 'like', "%{$keyword}%")
+                        ->orWhere('city', 'like', "%{$keyword}%")
+                        ->orWhere('state', 'like', "%{$keyword}%")
+                        ->orWhere('country', 'like', "%{$keyword}%")
+                        ->orWhere('zip_code', 'like', "%{$keyword}%")
+                        ->orWhereRaw("CONCAT(COALESCE(address_line_1, ''), ', ', COALESCE(address_line_2, ''), ', ', COALESCE(city, ''), ', ', COALESCE(state, ''), ', ', COALESCE(country, '') ) like ?", ["%{$keyword}%"]);
                 });
             })
             ->rawColumns(['action', 'opening_balance', 'pay_term', 'due', 'return_due', 'name', 'balance'])
@@ -321,10 +320,10 @@ class ContactController extends Controller
         if (
             (! $is_admin && auth()->user()->can('customer_with_no_sell_one_month')) ||
             ($has_no_sell_from == 'one_month' && (auth()->user()->can('customer_with_no_sell_one_month') || auth()->user()->can('customer_irrespective_of_sell')))
-            ) {
+        ) {
             $from_transaction_date = \Carbon::now()->subDays(30)->format('Y-m-d');
             $query->havingRaw("max_transaction_date < '{$from_transaction_date}'")
-                     ->orHavingRaw('transaction_date IS NULL');
+                ->orHavingRaw('transaction_date IS NULL');
         }
 
         if (
@@ -333,7 +332,7 @@ class ContactController extends Controller
         ) {
             $from_transaction_date = \Carbon::now()->subMonths(3)->format('Y-m-d');
             $query->havingRaw("max_transaction_date < '{$from_transaction_date}'")
-                     ->orHavingRaw('transaction_date IS NULL');
+                ->orHavingRaw('transaction_date IS NULL');
         }
 
         if (
@@ -342,7 +341,7 @@ class ContactController extends Controller
         ) {
             $from_transaction_date = \Carbon::now()->subMonths(6)->format('Y-m-d');
             $query->havingRaw("max_transaction_date < '{$from_transaction_date}'")
-                     ->orHavingRaw('transaction_date IS NULL');
+                ->orHavingRaw('transaction_date IS NULL');
         }
 
         if ((! $is_admin && auth()->user()->can('customer_with_no_sell_one_year')) ||
@@ -350,7 +349,7 @@ class ContactController extends Controller
         ) {
             $from_transaction_date = \Carbon::now()->subYear()->format('Y-m-d');
             $query->havingRaw("max_transaction_date < '{$from_transaction_date}'")
-                     ->orHavingRaw('transaction_date IS NULL');
+                ->orHavingRaw('transaction_date IS NULL');
         }
 
         if (! empty(request()->input('customer_group_id'))) {
@@ -509,12 +508,12 @@ class ContactController extends Controller
             ->filterColumn('address', function ($query, $keyword) {
                 $query->where(function ($q) use ($keyword) {
                     $q->where('address_line_1', 'like', "%{$keyword}%")
-                    ->orWhere('address_line_2', 'like', "%{$keyword}%")
-                    ->orWhere('city', 'like', "%{$keyword}%")
-                    ->orWhere('state', 'like', "%{$keyword}%")
-                    ->orWhere('country', 'like', "%{$keyword}%")
-                    ->orWhere('zip_code', 'like', "%{$keyword}%")
-                    ->orWhereRaw("CONCAT(COALESCE(address_line_1, ''), ', ', COALESCE(address_line_2, ''), ', ', COALESCE(city, ''), ', ', COALESCE(state, ''), ', ', COALESCE(country, '') ) like ?", ["%{$keyword}%"]);
+                        ->orWhere('address_line_2', 'like', "%{$keyword}%")
+                        ->orWhere('city', 'like', "%{$keyword}%")
+                        ->orWhere('state', 'like', "%{$keyword}%")
+                        ->orWhere('country', 'like', "%{$keyword}%")
+                        ->orWhere('zip_code', 'like', "%{$keyword}%")
+                        ->orWhereRaw("CONCAT(COALESCE(address_line_1, ''), ', ', COALESCE(address_line_2, ''), ', ', COALESCE(city, ''), ', ', COALESCE(state, ''), ', ', COALESCE(country, '') ) like ?", ["%{$keyword}%"]);
                 });
             });
         $reward_enabled = (request()->session()->get('business.enable_rp') == 1) ? true : false;
@@ -523,7 +522,7 @@ class ContactController extends Controller
         }
 
         return $contacts->rawColumns(['action', 'opening_balance', 'credit_limit', 'pay_term', 'due', 'return_due', 'name', 'balance'])
-                        ->make(true);
+            ->make(true);
     }
 
     /**
@@ -570,7 +569,6 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -697,12 +695,12 @@ class ContactController extends Controller
         $contact_view_tabs = $this->moduleUtil->getModuleData('get_contact_view_tabs');
 
         $activities = Activity::forSubject($contact)
-           ->with(['causer', 'subject'])
-           ->latest()
-           ->get();
+            ->with(['causer', 'subject'])
+            ->latest()
+            ->get();
 
         return view('contact.show')
-             ->with(compact('contact', 'reward_enabled', 'contact_dropdown', 'business_locations', 'view_type', 'contact_view_tabs', 'activities'));
+            ->with(compact('contact', 'reward_enabled', 'contact_dropdown', 'business_locations', 'view_type', 'contact_view_tabs', 'activities'));
     }
 
     /**
@@ -739,8 +737,8 @@ class ContactController extends Controller
             $customer_groups = CustomerGroup::forDropdown($business_id);
 
             $ob_transaction = Transaction::where('contact_id', $id)
-                                            ->where('type', 'opening_balance')
-                                            ->first();
+                ->where('type', 'opening_balance')
+                ->first();
             $opening_balance = ! empty($ob_transaction->final_total) ? $ob_transaction->final_total : 0;
 
             //Deduct paid amount from opening balance.
@@ -764,7 +762,6 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -795,8 +792,6 @@ class ContactController extends Controller
                 }
 
                 $input['contact_type'] = $request->input('contact_type_radio');
-
-
 
                 $input['name'] = trim(implode(' ', $name_array));
 
@@ -855,8 +850,8 @@ class ContactController extends Controller
 
                 //Check if any transaction related to this contact exists
                 $count = Transaction::where('business_id', $business_id)
-                                    ->where('contact_id', $id)
-                                    ->count();
+                    ->where('contact_id', $id)
+                    ->count();
                 if ($count == 0) {
                     $contact = Contact::where('business_id', $business_id)->findOrFail($id);
                     if (! $contact->is_default) {
@@ -910,8 +905,8 @@ class ContactController extends Controller
             $user_id = request()->session()->get('user.id');
 
             $contacts = Contact::where('contacts.business_id', $business_id)
-                            ->leftjoin('customer_groups as cg', 'cg.id', '=', 'contacts.customer_group_id')
-                            ->active();
+                ->leftjoin('customer_groups as cg', 'cg.id', '=', 'contacts.customer_group_id')
+                ->active();
 
             if (! request()->has('all_contact')) {
                 $contacts->onlyCustomers();
@@ -920,9 +915,9 @@ class ContactController extends Controller
             if (! empty($term)) {
                 $contacts->where(function ($query) use ($term) {
                     $query->where('contacts.name', 'like', '%'.$term.'%')
-                            ->orWhere('supplier_business_name', 'like', '%'.$term.'%')
-                            ->orWhere('mobile', 'like', '%'.$term.'%')
-                            ->orWhere('contacts.contact_id', 'like', '%'.$term.'%');
+                        ->orWhere('supplier_business_name', 'like', '%'.$term.'%')
+                        ->orWhere('mobile', 'like', '%'.$term.'%')
+                        ->orWhere('contacts.contact_id', 'like', '%'.$term.'%');
                 });
             }
 
@@ -966,7 +961,6 @@ class ContactController extends Controller
     /**
      * Checks if the given contact id already exist for the current business.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function checkContactId(Request $request)
@@ -979,7 +973,7 @@ class ContactController extends Controller
             $hidden_id = $request->input('hidden_id');
 
             $query = Contact::where('business_id', $business_id)
-                            ->where('contact_id', $contact_id);
+                ->where('contact_id', $contact_id);
             if (! empty($hidden_id)) {
                 $query->where('id', '!=', $hidden_id);
             }
@@ -1132,8 +1126,8 @@ class ContactController extends Controller
                     //Check contact ID
                     if (! empty(trim($value[6]))) {
                         $count = Contact::where('business_id', $business_id)
-                                    ->where('contact_id', $value[6])
-                                    ->count();
+                            ->where('contact_id', $value[6])
+                            ->count();
 
                         if ($count == 0) {
                             $contact_array['contact_id'] = $value[6];
@@ -1315,7 +1309,7 @@ class ContactController extends Controller
             $for_pdf = true;
             if ($format == 'format_2') {
                 $html = view('contact.ledger_format_2')
-                        ->with(compact('ledger_details', 'contact', 'for_pdf', 'location'))->render();
+                    ->with(compact('ledger_details', 'contact', 'for_pdf', 'location'))->render();
             } elseif ($format == 'format_3') {
                 $html = view('contact.ledger_format_3')
                     ->with(compact('ledger_details', 'contact', 'location', 'is_admin', 'for_pdf'))->render();
@@ -1331,13 +1325,13 @@ class ContactController extends Controller
 
         if ($format == 'format_2') {
             return view('contact.ledger_format_2')
-             ->with(compact('ledger_details', 'contact', 'location'));
+                ->with(compact('ledger_details', 'contact', 'location'));
         } elseif ($format == 'format_3') {
             return view('contact.ledger_format_3')
-             ->with(compact('ledger_details', 'contact', 'location', 'is_admin'));
+                ->with(compact('ledger_details', 'contact', 'location', 'is_admin'));
         } else {
             return view('contact.ledger')
-             ->with(compact('ledger_details', 'contact', 'location', 'is_admin'));
+                ->with(compact('ledger_details', 'contact', 'location', 'is_admin'));
         }
     }
 
@@ -1353,9 +1347,9 @@ class ContactController extends Controller
             $data = $request->only(['name', 'email']);
 
             $customer = Contact::where('business_id', $api_settings->business_id)
-                                ->where('email', $data['email'])
-                                ->whereIn('type', ['customer', 'both'])
-                                ->first();
+                ->where('email', $data['email'])
+                ->whereIn('type', ['customer', 'both'])
+                ->first();
 
             if (empty($customer)) {
                 $data['type'] = 'customer';
@@ -1420,10 +1414,10 @@ class ContactController extends Controller
             $for_pdf = true;
             if ($data['ledger_format'] == 'format_2') {
                 $html = view('contact.ledger_format_2')
-                        ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
+                    ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
             } else {
                 $html = view('contact.ledger')
-                        ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
+                    ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
             }
 
             $mpdf = $this->getMpdf();
@@ -1440,7 +1434,7 @@ class ContactController extends Controller
             $data['attachment'] = $file;
             $data['attachment_name'] = 'ledger.pdf';
             \Notification::route('mail', $emails_array)
-                    ->notify(new CustomerNotification($data));
+                ->notify(new CustomerNotification($data));
 
             if (file_exists($file)) {
                 unlink($file);
@@ -1466,88 +1460,88 @@ class ContactController extends Controller
         //TODO: current stock not calculating stock transferred from other location
         $pl_query_string = $this->commonUtil->get_pl_quantity_sum_string();
         $query = PurchaseLine::join('transactions as t', 't.id', '=', 'purchase_lines.transaction_id')
-                        ->join('products as p', 'p.id', '=', 'purchase_lines.product_id')
-                        ->join('variations as v', 'v.id', '=', 'purchase_lines.variation_id')
-                        ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
-                        ->join('units as u', 'p.unit_id', '=', 'u.id')
-                        ->whereIn('t.type', ['purchase', 'purchase_return'])
-                        ->where('t.contact_id', $supplier_id)
-                        ->select(
-                            'p.name as product_name',
-                            'v.name as variation_name',
-                            'pv.name as product_variation_name',
-                            'p.type as product_type',
-                            'u.short_name as product_unit',
-                            'v.sub_sku',
-                            DB::raw('SUM(quantity) as purchase_quantity'),
-                            DB::raw('SUM(quantity_returned) as total_quantity_returned'),
-                            DB::raw("SUM((SELECT SUM(TSL.quantity - TSL.quantity_returned) FROM transaction_sell_lines_purchase_lines as TSLPL 
+            ->join('products as p', 'p.id', '=', 'purchase_lines.product_id')
+            ->join('variations as v', 'v.id', '=', 'purchase_lines.variation_id')
+            ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
+            ->join('units as u', 'p.unit_id', '=', 'u.id')
+            ->whereIn('t.type', ['purchase', 'purchase_return'])
+            ->where('t.contact_id', $supplier_id)
+            ->select(
+                'p.name as product_name',
+                'v.name as variation_name',
+                'pv.name as product_variation_name',
+                'p.type as product_type',
+                'u.short_name as product_unit',
+                'v.sub_sku',
+                DB::raw('SUM(quantity) as purchase_quantity'),
+                DB::raw('SUM(quantity_returned) as total_quantity_returned'),
+                DB::raw("SUM((SELECT SUM(TSL.quantity - TSL.quantity_returned) FROM transaction_sell_lines_purchase_lines as TSLPL 
                               JOIN transaction_sell_lines AS TSL ON TSLPL.sell_line_id=TSL.id
                               JOIN transactions AS sell ON sell.id=TSL.transaction_id
                               WHERE sell.status='final' AND sell.type='sell'
                               AND TSLPL.purchase_line_id=purchase_lines.id)) as total_quantity_sold"),
-                            DB::raw("SUM((SELECT SUM(TSL.quantity - TSL.quantity_returned) FROM transaction_sell_lines_purchase_lines as TSLPL 
+                DB::raw("SUM((SELECT SUM(TSL.quantity - TSL.quantity_returned) FROM transaction_sell_lines_purchase_lines as TSLPL 
                               JOIN transaction_sell_lines AS TSL ON TSLPL.sell_line_id=TSL.id
                               JOIN transactions AS sell ON sell.id=TSL.transaction_id
                               WHERE sell.status='final' AND sell.type='sell_transfer'
                               AND TSLPL.purchase_line_id=purchase_lines.id)) as total_quantity_transfered"),
-                            DB::raw("SUM( COALESCE(quantity - ($pl_query_string), 0) * purchase_price_inc_tax) as stock_price"),
-                            DB::raw("SUM( COALESCE(quantity - ($pl_query_string), 0)) as current_stock")
-                        )->groupBy('purchase_lines.variation_id');
+                DB::raw("SUM( COALESCE(quantity - ($pl_query_string), 0) * purchase_price_inc_tax) as stock_price"),
+                DB::raw("SUM( COALESCE(quantity - ($pl_query_string), 0)) as current_stock")
+            )->groupBy('purchase_lines.variation_id');
 
         if (! empty(request()->location_id)) {
             $query->where('t.location_id', request()->location_id);
         }
 
         $product_stocks = Datatables::of($query)
-                            ->editColumn('product_name', function ($row) {
-                                $name = $row->product_name;
-                                if ($row->product_type == 'variable') {
-                                    $name .= ' - '.$row->product_variation_name.'-'.$row->variation_name;
-                                }
+            ->editColumn('product_name', function ($row) {
+                $name = $row->product_name;
+                if ($row->product_type == 'variable') {
+                    $name .= ' - '.$row->product_variation_name.'-'.$row->variation_name;
+                }
 
-                                return $name.' ('.$row->sub_sku.')';
-                            })
-                            ->editColumn('purchase_quantity', function ($row) {
-                                $purchase_quantity = 0;
-                                if ($row->purchase_quantity) {
-                                    $purchase_quantity = (float) $row->purchase_quantity;
-                                }
+                return $name.' ('.$row->sub_sku.')';
+            })
+            ->editColumn('purchase_quantity', function ($row) {
+                $purchase_quantity = 0;
+                if ($row->purchase_quantity) {
+                    $purchase_quantity = (float) $row->purchase_quantity;
+                }
 
-                                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$purchase_quantity.'" data-unit="'.$row->product_unit.'" >'.$purchase_quantity.'</span> '.$row->product_unit;
-                            })
-                            ->editColumn('total_quantity_sold', function ($row) {
-                                $total_quantity_sold = 0;
-                                if ($row->total_quantity_sold) {
-                                    $total_quantity_sold = (float) $row->total_quantity_sold;
-                                }
+                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$purchase_quantity.'" data-unit="'.$row->product_unit.'" >'.$purchase_quantity.'</span> '.$row->product_unit;
+            })
+            ->editColumn('total_quantity_sold', function ($row) {
+                $total_quantity_sold = 0;
+                if ($row->total_quantity_sold) {
+                    $total_quantity_sold = (float) $row->total_quantity_sold;
+                }
 
-                                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$total_quantity_sold.'" data-unit="'.$row->product_unit.'" >'.$total_quantity_sold.'</span> '.$row->product_unit;
-                            })
-                            ->editColumn('total_quantity_transfered', function ($row) {
-                                $total_quantity_transfered = 0;
-                                if ($row->total_quantity_transfered) {
-                                    $total_quantity_transfered = (float) $row->total_quantity_transfered;
-                                }
+                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$total_quantity_sold.'" data-unit="'.$row->product_unit.'" >'.$total_quantity_sold.'</span> '.$row->product_unit;
+            })
+            ->editColumn('total_quantity_transfered', function ($row) {
+                $total_quantity_transfered = 0;
+                if ($row->total_quantity_transfered) {
+                    $total_quantity_transfered = (float) $row->total_quantity_transfered;
+                }
 
-                                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$total_quantity_transfered.'" data-unit="'.$row->product_unit.'" >'.$total_quantity_transfered.'</span> '.$row->product_unit;
-                            })
-                            ->editColumn('stock_price', function ($row) {
-                                $stock_price = 0;
-                                if ($row->stock_price) {
-                                    $stock_price = (float) $row->stock_price;
-                                }
+                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$total_quantity_transfered.'" data-unit="'.$row->product_unit.'" >'.$total_quantity_transfered.'</span> '.$row->product_unit;
+            })
+            ->editColumn('stock_price', function ($row) {
+                $stock_price = 0;
+                if ($row->stock_price) {
+                    $stock_price = (float) $row->stock_price;
+                }
 
-                                return '<span class="display_currency" data-currency_symbol=true >'.$stock_price.'</span> ';
-                            })
-                            ->editColumn('current_stock', function ($row) {
-                                $current_stock = 0;
-                                if ($row->current_stock) {
-                                    $current_stock = (float) $row->current_stock;
-                                }
+                return '<span class="display_currency" data-currency_symbol=true >'.$stock_price.'</span> ';
+            })
+            ->editColumn('current_stock', function ($row) {
+                $current_stock = 0;
+                if ($row->current_stock) {
+                    $current_stock = (float) $row->current_stock;
+                }
 
-                                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$current_stock.'" data-unit="'.$row->product_unit.'" >'.$current_stock.'</span> '.$row->product_unit;
-                            });
+                return '<span data-is_quantity="true" class="display_currency" data-currency_symbol=false  data-orig-value="'.$current_stock.'" data-unit="'.$row->product_unit.'" >'.$current_stock.'</span> '.$row->product_unit;
+            });
 
         return $product_stocks->rawColumns(['current_stock', 'stock_price', 'total_quantity_sold', 'purchase_quantity', 'total_quantity_transfered'])->make(true);
     }
@@ -1584,8 +1578,8 @@ class ContactController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $query = Contact::where('business_id', $business_id)
-                        ->active()
-                        ->whereNotNull('position');
+            ->active()
+            ->whereNotNull('position');
 
         if (! empty(request()->input('contacts'))) {
             $query->whereIn('id', request()->input('contacts'));
@@ -1593,11 +1587,11 @@ class ContactController extends Controller
         $contacts = $query->get();
 
         $all_contacts = Contact::where('business_id', $business_id)
-                        ->active()
-                        ->get();
+            ->active()
+            ->get();
 
         return view('contact.contact_map')
-             ->with(compact('contacts', 'all_contacts'));
+            ->with(compact('contacts', 'all_contacts'));
     }
 
     public function getContactPayments($contact_id)
@@ -1605,11 +1599,11 @@ class ContactController extends Controller
         $business_id = request()->session()->get('user.business_id');
         if (request()->ajax()) {
             $payments = TransactionPayment::leftjoin('transactions as t', 'transaction_payments.transaction_id', '=', 't.id')
-            ->leftjoin('transaction_payments as parent_payment', 'transaction_payments.parent_id', '=', 'parent_payment.id')
-            ->where('transaction_payments.business_id', $business_id)
-            ->whereNull('transaction_payments.parent_id')
-            ->with(['child_payments', 'child_payments.transaction'])
-            ->where('transaction_payments.payment_for', $contact_id)
+                ->leftjoin('transaction_payments as parent_payment', 'transaction_payments.parent_id', '=', 'parent_payment.id')
+                ->where('transaction_payments.business_id', $business_id)
+                ->whereNull('transaction_payments.parent_id')
+                ->with(['child_payments', 'child_payments.transaction'])
+                ->where('transaction_payments.payment_for', $contact_id)
                 ->select(
                     'transaction_payments.id',
                     'transaction_payments.amount',
@@ -1637,7 +1631,7 @@ class ContactController extends Controller
             $payment_types = $this->transactionUtil->payment_types(null, true, $business_id);
 
             return view('contact.partials.contact_payments_tab')
-                    ->with(compact('payments', 'payment_types'));
+                ->with(compact('payments', 'payment_types'));
         }
     }
 
@@ -1660,7 +1654,7 @@ class ContactController extends Controller
         $mobile_number = $request->input('mobile_number');
 
         $query = Contact::where('business_id', $business_id)
-                        ->where('mobile', 'like', "%{$mobile_number}");
+            ->where('mobile', 'like', "%{$mobile_number}");
 
         if (! empty($request->input('contact_id'))) {
             $query->where('id', '!=', $request->input('contact_id'));

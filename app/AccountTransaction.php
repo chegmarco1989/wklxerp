@@ -87,7 +87,7 @@ class AccountTransaction extends Model
                 'transaction_payment_id',
                 $transaction_payment->id
             )
-                    ->first();
+                ->first();
             if (! empty($account_transaction)) {
                 $account_transaction->amount = $transaction_payment->amount;
                 $account_transaction->account_id = $transaction_payment->account_id;
@@ -107,7 +107,7 @@ class AccountTransaction extends Model
                 ];
 
                 //If change return then set type as debit
-                if (!empty($transaction_payment->transaction) && $transaction_payment->transaction->type == 'sell' && $transaction_payment->is_return == 1) {
+                if (! empty($transaction_payment->transaction) && $transaction_payment->transaction->type == 'sell' && $transaction_payment->is_return == 1) {
                     $accnt_trans_data['type'] = 'debit';
                 }
 

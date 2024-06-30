@@ -8,9 +8,9 @@ use App\Utils\BusinessUtil;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 use Modules\Superadmin\Entities\Package;
 use Modules\Superadmin\Entities\Subscription;
-use Illuminate\Routing\Controller;
 
 class PackagesController extends Controller
 {
@@ -45,7 +45,7 @@ class PackagesController extends Controller
         }
 
         $packages = Package::orderby('sort_order', 'asc')
-                    ->paginate(20);
+            ->paginate(20);
 
         //Get all module permissions and convert them into name => label
         $permissions = $this->moduleUtil->getModuleData('superadmin_package');
@@ -84,7 +84,6 @@ class PackagesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -93,10 +92,9 @@ class PackagesController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-
         try {
             $input = $request->only(['name', 'description', 'location_count', 'user_count', 'product_count', 'invoice_count', 'interval', 'interval_count', 'trial_days', 'price', 'sort_order', 'is_active', 'mark_package_as_popular', 'custom_permissions', 'is_private', 'is_one_time', 'enable_custom_link', 'custom_link',
-                'custom_link_text', 'businesses' ]);
+                'custom_link_text', 'businesses']);
             $currency = System::getCurrency();
 
             $input['price'] = $this->businessUtil->num_uf($input['price'], $currency);
@@ -149,7 +147,7 @@ class PackagesController extends Controller
     public function edit($id)
     {
         $packages = Package::where('id', $id)
-                            ->first();
+            ->first();
 
         $intervals = ['days' => __('lang_v1.days'), 'months' => __('lang_v1.months'), 'years' => __('lang_v1.years')];
 
@@ -157,13 +155,12 @@ class PackagesController extends Controller
         $businesses = Business::get()->pluck('name', 'id');
 
         return view('superadmin::packages.edit')
-               ->with(compact('packages', 'intervals', 'permissions', 'businesses'));
+            ->with(compact('packages', 'intervals', 'permissions', 'businesses'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request, $id)
@@ -188,7 +185,7 @@ class PackagesController extends Controller
             $packages_details['businesses'] = empty($packages_details['businesses']) ? null : json_encode($packages_details['businesses']);
 
             $package = Package::where('id', $id)
-                            ->first();
+                ->first();
             $package->fill($packages_details);
             $package->save();
 
@@ -208,8 +205,8 @@ class PackagesController extends Controller
 
                 //Update subscription package details
                 $subscriptions = Subscription::where('package_id', $package->id)
-                                            ->whereDate('end_date', '>=', \Carbon::now())
-                                            ->update(['package_details' => json_encode($package_details)]);
+                    ->whereDate('end_date', '>=', \Carbon::now())
+                    ->update(['package_details' => json_encode($package_details)]);
             }
 
             $output = ['success' => 1, 'msg' => __('lang_v1.success')];

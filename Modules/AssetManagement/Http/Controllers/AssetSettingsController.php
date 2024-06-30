@@ -47,9 +47,9 @@ class AssetSettingsController extends Controller
         $asset_settings = $this->assetUtil->getAssetSettings($business_id);
 
         $send_for_maintenance_template = NotificationTemplate::where('business_id',
-                                            $business_id)
-                                            ->where('template_for', 'send_for_maintenance')
-                                            ->first();
+            $business_id)
+            ->where('template_for', 'send_for_maintenance')
+            ->first();
 
         if (empty($send_for_maintenance_template)) {
             $send_for_maintenance_template['subject'] = 'Asset {asset_code} sent for maintaiaince';
@@ -64,9 +64,9 @@ class AssetSettingsController extends Controller
         }
 
         $assigned_for_maintenance_template = NotificationTemplate::where('business_id',
-                                            $business_id)
-                                            ->where('template_for', 'assigned_for_maintenance')
-                                            ->first();
+            $business_id)
+            ->where('template_for', 'assigned_for_maintenance')
+            ->first();
 
         if (empty($assigned_for_maintenance_template)) {
             $assigned_for_maintenance_template['subject'] = 'Asset {asset_code} assigned for maintaiaince';
@@ -99,7 +99,6 @@ class AssetSettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -188,7 +187,6 @@ class AssetSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */

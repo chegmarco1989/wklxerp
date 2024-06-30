@@ -45,7 +45,7 @@ class PurchaseController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $contact_type = Contact::where('business_id', $business_id)
-                            ->find(auth()->user()->crm_contact_id)
+            ->find(auth()->user()->crm_contact_id)
                             ->type;
 
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module') && in_array($contact_type, ['supplier', 'both']))) {
@@ -75,7 +75,7 @@ class PurchaseController extends Controller
                 $start = $request->start_date;
                 $end = $request->end_date;
                 $purchases->whereDate('transactions.transaction_date', '>=', $start)
-                            ->whereDate('transactions.transaction_date', '<=', $end);
+                    ->whereDate('transactions.transaction_date', '<=', $end);
             }
 
             //get purchase of logged in supplier/customer
@@ -155,7 +155,7 @@ class PurchaseController extends Controller
                 })
                 ->setRowAttr([
                     'data-href' => function ($row) {
-                        return  action([\App\Http\Controllers\PurchaseController::class, 'show'], [$row->id]);
+                        return action([\App\Http\Controllers\PurchaseController::class, 'show'], [$row->id]);
                     }, ])
                 ->rawColumns(['action', 'ref_no', 'status', 'payment_status', 'final_total', 'payment_due'])
                 ->make(true);

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('variation_id')->unsigned();
             $table->foreign('variation_id')->references('id')->on('variations')
-            ->onDelete('cascade');
+                ->onDelete('cascade');
             $table->decimal('quantity', 22, 4);
             $table->decimal('unit_price', 22, 4)->comment('Last purchase unit price')->nullable();
             $table->timestamps();

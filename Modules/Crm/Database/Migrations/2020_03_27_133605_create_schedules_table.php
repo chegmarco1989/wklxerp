@@ -18,13 +18,13 @@ class CreateSchedulesTable extends Migration
 
             $table->integer('business_id')->unsigned();
             $table->foreign('business_id')
-                    ->references('id')->on('business')
-                    ->onDelete('cascade');
+                ->references('id')->on('business')
+                ->onDelete('cascade');
 
             $table->integer('contact_id')->unsigned();
             $table->foreign('contact_id')
-                    ->references('id')->on('contacts')
-                    ->onDelete('cascade');
+                ->references('id')->on('contacts')
+                ->onDelete('cascade');
 
             $table->string('title');
             $table->string('status')->nullable();

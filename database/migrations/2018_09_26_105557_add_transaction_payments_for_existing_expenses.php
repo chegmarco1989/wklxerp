@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         $expenses = Transaction::where('type', 'expense')
-                                ->get();
+            ->get();
         $transaction_payments = [];
         //create transaction payment
         foreach ($expenses as $expense) {

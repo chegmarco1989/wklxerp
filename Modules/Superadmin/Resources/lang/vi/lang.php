@@ -20,7 +20,7 @@ return [
     'interval_count' => 'Khoảng',
     'price' => 'Giá bán',
     'sort_order' => 'Thứ tự sắp xếp',
-    'is_active' => 'Kích hoạt',  
+    'is_active' => 'Kích hoạt',
     'mark_package_as_popular' => 'Đánh dấu Gói là Phổ biến',
     'popular' => 'Phổ biến',
     'infinite_help' => '0 = vô hạn',
@@ -254,5 +254,5 @@ return [
     'applied_on_business_help_text' => 'Nếu không chọn doanh nghiệp, có thể áp dụng cho tất cả',
     'invalid_coupon' => 'Mã giảm giá không hợp lệ',
     'coupon_not_matched_with_package' => 'Mã không áp dụng cho gói này',
-    'coupon_not_matched_with_business' => 'Mã không áp dụng cho doanh nghiệp này'
+    'coupon_not_matched_with_business' => 'Mã không áp dụng cho doanh nghiệp này',
 ];

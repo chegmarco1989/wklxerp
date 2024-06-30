@@ -1,4 +1,5 @@
 <?php
+
 return [
     'accounting' => 'Buchhaltung',
     'accounting_module' => 'Buchhaltungsmodul',
@@ -180,7 +181,7 @@ return [
     'ordinary_shares_desc' => 'Unternehmen verwenden Stammaktien, um ihre Stammaktien in den Händen der Aktionäre zu verfolgen. Der Betrag in diesem Konto sollte der angegebene (oder Nenn-) Wert der Aktien sein.',
     'other_comprehensive_income' => 'Sonstiges umfassendes Ergebnis',
     'other_comprehensive_income_desc' => 'Verwenden Sie Sonstiges umfassendes Ergebnis, um die Erhöhungen oder Verringerungen des Einkommens aus verschiedenen Geschäftsbereichen zu verfolgen, die noch nicht vom Unternehmen absorbiert wurden.',
-    "owner's_equity" => "Eigenkapital des Eigentümers",
+    "owner's_equity" => 'Eigenkapital des Eigentümers',
     "owner's_equity_desc" => 'Unternehmen verwenden Eigenkapital des Eigentümers, um das kumulierte Nettoeinkommen oder -verluste ihres Geschäfts am Anfang des Geschäftsjahres zu zeigen.',
     'paid-in_capital_or_surplus' => 'Eingezahltes Kapital oder Überschuss',
     'paid-in_capital_or_surplus_desc' => 'Kapitalgesellschaften verwenden das eingezahlte Kapital, um Beträge zu verfolgen, die von Aktionären im Austausch für Aktien, die über dem Nennwert (oder Par) liegen, erhalten werden.',
@@ -188,7 +189,7 @@ return [
     'partner_contributions_desc' => 'Personengesellschaften verwenden Partnerbeiträge, um Beträge zu verfolgen, die Partner im Laufe des Jahres zur Partnerschaft beitragen.',
     'partner_distributions' => 'Partnerausschüttungen',
     'partner_distributions_desc' => 'Personengesellschaften verwenden Partnerausschüttungen, um Beträge zu verfolgen, die von der Partnerschaft an ihre Partner im Laufe des Jahres ausgeschüttet werden. Verwenden Sie dies nicht für regelmäßige Zahlungen an Partner für Zinsen oder Dienstleistungen. Verwenden Sie stattdessen ein Garantiezahlungen-Konto (ein Aufwandskonto in Lohnkosten), um regelmäßige Zahlungen zu verfolgen.',
-    "partner's_equity" => "Eigenkapital des Partners",
+    "partner's_equity" => 'Eigenkapital des Partners',
     "partner's_equity_desc" => 'Personengesellschaften verwenden das Eigenkapital des Partners, um das Einkommen zu zeigen, das am Ende des Vorjahres für jeden Partner in der Partnerschaft verbleibt.',
     'preferred_shares' => 'Vorzugsaktien',
     'preferred_shares_desc' => 'Kapitalgesellschaften verwenden dieses Konto, um ihre Vorzugsaktien in den Händen der Aktionäre zu verfolgen. Der Betrag in diesem Konto sollte dem Nennwert (oder Par) der Aktien entsprechen.',
@@ -378,7 +379,7 @@ return [
     'balance_sheet' => 'Bilanz',
     'balance_sheet_description' => 'Dieser Bericht gibt Ihnen einen aktuellen Überblick über Ihre Konten an einem bestimmten Datum. Sie können es als "Snapshot"-Ansicht der aktuellen Position (Tag) des Geschäftsjahres bezeichnen.',
     'assets' => 'Vermögen',
-    'liab_owners_capital' => "Passiva & Eigenkapital",
+    'liab_owners_capital' => 'Passiva & Eigenkapital',
     'total_liab_owners' => 'Gesamt Passiva & Eigenkapital',
     'total_assets' => 'Gesamtvermögen',
     'account_setting' => 'Kontoeinstellungen',
@@ -438,5 +439,4 @@ return [
     Einkaufsrechnungen im angegebenen Tagesbereich gemäß dem Fälligkeitsdatum.',
     '91_and_over_past_due' => '91 Tage und mehr überfällig',
     'add_more_row' => 'Mehr Zeilen hinzufügen',
-]
-?>
+];

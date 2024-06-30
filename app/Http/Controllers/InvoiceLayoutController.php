@@ -47,7 +47,6 @@ class InvoiceLayoutController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -93,8 +92,8 @@ class InvoiceLayoutController extends Controller
             if (! empty($request->input('is_default'))) {
                 //get_default
                 $default = InvoiceLayout::where('business_id', $business_id)
-                                ->where('is_default', 1)
-                                ->update(['is_default' => 0]);
+                    ->where('is_default', 1)
+                    ->update(['is_default' => 0]);
                 $input['is_default'] = 1;
             }
 
@@ -128,7 +127,6 @@ class InvoiceLayoutController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\InvoiceLayout  $invoiceLayout
      * @return \Illuminate\Http\Response
      */
     public function show(InvoiceLayout $invoiceLayout)
@@ -157,13 +155,12 @@ class InvoiceLayoutController extends Controller
         $designs = $this->getDesigns();
 
         return view('invoice_layout.edit')
-                ->with(compact('invoice_layout', 'designs'));
+            ->with(compact('invoice_layout', 'designs'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\InvoiceLayout  $invoiceLayout
      * @return \Illuminate\Http\Response
      */
@@ -210,8 +207,8 @@ class InvoiceLayoutController extends Controller
             if (! empty($request->input('is_default'))) {
                 //get_default
                 $default = InvoiceLayout::where('business_id', $business_id)
-                                ->where('is_default', 1)
-                                ->update(['is_default' => 0]);
+                    ->where('is_default', 1)
+                    ->update(['is_default' => 0]);
                 $input['is_default'] = 1;
             }
 
@@ -231,8 +228,8 @@ class InvoiceLayoutController extends Controller
             $input['qr_code_fields'] = ! empty($request->input('qr_code_fields')) ? json_encode($request->input('qr_code_fields')) : null;
 
             InvoiceLayout::where('id', $id)
-                        ->where('business_id', $business_id)
-                        ->update($input);
+                ->where('business_id', $business_id)
+                ->update($input);
             $output = ['success' => 1,
                 'msg' => __('invoice.layout_updated_success'),
             ];

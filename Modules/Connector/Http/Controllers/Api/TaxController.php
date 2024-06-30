@@ -9,6 +9,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group Tax management
+ *
  * @authenticated
  *
  * APIs for managing taxes
@@ -78,7 +79,7 @@ class TaxController extends ApiController
         $business_id = $user->business_id;
 
         $taxes = TaxRate::where('business_id', $business_id)
-                        ->get();
+            ->get();
 
         return CommonResource::collection($taxes);
     }
@@ -113,8 +114,8 @@ class TaxController extends ApiController
         $tax_ids = explode(',', $tax_ids);
 
         $taxes = TaxRate::where('business_id', $business_id)
-                        ->whereIn('id', $tax_ids)
-                        ->get();
+            ->whereIn('id', $tax_ids)
+            ->get();
 
         return CommonResource::collection($taxes);
     }

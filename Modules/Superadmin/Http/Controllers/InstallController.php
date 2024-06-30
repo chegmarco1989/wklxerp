@@ -5,9 +5,9 @@ namespace Modules\Superadmin\Http\Controllers;
 use App\System;
 use Composer\Semver\Comparator;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Routing\Controller;
 
 class InstallController extends Controller
 {
@@ -98,8 +98,8 @@ class InstallController extends Controller
             ];
 
             return redirect()
-            ->action([\App\Http\Controllers\Install\ModulesController::class, 'index'])
-            ->with('status', $output);
+                ->action([\App\Http\Controllers\Install\ModulesController::class, 'index'])
+                ->with('status', $output);
         } catch (Exception $e) {
             //DB::rollBack();
             exit($e->getMessage());

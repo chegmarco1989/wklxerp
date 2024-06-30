@@ -15,7 +15,7 @@ return new class extends Migration
     {
         //check if permission exists
         $permission_exists = Permission::where('name', 'print_invoice')
-                                    ->exists();
+            ->exists();
 
         if (! $permission_exists) {
             Permission::create([

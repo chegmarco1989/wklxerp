@@ -54,14 +54,14 @@ class AssetMaitenanceController extends Controller
 
         if (request()->ajax()) {
             $query = AssetMaintenance::with(['asset', 'asset.warranties'])
-                        ->where('asset_maintenances.business_id', $business_id)
-                        ->leftJoin('users as u', 'u.id', '=', 'asset_maintenances.assigned_to')
-                        ->leftJoin('users as u1', 'u1.id', '=', 'asset_maintenances.created_by');
+                ->where('asset_maintenances.business_id', $business_id)
+                ->leftJoin('users as u', 'u.id', '=', 'asset_maintenances.assigned_to')
+                ->leftJoin('users as u1', 'u1.id', '=', 'asset_maintenances.created_by');
 
             if (! auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) {
                 $query->where(function ($q) {
                     $q->where('asset_maintenances.created_by', auth()->user()->id)
-                    ->orWhere('asset_maintenances.assigned_to', auth()->user()->id);
+                        ->orWhere('asset_maintenances.assigned_to', auth()->user()->id);
                 });
             }
 
@@ -201,8 +201,8 @@ class AssetMaitenanceController extends Controller
             $asset_id = request()->input('asset_id');
 
             $asset = Asset::with(['warranties'])
-                        ->where('business_id', $business_id)
-                        ->findOrfail($asset_id);
+                ->where('business_id', $business_id)
+                ->findOrfail($asset_id);
 
             $statuses = [];
             foreach ($this->maintenanceStatuses as $key => $value) {
@@ -215,14 +215,13 @@ class AssetMaitenanceController extends Controller
             }
 
             return view('assetmanagement::asset_maintenance.create')
-                    ->with(compact('asset', 'statuses', 'priorities'));
+                ->with(compact('asset', 'statuses', 'priorities'));
         }
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -300,8 +299,8 @@ class AssetMaitenanceController extends Controller
 
         if (request()->ajax()) {
             $maintenance = AssetMaintenance::where('business_id', $business_id)
-                        ->with(['media'])
-                        ->findOrfail($id);
+                ->with(['media'])
+                ->findOrfail($id);
 
             $statuses = [];
             foreach ($this->maintenanceStatuses as $key => $value) {
@@ -316,14 +315,13 @@ class AssetMaitenanceController extends Controller
             $users = User::forDropdown($business_id, false);
 
             return view('assetmanagement::asset_maintenance.edit')
-                    ->with(compact('maintenance', 'statuses', 'priorities', 'users'));
+                ->with(compact('maintenance', 'statuses', 'priorities', 'users'));
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -393,7 +391,7 @@ class AssetMaitenanceController extends Controller
         if (request()->ajax()) {
             try {
                 $asset_maintenance = AssetMaintenance::where('business_id', $business_id)
-                            ->findOrfail($id);
+                    ->findOrfail($id);
 
                 $asset_maintenance->delete();
                 $asset_maintenance->media()->delete();

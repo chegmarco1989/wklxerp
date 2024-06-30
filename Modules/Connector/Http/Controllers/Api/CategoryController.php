@@ -9,6 +9,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group Taxonomy management
+ *
  * @authenticated
  *
  * APIs for managing taxonomies
@@ -95,8 +96,8 @@ class CategoryController extends ApiController
         $business_id = $user->business_id;
 
         $query = Category::where('business_id', $business_id)
-                        ->onlyParent()
-                        ->with('sub_categories');
+            ->onlyParent()
+            ->with('sub_categories');
 
         if (! empty(request()->input('type'))) {
             $query->where('category_type', request()->input('type'));
@@ -112,6 +113,7 @@ class CategoryController extends ApiController
      *
      * @urlParam taxonomy required comma separated ids of product categories Example: 1
 
+     *
      * @response {
             "data": [
                 {
@@ -172,9 +174,9 @@ class CategoryController extends ApiController
         $category_ids = explode(',', $category_ids);
 
         $categories = Category::where('business_id', $business_id)
-                        ->whereIn('id', $category_ids)
-                        ->with('sub_categories')
-                        ->get();
+            ->whereIn('id', $category_ids)
+            ->with('sub_categories')
+            ->get();
 
         return CommonResource::collection($categories);
     }

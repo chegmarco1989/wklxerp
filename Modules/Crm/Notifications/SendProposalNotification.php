@@ -49,11 +49,11 @@ class SendProposalNotification extends Notification
     public function toMail($notifiable)
     {
         $mail = (new MailMessage)
-                ->subject($this->proposal->subject)
-                ->view(
-                    'emails.plain_html',
-                    ['content' => $this->proposal->body]
-                );
+            ->subject($this->proposal->subject)
+            ->view(
+                'emails.plain_html',
+                ['content' => $this->proposal->body]
+            );
 
         if (! empty($this->proposal->cc)) {
             $mail->cc(explode(',', $this->proposal->cc));

@@ -48,21 +48,21 @@ class RevokeAllocatedAssetController extends Controller
 
         if (request()->ajax()) {
             $asset_allocated = AssetTransaction::join('asset_transactions as PT',
-                                'asset_transactions.parent_id', '=', 'PT.id')
-                                ->join('assets', 'PT.asset_id', '=', 'assets.id')
-                                ->join('users as receiver', 'PT.receiver', '=', 'receiver.id')
-                                ->join('users as revoked_by', 'asset_transactions.created_by', '=', 'revoked_by.id')
-                                ->leftJoin('categories as CAT', 'assets.category_id',
-                                    '=', 'CAT.id')
-                                ->where('asset_transactions.business_id', $business_id)
-                                ->where('asset_transactions.transaction_type', 'revoke')
-                                ->select('asset_transactions.ref_no as ref_no',
-                                'asset_transactions.quantity as quantity',
-                                'asset_transactions.transaction_datetime as revoked_at', 'asset_transactions.id as id',
-                                'assets.name as asset', 'assets.model as model',
-                                'CAT.name as category', DB::raw("CONCAT(COALESCE(receiver.surname, ''),' ',COALESCE(receiver.first_name, ''),' ',COALESCE(receiver.last_name,'')) as revoked_for"),
-                                DB::raw("CONCAT(COALESCE(revoked_by.surname, ''),' ',COALESCE(revoked_by.first_name, ''),' ',COALESCE(revoked_by.last_name,'')) as revoked_by_name"),
-                                'PT.ref_no as allocation_code', 'asset_transactions.reason as reason');
+                'asset_transactions.parent_id', '=', 'PT.id')
+                ->join('assets', 'PT.asset_id', '=', 'assets.id')
+                ->join('users as receiver', 'PT.receiver', '=', 'receiver.id')
+                ->join('users as revoked_by', 'asset_transactions.created_by', '=', 'revoked_by.id')
+                ->leftJoin('categories as CAT', 'assets.category_id',
+                    '=', 'CAT.id')
+                ->where('asset_transactions.business_id', $business_id)
+                ->where('asset_transactions.transaction_type', 'revoke')
+                ->select('asset_transactions.ref_no as ref_no',
+                    'asset_transactions.quantity as quantity',
+                    'asset_transactions.transaction_datetime as revoked_at', 'asset_transactions.id as id',
+                    'assets.name as asset', 'assets.model as model',
+                    'CAT.name as category', DB::raw("CONCAT(COALESCE(receiver.surname, ''),' ',COALESCE(receiver.first_name, ''),' ',COALESCE(receiver.last_name,'')) as revoked_for"),
+                    DB::raw("CONCAT(COALESCE(revoked_by.surname, ''),' ',COALESCE(revoked_by.first_name, ''),' ',COALESCE(revoked_by.last_name,'')) as revoked_by_name"),
+                    'PT.ref_no as allocation_code', 'asset_transactions.reason as reason');
 
             return Datatables::of($asset_allocated)
                 ->addColumn('action', function ($row) {
@@ -124,7 +124,7 @@ class RevokeAllocatedAssetController extends Controller
         if ($request->ajax()) {
             $allocated_id = $request->get('id');
             $allocated_asset = AssetTransaction::where('business_id', $business_id)
-                                    ->findOrFail($allocated_id);
+                ->findOrFail($allocated_id);
 
             $total_revoked_asset = $this->_getRevokedQtyOfAllocatedAsset($allocated_asset);
 
@@ -136,7 +136,6 @@ class RevokeAllocatedAssetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -216,7 +215,6 @@ class RevokeAllocatedAssetController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -242,7 +240,7 @@ class RevokeAllocatedAssetController extends Controller
         if (request()->ajax()) {
             try {
                 $asset_revoked = AssetTransaction::where('business_id', $business_id)
-                                    ->findOrfail($id);
+                    ->findOrfail($id);
 
                 $asset_revoked->delete();
 
@@ -272,9 +270,9 @@ class RevokeAllocatedAssetController extends Controller
     protected function _getRevokedQtyOfAllocatedAsset($allocated_asset)
     {
         $asset_transaction = AssetTransaction::where('business_id', $allocated_asset->business_id)
-                                ->where('parent_id', $allocated_asset->id)
-                                ->select(DB::raw('SUM(COALESCE(quantity, 0)) as quantity'))
-                                ->first();
+            ->where('parent_id', $allocated_asset->id)
+            ->select(DB::raw('SUM(COALESCE(quantity, 0)) as quantity'))
+            ->first();
 
         return $asset_transaction->quantity;
     }

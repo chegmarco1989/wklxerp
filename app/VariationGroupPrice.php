@@ -18,7 +18,7 @@ class VariationGroupPrice extends Model
      */
     public function getCalculatedPriceAttribute()
     {
-        if(isset($this->price_type) && $this->price_type == 'percentage'){
+        if (isset($this->price_type) && $this->price_type == 'percentage') {
             //calculate the price
             $variation = Variation::find($this->variation_id);
             $utils = new \App\Utils\Util();

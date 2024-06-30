@@ -60,7 +60,7 @@ class ScheduleController extends Controller
         $can_access_all_schedule = auth()->user()->can('crm.access_all_schedule');
         $can_access_own_schedule = auth()->user()->can('crm.access_own_schedule');
 
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || !($can_access_all_schedule || $can_access_own_schedule)) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! ($can_access_all_schedule || $can_access_own_schedule)) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -90,18 +90,18 @@ class ScheduleController extends Controller
                 $schedules->where('crm_schedules.is_recursive', 0);
             }
 
-            if (!empty(request()->input('contact_id'))) {
+            if (! empty(request()->input('contact_id'))) {
                 $schedules->where('crm_schedules.contact_id', request()->input('contact_id'));
             }
 
-            if (!empty(request()->input('assgined_to'))) {
+            if (! empty(request()->input('assgined_to'))) {
                 $user_id = request()->input('assgined_to');
                 $schedules->whereHas('users', function ($q) use ($user_id) {
                     $q->where('user_id', $user_id);
                 });
             }
 
-            if (!empty(request()->input('status'))) {
+            if (! empty(request()->input('status'))) {
                 if (request()->input('status') == 'none') {
                     $schedules->whereNull('crm_schedules.status');
                 } else {
@@ -109,25 +109,25 @@ class ScheduleController extends Controller
                 }
             }
 
-            if (!empty(request()->input('schedule_type'))) {
+            if (! empty(request()->input('schedule_type'))) {
                 $schedules->where('crm_schedules.schedule_type', request()->input('schedule_type'));
             }
 
-            if (!empty(request()->input('followup_category_id'))) {
+            if (! empty(request()->input('followup_category_id'))) {
                 $schedules->where('crm_schedules.followup_category_id', request()->input('followup_category_id'));
             }
 
-            if (!empty(request()->input('start_date_time')) && !empty(request()->input('end_date_time'))) {
+            if (! empty(request()->input('start_date_time')) && ! empty(request()->input('end_date_time'))) {
                 $start_date = request()->input('start_date_time');
                 $end_date = request()->input('end_date_time');
                 $schedules->whereBetween(DB::raw('date(start_datetime)'), [$start_date, $end_date]);
             }
 
-            if (!empty(request()->input('follow_up_by'))) {
+            if (! empty(request()->input('follow_up_by'))) {
                 $schedules->where('crm_schedules.follow_up_by', request()->input('follow_up_by'));
             }
 
-            if (!auth()->user()->can('superadmin') && !$can_access_all_schedule) {
+            if (! auth()->user()->can('superadmin') && ! $can_access_all_schedule) {
                 $user_id = auth()->user()->id;
                 $schedules->whereHas('users', function ($q) use ($user_id) {
                     $q->where('user_id', $user_id);
@@ -138,10 +138,10 @@ class ScheduleController extends Controller
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group">
                                 <button class="btn btn-info dropdown-toggle btn-xs" type="button"  data-toggle="dropdown" aria-expanded="false">
-                                    ' . __('messages.action') . '
+                                    '.__('messages.action').'
                                     <span class="caret"></span>
                                     <span class="sr-only">'
-                        . __('messages.action') . '
+                        .__('messages.action').'
                                     </span>
                                 </button>
                                   <ul class="dropdown-menu dropdown-menu-left" role="menu">';
@@ -153,31 +153,31 @@ class ScheduleController extends Controller
                     //  </li>';
                     if ($row->is_recursive != 1) {
                         $html .= '<li>
-                                        <a data-schedule_id="' . $row->id . '"class="cursor-pointer view_schedule_log">
+                                        <a data-schedule_id="'.$row->id.'"class="cursor-pointer view_schedule_log">
                                             <i class="fa fa-eye"></i>
-                                            ' . __('crm::lang.view_follow_up') . '
+                                            '.__('crm::lang.view_follow_up').'
                                         </a>
                                     </li>';
 
                         $html .= '<li>
-                                        <a data-href="' . action([\Modules\Crm\Http\Controllers\ScheduleLogController::class, 'create'], ['schedule_id' => $row->id]) . '"class="cursor-pointer schedule_log_add">
+                                        <a data-href="'.action([\Modules\Crm\Http\Controllers\ScheduleLogController::class, 'create'], ['schedule_id' => $row->id]).'"class="cursor-pointer schedule_log_add">
                                             <i class="fa fa-edit"></i>
-                                            ' . __('crm::lang.add_schedule_log') . '
+                                            '.__('crm::lang.add_schedule_log').'
                                         </a>
                                     </li>';
 
                         $html .= '<li>
-                                        <a data-href="' . action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'edit'], ['follow_up' => $row->id]) . '"class="cursor-pointer schedule_edit">
+                                        <a data-href="'.action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'edit'], ['follow_up' => $row->id]).'"class="cursor-pointer schedule_edit">
                                             <i class="fa fa-edit"></i>
-                                            ' . __('messages.edit') . '
+                                            '.__('messages.edit').'
                                         </a>
                                     </li>';
                     }
 
                     $html .= '<li>
-                                        <a data-href="' . action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'destroy'], ['follow_up' => $row->id]) . '" class="cursor-pointer schedule_delete">
+                                        <a data-href="'.action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'destroy'], ['follow_up' => $row->id]).'" class="cursor-pointer schedule_delete">
                                             <i class="fas fa-trash"></i>
-                                            ' . __('messages.delete') . '
+                                            '.__('messages.delete').'
                                         </a>
                                     </li>';
 
@@ -214,9 +214,9 @@ class ScheduleController extends Controller
                 ->addColumn('additional_info', function ($row) {
                     $html = '';
                     $infos = $row->followup_additional_info;
-                    if (!empty($infos)) {
+                    if (! empty($infos)) {
                         foreach ($infos as $key => $value) {
-                            $html .= $key . ' : ' . $value . '<br>';
+                            $html .= $key.' : '.$value.'<br>';
                         }
                     }
 
@@ -227,9 +227,9 @@ class ScheduleController extends Controller
                 ')
                 ->editColumn('schedule_type', function ($row) {
                     $html = '';
-                    if (!empty($row->schedule_type)) {
-                        $html = '<div class="schedule_type" data-orig-value="' . __('crm::lang.' . $row->schedule_type) . '" data-status-name="' . __('crm::lang.' . $row->schedule_type) . '">
-                                    ' . __('crm::lang.' . $row->schedule_type) .
+                    if (! empty($row->schedule_type)) {
+                        $html = '<div class="schedule_type" data-orig-value="'.__('crm::lang.'.$row->schedule_type).'" data-status-name="'.__('crm::lang.'.$row->schedule_type).'">
+                                    '.__('crm::lang.'.$row->schedule_type).
                             '</div>';
                     }
 
@@ -240,9 +240,9 @@ class ScheduleController extends Controller
                     if ($row->users->count() > 0) {
                         foreach ($row->users as $user) {
                             if (isset($user->media->display_url)) {
-                                $html .= '<img class="user_avatar" src="' . $user->media->display_url . '" data-toggle="tooltip" title="' . $user->user_full_name . '">';
+                                $html .= '<img class="user_avatar" src="'.$user->media->display_url.'" data-toggle="tooltip" title="'.$user->user_full_name.'">';
                             } else {
-                                $html .= '<img class="user_avatar" src="https://ui-avatars.com/api/?name=' . $user->first_name . '" data-toggle="tooltip" title="' . $user->user_full_name . '">';
+                                $html .= '<img class="user_avatar" src="https://ui-avatars.com/api/?name='.$user->first_name.'" data-toggle="tooltip" title="'.$user->user_full_name.'">';
                             }
                         }
                     }
@@ -251,9 +251,9 @@ class ScheduleController extends Controller
                 })
                 ->editColumn('status', function ($row) {
                     $html = '';
-                    if (!empty($row->status)) {
-                        $html = '<span class="text-center label status ' . $this->status_bg[$row->status] . '" data-orig-value="' . __('crm::lang.' . $row->status) . '" data-status-name="' . __('crm::lang.' . $row->status) . '"><small>
-                                    ' . __('crm::lang.' . $row->status) .
+                    if (! empty($row->status)) {
+                        $html = '<span class="text-center label status '.$this->status_bg[$row->status].'" data-orig-value="'.__('crm::lang.'.$row->status).'" data-status-name="'.__('crm::lang.'.$row->status).'"><small>
+                                    '.__('crm::lang.'.$row->status).
                             '</small></span>';
                     }
 
@@ -263,9 +263,9 @@ class ScheduleController extends Controller
                     $follow_up_by = '';
 
                     if ($row->follow_up_by == 'payment_status') {
-                        $follow_up_by = __('sale.payment_status') . ' - ' . __('lang_v1.' . $row->follow_up_by_value);
+                        $follow_up_by = __('sale.payment_status').' - '.__('lang_v1.'.$row->follow_up_by_value);
                     } elseif ($row->follow_up_by == 'orders') {
-                        $follow_up_by = __('restaurant.orders') . ' - ' . __('crm::lang.has_no_transactions');
+                        $follow_up_by = __('restaurant.orders').' - '.__('crm::lang.has_no_transactions');
                     }
 
                     return $follow_up_by;
@@ -282,10 +282,10 @@ class ScheduleController extends Controller
         $contacts = Contact::customersDropdown($business_id, false)->toArray();
 
         foreach ($contacts as $key => $value) {
-            $contacts[$key] = $value . ' (' . __('contact.customer') . ')';
+            $contacts[$key] = $value.' ('.__('contact.customer').')';
         }
         foreach ($leads as $key => $value) {
-            $contacts[$key] = $value . ' (' . __('crm::lang.lead') . ')';
+            $contacts[$key] = $value.' ('.__('crm::lang.lead').')';
         }
 
         $assigned_to = User::forDropdown($business_id, false);
@@ -329,7 +329,7 @@ class ScheduleController extends Controller
     public function create()
     {
         $business_id = request()->session()->get('user.business_id');
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -361,13 +361,12 @@ class ScheduleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $business_id = request()->session()->get('user.business_id');
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -381,7 +380,7 @@ class ScheduleController extends Controller
             DB::beginTransaction();
             if (empty($input['follow_ups']) && empty($input['is_recursive'])) {
                 $this->crmUtil->addFollowUp($input, \Auth::user());
-            } elseif (!empty($input['is_recursive'])) {
+            } elseif (! empty($input['is_recursive'])) {
                 $this->crmUtil->addRecursiveFollowUp($input, \Auth::user());
             } else {
                 $this->crmUtil->addAdvanceFollowUp($input, \Auth::user());
@@ -397,7 +396,7 @@ class ScheduleController extends Controller
             ];
         } catch (Exception $e) {
             DB::rollBack();
-            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
             $output = [
                 'success' => false,
@@ -456,14 +455,14 @@ class ScheduleController extends Controller
         $can_access_all_schedule = auth()->user()->can('crm.access_all_schedule');
         $can_access_own_schedule = auth()->user()->can('crm.access_own_schedule');
 
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || !($can_access_all_schedule || $can_access_own_schedule)) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! ($can_access_all_schedule || $can_access_own_schedule)) {
             abort(403, 'Unauthorized action.');
         }
 
         $query = Schedule::with(['customer', 'users'])
             ->where('business_id', $business_id);
 
-        if (!$can_access_all_schedule && $can_access_own_schedule) {
+        if (! $can_access_all_schedule && $can_access_own_schedule) {
             $query->where(function ($qry) {
                 $qry->whereHas('users', function ($q) {
                     $q->where('user_id', auth()->user()->id);
@@ -479,10 +478,10 @@ class ScheduleController extends Controller
         $followup_category = Category::forDropdown($business_id, 'followup_category');
 
         foreach ($customers as $key => $value) {
-            $customers[$key] = $value . ' (' . __('contact.customer') . ')';
+            $customers[$key] = $value.' ('.__('contact.customer').')';
         }
         foreach ($leads as $key => $value) {
-            $customers[$key] = $value . ' (' . __('crm::lang.lead') . ')';
+            $customers[$key] = $value.' ('.__('crm::lang.lead').')';
         }
 
         $users = User::forDropdown($business_id, false);
@@ -497,7 +496,6 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -507,7 +505,7 @@ class ScheduleController extends Controller
         $can_access_all_schedule = auth()->user()->can('crm.access_all_schedule');
         $can_access_own_schedule = auth()->user()->can('crm.access_own_schedule');
 
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || !($can_access_all_schedule || $can_access_own_schedule)) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! ($can_access_all_schedule || $can_access_own_schedule)) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -526,7 +524,7 @@ class ScheduleController extends Controller
                 'schedule_for' => $schedule_for,
             ];
         } catch (Exception $e) {
-            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
             $output = [
                 'success' => false,
@@ -549,7 +547,7 @@ class ScheduleController extends Controller
         $can_access_all_schedule = auth()->user()->can('crm.access_all_schedule');
         $can_access_own_schedule = auth()->user()->can('crm.access_own_schedule');
 
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || !($can_access_all_schedule || $can_access_own_schedule)) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! ($can_access_all_schedule || $can_access_own_schedule)) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -557,7 +555,7 @@ class ScheduleController extends Controller
             try {
                 $query = Schedule::where('business_id', $business_id);
 
-                if (!$can_access_all_schedule && $can_access_own_schedule) {
+                if (! $can_access_all_schedule && $can_access_own_schedule) {
                     $query->where(function ($qry) {
                         $qry->whereHas('users', function ($q) {
                             $q->where('user_id', auth()->user()->id);
@@ -576,7 +574,7 @@ class ScheduleController extends Controller
                     'view_type' => $view_type,
                 ];
             } catch (Exception $e) {
-                \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+                \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
                 $output = [
                     'success' => false,
@@ -596,7 +594,7 @@ class ScheduleController extends Controller
     public function getTodaysSchedule()
     {
         $business_id = request()->session()->get('user.business_id');
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -616,7 +614,7 @@ class ScheduleController extends Controller
                 'todays_schedule' => $schedule_html,
             ];
         } catch (Exception $e) {
-            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
             $output = [
                 'success' => false,
@@ -630,7 +628,7 @@ class ScheduleController extends Controller
     public function getLeadSchedule(Request $request)
     {
         $business_id = request()->session()->get('user.business_id');
-        if (!(auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -644,29 +642,29 @@ class ScheduleController extends Controller
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group">
                             <button class="btn btn-info dropdown-toggle btn-xs" type="button"  data-toggle="dropdown" aria-expanded="false">
-                                ' . __('messages.action') . '
+                                '.__('messages.action').'
                                 <span class="caret"></span>
                                 <span class="sr-only">'
-                    . __('messages.action') . '
+                    .__('messages.action').'
                                 </span>
                             </button>
                               <ul class="dropdown-menu dropdown-menu-left" role="menu">
                                 <li>
-                                    <a data-schedule_id="' . $row->id . '"class="cursor-pointer view_schedule_log">
+                                    <a data-schedule_id="'.$row->id.'"class="cursor-pointer view_schedule_log">
                                         <i class="fa fa-eye"></i>
-                                        ' . __('crm::lang.view_follow_up') . '
+                                        '.__('crm::lang.view_follow_up').'
                                     </a>
                                 </li>
                                 <li>
-                                    <a data-href="' . action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'edit'], ['follow_up' => $row->id]) . '?schedule_for=lead"class="cursor-pointer schedule_edit">
+                                    <a data-href="'.action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'edit'], ['follow_up' => $row->id]).'?schedule_for=lead"class="cursor-pointer schedule_edit">
                                         <i class="fa fa-edit"></i>
-                                        ' . __('messages.edit') . '
+                                        '.__('messages.edit').'
                                     </a>
                                 </li>
                                 <li>
-                                    <a data-href="' . action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'destroy'], ['follow_up' => $row->id]) . '" class="cursor-pointer schedule_delete">
+                                    <a data-href="'.action([\Modules\Crm\Http\Controllers\ScheduleController::class, 'destroy'], ['follow_up' => $row->id]).'" class="cursor-pointer schedule_delete">
                                         <i class="fas fa-trash"></i>
-                                        ' . __('messages.delete') . '
+                                        '.__('messages.delete').'
                                     </a>
                                 </li>';
 
@@ -685,9 +683,9 @@ class ScheduleController extends Controller
                 $html = '&nbsp;';
                 foreach ($row->users as $user) {
                     if (isset($user->media->display_url)) {
-                        $html .= '<img class="user_avatar" src="' . $user->media->display_url . '" data-toggle="tooltip" title="' . $user->user_full_name . '">';
+                        $html .= '<img class="user_avatar" src="'.$user->media->display_url.'" data-toggle="tooltip" title="'.$user->user_full_name.'">';
                     } else {
-                        $html .= '<img class="user_avatar" src="https://ui-avatars.com/api/?name=' . $user->first_name . '" data-toggle="tooltip" title="' . $user->user_full_name . '">';
+                        $html .= '<img class="user_avatar" src="https://ui-avatars.com/api/?name='.$user->first_name.'" data-toggle="tooltip" title="'.$user->user_full_name.'">';
                     }
                 }
 
@@ -738,14 +736,14 @@ class ScheduleController extends Controller
 
         foreach ($sells as $sell) {
             $payment_status = Transaction::getPaymentStatus($sell);
-            $contact = ' - ' . $sell->contact->name;
-            if (!empty($sell->contact->supplier_business_name)) {
-                $contact = ' - ' . $sell->contact->supplier_business_name . $contact;
+            $contact = ' - '.$sell->contact->name;
+            if (! empty($sell->contact->supplier_business_name)) {
+                $contact = ' - '.$sell->contact->supplier_business_name.$contact;
             }
 
             $sells_array[] = [
                 'id' => $sell->id,
-                'text' => $sell->invoice_no . ' (' . __('lang_v1.' . $payment_status) . $contact . ')',
+                'text' => $sell->invoice_no.' ('.__('lang_v1.'.$payment_status).$contact.')',
             ];
         }
 
@@ -822,10 +820,10 @@ class ScheduleController extends Controller
         $customers = Contact::customersDropdown($business_id, false)->toArray();
 
         foreach ($customers as $key => $value) {
-            $customers[$key] = $value . ' (' . __('contact.customer') . ')';
+            $customers[$key] = $value.' ('.__('contact.customer').')';
         }
         foreach ($leads as $key => $value) {
-            $customers[$key] = $value . ' (' . __('crm::lang.lead') . ')';
+            $customers[$key] = $value.' ('.__('crm::lang.lead').')';
         }
 
         return $customers;

@@ -3,8 +3,8 @@
 namespace Modules\Project\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ProjectTimeLog extends Model
 {
@@ -34,7 +34,7 @@ class ProjectTimeLog extends Model
             ->logOnly(['*'])
             ->logOnlyDirty();
     }
-    
+
     /**
      * Get the task for time log.
      */

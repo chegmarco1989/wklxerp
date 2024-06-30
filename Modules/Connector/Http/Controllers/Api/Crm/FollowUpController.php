@@ -14,6 +14,7 @@ use Modules\Crm\Utils\CrmUtil;
 
 /**
  * @group CRM
+ *
  * @authenticated
  *
  * APIs for managing follow up
@@ -52,6 +53,7 @@ class FollowUpController extends ApiController
      * @queryParam order_by Column name to sort the result, Column: start_datetime Example:start_datetime
      * @queryParam direction Direction to sort the result, Required if using 'order_by', direction: desc, asc Example:desc
      * @queryParam per_page Total records per page. default: 10, Set -1 for no pagination Example:10
+     *
      * @response {
             "data": [
                 {
@@ -386,6 +388,7 @@ class FollowUpController extends ApiController
      * Get the specified followup
      *
      * @urlParam follow_up required comma separated ids of the follow_ups Example: 1,2
+     *
      * @response {
             "data": [
                 {
@@ -526,8 +529,8 @@ class FollowUpController extends ApiController
         $follow_up_ids = explode(',', $follow_up_ids);
 
         $query = \Modules\Crm\Entities\Schedule::with(['customer', 'users', 'followupCategory'])
-                        ->where('business_id', $user->business_id)
-                        ->whereIn('id', $follow_up_ids);
+            ->where('business_id', $user->business_id)
+            ->whereIn('id', $follow_up_ids);
 
         if (! $user->can('crm.access_all_schedule') && $user->can('crm.access_own_schedule')) {
             $query->where(function ($qry) use ($user) {
@@ -546,6 +549,7 @@ class FollowUpController extends ApiController
      * Update follow up
      *
      * @urlParam follow_up required id of the follow up to be updated Example: 20
+     *
      * @bodyParam title string required Follow up title Example: Meeting with client
      * @bodyParam contact_id integer required Contact to be followed up Example: 2
      * @bodyParam description text Follow up description
@@ -631,6 +635,7 @@ class FollowUpController extends ApiController
      * @queryParam order_by Column name to sort the result, Column: name, supplier_business_name
      * @queryParam direction Direction to sort the result, Required if using 'order_by', direction: desc, asc Example:desc
      * @queryParam per_page Total records per page. default: 10, Set -1 for no pagination Example:10
+     *
      * @response {
             "data": [
                 {

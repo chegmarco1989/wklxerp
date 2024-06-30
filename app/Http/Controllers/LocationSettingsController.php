@@ -43,7 +43,7 @@ class LocationSettingsController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $location = BusinessLocation::where('business_id', $business_id)
-                        ->findorfail($location_id);
+            ->findorfail($location_id);
 
         $printers = Printer::forDropdown($business_id);
 
@@ -51,11 +51,11 @@ class LocationSettingsController extends Controller
         $receiptPrinterType = $this->receiptPrinterType;
 
         $invoice_layouts = InvoiceLayout::where('business_id', $business_id)
-                            ->get()
-                            ->pluck('name', 'id');
+            ->get()
+            ->pluck('name', 'id');
         $invoice_schemes = InvoiceScheme::where('business_id', $business_id)
-                            ->get()
-                            ->pluck('name', 'id');
+            ->get()
+            ->pluck('name', 'id');
 
         return view('location_settings.index')
             ->with(compact('location', 'printReceiptOnInvoice', 'receiptPrinterType', 'printers', 'invoice_layouts', 'invoice_schemes'));
@@ -64,7 +64,6 @@ class LocationSettingsController extends Controller
     /**
      * Update the settings
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function updateSettings($location_id, Request $request)
@@ -87,7 +86,7 @@ class LocationSettingsController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $location = BusinessLocation::where('business_id', $business_id)
-                            ->findorfail($location_id);
+                ->findorfail($location_id);
 
             $location->fill($input);
             $location->update();

@@ -27,6 +27,7 @@ use Modules\Connector\Transformers\SellResource;
 
 /**
  * @group Sales management
+ *
  * @authenticated
  *
  * APIs for managing sales
@@ -288,7 +289,7 @@ class SellController extends ApiController
 
         $with = ['sell_lines', 'payment_lines', 'contact'];
         $query = Transaction::where('business_id', $business_id)
-                            ->where('type', 'sell');
+            ->where('type', 'sell');
 
         if (! empty(request()->input('send_purchase_details')) && request()->input('send_purchase_details') == 1) {
             $with[] = 'sell_lines.sell_line_purchase_lines';
@@ -360,9 +361,9 @@ class SellController extends ApiController
                 if (auth()->user()->can('view_overdue_sells_only')) {
                     $query->where(function ($q) use ($payment_status_arr) {
                         $q->whereIn('transactions.payment_status', $payment_status_arr)
-                        ->orWhere(function ($qr) {
-                            $qr->OverDue();
-                        });
+                            ->orWhere(function ($qr) {
+                                $qr->OverDue();
+                            });
                     });
                 } else {
                     $query->whereIn('transactions.payment_status', $payment_status_arr);
@@ -450,6 +451,7 @@ class SellController extends ApiController
      * Get the specified sell
      *
      * @urlParam sell required comma separated ids of the sells Example: 55
+     *
      * @queryParam send_purchase_details Get purchase details of each sell line (1, 0)
      *
      * @response {
@@ -627,7 +629,7 @@ class SellController extends ApiController
         $sell_ids = explode(',', $sell_ids);
 
         $query = Transaction::where('business_id', $business_id)
-                        ->whereIn('id', $sell_ids);
+            ->whereIn('id', $sell_ids);
 
         $with = ['sell_lines', 'payment_lines'];
 
@@ -637,7 +639,7 @@ class SellController extends ApiController
         }
 
         $sells = $query->with($with)
-                    ->get();
+            ->get();
 
         return SellResource::collection($sells);
     }
@@ -691,8 +693,6 @@ class SellController extends ApiController
      * @bodyParam sells.*.change_return float Excess paid amount Example:0.0000
      * @bodyParam sells.*.products array required array of the products for the sale
      * @bodyParam sells.*.payments array payment lines for the sale
-     *
-     *
      * @bodyParam sells.*.products.*.product_id int required product id Example:17
      * @bodyParam sells.*.products.*.variation_id int required variation id Example:58
      * @bodyParam sells.*.products.*.quantity float required quantity Example: 1
@@ -703,8 +703,6 @@ class SellController extends ApiController
      * @bodyParam sells.*.products.*.sub_unit_id int sub unit id
      * @bodyParam sells.*.products.*.res_service_staff_id int service staff id
      * @bodyParam sells.*.products.*.note string note for the product
-     *
-     *
      * @bodyParam sells.*.payments.*.amount float required amount of the payment Example: 453.1300
      * @bodyParam sells.*.payments.*.method string payment methods ('cash', 'card', 'cheque', 'bank_transfer', 'other', 'custom_pay_1', 'custom_pay_2', 'custom_pay_3') Example: cash
      * @bodyParam sells.*.payments.*.account_id int account id
@@ -1033,6 +1031,7 @@ class SellController extends ApiController
      * Update sell
      *
      * @urlParam sell required id of sell to update Example: 6
+     *
      * @bodyParam contact_id int id of the customer
      * @bodyParam transaction_date string transaction date format:Y-m-d H:i:s, Example: 2020-5-7 15:20:22
      * @bodyParam status string sale status (final, draft) Example:final
@@ -1078,8 +1077,6 @@ class SellController extends ApiController
      * @bodyParam change_return_id int id of the change return payment if exists
      * @bodyParam products array required array of the products for the sale
      * @bodyParam payments array payment lines for the sale
-     *
-     *
      * @bodyParam products.*.sell_line_id int sell line id for existing item only
      * @bodyParam products.*.product_id int product id Example: 17
      * @bodyParam products.*.variation_id int variation id Example: 58
@@ -1089,10 +1086,8 @@ class SellController extends ApiController
      * @bodyParam products.*.discount_amount float discount amount applicable on the product  Example:0.0000
      * @bodyParam products.*.discount_type string type of discount amount ('fixed', 'percentage') Example: percentage
      * @bodyParam products.*.sub_unit_id int sub unit id
-     * @bodyParam products.*.res_service_staff_id int service staff id 
+     * @bodyParam products.*.res_service_staff_id int service staff id
      * @bodyParam products.*.note string note for the product
-     *
-     *
      * @bodyParam payments.*.payment_id int payment id for existing payment line
      * @bodyParam payments.*.amount float amount of the payment Example:453.1300
      * @bodyParam payments.*.method string payment methods ('cash', 'card', 'cheque', 'bank_transfer', 'other', 'custom_pay_1', 'custom_pay_2', 'custom_pay_3') Example:cash
@@ -1258,7 +1253,7 @@ class SellController extends ApiController
             $sell_data['business_id'] = $user->business_id;
 
             $transaction_before = Transaction::where('business_id', $user->business_id)->with(['payment_lines'])
-                                    ->findOrFail($id);
+                ->findOrFail($id);
 
             //Check if location allowed
             if (! $user->can_access_this_location($transaction_before->location_id)) {
@@ -1319,7 +1314,7 @@ class SellController extends ApiController
             $this->transactionUtil->adjustMappingPurchaseSell($status_before, $transaction, $business, $deleted_lines);
 
             $updated_transaction = Transaction::where('business_id', $user->business_id)->with(['payment_lines'])
-                                    ->findOrFail($id);
+                ->findOrFail($id);
 
             $updated_transaction->invoice_url = $this->transactionUtil->getInvoiceUrl($updated_transaction->id, $business_id);
             $updated_transaction->payment_link = $this->transactionUtil->getInvoicePaymentLink($updated_transaction->id, $business_id);
@@ -1368,12 +1363,12 @@ class SellController extends ApiController
     {
         $business_id = $data['business_id'];
         $location = BusinessLocation::where('business_id', $business_id)
-                                    ->findOrFail($data['location_id']);
+            ->findOrFail($data['location_id']);
 
         $customer_id = $this->__getValue('contact_id', $data, $transaction, null);
         $contact = Contact::where('business_id', $data['business_id'])
-                            ->whereIn('type', ['customer', 'both'])
-                            ->findOrFail($customer_id);
+            ->whereIn('type', ['customer', 'both'])
+            ->findOrFail($customer_id);
 
         $cg = $this->contactUtil->getCustomerGroup($business_id, $contact->id);
         $customer_group_id = (empty($cg) || empty($cg->id)) ? null : $cg->id;
@@ -1383,7 +1378,7 @@ class SellController extends ApiController
             'contact_id' => $contact->id,
             'customer_group_id' => $customer_group_id,
             'transaction_date' => $this->__getValue('transaction_date', $data,
-                                $transaction, \Carbon::now()->toDateTimeString()),
+                $transaction, \Carbon::now()->toDateTimeString()),
             'invoice_no' => $this->__getValue('invoice_no', $data, $transaction, null, 'invoice_no'),
             'source' => $this->__getValue('source', $data, $transaction, null, 'source'),
             'status' => $this->__getValue('status', $data, $transaction, 'final'),
@@ -1391,11 +1386,11 @@ class SellController extends ApiController
             'sale_note' => $this->__getValue('sale_note', $data, $transaction),
             'staff_note' => $this->__getValue('staff_note', $data, $transaction),
             'commission_agent' => $this->__getValue('commission_agent',
-                                    $data, $transaction),
+                $data, $transaction),
             'shipping_details' => $this->__getValue('shipping_details',
-                                    $data, $transaction),
+                $data, $transaction),
             'shipping_address' => $this->__getValue('shipping_address',
-                                $data, $transaction),
+                $data, $transaction),
             'shipping_status' => $this->__getValue('shipping_status', $data, $transaction),
             'delivered_to' => $this->__getValue('delivered_to', $data, $transaction),
             'shipping_charges' => $this->__getValue('shipping_charges', $data,
@@ -1452,8 +1447,8 @@ class SellController extends ApiController
                 $product_id = $this->__getValue('product_id', $product_data, $sell_line);
                 $variation_id = $this->__getValue('variation_id', $product_data, $sell_line);
                 $product = Product::where('business_id', $business_id)
-                                ->with(['variations'])
-                                ->findOrFail($product_id);
+                    ->with(['variations'])
+                    ->findOrFail($product_id);
 
                 $variation = $product->variations->where('id', $variation_id)->first();
 
@@ -1476,7 +1471,7 @@ class SellController extends ApiController
                 $tax_id = $this->__getValue('tax_rate_id', $product_data, $sell_line, null, 'tax_id');
                 if (! empty($tax_id)) {
                     $tax = TaxRate::where('business_id', $business_id)
-                                ->findOrFail($tax_id);
+                        ->findOrFail($tax_id);
 
                     $item_tax = $this->transactionUtil->calc_percentage($discounted_price, $tax->amount);
                     $unit_price_inc_tax += $item_tax;
@@ -1494,13 +1489,13 @@ class SellController extends ApiController
                     'sell_line_note' => $this->__getValue('note', $product_data, $sell_line, null, 'sell_line_note'),
                     'enable_stock' => $product->enable_stock,
                     'quantity' => $this->__getValue('quantity', $product_data,
-                                        $sell_line, 0),
+                        $sell_line, 0),
                     'product_unit_id' => $product->unit_id,
                     'sub_unit_id' => $this->__getValue('sub_unit_id', $product_data,
-                                        $sell_line),
+                        $sell_line),
                     'unit_price_inc_tax' => $unit_price_inc_tax,
                     'res_service_staff_id' => $this->__getValue('res_service_staff_id', $product_data,
-                    $sell_line),
+                        $sell_line),
                 ];
                 if (! empty($sell_line)) {
                     $formated_sell_line['transaction_sell_lines_id'] = $sell_line->id;
@@ -1508,7 +1503,7 @@ class SellController extends ApiController
 
                 if (($formated_sell_line['product_unit_id'] != $formated_sell_line['sub_unit_id']) && ! empty($formated_sell_line['sub_unit_id'])) {
                     $sub_unit = Unit::where('business_id', $business_id)
-                                    ->findOrFail($formated_sell_line['sub_unit_id']);
+                        ->findOrFail($formated_sell_line['sub_unit_id']);
                     $formated_sell_line['base_unit_multiplier'] = $sub_unit->base_unit_multiplier;
                 } else {
                     $formated_sell_line['base_unit_multiplier'] = 1;
@@ -1549,7 +1544,7 @@ class SellController extends ApiController
         $order_tax_id = $this->__getValue('tax_rate_id', $data, $transaction);
         if (! empty($order_tax_id)) {
             $tax = TaxRate::where('business_id', $business_id)
-                        ->findOrFail($order_tax_id);
+                ->findOrFail($order_tax_id);
 
             $order_tax = $this->transactionUtil->calc_percentage($discounted_total, $tax->amount);
             $final_total += $order_tax;
@@ -1679,7 +1674,6 @@ class SellController extends ApiController
      * @bodyParam discount_type string type of the discount amount (fixed, percentage) Example: fixed
 
      * @bodyParam products array required array of the products for the sale
-     *
      * @bodyParam products.*.sell_line_id int required sell line id
      * @bodyParam products.*.quantity float required quantity to be returned from the sell line Example: 1
      * @bodyParam products.*.unit_price_inc_tax float required unit selling price of the returning item Example: 437.5000
@@ -2106,10 +2100,10 @@ class SellController extends ApiController
 
         $sell_id = request()->input('sell_id');
         $query = Transaction::where('business_id', $business_id)
-                            ->where('type', 'sell_return')
-                            ->where('status', 'final')
-                            ->with(['payment_lines', 'return_parent_sell', 'return_parent_sell.sell_lines'])
-                            ->select('transactions.*');
+            ->where('type', 'sell_return')
+            ->where('status', 'final')
+            ->with(['payment_lines', 'return_parent_sell', 'return_parent_sell.sell_lines'])
+            ->select('transactions.*');
 
         $permitted_locations = $user->permitted_locations();
         if ($permitted_locations != 'all') {

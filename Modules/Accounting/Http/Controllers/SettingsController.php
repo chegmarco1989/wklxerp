@@ -3,6 +3,8 @@
 namespace Modules\Accounting\Http\Controllers;
 
 use App\Business;
+use App\BusinessLocation;
+use App\ExpenseCategory;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,8 +15,6 @@ use Modules\Accounting\Entities\AccountingAccountType;
 use Modules\Accounting\Entities\AccountingAccTransMapping;
 use Modules\Accounting\Entities\AccountingBudget;
 use Modules\Accounting\Utils\AccountingUtil;
-use App\BusinessLocation;
-use App\ExpenseCategory;
 
 class SettingsController extends Controller
 {
@@ -46,11 +46,11 @@ class SettingsController extends Controller
         }
 
         $account_sub_types = AccountingAccountType::where('account_type', 'sub_type')
-                                    ->where(function ($q) use ($business_id) {
-                                        $q->whereNull('business_id')
-                                        ->orWhere('business_id', $business_id);
-                                    })
-                                    ->get();
+            ->where(function ($q) use ($business_id) {
+                $q->whereNull('business_id')
+                    ->orWhere('business_id', $business_id);
+            })
+            ->get();
 
         $account_types = AccountingAccountType::accounting_primary_type();
 
@@ -58,7 +58,7 @@ class SettingsController extends Controller
 
         $business_locations = BusinessLocation::where('business_id', $business_id)->get();
 
-         $expence_categories = ExpenseCategory::where('business_id', $business_id)->get();
+        $expence_categories = ExpenseCategory::where('business_id', $business_id)->get();
 
         return view('accounting::settings.index')->with(compact('account_sub_types', 'account_types', 'accounting_settings', 'business_locations', 'expence_categories'));
     }
@@ -108,7 +108,6 @@ class SettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function saveSettings(Request $request)
@@ -116,7 +115,7 @@ class SettingsController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         if (! (auth()->user()->can('superadmin') || ($this->moduleUtil->hasThePermissionInSubscription($business_id,
-        'accounting_module')))) {
+            'accounting_module')))) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -124,11 +123,11 @@ class SettingsController extends Controller
             $accounting_settings = $request->only(['journal_entry_prefix', 'transfer_prefix', 'accounting_default_map']);
 
             Business::where('id', $business_id)
-                        ->update(['accounting_settings' => json_encode($accounting_settings)]);
-            
+                ->update(['accounting_settings' => json_encode($accounting_settings)]);
+
             //Update accounting_default_map for each locations
             $accounting_default_map = $request->get('accounting_default_map');
-            foreach($accounting_default_map as $location_id => $details){
+            foreach ($accounting_default_map as $location_id => $details) {
                 BusinessLocation::where('id', $location_id)
                     ->update(['accounting_default_map' => json_encode($details)]);
             }
@@ -172,7 +171,6 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */

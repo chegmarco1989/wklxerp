@@ -304,8 +304,8 @@ return [
     'auto_clockout_time' => 'Heure de sortie automatique',
     'work_duration_hour' => ':duration heure',
     'total_leaves_days' => ':total_leaves jours',
-	
-	'my_payrolls' => 'Mes Paies',
+
+    'my_payrolls' => 'Mes Paies',
     'view_all_payroll' => 'Voir toute la paie',
     'delete_payroll' => 'Supprimer la paie',
     'access_sales_target' => 'Accéder aux objectifs de vente',
@@ -325,7 +325,7 @@ return [
     'sales_targets' => 'Objectifs de vente',
     'get_current_location' => 'Obtenir la position actuelle',
     'payroll_cant_be_deleted_if_final' => 'La paie ne peut pas être supprimée si le statut est final (définitif).',
-    'add_todos' => "Ajouter des tâches",
-    'edit_todos' => "Modifier les tâches",
-    'delete_todos' => "Supprimer les tâches",
+    'add_todos' => 'Ajouter des tâches',
+    'edit_todos' => 'Modifier les tâches',
+    'delete_todos' => 'Supprimer les tâches',
 ];

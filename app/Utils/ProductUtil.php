@@ -28,12 +28,8 @@ class ProductUtil extends Util
      * Create single type product variation
      *
      * @param (int or object) $product
-     * @param $sku
-     * @param $purchase_price
-     * @param $dpp_inc_tax (default purchase pric including tax)
-     * @param $profit_percent
-     * @param $selling_price
-     * @param $combo_variations = []
+     * @param  $dpp_inc_tax  (default purchase pric including tax)
+     * @param  $combo_variations  = []
      * @return bool
      */
     public function createSingleProductVariation($product, $sku, $purchase_price, $dpp_inc_tax, $profit_percent, $selling_price, $selling_price_inc_tax, $combo_variations = [])
@@ -72,7 +68,6 @@ class ProductUtil extends Util
      * Create variable type product variation
      *
      * @param (int or object) $product
-     * @param $input_variations
      * @return bool
      */
     public function createVariableProductVariations($product, $input_variations, $business_id = null)
@@ -90,9 +85,9 @@ class ProductUtil extends Util
             if (empty($variation_template_id)) {
                 if ($variation_template_name != 'DUMMY') {
                     $variation_template = VariationTemplate::where('business_id', $business_id)
-                                                        ->whereRaw('LOWER(name)="'.strtolower($variation_template_name).'"')
-                                                        ->with(['values'])
-                                                        ->first();
+                        ->whereRaw('LOWER(name)="'.strtolower($variation_template_name).'"')
+                        ->with(['values'])
+                        ->first();
                     if (empty($variation_template)) {
                         $variation_template = VariationTemplate::create([
                             'name' => $variation_template_name,
@@ -120,8 +115,8 @@ class ProductUtil extends Util
                 $variation_data = [];
 
                 $c = Variation::withTrashed()
-                        ->where('product_id', $product->id)
-                        ->count() + 1;
+                    ->where('product_id', $product->id)
+                    ->count() + 1;
 
                 foreach ($value['variations'] as $k => $v) {
                     //skip hidden variations
@@ -185,8 +180,6 @@ class ProductUtil extends Util
     /**
      * Update variable type product variation
      *
-     * @param $product_id
-     * @param $input_variations_edit
      * @return bool
      */
     public function updateVariableProductVariations($product_id, $input_variations_edit)
@@ -219,8 +212,8 @@ class ProductUtil extends Util
                         $data['sub_sku'] = $v['sub_sku'];
                     }
                     $variation = Variation::where('id', $k)
-                            ->where('product_variation_id', $key)
-                            ->first();
+                        ->where('product_variation_id', $key)
+                        ->first();
 
                     $variation->update($data);
 
@@ -234,8 +227,8 @@ class ProductUtil extends Util
             if (! empty($value['variations'])) {
                 $variation_data = [];
                 $c = Variation::withTrashed()
-                                ->where('product_id', $product->id)
-                                ->count() + 1;
+                    ->where('product_id', $product->id)
+                    ->count() + 1;
                 $media = [];
                 foreach ($value['variations'] as $k => $v) {
                     $sub_sku = empty($v['sub_sku']) ? $this->generateSubSku($product->sku, $c, $product->barcode_type) : $v['sub_sku'];
@@ -245,8 +238,8 @@ class ProductUtil extends Util
 
                     if (! empty($product_variation->variation_template_id)) {
                         $variation_value = VariationValueTemplate::where('variation_template_id', $product_variation->variation_template_id)
-                                ->whereRaw('LOWER(name)="'.$v['value'].'"')
-                                ->first();
+                            ->whereRaw('LOWER(name)="'.$v['value'].'"')
+                            ->first();
                         if (empty($variation_value)) {
                             $variation_value = VariationValueTemplate::create([
                                 'name' => $v['value'],
@@ -284,8 +277,8 @@ class ProductUtil extends Util
 
         //get removed variations
         $removed_variations = Variation::whereNotIn('id', $variations_ids)
-                ->where('product_id', $product->id)
-                ->pluck('id');
+            ->where('product_id', $product->id)
+            ->pluck('id');
 
         foreach ($removed_variations as $removed_variation_id) {
             //Check if purchase or sell exist for the deletable variation
@@ -294,26 +287,26 @@ class ProductUtil extends Util
                 'purchase_lines.transaction_id',
                 '=',
                 'T.id'
-                )
-                  ->where('T.type', 'purchase')
-                  ->where('T.status', 'received')
-                  ->where('T.business_id', $product->business_id)
-                  ->where('purchase_lines.product_id', $product->id)
-                  ->where('purchase_lines.variation_id', $removed_variation_id)
-                  ->count();
+            )
+                ->where('T.type', 'purchase')
+                ->where('T.status', 'received')
+                ->where('T.business_id', $product->business_id)
+                ->where('purchase_lines.product_id', $product->id)
+                ->where('purchase_lines.variation_id', $removed_variation_id)
+                ->count();
 
             $count_sell = TransactionSellLine::join(
                 'transactions as T',
                 'transaction_sell_lines.transaction_id',
                 '=',
                 'T.id'
-                )
-                  ->where('T.type', 'sell')
-                  ->where('T.status', 'final')
-                  ->where('T.business_id', $product->business_id)
-                  ->where('transaction_sell_lines.product_id', $product->id)
-                  ->where('transaction_sell_lines.variation_id', $removed_variation_id)
-                  ->count();
+            )
+                ->where('T.type', 'sell')
+                ->where('T.status', 'final')
+                ->where('T.business_id', $product->business_id)
+                ->where('transaction_sell_lines.product_id', $product->id)
+                ->where('transaction_sell_lines.variation_id', $removed_variation_id)
+                ->count();
 
             $is_variation_delatable = $count_purchase > 0 || $count_sell > 0 ? false : true;
 
@@ -327,21 +320,17 @@ class ProductUtil extends Util
         }
 
         ProductVariation::where('product_id', $product_id)
-                ->whereNotIn('id', $product_variation_ids)
-                ->delete();
+            ->whereNotIn('id', $product_variation_ids)
+            ->delete();
     }
 
     /**
      * Checks if products has manage stock enabled then Updates quantity for product and its
      * variations
      *
-     * @param $location_id
-     * @param $product_id
-     * @param $variation_id
-     * @param $new_quantity
-     * @param $old_quantity = 0
-     * @param $number_format = null
-     * @param $uf_data = true, if false it will accept numbers in database format
+     * @param  $old_quantity  = 0
+     * @param  $number_format  = null
+     * @param  $uf_data  = true, if false it will accept numbers in database format
      * @return bool
      */
     public function updateProductQuantity($location_id, $product_id, $variation_id, $new_quantity, $old_quantity = 0, $number_format = null, $uf_data = true)
@@ -357,15 +346,15 @@ class ProductUtil extends Util
         //Check if stock is enabled or not.
         if ($product->enable_stock == 1 && $qty_difference != 0) {
             $variation = Variation::where('id', $variation_id)
-                            ->where('product_id', $product_id)
-                            ->first();
+                ->where('product_id', $product_id)
+                ->first();
 
             //Add quantity in VariationLocationDetails
             $variation_location_d = VariationLocationDetails::where('variation_id', $variation->id)
-                          ->where('product_id', $product_id)
-                          ->where('product_variation_id', $variation->product_variation_id)
-                          ->where('location_id', $location_id)
-                          ->first();
+                ->where('product_id', $product_id)
+                ->where('product_variation_id', $variation->product_variation_id)
+                ->where('location_id', $location_id)
+                ->first();
 
             if (empty($variation_location_d)) {
                 $variation_location_d = new VariationLocationDetails();
@@ -386,11 +375,7 @@ class ProductUtil extends Util
     /**
      * Checks if products has manage stock enabled then Decrease quantity for product and its variations
      *
-     * @param $product_id
-     * @param $variation_id
-     * @param $location_id
-     * @param $new_quantity
-     * @param $old_quantity = 0
+     * @param  $old_quantity  = 0
      * @return bool
      */
     public function decreaseProductQuantity($product_id, $variation_id, $location_id, $new_quantity, $old_quantity = 0)
@@ -428,8 +413,6 @@ class ProductUtil extends Util
     /**
      * Decrease the product quantity of combo sub-products
      *
-     * @param $combo_details
-     * @param $location_id
      * @return void
      */
     public function decreaseProductQuantityCombo($combo_details, $location_id)
@@ -452,22 +435,22 @@ class ProductUtil extends Util
      * @param  int  $variation_id
      * @param  int  $business_id
      * @param  int  $location_id
-     * @param  bool  $check_qty (If false qty_available is not checked)
+     * @param  bool  $check_qty  (If false qty_available is not checked)
      * @return array
      */
     public function getDetailsFromVariation($variation_id, $business_id, $location_id = null, $check_qty = true)
     {
         $query = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
-                ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
-                ->leftjoin('variation_location_details AS vld', 'variations.id', '=', 'vld.variation_id')
-                ->leftjoin('units', 'p.unit_id', '=', 'units.id')
-                ->leftjoin('units as u', 'p.secondary_unit_id', '=', 'u.id')
-                ->leftjoin('brands', function ($join) {
-                    $join->on('p.brand_id', '=', 'brands.id')
-                        ->whereNull('brands.deleted_at');
-                })
-                ->where('p.business_id', $business_id)
-                ->where('variations.id', $variation_id);
+            ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->leftjoin('variation_location_details AS vld', 'variations.id', '=', 'vld.variation_id')
+            ->leftjoin('units', 'p.unit_id', '=', 'units.id')
+            ->leftjoin('units as u', 'p.secondary_unit_id', '=', 'u.id')
+            ->leftjoin('brands', function ($join) {
+                $join->on('p.brand_id', '=', 'brands.id')
+                    ->whereNull('brands.deleted_at');
+            })
+            ->where('p.business_id', $business_id)
+            ->where('variations.id', $variation_id);
 
         //Add condition for check of quantity. (if stock is not enabled or qty_available > 0)
         if ($check_qty) {
@@ -481,7 +464,7 @@ class ProductUtil extends Util
             //Check for enable stock, if enabled check for location id.
             $query->where(function ($query) use ($location_id) {
                 $query->where('p.enable_stock', '!=', 1)
-                            ->orWhere('vld.location_id', $location_id);
+                    ->orWhere('vld.location_id', $location_id);
             });
         }
 
@@ -535,7 +518,7 @@ class ProductUtil extends Util
             DB::raw('(SELECT purchase_price_inc_tax FROM purchase_lines WHERE 
                         variation_id=variations.id ORDER BY id DESC LIMIT 1) as last_purchased_price')
         )
-        ->firstOrFail();
+            ->firstOrFail();
 
         if ($product->product_type == 'combo') {
             if ($check_qty) {
@@ -573,7 +556,7 @@ class ProductUtil extends Util
             }
 
             $vld = $variation->variation_location_details
-                          ->first();
+                ->first();
 
             $variation_qty = ! empty($vld) ? $vld->qty_available : 0;
             $multiplier = $this->getMultiplierOf2Units($product->unit_id, $value['unit_id']);
@@ -626,7 +609,7 @@ class ProductUtil extends Util
      *
      * @param  array  $products
      * @param  int  $tax_id
-     * @param  array  $discount['discount_type', 'discount_amount']
+     * @param  array  $discount['discount_type',  'discount_amount']
      * @return mixed (false, array)
      */
     public function calculateInvoiceTotal($products, $tax_id, $discount = null, $uf_number = true)
@@ -711,11 +694,11 @@ class ProductUtil extends Util
             '=',
             'tsl.transaction_id'
         )
-                    ->join('products as p', 'tsl.product_id', '=', 'p.id')
-                    ->leftjoin('units as u', 'u.id', '=', 'p.unit_id')
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'sell')
-                    ->where('transactions.status', 'final');
+            ->join('products as p', 'tsl.product_id', '=', 'p.id')
+            ->leftjoin('units as u', 'u.id', '=', 'p.unit_id')
+            ->where('transactions.business_id', $business_id)
+            ->where('transactions.type', 'sell')
+            ->where('transactions.status', 'final');
 
         $permitted_locations = auth()->user()->permitted_locations();
         if ($permitted_locations != 'all') {
@@ -767,9 +750,9 @@ class ProductUtil extends Util
             'u.short_name as unit',
             'p.sku'
         )->whereNull('tsl.parent_sell_line_id')
-                        ->groupBy('tsl.product_id')
-                        ->orderBy('total_unit_sold', 'desc')
-                        ->get();
+            ->groupBy('tsl.product_id')
+            ->orderBy('total_unit_sold', 'desc')
+            ->get();
 
         return $products;
     }
@@ -779,14 +762,14 @@ class ProductUtil extends Util
      *
      * @param  int  $business_id
      * @param  int  $product_id
-     * @param  int  $variation_id = null
+     * @param  int  $variation_id  = null
      * @return Obj
      */
     public function getDetailsFromProduct($business_id, $product_id, $variation_id = null)
     {
         $product = Product::leftjoin('variations as v', 'products.id', '=', 'v.product_id')
-                        ->whereNull('v.deleted_at')
-                        ->where('products.business_id', $business_id);
+            ->whereNull('v.deleted_at')
+            ->where('products.business_id', $business_id);
 
         if (! is_null($variation_id) && $variation_id !== '0') {
             $product->where('v.id', $variation_id);
@@ -800,7 +783,7 @@ class ProductUtil extends Util
             'v.id as variation_id',
             'v.name as variation_name'
         )
-                    ->get();
+            ->get();
 
         return $products;
     }
@@ -882,8 +865,8 @@ class ProductUtil extends Util
     public function updateProductFromPurchase($variation_data)
     {
         $variation_details = Variation::where('id', $variation_data['variation_id'])
-                                        ->with(['product', 'product.product_tax'])
-                                        ->first();
+            ->with(['product', 'product.product_tax'])
+            ->first();
         $tax_rate = 0;
         if (! empty($variation_details->product->product_tax->amount)) {
             $tax_rate = $variation_details->product->product_tax->amount;
@@ -895,7 +878,7 @@ class ProductUtil extends Util
 
         if (($variation_details->default_purchase_price != $variation_data['pp_without_discount']) ||
             ($variation_details->sell_price_inc_tax != $variation_data['sell_price_inc_tax'])
-            ) {
+        ) {
             //Set default purchase price exc. tax
             $variation_details->default_purchase_price = $variation_data['pp_without_discount'];
 
@@ -973,7 +956,7 @@ class ProductUtil extends Util
     public function getRackDetails($business_id, $product_id, $get_location = false)
     {
         $query = ProductRack::where('product_racks.business_id', $business_id)
-                    ->where('product_id', $product_id);
+            ->where('product_id', $product_id);
 
         if ($get_location) {
             $racks = $query->join('business_locations AS BL', 'product_racks.location_id', '=', 'BL.id')
@@ -1027,11 +1010,11 @@ class ProductUtil extends Util
     public function getVariationGroupPrice($variation_id, $price_group_id, $tax_id)
     {
         $price_group = VariationGroupPrice::where('variation_id', $variation_id)
-                        ->where('price_group_id', $price_group_id)
-                        ->select(['price_inc_tax', 'price_type'])
-                        ->first();
+            ->where('price_group_id', $price_group_id)
+            ->select(['price_inc_tax', 'price_type'])
+            ->first();
 
-        if(isset($price_group->price_type) && $price_group->price_type == 'percentage'){
+        if (isset($price_group->price_type) && $price_group->price_type == 'percentage') {
             //calculate the price
             $variation = Variation::find($variation_id);
             $price_inc_tax = $this->calc_percentage($variation->sell_price_inc_tax, $price_group->price_inc_tax);
@@ -1061,9 +1044,9 @@ class ProductUtil extends Util
     public function createOrNewVariation($business_id, $name)
     {
         $variation = VariationTemplate::where('business_id', $business_id)
-                                    ->where('name', 'like', $name)
-                                    ->with(['values'])
-                                    ->first();
+            ->where('name', 'like', $name)
+            ->with(['values'])
+            ->first();
 
         if (empty($variation)) {
             $variation = VariationTemplate::create([
@@ -1151,7 +1134,7 @@ class ProductUtil extends Util
                             'payment_status' => 'paid',
                             'created_by' => $user_id,
                         ]
-              );
+                    );
                     $transaction->purchase_lines()->saveMany($purchase_lines);
                 }
             }
@@ -1165,7 +1148,7 @@ class ProductUtil extends Util
      * @param  array  $input_data
      * @param  array  $currency_details
      * @param  bool  $enable_product_editing
-     * @param  string  $before_status = null
+     * @param  string  $before_status  = null
      * @return array
      */
     public function createOrUpdatePurchaseLines($transaction, $input_data, $currency_details, $enable_product_editing, $before_status = null)
@@ -1253,8 +1236,8 @@ class ProductUtil extends Util
         $delete_purchase_lines = null;
         if (! empty($updated_purchase_line_ids)) {
             $delete_purchase_lines = PurchaseLine::where('transaction_id', $transaction->id)
-                    ->whereNotIn('id', $updated_purchase_line_ids)
-                    ->get();
+                ->whereNotIn('id', $updated_purchase_line_ids)
+                ->get();
 
             if ($delete_purchase_lines->count()) {
                 foreach ($delete_purchase_lines as $delete_purchase_line) {
@@ -1289,8 +1272,8 @@ class ProductUtil extends Util
 
                 //Delete deleted purchase lines
                 PurchaseLine::where('transaction_id', $transaction->id)
-                        ->whereIn('id', $delete_purchase_line_ids)
-                        ->delete();
+                    ->whereIn('id', $delete_purchase_line_ids)
+                    ->delete();
             }
         }
 
@@ -1319,8 +1302,8 @@ class ProductUtil extends Util
      * @param  obj  $transaction
      * @param  int  $product_id
      * @param  int  $variation_id
-     * @param  decimal  $new_quantity in database format
-     * @param  decimal  $old_quantity in database format
+     * @param  decimal  $new_quantity  in database format
+     * @param  decimal  $old_quantity  in database format
      * @param  array  $currency_details
      */
     public function updateProductStock($status_before, $transaction, $product_id, $variation_id, $new_quantity, $old_quantity, $currency_details)
@@ -1416,16 +1399,16 @@ class ProductUtil extends Util
     /**
      * Retrieves current stock of a variation for the given location
      *
-     * @param  int  $variation_id, int location_id
+     * @param  int  $variation_id,  int location_id
      * @return float
      */
     public function getCurrentStock($variation_id, $location_id)
     {
         $current_stock = VariationLocationDetails::where('variation_id', $variation_id)
-                                              ->where('location_id', $location_id)
-                                              ->value('qty_available');
+            ->where('location_id', $location_id)
+            ->value('qty_available');
 
-        if (null == $current_stock) {
+        if ($current_stock == null) {
             $current_stock = 0;
         }
 
@@ -1448,7 +1431,7 @@ class ProductUtil extends Util
         foreach ($transaction->purchase_lines as $purchase_line) {
             if ($purchase_line->product->enable_stock == 1) {
 
-        //Available quantity in the purchase line
+                //Available quantity in the purchase line
                 $purchase_line_qty_avlbl = $purchase_line->quantity_remaining;
 
                 if ($purchase_line_qty_avlbl <= 0) {
@@ -1458,14 +1441,13 @@ class ProductUtil extends Util
                 //update sell line purchase line mapping
                 $sell_line_purchase_lines =
         TransactionSellLinesPurchaseLines::where('purchase_line_id', 0)
-                ->join('transaction_sell_lines as tsl', 'tsl.id', '=', 'transaction_sell_lines_purchase_lines.sell_line_id')
-                ->join('transactions as t', 'tsl.transaction_id', '=', 't.id')
-                ->where('t.location_id', $transaction->location_id)
-                ->where('tsl.variation_id', $purchase_line->variation_id)
-                ->where('tsl.product_id', $purchase_line->product_id)
-
-                ->select('transaction_sell_lines_purchase_lines.*')
-                ->get();
+            ->join('transaction_sell_lines as tsl', 'tsl.id', '=', 'transaction_sell_lines_purchase_lines.sell_line_id')
+            ->join('transactions as t', 'tsl.transaction_id', '=', 't.id')
+            ->where('t.location_id', $transaction->location_id)
+            ->where('tsl.variation_id', $purchase_line->variation_id)
+            ->where('tsl.product_id', $purchase_line->product_id)
+            ->select('transaction_sell_lines_purchase_lines.*')
+            ->get();
 
                 foreach ($sell_line_purchase_lines as $slpl) {
                     if ($purchase_line_qty_avlbl > 0) {
@@ -1502,8 +1484,8 @@ class ProductUtil extends Util
     /**
      * Finds out most relevant descount for the product
      *
-     * @param  obj  $product, int $business_id, int $location_id, bool $is_cg,
-     * bool $is_spg
+     * @param  obj  $product,  int $business_id, int $location_id, bool $is_cg,
+     *                         bool $is_spg
      * @return obj discount
      */
     public function getProductDiscount($product, $business_id, $location_id, $is_cg = false, $price_group = null, $variation_id = null)
@@ -1512,32 +1494,32 @@ class ProductUtil extends Util
 
         //Search if both category and brand matches
         $query = Discount::where('business_id', $business_id)
-                    ->where('location_id', $location_id)
-                    ->where('is_active', 1)
-                    ->where('starts_at', '<=', $now)
-                    ->where('ends_at', '>=', $now)
-                    ->where(function ($q) use ($product, $variation_id) {
-                        $q->where(function ($sub_q) use ($product) {
-                            if (! empty($product->brand_id)) {
-                                $sub_q->where('brand_id', $product->brand_id);
-                            }
-                            if (! empty($product->category_id)) {
-                                $sub_q->where('category_id', $product->category_id);
-                            }
-                        })
-                            ->orWhere(function ($sub_q) use ($product) {
-                                $sub_q->whereRaw('(brand_id="'.$product->brand_id.'" AND category_id IS NULL)')
-                                ->orWhereRaw('(category_id="'.$product->category_id.'" AND brand_id IS NULL)');
-                            });
+            ->where('location_id', $location_id)
+            ->where('is_active', 1)
+            ->where('starts_at', '<=', $now)
+            ->where('ends_at', '>=', $now)
+            ->where(function ($q) use ($product, $variation_id) {
+                $q->where(function ($sub_q) use ($product) {
+                    if (! empty($product->brand_id)) {
+                        $sub_q->where('brand_id', $product->brand_id);
+                    }
+                    if (! empty($product->category_id)) {
+                        $sub_q->where('category_id', $product->category_id);
+                    }
+                })
+                    ->orWhere(function ($sub_q) use ($product) {
+                        $sub_q->whereRaw('(brand_id="'.$product->brand_id.'" AND category_id IS NULL)')
+                            ->orWhereRaw('(category_id="'.$product->category_id.'" AND brand_id IS NULL)');
+                    });
 
-                        if (! empty($variation_id)) {
-                            $q->orWhereHas('variations', function ($sub_q) use ($variation_id) {
-                                $sub_q->where('variation_id', $variation_id);
-                            });
-                        }
-                    })
-                    ->orderBy('priority', 'desc')
-                    ->latest();
+                if (! empty($variation_id)) {
+                    $q->orWhereHas('variations', function ($sub_q) use ($variation_id) {
+                        $sub_q->where('variation_id', $variation_id);
+                    });
+                }
+            })
+            ->orderBy('priority', 'desc')
+            ->latest();
         if ($is_cg) {
             $query->where('applicable_in_cg', 1);
         }
@@ -1563,31 +1545,31 @@ class ProductUtil extends Util
     /**
      * Filters product as per the given inputs and return the details.
      *
-     * @param  string  $search_type (like or exact)
+     * @param  string  $search_type  (like or exact)
      * @return object
      */
     public function filterProduct($business_id, $search_term, $location_id = null, $not_for_selling = null, $price_group_id = null, $product_types = [], $search_fields = [], $check_qty = false, $search_type = 'like')
     {
         $query = Product::join('variations', 'products.id', '=', 'variations.product_id')
-                ->active()
-                ->whereNull('variations.deleted_at')
-                ->leftjoin('units as U', 'products.unit_id', '=', 'U.id')
-                ->leftjoin(
-                    'variation_location_details AS VLD',
-                    function ($join) use ($location_id) {
-                        $join->on('variations.id', '=', 'VLD.variation_id');
+            ->active()
+            ->whereNull('variations.deleted_at')
+            ->leftjoin('units as U', 'products.unit_id', '=', 'U.id')
+            ->leftjoin(
+                'variation_location_details AS VLD',
+                function ($join) use ($location_id) {
+                    $join->on('variations.id', '=', 'VLD.variation_id');
 
-                        //Include Location
-                        if (! empty($location_id)) {
-                            $join->where(function ($query) use ($location_id) {
-                                $query->where('VLD.location_id', '=', $location_id);
-                                //Check null to show products even if no quantity is available in a location.
-                                //TODO: Maybe add a settings to show product not available at a location or not.
-                                $query->orWhereNull('VLD.location_id');
-                            });
-                        }
+                    //Include Location
+                    if (! empty($location_id)) {
+                        $join->where(function ($query) use ($location_id) {
+                            $query->where('VLD.location_id', '=', $location_id);
+                            //Check null to show products even if no quantity is available in a location.
+                            //TODO: Maybe add a settings to show product not available at a location or not.
+                            $query->orWhereNull('VLD.location_id');
+                        });
                     }
-                );
+                }
+            );
 
         if (! is_null($not_for_selling)) {
             $query->where('products.not_for_selling', $not_for_selling);
@@ -1604,7 +1586,7 @@ class ProductUtil extends Util
         }
 
         $query->where('products.business_id', $business_id)
-                ->where('products.type', '!=', 'modifier');
+            ->where('products.type', '!=', 'modifier');
 
         if (! empty($product_types)) {
             $query->whereIn('products.type', $product_types);
@@ -1683,17 +1665,17 @@ class ProductUtil extends Util
         }
 
         $query->select(
-                'products.id as product_id',
-                'products.name',
-                'products.type',
-                'products.enable_stock',
-                'variations.id as variation_id',
-                'variations.name as variation',
-                'VLD.qty_available',
-                'variations.sell_price_inc_tax as selling_price',
-                'variations.sub_sku',
-                'U.short_name as unit'
-            );
+            'products.id as product_id',
+            'products.name',
+            'products.type',
+            'products.enable_stock',
+            'variations.id as variation_id',
+            'variations.name as variation',
+            'VLD.qty_available',
+            'variations.sell_price_inc_tax as selling_price',
+            'variations.sub_sku',
+            'U.short_name as unit'
+        );
 
         if (! empty($price_group_id)) {
             $query->addSelect(DB::raw('IF (VGP.price_type = "fixed", VGP.price_inc_tax, VGP.price_inc_tax * variations.sell_price_inc_tax / 100) as variation_group_price'));
@@ -1706,19 +1688,19 @@ class ProductUtil extends Util
         $query->groupBy('variations.id');
 
         return $query->orderBy('VLD.qty_available', 'desc')
-                        ->get();
+            ->get();
     }
 
     public function getProductStockDetails($business_id, $filters, $for)
     {
         $query = Variation::join('products as p', 'p.id', '=', 'variations.product_id')
-                  ->join('units', 'p.unit_id', '=', 'units.id')
-                  ->leftjoin('variation_location_details as vld', 'variations.id', '=', 'vld.variation_id')
-                  ->leftjoin('business_locations as l', 'vld.location_id', '=', 'l.id')
-                  ->leftjoin('categories as c', 'p.category_id', '=', 'c.id')
-                  ->join('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
-                  ->where('p.business_id', $business_id)
-                  ->whereIn('p.type', ['single', 'variable']);
+            ->join('units', 'p.unit_id', '=', 'units.id')
+            ->leftjoin('variation_location_details as vld', 'variations.id', '=', 'vld.variation_id')
+            ->leftjoin('business_locations as l', 'vld.location_id', '=', 'l.id')
+            ->leftjoin('categories as c', 'p.category_id', '=', 'c.id')
+            ->join('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->where('p.business_id', $business_id)
+            ->whereIn('p.type', ['single', 'variable']);
 
         $permitted_locations = auth()->user()->permitted_locations();
         $location_filter = '';
@@ -1739,9 +1721,9 @@ class ProductUtil extends Util
 
             //If filter by location then hide products not available in that location
             $query->join('product_locations as pl', 'pl.product_id', '=', 'p.id')
-                  ->where(function ($q) use ($location_id) {
-                      $q->where('pl.location_id', $location_id);
-                  });
+                ->where(function ($q) use ($location_id) {
+                    $q->where('pl.location_id', $location_id);
+                });
         }
 
         if (! empty($filters['category_id'])) {
@@ -1842,7 +1824,7 @@ class ProductUtil extends Util
 
         if (! empty($filters['product_id'])) {
             $products->where('p.id', $filters['product_id'])
-                    ->groupBy('l.id');
+                ->groupBy('l.id');
         }
 
         if ($for == 'view_product') {
@@ -1886,52 +1868,52 @@ class ProductUtil extends Util
     public function getVariationStockDetails($business_id, $variation_id, $location_id)
     {
         $purchase_details = Variation::join('products as p', 'p.id', '=', 'variations.product_id')
-                    ->join('units', 'p.unit_id', '=', 'units.id')
-                    ->leftjoin('units as u', 'p.secondary_unit_id', '=', 'u.id')
-                    ->leftjoin('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
-                    ->leftjoin('purchase_lines as pl', 'pl.variation_id', '=', 'variations.id')
-                    ->leftjoin('transactions as t', 'pl.transaction_id', '=', 't.id')
-                    ->where('t.location_id', $location_id)
+            ->join('units', 'p.unit_id', '=', 'units.id')
+            ->leftjoin('units as u', 'p.secondary_unit_id', '=', 'u.id')
+            ->leftjoin('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->leftjoin('purchase_lines as pl', 'pl.variation_id', '=', 'variations.id')
+            ->leftjoin('transactions as t', 'pl.transaction_id', '=', 't.id')
+            ->where('t.location_id', $location_id)
                     //->where('t.status', 'received')
-                    ->where('p.business_id', $business_id)
-                    ->where('variations.id', $variation_id)
-                    ->select(
-                        DB::raw("SUM(IF(t.type='purchase' AND t.status='received', pl.quantity, 0)) as total_purchase"),
-                        DB::raw("SUM(IF(t.type='purchase' OR t.type='purchase_return', pl.quantity_returned, 0)) as total_purchase_return"),
-                        DB::raw('SUM(pl.quantity_adjusted) as total_adjusted'),
-                        DB::raw("SUM(IF(t.type='opening_stock', pl.quantity, 0)) as total_opening_stock"),
-                        DB::raw("SUM(IF(t.type='purchase_transfer', pl.quantity, 0)) as total_purchase_transfer"),
-                        'variations.sub_sku as sub_sku',
-                        'p.name as product',
-                        'p.type',
-                        'p.sku',
-                        'p.id as product_id',
-                        'units.short_name as unit',
-                        'u.short_name as second_unit',
-                        'pv.name as product_variation',
-                        'variations.name as variation_name',
-                        'variations.id as variation_id'
-                    )
-                  ->get()->first();
+            ->where('p.business_id', $business_id)
+            ->where('variations.id', $variation_id)
+            ->select(
+                DB::raw("SUM(IF(t.type='purchase' AND t.status='received', pl.quantity, 0)) as total_purchase"),
+                DB::raw("SUM(IF(t.type='purchase' OR t.type='purchase_return', pl.quantity_returned, 0)) as total_purchase_return"),
+                DB::raw('SUM(pl.quantity_adjusted) as total_adjusted'),
+                DB::raw("SUM(IF(t.type='opening_stock', pl.quantity, 0)) as total_opening_stock"),
+                DB::raw("SUM(IF(t.type='purchase_transfer', pl.quantity, 0)) as total_purchase_transfer"),
+                'variations.sub_sku as sub_sku',
+                'p.name as product',
+                'p.type',
+                'p.sku',
+                'p.id as product_id',
+                'units.short_name as unit',
+                'u.short_name as second_unit',
+                'pv.name as product_variation',
+                'variations.name as variation_name',
+                'variations.id as variation_id'
+            )
+            ->get()->first();
 
         $sell_details = Variation::join('products as p', 'p.id', '=', 'variations.product_id')
-                    ->leftjoin('transaction_sell_lines as sl', 'sl.variation_id', '=', 'variations.id')
-                    ->join('transactions as t', 'sl.transaction_id', '=', 't.id')
-                    ->where('t.location_id', $location_id)
-                    ->where('t.status', 'final')
-                    ->where('p.business_id', $business_id)
-                    ->where('variations.id', $variation_id)
-                    ->select(
-                        DB::raw("SUM(IF(t.type='sell', sl.quantity, 0)) as total_sold"),
-                        DB::raw("SUM(IF(t.type='sell', sl.quantity_returned, 0)) as total_sell_return"),
-                        DB::raw("SUM(IF(t.type='sell_transfer', sl.quantity, 0)) as total_sell_transfer")
-                    )
-                  ->get()->first();
+            ->leftjoin('transaction_sell_lines as sl', 'sl.variation_id', '=', 'variations.id')
+            ->join('transactions as t', 'sl.transaction_id', '=', 't.id')
+            ->where('t.location_id', $location_id)
+            ->where('t.status', 'final')
+            ->where('p.business_id', $business_id)
+            ->where('variations.id', $variation_id)
+            ->select(
+                DB::raw("SUM(IF(t.type='sell', sl.quantity, 0)) as total_sold"),
+                DB::raw("SUM(IF(t.type='sell', sl.quantity_returned, 0)) as total_sell_return"),
+                DB::raw("SUM(IF(t.type='sell_transfer', sl.quantity, 0)) as total_sell_transfer")
+            )
+            ->get()->first();
 
         $current_stock = VariationLocationDetails::where('variation_id',
-                                            $variation_id)
-                                        ->where('location_id', $location_id)
-                                        ->first();
+            $variation_id)
+            ->where('location_id', $location_id)
+            ->first();
 
         if ($purchase_details->type == 'variable') {
             $product_name = $purchase_details->product.' - '.$purchase_details->product_variation.' - '.$purchase_details->variation_name.' ('.$purchase_details->sub_sku.')';
@@ -1961,47 +1943,47 @@ class ProductUtil extends Util
     {
         $stock_history = Transaction::leftjoin('transaction_sell_lines as sl',
             'sl.transaction_id', '=', 'transactions.id')
-                                ->leftjoin('purchase_lines as pl',
-                                    'pl.transaction_id', '=', 'transactions.id')
-                                ->leftjoin('stock_adjustment_lines as al',
-                                    'al.transaction_id', '=', 'transactions.id')
-                                ->leftjoin('transactions as return', 'transactions.return_parent_id', '=', 'return.id')
-                                ->leftjoin('purchase_lines as rpl',
-                                    'rpl.transaction_id', '=', 'return.id')
-                                ->leftjoin('transaction_sell_lines as rsl',
-                                        'rsl.transaction_id', '=', 'return.id')
-                                ->leftjoin('contacts as c', 'transactions.contact_id', '=', 'c.id')
-                                ->where('transactions.location_id', $location_id)
-                                ->where(function ($q) use ($variation_id) {
-                                    $q->where('sl.variation_id', $variation_id)
-                                        ->orWhere('pl.variation_id', $variation_id)
-                                        ->orWhere('al.variation_id', $variation_id)
-                                        ->orWhere('rpl.variation_id', $variation_id)
-                                        ->orWhere('rsl.variation_id', $variation_id);
-                                })
-                                ->whereIn('transactions.type', ['sell', 'purchase', 'stock_adjustment', 'opening_stock', 'sell_transfer', 'purchase_transfer', 'production_purchase', 'purchase_return', 'sell_return', 'production_sell'])
-                                ->select(
-                                    'transactions.id as transaction_id',
-                                    'transactions.type as transaction_type',
-                                    'sl.quantity as sell_line_quantity',
-                                    'pl.quantity as purchase_line_quantity',
-                                    'rsl.quantity_returned as sell_return',
-                                    'rpl.quantity_returned as purchase_return',
-                                    'al.quantity as stock_adjusted',
-                                    'pl.quantity_returned as combined_purchase_return',
-                                    'transactions.return_parent_id',
-                                    'transactions.transaction_date',
-                                    'transactions.status',
-                                    'transactions.invoice_no',
-                                    'transactions.ref_no',
-                                    'transactions.additional_notes',
-                                    'c.name as contact_name',
-                                    'c.supplier_business_name',
-                                    'pl.secondary_unit_quantity as purchase_secondary_unit_quantity',
-                                    'sl.secondary_unit_quantity as sell_secondary_unit_quantity'
-                                )
-                                ->orderBy('transactions.transaction_date', 'asc')
-                                ->get();
+            ->leftjoin('purchase_lines as pl',
+                'pl.transaction_id', '=', 'transactions.id')
+            ->leftjoin('stock_adjustment_lines as al',
+                'al.transaction_id', '=', 'transactions.id')
+            ->leftjoin('transactions as return', 'transactions.return_parent_id', '=', 'return.id')
+            ->leftjoin('purchase_lines as rpl',
+                'rpl.transaction_id', '=', 'return.id')
+            ->leftjoin('transaction_sell_lines as rsl',
+                'rsl.transaction_id', '=', 'return.id')
+            ->leftjoin('contacts as c', 'transactions.contact_id', '=', 'c.id')
+            ->where('transactions.location_id', $location_id)
+            ->where(function ($q) use ($variation_id) {
+                $q->where('sl.variation_id', $variation_id)
+                    ->orWhere('pl.variation_id', $variation_id)
+                    ->orWhere('al.variation_id', $variation_id)
+                    ->orWhere('rpl.variation_id', $variation_id)
+                    ->orWhere('rsl.variation_id', $variation_id);
+            })
+            ->whereIn('transactions.type', ['sell', 'purchase', 'stock_adjustment', 'opening_stock', 'sell_transfer', 'purchase_transfer', 'production_purchase', 'purchase_return', 'sell_return', 'production_sell'])
+            ->select(
+                'transactions.id as transaction_id',
+                'transactions.type as transaction_type',
+                'sl.quantity as sell_line_quantity',
+                'pl.quantity as purchase_line_quantity',
+                'rsl.quantity_returned as sell_return',
+                'rpl.quantity_returned as purchase_return',
+                'al.quantity as stock_adjusted',
+                'pl.quantity_returned as combined_purchase_return',
+                'transactions.return_parent_id',
+                'transactions.transaction_date',
+                'transactions.status',
+                'transactions.invoice_no',
+                'transactions.ref_no',
+                'transactions.additional_notes',
+                'c.name as contact_name',
+                'c.supplier_business_name',
+                'pl.secondary_unit_quantity as purchase_secondary_unit_quantity',
+                'sl.secondary_unit_quantity as sell_secondary_unit_quantity'
+            )
+            ->orderBy('transactions.transaction_date', 'asc')
+            ->get();
 
         $stock_history_array = [];
         $stock = 0;
@@ -2160,11 +2142,11 @@ class ProductUtil extends Util
     public function getVariationStockMisMatch($business_id, $variation_id, $location_id)
     {
         $query = Variation::leftjoin('products as p', 'p.id', '=', 'variations.product_id')
-                    ->leftjoin('units', 'p.unit_id', '=', 'units.id')
-                    ->leftjoin('variation_location_details as vld', 'variations.id', '=', 'vld.variation_id')
-                    ->leftjoin('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
-                    ->where('p.business_id', $business_id)
-                    ->where('vld.location_id', $location_id);
+            ->leftjoin('units', 'p.unit_id', '=', 'units.id')
+            ->leftjoin('variation_location_details as vld', 'variations.id', '=', 'vld.variation_id')
+            ->leftjoin('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->where('p.business_id', $business_id)
+            ->where('vld.location_id', $location_id);
 
         if (! is_null($variation_id)) {
             $query->where('variations.id', $variation_id);
@@ -2228,8 +2210,8 @@ class ProductUtil extends Util
             'variations.name as variation_name',
             'variations.id as variation_id'
         )
-        ->groupBy('variations.id')
-        ->get();
+            ->groupBy('variations.id')
+            ->get();
 
         foreach ($stock_details as $index => $row) {
             $total_sold = $row->total_sold ?: 0;
@@ -2262,11 +2244,11 @@ class ProductUtil extends Util
             '=',
             'variation_location_details.location_id'
         )
-                ->where('variation_location_details.location_id', $location_id)
-                    ->where('variation_id', $variation_id)
-                    ->where('bl.business_id', $business_id)
-                    ->select('variation_location_details.*')
-                    ->first();
+            ->where('variation_location_details.location_id', $location_id)
+            ->where('variation_id', $variation_id)
+            ->where('bl.business_id', $business_id)
+            ->select('variation_location_details.*')
+            ->first();
 
         if (! empty($vld)) {
             $vld->qty_available = $stock;
@@ -2280,11 +2262,11 @@ class ProductUtil extends Util
             '=',
             'variation_location_details.location_id'
         )
-                ->where('variation_location_details.location_id', $location_id)
-                ->where('variation_id', $variation_id)
-                ->where('bl.business_id', $business_id)
-                ->where('variation_location_details.id', '!=', $vld->id)
-                ->delete();
+            ->where('variation_location_details.location_id', $location_id)
+            ->where('variation_id', $variation_id)
+            ->where('bl.business_id', $business_id)
+            ->where('variation_location_details.id', '!=', $vld->id)
+            ->delete();
     }
 
     /**
@@ -2300,39 +2282,38 @@ class ProductUtil extends Util
             '=',
             'pv.id'
         )
-                ->join(
-                    'variations as v',
-                    'variation_location_details.variation_id',
-                    '=',
-                    'v.id'
-                )
-                ->join(
-                    'products as p',
-                    'variation_location_details.product_id',
-                    '=',
-                    'p.id'
-                )
-                ->leftjoin(
-                    'business_locations as l',
-                    'variation_location_details.location_id',
-                    '=',
-                    'l.id'
-                )
-                ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
-                ->where('p.business_id', $business_id)
-                ->where('p.enable_stock', 1)
-                ->where('p.is_inactive', 0)
-                ->whereNull('v.deleted_at')
-                ->whereNotNull('p.alert_quantity')
-                ->whereRaw('variation_location_details.qty_available <= p.alert_quantity');
+            ->join(
+                'variations as v',
+                'variation_location_details.variation_id',
+                '=',
+                'v.id'
+            )
+            ->join(
+                'products as p',
+                'variation_location_details.product_id',
+                '=',
+                'p.id'
+            )
+            ->leftjoin(
+                'business_locations as l',
+                'variation_location_details.location_id',
+                '=',
+                'l.id'
+            )
+            ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
+            ->where('p.business_id', $business_id)
+            ->where('p.enable_stock', 1)
+            ->where('p.is_inactive', 0)
+            ->whereNull('v.deleted_at')
+            ->whereNotNull('p.alert_quantity')
+            ->whereRaw('variation_location_details.qty_available <= p.alert_quantity');
 
-             //Check for permitted locations of a user
-             if(!empty($permitted_locations)){
-                if ($permitted_locations != 'all') {
-                    $query->whereIn('variation_location_details.location_id', $permitted_locations);
-                }
+        //Check for permitted locations of a user
+        if (! empty($permitted_locations)) {
+            if ($permitted_locations != 'all') {
+                $query->whereIn('variation_location_details.location_id', $permitted_locations);
             }
-        
+        }
 
         if (! empty(request()->input('location_id'))) {
             $query->where('variation_location_details.location_id', request()->input('location_id'));
@@ -2349,11 +2330,9 @@ class ProductUtil extends Util
             'variation_location_details.qty_available as stock',
             'u.short_name as unit'
         )
-                ->groupBy('variation_location_details.id')
-                ->orderBy('stock', 'asc');
+            ->groupBy('variation_location_details.id')
+            ->orderBy('stock', 'asc');
 
         return $products;
     }
-
-  
 }

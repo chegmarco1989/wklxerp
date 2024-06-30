@@ -79,7 +79,6 @@ class LoginController extends Controller
      * The user has been authenticated.
      * Check if the business is active or not.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
      * @return mixed
      */
@@ -91,18 +90,18 @@ class LoginController extends Controller
             \Auth::logout();
 
             return redirect('/login')
-              ->with(
-                  'status',
-                  ['success' => 0, 'msg' => __('lang_v1.business_inactive')]
-              );
+                ->with(
+                    'status',
+                    ['success' => 0, 'msg' => __('lang_v1.business_inactive')]
+                );
         } elseif ($user->status != 'active') {
             \Auth::logout();
 
             return redirect('/login')
-              ->with(
-                  'status',
-                  ['success' => 0, 'msg' => __('lang_v1.user_inactive')]
-              );
+                ->with(
+                    'status',
+                    ['success' => 0, 'msg' => __('lang_v1.user_inactive')]
+                );
         } elseif (! $user->allow_login) {
             \Auth::logout();
 

@@ -2,11 +2,10 @@
 
 namespace Modules\Manufacturing\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use App\Utils\ModuleUtil;
-use App\Utils\Util;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class ManufacturingServiceProvider extends ServiceProvider
 {
@@ -129,11 +128,11 @@ class ManufacturingServiceProvider extends ServiceProvider
      */
     protected function registerCommands()
     {
-        
+
     }
 
     public function registerScheduleCommands()
     {
-        
+
     }
 }

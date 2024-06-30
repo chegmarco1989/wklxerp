@@ -13,8 +13,8 @@ return new class extends Migration
     public function up()
     {
         Transaction::where('type', 'opening_stock')
-                    ->where('status', '!=', 'received')
-                    ->update(['status' => 'received']);
+            ->where('status', '!=', 'received')
+            ->update(['status' => 'received']);
     }
 
     /**

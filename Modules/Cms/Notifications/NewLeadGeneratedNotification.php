@@ -42,13 +42,13 @@ class NewLeadGeneratedNotification extends Notification
     public function toMail($notifiable)
     {
         $mail = (new MailMessage)
-                ->greeting('Hello!')
-                ->subject('New inquiry from '.$this->lead['name'])
-                ->line($this->lead['message'])
-                ->line('<br> <br> Other details are: <br>')
-                ->line('Name: '.$this->lead['name'])
-                ->line('Mobile: '.$this->lead['mobile'])
-                ->line('Email: '.$this->lead['email']);
+            ->greeting('Hello!')
+            ->subject('New inquiry from '.$this->lead['name'])
+            ->line($this->lead['message'])
+            ->line('<br> <br> Other details are: <br>')
+            ->line('Name: '.$this->lead['name'])
+            ->line('Mobile: '.$this->lead['mobile'])
+            ->line('Email: '.$this->lead['email']);
 
         return $mail;
     }

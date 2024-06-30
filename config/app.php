@@ -200,7 +200,7 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Nwidart\Menus\MenusServiceProvider::class,
         Knox\Pesapal\PesapalServiceProvider::class,
-		Jenssegers\Agent\AgentServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
     ],
 
     /*
@@ -226,7 +226,7 @@ return [
         'Redis' => Illuminate\Support\Facades\Redis::class,
         'Menu' => Nwidart\Menus\Facades\Menu::class,
         'Pesapal' => Knox\Pesapal\Facades\Pesapal::class,
-		'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
-		'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ])->toArray(),
 ];

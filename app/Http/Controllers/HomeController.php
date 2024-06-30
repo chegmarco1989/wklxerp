@@ -36,8 +36,8 @@ class HomeController extends Controller
     protected $commonUtil;
 
     protected $restUtil;
-	
-	protected $accountingUtil;															/* AJOUTE */
+
+    protected $accountingUtil;															/* AJOUTE */
 
     /**
      * Create a new controller instance.
@@ -50,16 +50,16 @@ class HomeController extends Controller
         ModuleUtil $moduleUtil,
         Util $commonUtil,
         RestaurantUtil $restUtil,
-		
-		AccountingUtil $accountingUtil,													/* AJOUTE */
+
+        AccountingUtil $accountingUtil,													/* AJOUTE */
     ) {
         $this->businessUtil = $businessUtil;
         $this->transactionUtil = $transactionUtil;
         $this->moduleUtil = $moduleUtil;
         $this->commonUtil = $commonUtil;
         $this->restUtil = $restUtil;
-		
-		$this->accountingUtil = $accountingUtil;										/* AJOUTE */
+
+        $this->accountingUtil = $accountingUtil;										/* AJOUTE */
     }
 
     /**
@@ -132,10 +132,10 @@ class HomeController extends Controller
         $sells_chart_1 = new CommonChart;
 
         $sells_chart_1->labels($labels)
-                        ->options($this->__chartOptions(__(
-                            'home.total_sells',
-                            ['currency' => $currency->code]
-                            )));
+            ->options($this->__chartOptions(__(
+                'home.total_sells',
+                ['currency' => $currency->code]
+            )));
 
         if (! empty($location_sells)) {
             foreach ($location_sells as $location_sell) {
@@ -157,7 +157,7 @@ class HomeController extends Controller
             $fy_months[] = $month_year;
 
             $labels[] = \Carbon::createFromFormat('m-Y', $month_year)
-                            ->format('M-Y');
+                ->format('M-Y');
             $date = strtotime('+1 month', $date);
 
             $total_sell_in_month_year = $sells_this_fy->where('yearmonth', $month_year)->sum('total_sells');
@@ -188,10 +188,10 @@ class HomeController extends Controller
 
         $sells_chart_2 = new CommonChart;
         $sells_chart_2->labels($labels)
-                    ->options($this->__chartOptions(__(
-                        'home.total_sells',
-                        ['currency' => $currency->code]
-                            )));
+            ->options($this->__chartOptions(__(
+                'home.total_sells',
+                ['currency' => $currency->code]
+            )));
         if (! empty($fy_sells_by_location_data)) {
             foreach ($fy_sells_by_location_data as $location_sell) {
                 $sells_chart_2->dataset($location_sell['loc_label'], 'area', $location_sell['values']);
@@ -200,28 +200,28 @@ class HomeController extends Controller
         if (count($all_locations) > 1) {
             $sells_chart_2->dataset(__('report.all_locations'), 'area', $values);
         }
-		
-		/* AJOUT D'UN GRAPHIQUE CIRCULAIRE (type: pie) depuis la librairie "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts" dont 
-			les demos sont visible ici: https://www.highcharts.com/demo: */
-			
-		// Get business ID from session
-		$business_id = request()->session()->get('user.business_id');
+
+        /* AJOUT D'UN GRAPHIQUE CIRCULAIRE (type: pie) depuis la librairie "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts" dont
+            les demos sont visible ici: https://www.highcharts.com/demo: */
+
+        // Get business ID from session
+        $business_id = request()->session()->get('user.business_id');
 
         $start_date = request()->get('start_date', session()->get('financial_year.start'));
         $end_date = request()->get('end_date', session()->get('financial_year.end'));
         $balance_formula = $this->accountingUtil->balanceFormula();
 
         $coa_overview = AccountingAccount::leftjoin('accounting_accounts_transactions as AAT',
-                                    'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                                ->where('business_id', $business_id)
-                                ->whereDate('AAT.operation_date', '>=', $start_date)
-                                ->whereDate('AAT.operation_date', '<=', $end_date)
-                                ->select(
-                                    DB::raw($balance_formula),
-                                    'accounting_accounts.account_primary_type'
-                                )
-                                ->groupBy('accounting_accounts.account_primary_type')
-                                ->get();
+            'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+            ->where('business_id', $business_id)
+            ->whereDate('AAT.operation_date', '>=', $start_date)
+            ->whereDate('AAT.operation_date', '<=', $end_date)
+            ->select(
+                DB::raw($balance_formula),
+                'accounting_accounts.account_primary_type'
+            )
+            ->groupBy('accounting_accounts.account_primary_type')
+            ->get();
 
         $account_types = AccountingAccountType::accounting_primary_type();
 
@@ -251,31 +251,31 @@ class HomeController extends Controller
             '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a', ];
         $sells_chart_3 = new CommonChart;
         $sells_chart_3->labels($labels_chart_3)
-                    ->options($this->__chartOptionsPie())
-                    ->dataset(__('accounting::lang.current_balance'), 'pie', $values_chart_3)
-                    ->color($colors);
+            ->options($this->__chartOptionsPie())
+            ->dataset(__('accounting::lang.current_balance'), 'pie', $values_chart_3)
+            ->color($colors);
 
         foreach ($account_types as $k => $v) {
             $sub_types = AccountingAccountType::where('account_primary_type', $k)
-                                        ->where(function ($q) use ($business_id) {
-                                            $q->whereNull('business_id')
-                                                ->orWhere('business_id', $business_id);
-                                        })
-                                        ->get();
+                ->where(function ($q) use ($business_id) {
+                    $q->whereNull('business_id')
+                        ->orWhere('business_id', $business_id);
+                })
+                ->get();
 
             $balances = AccountingAccount::leftjoin('accounting_accounts_transactions as AAT',
-                                        'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                                ->where('business_id', $business_id)
-                                ->whereDate('AAT.operation_date', '>=', $start_date)
-                                ->whereDate('AAT.operation_date', '<=', $end_date)
-                                ->select(
-                                    DB::raw($balance_formula),
-                                    'accounting_accounts.account_sub_type_id'
-                                )
-                                ->groupBy('accounting_accounts.account_sub_type_id')
-                                ->get();
+                'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+                ->where('business_id', $business_id)
+                ->whereDate('AAT.operation_date', '>=', $start_date)
+                ->whereDate('AAT.operation_date', '<=', $end_date)
+                ->select(
+                    DB::raw($balance_formula),
+                    'accounting_accounts.account_sub_type_id'
+                )
+                ->groupBy('accounting_accounts.account_sub_type_id')
+                ->get();
         }
-		// FIN D L'AJOUT DE "Pie Chats" depuis "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts".
+        // FIN D L'AJOUT DE "Pie Chats" depuis "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts".
 
         //Get Dashboard widgets from module
         $module_widgets = $this->moduleUtil->getModuleData('dashboard_widget');
@@ -289,9 +289,10 @@ class HomeController extends Controller
         }
 
         $common_settings = ! empty(session('business.common_settings')) ? session('business.common_settings') : [];
-		// On n'oublie SURTOUT PAS d'inclure la variable "sells_chart_3" contenant notre nouveau graphique "Pie Chart" dans notre vue "home.index.blade.php":
-        return view('home.index', compact('sells_chart_1', 'sells_chart_2', 'sells_chart_3', 'coa_overview', 'account_types', 
-											'end_date', 'start_date', 'widgets', 'all_locations', 'common_settings', 'is_admin'));
+
+        // On n'oublie SURTOUT PAS d'inclure la variable "sells_chart_3" contenant notre nouveau graphique "Pie Chart" dans notre vue "home.index.blade.php":
+        return view('home.index', compact('sells_chart_1', 'sells_chart_2', 'sells_chart_3', 'coa_overview', 'account_types',
+            'end_date', 'start_date', 'widgets', 'all_locations', 'common_settings', 'is_admin'));
     }
 
     /**
@@ -368,31 +369,31 @@ class HomeController extends Controller
                 '=',
                 'pv.id'
             )
-                    ->join(
-                        'variations as v',
-                        'variation_location_details.variation_id',
-                        '=',
-                        'v.id'
-                    )
-                    ->join(
-                        'products as p',
-                        'variation_location_details.product_id',
-                        '=',
-                        'p.id'
-                    )
-                    ->leftjoin(
-                        'business_locations as l',
-                        'variation_location_details.location_id',
-                        '=',
-                        'l.id'
-                    )
-                    ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
-                    ->where('p.business_id', $business_id)
-                    ->where('p.enable_stock', 1)
-                    ->where('p.is_inactive', 0)
-                    ->whereNull('v.deleted_at')
-                    ->whereNotNull('p.alert_quantity')
-                    ->whereRaw('variation_location_details.qty_available <= p.alert_quantity');
+                ->join(
+                    'variations as v',
+                    'variation_location_details.variation_id',
+                    '=',
+                    'v.id'
+                )
+                ->join(
+                    'products as p',
+                    'variation_location_details.product_id',
+                    '=',
+                    'p.id'
+                )
+                ->leftjoin(
+                    'business_locations as l',
+                    'variation_location_details.location_id',
+                    '=',
+                    'l.id'
+                )
+                ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
+                ->where('p.business_id', $business_id)
+                ->where('p.enable_stock', 1)
+                ->where('p.is_inactive', 0)
+                ->whereNull('v.deleted_at')
+                ->whereNotNull('p.alert_quantity')
+                ->whereRaw('variation_location_details.qty_available <= p.alert_quantity');
 
             //Check for permitted locations of a user
             $permitted_locations = auth()->user()->permitted_locations();
@@ -415,8 +416,8 @@ class HomeController extends Controller
                 'variation_location_details.qty_available as stock',
                 'u.short_name as unit'
             )
-                    ->groupBy('variation_location_details.id')
-                    ->orderBy('stock', 'asc');
+                ->groupBy('variation_location_details.id')
+                ->orderBy('stock', 'asc');
 
             return Datatables::of($products)
                 ->editColumn('product', function ($row) {
@@ -459,16 +460,16 @@ class HomeController extends Controller
                 '=',
                 'c.id'
             )
-                    ->leftJoin(
-                        'transaction_payments as tp',
-                        'transactions.id',
-                        '=',
-                        'tp.transaction_id'
-                    )
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'purchase')
-                    ->where('transactions.payment_status', '!=', 'paid')
-                    ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
+                ->leftJoin(
+                    'transaction_payments as tp',
+                    'transactions.id',
+                    '=',
+                    'tp.transaction_id'
+                )
+                ->where('transactions.business_id', $business_id)
+                ->where('transactions.type', 'purchase')
+                ->where('transactions.payment_status', '!=', 'paid')
+                ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
 
             //Check for permitted locations of a user
             $permitted_locations = auth()->user()->permitted_locations();
@@ -488,7 +489,7 @@ class HomeController extends Controller
                 'final_total',
                 DB::raw('SUM(tp.amount) as total_paid')
             )
-                        ->groupBy('transactions.id');
+                ->groupBy('transactions.id');
 
             return Datatables::of($dues)
                 ->addColumn('due', function ($row) {
@@ -503,7 +504,7 @@ class HomeController extends Controller
                 ->editColumn('supplier', '@if(!empty($supplier_business_name)) {{$supplier_business_name}}, <br> @endif {{$supplier}}')
                 ->editColumn('ref_no', function ($row) {
                     if (auth()->user()->can('purchase.view')) {
-                        return  '<a href="#" data-href="'.action([\App\Http\Controllers\PurchaseController::class, 'show'], [$row->id]).'"
+                        return '<a href="#" data-href="'.action([\App\Http\Controllers\PurchaseController::class, 'show'], [$row->id]).'"
                                     class="btn-modal" data-container=".view_modal">'.$row->ref_no.'</a>';
                     }
 
@@ -534,18 +535,18 @@ class HomeController extends Controller
                 '=',
                 'c.id'
             )
-                    ->leftJoin(
-                        'transaction_payments as tp',
-                        'transactions.id',
-                        '=',
-                        'tp.transaction_id'
-                    )
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'sell')
-                    ->where('transactions.payment_status', '!=', 'paid')
-                    ->whereNotNull('transactions.pay_term_number')
-                    ->whereNotNull('transactions.pay_term_type')
-                    ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
+                ->leftJoin(
+                    'transaction_payments as tp',
+                    'transactions.id',
+                    '=',
+                    'tp.transaction_id'
+                )
+                ->where('transactions.business_id', $business_id)
+                ->where('transactions.type', 'sell')
+                ->where('transactions.payment_status', '!=', 'paid')
+                ->whereNotNull('transactions.pay_term_number')
+                ->whereNotNull('transactions.pay_term_type')
+                ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
 
             //Check for permitted locations of a user
             $permitted_locations = auth()->user()->permitted_locations();
@@ -565,7 +566,7 @@ class HomeController extends Controller
                 'final_total',
                 DB::raw('SUM(tp.amount) as total_paid')
             )
-                        ->groupBy('transactions.id');
+                ->groupBy('transactions.id');
 
             return Datatables::of($dues)
                 ->addColumn('due', function ($row) {
@@ -577,7 +578,7 @@ class HomeController extends Controller
                 })
                 ->editColumn('invoice_no', function ($row) {
                     if (auth()->user()->can('sell.view')) {
-                        return  '<a href="#" data-href="'.action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]).'"
+                        return '<a href="#" data-href="'.action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]).'"
                                     class="btn-modal" data-container=".view_modal">'.$row->invoice_no.'</a>';
                     }
 
@@ -652,41 +653,42 @@ class HomeController extends Controller
         ];
     }
 
-    private function __chartOptionsPie() {
-		return [
-			'plotOptions' => [
-				'pie' => [
-					'allowPointSelect' => true,
-					'cursor' => 'pointer',
-					'dataLabels' => [
-						[
-							'enabled' => true,
-							'distance' => 20,
-						],
-						[
-							'enabled' => true,
-							'distance' => -40,
-							'format' => '{point.percentage:.1f}%',
-							'style' => [
-								'fontSize' => '19px',
-								'textOutline' => 'none',
-								'opacity' => 0.7,
-							],
-							'filter' => [
-								'operator' => '>',
-								'property' => 'percentage',
-								'value' => 10,
-							],
-						],
-					],
-					'showInLegend' => true,
-					'tooltip' => [
-						'valueSuffix' => '%', // Add this line
-					],
-				],
-			],
-		];
-	}
+    private function __chartOptionsPie()
+    {
+        return [
+            'plotOptions' => [
+                'pie' => [
+                    'allowPointSelect' => true,
+                    'cursor' => 'pointer',
+                    'dataLabels' => [
+                        [
+                            'enabled' => true,
+                            'distance' => 20,
+                        ],
+                        [
+                            'enabled' => true,
+                            'distance' => -40,
+                            'format' => '{point.percentage:.1f}%',
+                            'style' => [
+                                'fontSize' => '19px',
+                                'textOutline' => 'none',
+                                'opacity' => 0.7,
+                            ],
+                            'filter' => [
+                                'operator' => '>',
+                                'property' => 'percentage',
+                                'value' => 10,
+                            ],
+                        ],
+                    ],
+                    'showInLegend' => true,
+                    'tooltip' => [
+                        'valueSuffix' => '%', // Add this line
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function getCalendar()
     {
@@ -765,7 +767,7 @@ class HomeController extends Controller
 
                 //find model to which medias are to be attached
                 $model_to_be_attached = $model::where('business_id', $business_id)
-                                        ->findOrFail($model_id);
+                    ->findOrFail($model_id);
 
                 Media::uploadMedia($business_id, $model_to_be_attached, $request, 'file', false, $model_media_type);
 

@@ -178,7 +178,7 @@ return [
     'report_help_text' => 'Selecione um intervalo de datas e clique no botão GERAR para visualizar informações sobre todas as reservas feitas no período selecionado.',
     'print_pdf' => 'PDF da Reserva',
     'footer_text' => 'Texto do Rodapé',
-    'no_rooms_or_extras' => 'Nenhum Quarto/Extras adicionados, por favor, adicione para continuar', 
+    'no_rooms_or_extras' => 'Nenhum Quarto/Extras adicionados, por favor, adicione para continuar',
     'add_booking_payment' => 'Adicionar pagamento de reserva',
     'edit_booking_payment' => 'Editar pagamento de reserva',
     'delete_booking_payment' => 'Excluir pagamento de reserva',

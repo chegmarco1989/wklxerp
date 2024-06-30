@@ -34,7 +34,7 @@ class Package extends Model
     public static function listPackages($exlude_private = false)
     {
         $packages = Package::active()
-                        ->orderby('sort_order');
+            ->orderby('sort_order');
 
         if ($exlude_private) {
             $packages->notPrivate();

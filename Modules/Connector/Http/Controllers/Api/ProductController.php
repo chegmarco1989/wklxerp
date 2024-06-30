@@ -13,6 +13,7 @@ use Modules\Connector\Transformers\VariationResource;
 
 /**
  * @group Product management
+ *
  * @authenticated
  *
  * APIs for managing products
@@ -33,6 +34,7 @@ class ProductController extends ApiController
      * @queryParam name Search term for product name
      * @queryParam sku Search term for product sku
      * @queryParam per_page Total records per page. default: 10, Set -1 for no pagination Example:10
+     *
      * @response {
         "data": [
             {
@@ -307,8 +309,10 @@ class ProductController extends ApiController
      * Get the specified product
      *
      * @urlParam product required comma separated ids of products Example: 1
+     *
      * @queryParam selling_price_group (1, 0)
      * @queryParam send_lot_detail Send lot details in each variation location details(1, 0)
+     *
      * @response {
             "data": [
                 {
@@ -651,6 +655,7 @@ class ProductController extends ApiController
      * List Variations
      *
      * @urlParam id comma separated ids of variations Example: 2
+     *
      * @queryParam product_id Filter by comma separated products ids
      * @queryParam location_id Example: 1
      * @queryParam brand_id
@@ -660,6 +665,7 @@ class ProductController extends ApiController
      * @queryParam name Search term for product name
      * @queryParam sku Search term for product sku
      * @queryParam per_page Total records per page. default: 10, Set -1 for no pagination Example:10
+     *
      * @response {
         "data": [
             {
@@ -903,61 +909,61 @@ class ProductController extends ApiController
         $business_id = $user->business_id;
 
         $query = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
-                ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
-                ->leftjoin('units', 'p.unit_id', '=', 'units.id')
-                ->leftjoin('tax_rates as tr', 'p.tax', '=', 'tr.id')
-                ->leftjoin('brands', function ($join) {
-                    $join->on('p.brand_id', '=', 'brands.id')
-                        ->whereNull('brands.deleted_at');
-                })
-                ->leftjoin('categories as c', 'p.category_id', '=', 'c.id')
-                ->leftjoin('categories as sc', 'p.sub_category_id', '=', 'sc.id')
-                ->where('p.business_id', $business_id)
-                ->select(
-                    'variations.id',
-                    'variations.name as variation_name',
-                    'variations.sub_sku',
-                    'p.id as product_id',
-                    'p.name as product_name',
-                    'p.sku',
-                    'p.type as type',
-                    'p.business_id',
-                    'p.barcode_type',
-                    'p.expiry_period',
-                    'p.expiry_period_type',
-                    'p.enable_sr_no',
-                    'p.weight',
-                    'p.product_custom_field1',
-                    'p.product_custom_field2',
-                    'p.product_custom_field3',
-                    'p.product_custom_field4',
-                    'p.image as product_image',
-                    'p.product_description',
-                    'p.warranty_id',
-                    'p.brand_id',
-                    'brands.name as brand_name',
-                    'p.unit_id',
-                    'p.enable_stock',
-                    'p.not_for_selling',
-                    'units.short_name as unit_name',
-                    'units.allow_decimal as unit_allow_decimal',
-                    'p.category_id',
-                    'c.name as category',
-                    'p.sub_category_id',
-                    'sc.name as sub_category',
-                    'p.tax as tax_id',
-                    'p.tax_type',
-                    'tr.name as tax_name',
-                    'tr.amount as tax_amount',
-                    'variations.product_variation_id',
-                    'variations.default_purchase_price',
-                    'variations.dpp_inc_tax',
-                    'variations.profit_percent',
-                    'variations.default_sell_price',
-                    'variations.sell_price_inc_tax',
-                    'pv.id as product_variation_id',
-                    'pv.name as product_variation_name'
-                );
+            ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->leftjoin('units', 'p.unit_id', '=', 'units.id')
+            ->leftjoin('tax_rates as tr', 'p.tax', '=', 'tr.id')
+            ->leftjoin('brands', function ($join) {
+                $join->on('p.brand_id', '=', 'brands.id')
+                    ->whereNull('brands.deleted_at');
+            })
+            ->leftjoin('categories as c', 'p.category_id', '=', 'c.id')
+            ->leftjoin('categories as sc', 'p.sub_category_id', '=', 'sc.id')
+            ->where('p.business_id', $business_id)
+            ->select(
+                'variations.id',
+                'variations.name as variation_name',
+                'variations.sub_sku',
+                'p.id as product_id',
+                'p.name as product_name',
+                'p.sku',
+                'p.type as type',
+                'p.business_id',
+                'p.barcode_type',
+                'p.expiry_period',
+                'p.expiry_period_type',
+                'p.enable_sr_no',
+                'p.weight',
+                'p.product_custom_field1',
+                'p.product_custom_field2',
+                'p.product_custom_field3',
+                'p.product_custom_field4',
+                'p.image as product_image',
+                'p.product_description',
+                'p.warranty_id',
+                'p.brand_id',
+                'brands.name as brand_name',
+                'p.unit_id',
+                'p.enable_stock',
+                'p.not_for_selling',
+                'units.short_name as unit_name',
+                'units.allow_decimal as unit_allow_decimal',
+                'p.category_id',
+                'c.name as category',
+                'p.sub_category_id',
+                'sc.name as sub_category',
+                'p.tax as tax_id',
+                'p.tax_type',
+                'tr.name as tax_name',
+                'tr.amount as tax_amount',
+                'variations.product_variation_id',
+                'variations.default_purchase_price',
+                'variations.dpp_inc_tax',
+                'variations.profit_percent',
+                'variations.default_sell_price',
+                'variations.sell_price_inc_tax',
+                'pv.id as product_variation_id',
+                'pv.name as product_variation_name'
+            );
 
         $with = [
             'variation_location_details',
@@ -1076,7 +1082,7 @@ class ProductController extends ApiController
         $business_id = $user->business_id;
 
         $price_groups = SellingPriceGroup::where('business_id', $business_id)
-                                        ->get();
+            ->get();
 
         return CommonResource::collection($price_groups);
     }

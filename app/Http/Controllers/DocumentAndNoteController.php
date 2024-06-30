@@ -48,7 +48,7 @@ class DocumentAndNoteController extends Controller
                     $query->where('is_private', 0)
                         ->orWhere(function ($q) use ($user_id) {
                             $q->where('is_private', 1)
-                              ->where('created_by', $user_id);
+                                ->where('created_by', $user_id);
                         });
                 })
                 ->where('notable_type', $notable_type)
@@ -138,7 +138,7 @@ class DocumentAndNoteController extends Controller
 
                             return $html;
                         }
-                        )
+                    )
                     ->removeColumn('id')
                     ->rawColumns(['action', 'heading', 'createdBy', 'created_at', 'updated_at'])
                     ->make(true);
@@ -203,7 +203,6 @@ class DocumentAndNoteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -296,9 +295,9 @@ class DocumentAndNoteController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $document_note = DocumentAndNote::where('business_id', $business_id)
-        ->where('notable_id', $notable_id)
-        ->where('notable_type', $notable_type)
-        ->findOrFail($id);
+            ->where('notable_id', $notable_id)
+            ->where('notable_type', $notable_type)
+            ->findOrFail($id);
 
         return view('documents_and_notes.edit')
             ->with(compact('notable_id', 'document_note', 'notable_type'));
@@ -307,7 +306,6 @@ class DocumentAndNoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

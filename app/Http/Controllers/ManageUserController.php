@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLocation;
+use App\Events\UserCreatedOrModified;
 use App\User;
 use App\Utils\ModuleUtil;
 use DB;
@@ -12,7 +13,6 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
-use App\Events\UserCreatedOrModified;
 
 class ManageUserController extends Controller
 {
@@ -43,10 +43,10 @@ class ManageUserController extends Controller
             $user_id = request()->session()->get('user.id');
 
             $users = User::where('business_id', $business_id)
-                        ->user()
-                        ->where('is_cmmsn_agnt', 0)
-                        ->select(['id', 'username',
-                            DB::raw("CONCAT(COALESCE(surname, ''), ' ', COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) as full_name"), 'email', 'allow_login', ]);
+                ->user()
+                ->where('is_cmmsn_agnt', 0)
+                ->select(['id', 'username',
+                    DB::raw("CONCAT(COALESCE(surname, ''), ' ', COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) as full_name"), 'email', 'allow_login', ]);
 
             return Datatables::of($users)
                 ->editColumn('username', '{{$username}} @if(empty($allow_login)) <span class="label bg-gray">@lang("lang_v1.login_not_allowed")</span>@endif')
@@ -106,20 +106,19 @@ class ManageUserController extends Controller
         $roles = $this->getRolesArray($business_id);
         $username_ext = $this->moduleUtil->getUsernameExtension();
         $locations = BusinessLocation::where('business_id', $business_id)
-                                    ->Active()
-                                    ->get();
+            ->Active()
+            ->get();
 
         //Get user form part from modules
         $form_partials = $this->moduleUtil->getModuleData('moduleViewPartials', ['view' => 'manage_user.create']);
 
         return view('manage_user.create')
-                ->with(compact('roles', 'username_ext', 'locations', 'form_partials'));
+            ->with(compact('roles', 'username_ext', 'locations', 'form_partials'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -170,8 +169,8 @@ class ManageUserController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $user = User::where('business_id', $business_id)
-                    ->with(['contactAccess'])
-                    ->find($id);
+            ->with(['contactAccess'])
+            ->find($id);
 
         //Get user view part from modules
         $view_partials = $this->moduleUtil->getModuleData('moduleViewPartials', ['view' => 'manage_user.show', 'user' => $user]);
@@ -179,9 +178,9 @@ class ManageUserController extends Controller
         $users = User::forDropdown($business_id, false);
 
         $activities = Activity::forSubject($user)
-           ->with(['causer', 'subject'])
-           ->latest()
-           ->get();
+            ->with(['causer', 'subject'])
+            ->latest()
+            ->get();
 
         return view('manage_user.show')->with(compact('user', 'view_partials', 'users', 'activities'));
     }
@@ -200,8 +199,8 @@ class ManageUserController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $user = User::where('business_id', $business_id)
-                    ->with(['contactAccess'])
-                    ->findOrFail($id);
+            ->with(['contactAccess'])
+            ->findOrFail($id);
 
         $roles = $this->getRolesArray($business_id);
 
@@ -214,7 +213,7 @@ class ManageUserController extends Controller
         }
 
         $locations = BusinessLocation::where('business_id', $business_id)
-                                    ->get();
+            ->get();
 
         $permitted_locations = $user->permitted_locations();
         $username_ext = $this->moduleUtil->getUsernameExtension();
@@ -223,13 +222,12 @@ class ManageUserController extends Controller
         $form_partials = $this->moduleUtil->getModuleData('moduleViewPartials', ['view' => 'manage_user.edit', 'user' => $user]);
 
         return view('manage_user.edit')
-                ->with(compact('roles', 'user', 'contact_access', 'is_checked_checkbox', 'locations', 'permitted_locations', 'form_partials', 'username_ext'));
+            ->with(compact('roles', 'user', 'contact_access', 'is_checked_checkbox', 'locations', 'permitted_locations', 'form_partials', 'username_ext'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -240,7 +238,7 @@ class ManageUserController extends Controller
         if (! empty($notAllowed)) {
             return $notAllowed;
         }
-        
+
         if (! auth()->user()->can('user.update')) {
             abort(403, 'Unauthorized action.');
         }
@@ -300,11 +298,11 @@ class ManageUserController extends Controller
             }
 
             $user = User::where('business_id', $business_id)
-                          ->findOrFail($id);
+                ->findOrFail($id);
 
-            $user_data['name'] = $user_data['surname'] . " " . $user_data['first_name'];											// AJOUTE
-			
-			$user->update($user_data);
+            $user_data['name'] = $user_data['surname'].' '.$user_data['first_name'];											// AJOUTE
+
+            $user->update($user_data);
             $role_id = $request->input('role');
             $user_role = $user->roles->first();
             $previous_role = ! empty($user_role->id) ? $user_role->id : 0;
@@ -338,9 +336,9 @@ class ManageUserController extends Controller
             $this->moduleUtil->getModuleData('afterModelSaved', ['event' => 'user_saved', 'model_instance' => $user]);
 
             $this->moduleUtil->activityLog($user, 'edited', null, ['name' => $user->user_full_name]);
-           
+
             event(new UserCreatedOrModified($user, 'updated'));
-            
+
             $output = ['success' => 1,
                 'msg' => __('user.user_update_success'),
             ];

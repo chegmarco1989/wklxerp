@@ -216,7 +216,7 @@ return [
     'expiry_date' => 'Expiry date',
     'add_new_coupon' => 'Add new coupon',
     'discount' => 'Discount',
-    'coupon_created_succesfully' => 'Coupon created succesfully', 
+    'coupon_created_succesfully' => 'Coupon created succesfully',
     'coupon_updated_succesfully' => 'Coupon updated succesfully',
     'coupon_deleted_succesfully' => 'Coupon deleted succesfully',
     'edit_coupon' => 'Edit coupon',

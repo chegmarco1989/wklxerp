@@ -1,4 +1,5 @@
 <?php
+
 return [
     'hms' => 'HMS',
     'type' => 'Jenis Akomodasi',
@@ -83,7 +84,7 @@ return [
     'calendar' => 'Kalender',
     'new_booking' => 'Pemesanan Baru',
     'unavailable' => 'Tidak Tersedia',
-    'unavailable_type' => 'Tipe Tidak Tersedia', 
+    'unavailable_type' => 'Tipe Tidak Tersedia',
     'edit_unavailable' => 'Edit Tidak Tersedia',
     'add_unavailable' => 'Tambah Tidak Tersedia',
     'booking_Id' => 'ID Pemesanan',
@@ -135,12 +136,12 @@ return [
     'stay' => 'Menginap',
     'hms_module' => 'Modul HMS',
     'manage_rooms' => 'Kelola Kamar',
-    'manage_price' =>'Kelola Harga',
+    'manage_price' => 'Kelola Harga',
     'manage_unavailable' => 'Kelola Tidak Tersedia',
     'manage_extra' => 'Kelola Ekstra',
     'manage_coupon' => 'Kelola Kupon',
     'add_booking' => 'Tambah Pemesanan',
-    'delete_booking' => 'Hapus Pemesanan', 
+    'delete_booking' => 'Hapus Pemesanan',
     'manage_amenities' => 'Kelola Fasilitas',
     'rooms_booked_today' => 'Kamar Dipesan Hari Ini',
     'pending_rooms_today' => 'Kamar Tertunda Hari Ini',
@@ -180,7 +181,7 @@ return [
     'footer_text' => 'Teks Footer',
     'add_booking_payment' => 'Tambah pembayaran pemesanan',
     'edit_booking_payment' => 'Edit pembayaran pemesanan',
-    'delete_booking_payment' => 'Hapus pembayaran pemesanan', 
+    'delete_booking_payment' => 'Hapus pembayaran pemesanan',
     'hms_report' => 'Laporan Hms',
     'manage_settings' => 'Kelola Pengaturan',
     'discount_percent' => 'diskon %',

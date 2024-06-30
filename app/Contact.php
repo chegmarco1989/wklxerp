@@ -114,16 +114,16 @@ class Contact extends Authenticatable
     /**
      * Return list of contact dropdown for a business
      *
-     * @param $business_id int
-     * @param $exclude_default = false (boolean)
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $exclude_default  = false (boolean)
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
     public static function contactDropdown($business_id, $exclude_default = false, $prepend_none = true, $append_id = true)
     {
         $query = Contact::where('business_id', $business_id)
-                    ->where('type', '!=', 'lead')
-                    ->active();
+            ->where('type', '!=', 'lead')
+            ->active();
 
         if ($exclude_default) {
             $query->where('is_default', 0);
@@ -133,7 +133,7 @@ class Contact extends Authenticatable
             $query->select(
                 DB::raw("IF(contacts.contact_id IS NULL OR contacts.contact_id='', name, CONCAT(name, ' - ', COALESCE(supplier_business_name, ''), '(', contacts.contact_id, ')')) AS supplier"),
                 'contacts.id'
-                    );
+            );
         } else {
             $query->select(
                 'contacts.id',
@@ -163,26 +163,26 @@ class Contact extends Authenticatable
     /**
      * Return list of suppliers dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
     public static function suppliersDropdown($business_id, $prepend_none = true, $append_id = true)
     {
         $all_contacts = Contact::where('contacts.business_id', $business_id)
-                        ->whereIn('contacts.type', ['supplier', 'both'])
-                        ->active();
+            ->whereIn('contacts.type', ['supplier', 'both'])
+            ->active();
 
         if ($append_id) {
             $all_contacts->select(
                 DB::raw("IF(contacts.contact_id IS NULL OR contacts.contact_id='', name, CONCAT(contacts.name, ' - ', COALESCE(contacts.supplier_business_name, ''), '(', contacts.contact_id, ')')) AS supplier"),
                 'contacts.id'
-                    );
+            );
         } else {
             $all_contacts->select(
                 'contacts.id',
                 DB::raw("CONCAT(contacts.name, ' (', contacts.supplier_business_name, ')') as supplier")
-                );
+            );
         }
 
         if (auth()->check() && ! auth()->user()->can('supplier.view') && auth()->user()->can('supplier.view_own')) {
@@ -202,21 +202,21 @@ class Contact extends Authenticatable
     /**
      * Return list of customers dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
     public static function customersDropdown($business_id, $prepend_none = true, $append_id = true)
     {
         $all_contacts = Contact::where('contacts.business_id', $business_id)
-                        ->whereIn('contacts.type', ['customer', 'both'])
-                        ->active();
+            ->whereIn('contacts.type', ['customer', 'both'])
+            ->active();
 
         if ($append_id) {
             $all_contacts->select(
                 DB::raw("IF(contacts.contact_id IS NULL OR contacts.contact_id='', CONCAT( COALESCE(contacts.supplier_business_name, ''), ' - ', contacts.name), CONCAT(COALESCE(contacts.supplier_business_name, ''), ' - ', name, ' (', contacts.contact_id, ')')) AS customer"),
                 'contacts.id'
-                );
+            );
         } else {
             $all_contacts->select('contacts.id', DB::raw('contacts.name as customer'));
         }
@@ -238,7 +238,7 @@ class Contact extends Authenticatable
     /**
      * Return list of contact type.
      *
-     * @param $prepend_all = false (boolean)
+     * @param  $prepend_all  = false (boolean)
      * @return array
      */
     public static function typeDropdown($prepend_all = false)

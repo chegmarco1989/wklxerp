@@ -16,7 +16,7 @@ class AssetUtil extends Util
     public function getAssetSettings($business_id)
     {
         $asset_settings = Business::where('id', $business_id)
-                            ->value('asset_settings');
+            ->value('asset_settings');
 
         $asset_settings = ! empty($asset_settings) ? json_decode($asset_settings, true) : [];
 
@@ -42,8 +42,8 @@ class AssetUtil extends Util
         }
 
         $template = NotificationTemplate::where('business_id', $maintenance->business_id)
-                                        ->where('template_for', 'send_for_maintenance')
-                                        ->first();
+            ->where('template_for', 'send_for_maintenance')
+            ->first();
 
         $email_data = [
             'subject' => ! empty($template) ? $this->replaceEmailTags($template->subject, $maintenance) : __('assetmanagement::lang.asset_sent_for_maintenance', ['asset_code' => $maintenance->asset->asset_code]),
@@ -52,7 +52,7 @@ class AssetUtil extends Util
         ];
 
         $recipients = User::whereIn('id', $settings['send_for_maintenence_recipients'])
-                        ->get();
+            ->get();
 
         Notification::send($recipients, new AssetSentForMaintenance($email_data));
     }
@@ -72,8 +72,8 @@ class AssetUtil extends Util
         }
 
         $template = NotificationTemplate::where('business_id', $maintenance->business_id)
-                                        ->where('template_for', 'assigned_for_maintenance')
-                                        ->first();
+            ->where('template_for', 'assigned_for_maintenance')
+            ->first();
 
         $email_data = [
             'subject' => ! empty($template) ? $this->replaceEmailTags($template->subject, $maintenance) : __('assetmanagement::lang.asset_assigned_for_maintenance', ['asset_code' => $maintenance->asset->asset_code]),

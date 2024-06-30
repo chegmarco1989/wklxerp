@@ -47,7 +47,7 @@ class CrmSettingsController extends Controller
         $crm_settings = $this->crmUtil->getCrmSettings($business_id);
 
         return view('crm::settings.index')
-                ->with(compact('crm_settings'));
+            ->with(compact('crm_settings'));
     }
 
     /**
@@ -73,7 +73,7 @@ class CrmSettingsController extends Controller
             }
 
             Business::where('id', $business_id)
-                        ->update(['crm_settings' => json_encode($input)]);
+                ->update(['crm_settings' => json_encode($input)]);
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.updated_success'),

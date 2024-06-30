@@ -75,7 +75,7 @@ class OrderRequestController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $customer = Contact::where('business_id', auth()->user()->business_id)
-                            ->findOrFail(auth()->user()->crm_contact_id);
+            ->findOrFail(auth()->user()->crm_contact_id);
 
         if (request()->ajax()) {
             $sells = $this->transactionUtil->getListSells($business_id, 'sales_order');
@@ -96,7 +96,7 @@ class OrderRequestController extends Controller
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $sells->whereDate('transactions.transaction_date', '>=', $start)
-                            ->whereDate('transactions.transaction_date', '<=', $end);
+                    ->whereDate('transactions.transaction_date', '<=', $end);
             }
 
             if (! empty(request()->input('status'))) {
@@ -114,7 +114,7 @@ class OrderRequestController extends Controller
                 ->filterColumn('conatct_name', function ($query, $keyword) {
                     $query->where(function ($q) use ($keyword) {
                         $q->where('contacts.name', 'like', "%{$keyword}%")
-                        ->orWhere('contacts.supplier_business_name', 'like', "%{$keyword}%");
+                            ->orWhere('contacts.supplier_business_name', 'like', "%{$keyword}%");
                     });
                 })
 
@@ -128,7 +128,7 @@ class OrderRequestController extends Controller
                 ->setRowAttr([
                     'data-href' => function ($row) {
                         if (auth()->user()->can('sell.view') || auth()->user()->can('view_own_sell_only')) {
-                            return  action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]);
+                            return action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]);
                         } else {
                             return '';
                         }
@@ -137,7 +137,7 @@ class OrderRequestController extends Controller
             $rawColumns = ['final_total', 'invoice_no', 'conatct_name', 'status'];
 
             return $datatable->rawColumns($rawColumns)
-                      ->make(true);
+                ->make(true);
         }
 
         $order_statuses = [];
@@ -159,7 +159,7 @@ class OrderRequestController extends Controller
     public function create()
     {
         $contact = Contact::where('business_id', auth()->user()->business_id)
-                            ->findOrFail(auth()->user()->crm_contact_id);
+            ->findOrFail(auth()->user()->crm_contact_id);
 
         $business_id = request()->session()->get('user.business_id');
 
@@ -191,7 +191,6 @@ class OrderRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -206,7 +205,7 @@ class OrderRequestController extends Controller
             $input['discount_amount'] = 0;
 
             $contact = Contact::where('business_id', auth()->user()->business_id)
-                            ->findOrFail(auth()->user()->crm_contact_id);
+                ->findOrFail(auth()->user()->crm_contact_id);
 
             if (! empty($input['products'])) {
                 $business_id = $request->session()->get('user.business_id');
@@ -267,8 +266,8 @@ class OrderRequestController extends Controller
         }
 
         return redirect()
-                ->action([\Modules\Crm\Http\Controllers\OrderRequestController::class, 'index'])
-                ->with('status', $output);
+            ->action([\Modules\Crm\Http\Controllers\OrderRequestController::class, 'index'])
+            ->with('status', $output);
     }
 
     public function getProductRow($variation_id, $location_id)
@@ -335,8 +334,8 @@ class OrderRequestController extends Controller
         $discount = $this->productUtil->getProductDiscount($product, $business_id, $location_id, $is_cg, $price_group, $variation_id);
 
         $output['html_content'] = view('crm::order_request.product_row')
-                    ->with(compact('product', 'row_count', 'pos_settings', 'sub_units', 'discount', 'quantity', 'is_direct_sell', 'tax_dropdown'))
-                    ->render();
+            ->with(compact('product', 'row_count', 'pos_settings', 'sub_units', 'discount', 'quantity', 'is_direct_sell', 'tax_dropdown'))
+            ->render();
 
         return $output;
     }

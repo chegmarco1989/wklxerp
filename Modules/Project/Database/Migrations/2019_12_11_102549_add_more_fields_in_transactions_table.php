@@ -15,8 +15,8 @@ class AddMoreFieldsInTransactionsTable extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->unsignedInteger('pjt_project_id')
-                    ->nullable()
-                    ->after('pay_term_type');
+                ->nullable()
+                ->after('pay_term_type');
 
             $table->foreign('pjt_project_id')
                 ->references('id')->on('pjt_projects')

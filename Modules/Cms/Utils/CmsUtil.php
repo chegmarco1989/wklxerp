@@ -15,9 +15,9 @@ class CmsUtil extends Util
     public function getPageByType($type = 'page')
     {
         $posts = CmsPage::where('type', $type)
-                ->where('is_enabled', 1)
-                ->orderBy('priority', 'desc')
-                ->get();
+            ->where('is_enabled', 1)
+            ->orderBy('priority', 'desc')
+            ->get();
 
         return $posts;
     }
@@ -25,9 +25,9 @@ class CmsUtil extends Util
     public function getPageByLayout($layout)
     {
         $page = CmsPage::with(['pageMeta'])
-                ->where('type', 'page')
-                ->where('layout', $layout)
-                ->first();
+            ->where('type', 'page')
+            ->where('layout', $layout)
+            ->first();
 
         return $page;
     }

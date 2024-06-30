@@ -256,5 +256,5 @@ return [
     'applied_on_business_help_text' => 'यदि कोई व्यापार चयनित नहीं हुआ है तो इसे सभी पर लागू किया जा सकता है',
     'invalid_coupon' => 'अमान्य कूपन',
     'coupon_not_matched_with_package' => 'इस योजना में इस कोड का उपयोग नहीं किया जा सकता',
-    'coupon_not_matched_with_business' => 'इस व्यापार में इस कोड का उपयोग नहीं किया जा सकता'
+    'coupon_not_matched_with_business' => 'इस व्यापार में इस कोड का उपयोग नहीं किया जा सकता',
 ];

@@ -81,10 +81,10 @@ class CmsPage extends Model
     public static function getEnabledPages($type = 'page')
     {
         $pages = CmsPage::where('type', $type)
-                    ->whereNull('layout')
-                    ->orderBy('priority', 'asc')
-                    ->where('is_enabled', 1)
-                    ->get();
+            ->whereNull('layout')
+            ->orderBy('priority', 'asc')
+            ->where('is_enabled', 1)
+            ->get();
 
         return $pages;
     }
@@ -96,8 +96,8 @@ class CmsPage extends Model
         }
 
         $pages_count = CmsPage::where('type', $type)
-                        ->where('is_enabled', 1)
-                        ->count();
+            ->where('is_enabled', 1)
+            ->count();
 
         return $pages_count;
     }

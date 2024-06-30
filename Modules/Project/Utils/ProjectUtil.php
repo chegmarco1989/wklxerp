@@ -14,14 +14,14 @@ class ProjectUtil extends Util
     /**
      * generate task id
      *
-     * @param $business_id, $project_id
+     * @param  $business_id,  $project_id
      * @return string
      */
     public function generateTaskId($business_id, $project_id)
     {
         $project = Project::withCount('tasks')
-                        ->where('business_id', $business_id)
-                        ->findOrfail($project_id);
+            ->where('business_id', $business_id)
+            ->findOrfail($project_id);
 
         $task_id_prefix = ! empty($project->settings['task_id_prefix']) ? $project->settings['task_id_prefix'] : '#';
 
@@ -31,14 +31,12 @@ class ProjectUtil extends Util
     /**
      * check if the user is project lead.
      *
-     * @param $user_id
-     * @param $project_id
      * @return bool
      */
     public function isProjectLead($user_id, $project_id)
     {
         $project = Project::where('lead_id', $user_id)
-                    ->find($project_id);
+            ->find($project_id);
 
         return ! empty($project);
     }
@@ -46,8 +44,6 @@ class ProjectUtil extends Util
     /**
      * check if the user is project member.
      *
-     * @param $user_id
-     * @param $project_id
      * @return bool
      */
     public function isProjectMember($user_id, $project_id)
@@ -55,7 +51,7 @@ class ProjectUtil extends Util
         $project = Project::with(['members' => function ($query) use ($user_id) {
             $query->where('user_id', $user_id);
         }])
-        ->find($project_id);
+            ->find($project_id);
 
         return ! empty($project->members);
     }
@@ -156,7 +152,7 @@ class ProjectUtil extends Util
     public function getProject($business_id, $project_id)
     {
         $project = Project::where('business_id', $business_id)
-                        ->find($project_id);
+            ->find($project_id);
 
         return $project;
     }

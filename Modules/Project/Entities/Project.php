@@ -3,8 +3,8 @@
 namespace Modules\Project\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Project extends Model
 {
@@ -43,7 +43,7 @@ class Project extends Model
             ->logOnly(['*'])
             ->logOnlyDirty();
     }
-    
+
     /**
      * The member that belongs to the project.
      */

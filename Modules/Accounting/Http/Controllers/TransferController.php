@@ -50,36 +50,36 @@ class TransferController extends Controller
 
         if (request()->ajax()) {
             $transfers = AccountingAccTransMapping::where('accounting_acc_trans_mappings.business_id', $business_id)
-                        ->join('users as u', 'accounting_acc_trans_mappings.created_by', 'u.id')
-                        ->join('accounting_accounts_transactions as from_transaction', function ($join) {
-                            $join->on('from_transaction.acc_trans_mapping_id', '=', 'accounting_acc_trans_mappings.id')
-                                    ->where('from_transaction.type', 'debit');
-                        })
-                        ->join('accounting_accounts_transactions as to_transaction', function ($join) {
-                            $join->on('to_transaction.acc_trans_mapping_id', '=', 'accounting_acc_trans_mappings.id')
-                                    ->where('to_transaction.type', 'credit');
-                        })
-                        ->join('accounting_accounts as from_account',
-                        'from_transaction.accounting_account_id', 'from_account.id')
-                        ->join('accounting_accounts as to_account',
-                        'to_transaction.accounting_account_id', 'to_account.id')
-                        ->where('accounting_acc_trans_mappings.type', 'transfer')
-                        ->select(['accounting_acc_trans_mappings.id',
-                            'accounting_acc_trans_mappings.ref_no',
-                            'accounting_acc_trans_mappings.operation_date',
-                            'accounting_acc_trans_mappings.note',
-                            DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) 
+                ->join('users as u', 'accounting_acc_trans_mappings.created_by', 'u.id')
+                ->join('accounting_accounts_transactions as from_transaction', function ($join) {
+                    $join->on('from_transaction.acc_trans_mapping_id', '=', 'accounting_acc_trans_mappings.id')
+                        ->where('from_transaction.type', 'debit');
+                })
+                ->join('accounting_accounts_transactions as to_transaction', function ($join) {
+                    $join->on('to_transaction.acc_trans_mapping_id', '=', 'accounting_acc_trans_mappings.id')
+                        ->where('to_transaction.type', 'credit');
+                })
+                ->join('accounting_accounts as from_account',
+                    'from_transaction.accounting_account_id', 'from_account.id')
+                ->join('accounting_accounts as to_account',
+                    'to_transaction.accounting_account_id', 'to_account.id')
+                ->where('accounting_acc_trans_mappings.type', 'transfer')
+                ->select(['accounting_acc_trans_mappings.id',
+                        'accounting_acc_trans_mappings.ref_no',
+                        'accounting_acc_trans_mappings.operation_date',
+                        'accounting_acc_trans_mappings.note',
+                        DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) 
                             as added_by"),
-                            'from_transaction.amount',
-                            'from_account.name as from_account_name',
-                            'to_account.name as to_account_name',
-                        ]);
+                        'from_transaction.amount',
+                        'from_account.name as from_account_name',
+                        'to_account.name as to_account_name',
+                    ]);
 
             if (! empty(request()->start_date) && ! empty(request()->end_date)) {
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $transfers->whereDate('accounting_acc_trans_mappings.operation_date', '>=', $start)
-                            ->whereDate('accounting_acc_trans_mappings.operation_date', '<=', $end);
+                    ->whereDate('accounting_acc_trans_mappings.operation_date', '<=', $end);
             }
 
             if (! empty(request()->transfer_from)) {
@@ -161,7 +161,6 @@ class TransferController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -268,24 +267,23 @@ class TransferController extends Controller
 
         if (request()->ajax()) {
             $mapping_transaction = AccountingAccTransMapping::where('id', $id)
-                            ->where('business_id', $business_id)->firstOrFail();
+                ->where('business_id', $business_id)->firstOrFail();
 
             $debit_tansaction = AccountingAccountsTransaction::where('acc_trans_mapping_id', $id)
-                                    ->where('type', 'debit')
-                                    ->first();
+                ->where('type', 'debit')
+                ->first();
             $credit_tansaction = AccountingAccountsTransaction::where('acc_trans_mapping_id', $id)
-                                    ->where('type', 'credit')
-                                    ->first();
+                ->where('type', 'credit')
+                ->first();
 
             return view('accounting::transfer.edit')->with(compact('mapping_transaction',
-            'debit_tansaction', 'credit_tansaction'));
+                'debit_tansaction', 'credit_tansaction'));
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -301,14 +299,14 @@ class TransferController extends Controller
 
         try {
             $mapping_transaction = AccountingAccTransMapping::where('id', $id)
-                            ->where('business_id', $business_id)->firstOrFail();
+                ->where('business_id', $business_id)->firstOrFail();
 
             $debit_tansaction = AccountingAccountsTransaction::where('acc_trans_mapping_id', $id)
-                                    ->where('type', 'debit')
-                                    ->first();
+                ->where('type', 'debit')
+                ->first();
             $credit_tansaction = AccountingAccountsTransaction::where('acc_trans_mapping_id', $id)
-                                    ->where('type', 'credit')
-                                    ->first();
+                ->where('type', 'credit')
+                ->first();
 
             DB::beginTransaction();
             $from_account = $request->get('from_account');
@@ -374,7 +372,7 @@ class TransferController extends Controller
         $user_id = request()->session()->get('user.id');
 
         $acc_trans_mapping = AccountingAccTransMapping::where('id', $id)
-                        ->where('business_id', $business_id)->firstOrFail();
+            ->where('business_id', $business_id)->firstOrFail();
 
         if (! empty($acc_trans_mapping)) {
             $acc_trans_mapping->delete();

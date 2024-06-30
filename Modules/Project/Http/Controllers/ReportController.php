@@ -6,7 +6,6 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\View;
 use Modules\Project\Entities\Project;
 use Modules\Project\Entities\ProjectUser;
 
@@ -82,7 +81,7 @@ class ReportController extends Controller
                         }
                     },
                     'projects.timeLogs.task', ])
-                ->where('business_id', $business_id);
+                    ->where('business_id', $business_id);
 
                 //filter by user
                 if (! empty($user_ids)) {
@@ -171,7 +170,7 @@ class ReportController extends Controller
                     },
                     'timeLogs.task',
                     'timeLogs.user', ])
-                ->where('business_id', $business_id);
+                    ->where('business_id', $business_id);
 
                 //filter by project id
                 if (! empty($request->input('project_id'))) {

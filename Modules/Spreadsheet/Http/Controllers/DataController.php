@@ -66,8 +66,8 @@ class DataController extends Controller
                     action([\Modules\Spreadsheet\Http\Controllers\SpreadsheetController::class, 'index']),
                     __('spreadsheet::lang.spreadsheet'),
                     ['icon' => 'fas fa fa-file-excel', 'active' => request()->segment(1) == 'spreadsheet', 'style' => 'background-color:'.$background_color]
-                        )
-                ->order(90);
+                )
+                    ->order(90);
             });
         }
     }
@@ -111,11 +111,11 @@ class DataController extends Controller
         $shared_id = $params['shared_id'];
 
         $sheets = SpreadsheetShare::where('shared_with', $shared_with)
-                    ->where('shared_id', $shared_id)
-                    ->join('sheet_spreadsheets as ss', 'sheet_spreadsheet_shares.sheet_spreadsheet_id', '=', 'ss.id')
-                    ->where('ss.business_id', $business_id)
-                    ->select('name as sheet_name', 'sheet_spreadsheet_id as sheet_id')
-                    ->get();
+            ->where('shared_id', $shared_id)
+            ->join('sheet_spreadsheets as ss', 'sheet_spreadsheet_shares.sheet_spreadsheet_id', '=', 'ss.id')
+            ->where('ss.business_id', $business_id)
+            ->select('name as sheet_name', 'sheet_spreadsheet_id as sheet_id')
+            ->get();
 
         return $sheets;
     }

@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->nullable();
             $table->string('password');
-			$table->string('messenger_avatar')->nullable();			/* AJOUTER pour utiliser: https://github.com/RTippin/messenger */
-			/* La colonne "name" juste en dessous doit contenir le "first_name" et le "surname". AJOUTER pour utiliser: https://github.com/RTippin/messenger: */
-			$table->string('name')->nullable();	
+            $table->string('messenger_avatar')->nullable();			/* AJOUTER pour utiliser: https://github.com/RTippin/messenger */
+            /* La colonne "name" juste en dessous doit contenir le "first_name" et le "surname". AJOUTER pour utiliser: https://github.com/RTippin/messenger: */
+            $table->string('name')->nullable();
             $table->char('language', 7)->default('en');
             $table->rememberToken();
             $table->softDeletes();

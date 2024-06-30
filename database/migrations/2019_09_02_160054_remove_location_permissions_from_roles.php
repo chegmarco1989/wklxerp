@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         $location_permissions = Permission::where('name', 'like', 'location.%')
-                                            ->orWhere('name', 'access_all_locations')
-                                            ->pluck('id');
+            ->orWhere('name', 'access_all_locations')
+            ->pluck('id');
 
         DB::table('role_has_permissions')
             ->whereIn('permission_id', $location_permissions)

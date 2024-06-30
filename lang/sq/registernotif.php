@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'welcome' => 'Mirësevini në Worklx ERP, :username',
+    'welcome' => 'Mirësevini në Worklx ERP, :username',
     'greeting' => 'Përshëndetje :username',
     'line' => 'Llogaria juaj është krijuar me sukses në Worklx ERP',
     'action' => 'Shiko panelin',

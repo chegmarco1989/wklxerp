@@ -41,10 +41,10 @@ class LedgerController extends Controller
 
         $crm_contact_id = auth()->user()->crm_contact_id;
         $contact = Contact::where('business_id', $business_id)
-                    ->find($crm_contact_id);
+            ->find($crm_contact_id);
 
         return view('crm::ledger.index')
-               ->with(compact('contact'));
+            ->with(compact('contact'));
     }
 
     public function getLedger()
@@ -59,14 +59,14 @@ class LedgerController extends Controller
 
         $crm_contact_id = auth()->user()->crm_contact_id;
         $contact = Contact::where('business_id', $business_id)
-                    ->find($crm_contact_id);
+            ->find($crm_contact_id);
 
         $ledger_details = $this->transactionUtil->getLedgerDetails($crm_contact_id, $start_date, $end_date);
 
         if (request()->input('action') == 'pdf') {
             $for_pdf = true;
             $html = view('contact.ledger')
-                    ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
+                ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
             $mpdf = $this->getMpdf();
             $mpdf->WriteHTML($html);
             $mpdf->Output();

@@ -109,11 +109,11 @@ class DataController extends Controller
         if ($is_asset_enabled && (auth()->user()->can('superadmin') || auth()->user()->can('asset.view') || auth()->user()->can('asset.view_own_maintenance') || auth()->user()->can('asset.view_all_maintenance'))) {
             Menu::modify('admin-sidebar-menu', function ($menu) use ($background_color) {
                 $menu->url(
-                            action([\Modules\AssetManagement\Http\Controllers\AssetController::class, 'dashboard']),
-                            __('assetmanagement::lang.asset_management'),
-                            ['icon' => 'fas fa fa-boxes', 'active' => request()->segment(1) == 'asset', 'style' => 'background-color:'.$background_color]
-                        )
-                ->order(87);
+                    action([\Modules\AssetManagement\Http\Controllers\AssetController::class, 'dashboard']),
+                    __('assetmanagement::lang.asset_management'),
+                    ['icon' => 'fas fa fa-boxes', 'active' => request()->segment(1) == 'asset', 'style' => 'background-color:'.$background_color]
+                )
+                    ->order(87);
             });
         }
     }

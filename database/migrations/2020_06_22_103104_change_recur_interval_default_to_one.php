@@ -13,8 +13,8 @@ return new class extends Migration
     public function up()
     {
         Transaction::where('is_recurring', 1)
-                ->whereNull('recur_interval')
-                ->update(['recur_interval' => 1]);
+            ->whereNull('recur_interval')
+            ->update(['recur_interval' => 1]);
     }
 
     /**

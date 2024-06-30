@@ -42,13 +42,13 @@ class DataController extends Controller
                         if (auth()->user()->can('superadmin')) {
                             $sub->url(
                                 action([\Modules\Connector\Http\Controllers\ClientController::class, 'index']),
-                               __('connector::lang.clients'),
+                                __('connector::lang.clients'),
                                 ['icon' => 'fa fas fa-network-wired', 'active' => request()->segment(1) == 'connector' && request()->segment(2) == 'api']
                             );
                         }
                         $sub->url(
                             url('\docs'),
-                           __('connector::lang.documentation'),
+                            __('connector::lang.documentation'),
                             ['icon' => 'fa fas fa-book', 'active' => request()->segment(1) == 'docs']
                         );
                     },

@@ -84,7 +84,7 @@ return [
     'calendar' => 'कैलेंडर',
     'new_booking' => 'नई बुकिंग',
     'unavailable' => 'अनुपलब्ध',
-    'unavailable_type' => 'अनुपलब्ध प्रकार', 
+    'unavailable_type' => 'अनुपलब्ध प्रकार',
     'edit_unavailable' => 'अनुपलब्ध संपादित करें',
     'add_unavailable' => 'अनुपलब्ध जोड़ें',
     'booking_Id' => 'बुकिंग आईडी',

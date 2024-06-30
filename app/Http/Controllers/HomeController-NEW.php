@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessLocation;
 use App\Charts\CommonChart;
+use App\Contact;
 use App\Currency;
 use App\Media;
 use App\Transaction;
@@ -17,8 +18,7 @@ use App\VariationLocationDetails;
 use Datatables;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\DatabaseNotification;
-use App\Contact;											/* AJOUTE */
+use Illuminate\Notifications\DatabaseNotification;											/* AJOUTE */
 
 class HomeController extends Controller
 {
@@ -124,12 +124,12 @@ class HomeController extends Controller
         $sells_chart_1 = new CommonChart;
 
         $sells_chart_1->labels($labels)
-                        ->options($this->__chartOptions(__(
-                            'home.total_sells',
-                            ['currency' => $currency->code]
-                            )));
+            ->options($this->__chartOptions(__(
+                'home.total_sells',
+                ['currency' => $currency->code]
+            )));
 
-        if (!empty($location_sells)) {
+        if (! empty($location_sells)) {
             foreach ($location_sells as $location_sell) {
                 // $sells_chart_1->dataset($location_sell['loc_label'], 'bar', $location_sell['values']);		// On a remplacé ici "line" par "bar"
                 $sells_chart_1->dataset($location_sell['loc_label'], 'column', $location_sell['values']);		// On a remplacé ici "line" par "column"
@@ -140,13 +140,13 @@ class HomeController extends Controller
             // $sells_chart_1->dataset(__('report.all_locations'), 'bar', $all_sell_values);				// On a remplacé ici "line" par "bar"
             $sells_chart_1->dataset(__('report.all_locations'), 'column', $all_sell_values);				// On a remplacé ici "line" par "column"
         }
-		
-		/* AJOUT D'UN GRAPHIQUE CIRCULAIRE (type: pie) depuis la librairie "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts" dont 
-			les demos sont visible ici: https://www.highcharts.com/demo. On s'est juste servi de "sells_chart_1" pour définir le "sells_chart_3": */
-			
-		// Get business ID from session
-		$business_id = request()->session()->get('user.business_id');
-		$contacts = Contact::selectRaw('
+
+        /* AJOUT D'UN GRAPHIQUE CIRCULAIRE (type: pie) depuis la librairie "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts" dont
+            les demos sont visible ici: https://www.highcharts.com/demo. On s'est juste servi de "sells_chart_1" pour définir le "sells_chart_3": */
+
+        // Get business ID from session
+        $business_id = request()->session()->get('user.business_id');
+        $contacts = Contact::selectRaw('
 						SUM(IF(t.type = "purchase", final_total, 0)) as total_purchase,
 						SUM(IF(t.type = "purchase_return", final_total, 0)) as total_purchase_return,
 						SUM(IF(t.type = "sell" AND t.status = "final", final_total, 0)) as total_invoice,
@@ -164,61 +164,61 @@ class HomeController extends Controller
 						contacts.id,
 						contacts.type as contact_type
 					')
-					->leftJoin('transactions as t', 'contacts.id', '=', 't.contact_id')
-					->where('contacts.business_id', $business_id)
-					->where('contacts.contact_status', 'active')
-					->whereNull('contacts.deleted_at')
-					->groupBy('contacts.id')
-					->orderByDesc('contacts.created_at')
-					->limit(10)
-					->get();
+            ->leftJoin('transactions as t', 'contacts.id', '=', 't.contact_id')
+            ->where('contacts.business_id', $business_id)
+            ->where('contacts.contact_status', 'active')
+            ->whereNull('contacts.deleted_at')
+            ->groupBy('contacts.id')
+            ->orderByDesc('contacts.created_at')
+            ->limit(10)
+            ->get();
 
-		// Separate customers and suppliers
-		$customers = $contacts->where('contact_type', 'customer');
-		$suppliers = $contacts->where('contact_type', 'supplier');
-		
-		$colors = ['#E75E82', '#37A2EC', '#FACD56', '#5CA85C', '#605CA8',
+        // Separate customers and suppliers
+        $customers = $contacts->where('contact_type', 'customer');
+        $suppliers = $contacts->where('contact_type', 'supplier');
+
+        $colors = ['#E75E82', '#37A2EC', '#FACD56', '#5CA85C', '#605CA8',
             '#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
             '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a', ];
-		$sells_chart_3 = new CommonChart;
-		$sells_chart_3->labels($labels)
-						->options($this->__threeChartOptions());
+        $sells_chart_3 = new CommonChart;
+        $sells_chart_3->labels($labels)
+            ->options($this->__threeChartOptions());
 
-		// If both customers and suppliers exist
-		if ($customers->count() > 0 && $suppliers->count() > 0) {
-			$customer_data = $customers->map(function ($customer) {
-				return ['label' => $customer->name, 'data' => $customer->total_invoice];
-			});
-			$supplier_data = $suppliers->map(function ($supplier) {
-				return ['label' => $supplier->name, 'data' => $supplier->total_purchase];
-			});
-			$sells_chart_3->dataset(__('lang_v1.customers'), 'pie', $customer_data->pluck('data'))->color($this->__randomColor($customers->count()))->backgroundcolor($this->__randomColor($customers->count()))->fill(true);
-			$sells_chart_3->dataset(__('lang_v1.suppliers'), 'pie', $supplier_data->pluck('data'))->color($this->__randomColor($suppliers->count()))->backgroundcolor($this->__randomColor($suppliers->count()))->fill(true);
-		}
-		// If only customers exist
-		else if ($customers->count() > 0 && $suppliers->count() < 1) {
-			$customer_data = $customers->map(function ($customer) {
-				return [
-					'label' => $customer->name,
-					'data' => [
-						$customer->total_invoice,
-						$customer->invoice_received - $customer->purchase_return_received - $customer->total_ledger_discount_sell,
-						$customer->total_sell_return - $customer->sell_return_paid,
-						$customer->opening_balance - $customer->opening_balance_paid,
-					],
-					'backgroundColor' => ['#03a9f3', '#cddc39', '#f44336', '#FFA726'],
-				];
-			});
-			$sells_chart_3->dataset(__('lang_v1.customers'), 'pie', $customer_data);
-		} 
-		// If only suppliers exist
-		else if ($suppliers->count() > 0 && $customers->count() < 1) {
-			$supplier_data = $suppliers->map(function ($supplier) {
-				return ['label' => $supplier->name, 'data' => $supplier->total_purchase];
-			});
-			$sells_chart_3->dataset(__('lang_v1.suppliers'), 'pie', $supplier_data->pluck('data'))->color($this->__randomColor($suppliers->count()))->backgroundcolor($this->__randomColor($suppliers->count()))->fill(true);
-		}
-		// FIN D L'AJOUT DE "Pie Chats" depuis "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts".
+        // If both customers and suppliers exist
+        if ($customers->count() > 0 && $suppliers->count() > 0) {
+            $customer_data = $customers->map(function ($customer) {
+                return ['label' => $customer->name, 'data' => $customer->total_invoice];
+            });
+            $supplier_data = $suppliers->map(function ($supplier) {
+                return ['label' => $supplier->name, 'data' => $supplier->total_purchase];
+            });
+            $sells_chart_3->dataset(__('lang_v1.customers'), 'pie', $customer_data->pluck('data'))->color($this->__randomColor($customers->count()))->backgroundcolor($this->__randomColor($customers->count()))->fill(true);
+            $sells_chart_3->dataset(__('lang_v1.suppliers'), 'pie', $supplier_data->pluck('data'))->color($this->__randomColor($suppliers->count()))->backgroundcolor($this->__randomColor($suppliers->count()))->fill(true);
+        }
+        // If only customers exist
+        elseif ($customers->count() > 0 && $suppliers->count() < 1) {
+            $customer_data = $customers->map(function ($customer) {
+                return [
+                    'label' => $customer->name,
+                    'data' => [
+                        $customer->total_invoice,
+                        $customer->invoice_received - $customer->purchase_return_received - $customer->total_ledger_discount_sell,
+                        $customer->total_sell_return - $customer->sell_return_paid,
+                        $customer->opening_balance - $customer->opening_balance_paid,
+                    ],
+                    'backgroundColor' => ['#03a9f3', '#cddc39', '#f44336', '#FFA726'],
+                ];
+            });
+            $sells_chart_3->dataset(__('lang_v1.customers'), 'pie', $customer_data);
+        }
+        // If only suppliers exist
+        elseif ($suppliers->count() > 0 && $customers->count() < 1) {
+            $supplier_data = $suppliers->map(function ($supplier) {
+                return ['label' => $supplier->name, 'data' => $supplier->total_purchase];
+            });
+            $sells_chart_3->dataset(__('lang_v1.suppliers'), 'pie', $supplier_data->pluck('data'))->color($this->__randomColor($suppliers->count()))->backgroundcolor($this->__randomColor($suppliers->count()))->fill(true);
+        }
+        // FIN D L'AJOUT DE "Pie Chats" depuis "HIGHTCHARTS" contenu déjà dans le Package "consoletvs/charts".
 
         $labels = [];
         $values = [];
@@ -230,7 +230,7 @@ class HomeController extends Controller
             $fy_months[] = $month_year;
 
             $labels[] = \Carbon::createFromFormat('m-Y', $month_year)
-                            ->format('M-Y');
+                ->format('M-Y');
             $date = strtotime('+1 month', $date);
 
             $total_sell_in_month_year = $sells_this_fy->where('yearmonth', $month_year)->sum('total_sells');
@@ -261,10 +261,10 @@ class HomeController extends Controller
 
         $sells_chart_2 = new CommonChart;
         $sells_chart_2->labels($labels)
-                    ->options($this->__chartOptions(__(
-                        'home.total_sells',
-                        ['currency' => $currency->code]
-                            )));
+            ->options($this->__chartOptions(__(
+                'home.total_sells',
+                ['currency' => $currency->code]
+            )));
         if (! empty($fy_sells_by_location_data)) {
             foreach ($fy_sells_by_location_data as $location_sell) {
                 $sells_chart_2->dataset($location_sell['loc_label'], 'line', $location_sell['values']);
@@ -286,7 +286,8 @@ class HomeController extends Controller
         }
 
         $common_settings = ! empty(session('business.common_settings')) ? session('business.common_settings') : [];
-		// On n'oublie SURTOUT PAS d'inclure la variable "sells_chart_3" contenant notre nouveau graphique "Pie Chart" dans notre vue "home.index.blade.php":
+
+        // On n'oublie SURTOUT PAS d'inclure la variable "sells_chart_3" contenant notre nouveau graphique "Pie Chart" dans notre vue "home.index.blade.php":
         return view('home.index', compact('sells_chart_1', 'sells_chart_2', 'sells_chart_3', 'widgets', 'all_locations', 'common_settings', 'is_admin'));
     }
 
@@ -364,31 +365,31 @@ class HomeController extends Controller
                 '=',
                 'pv.id'
             )
-                    ->join(
-                        'variations as v',
-                        'variation_location_details.variation_id',
-                        '=',
-                        'v.id'
-                    )
-                    ->join(
-                        'products as p',
-                        'variation_location_details.product_id',
-                        '=',
-                        'p.id'
-                    )
-                    ->leftjoin(
-                        'business_locations as l',
-                        'variation_location_details.location_id',
-                        '=',
-                        'l.id'
-                    )
-                    ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
-                    ->where('p.business_id', $business_id)
-                    ->where('p.enable_stock', 1)
-                    ->where('p.is_inactive', 0)
-                    ->whereNull('v.deleted_at')
-                    ->whereNotNull('p.alert_quantity')
-                    ->whereRaw('variation_location_details.qty_available <= p.alert_quantity');
+                ->join(
+                    'variations as v',
+                    'variation_location_details.variation_id',
+                    '=',
+                    'v.id'
+                )
+                ->join(
+                    'products as p',
+                    'variation_location_details.product_id',
+                    '=',
+                    'p.id'
+                )
+                ->leftjoin(
+                    'business_locations as l',
+                    'variation_location_details.location_id',
+                    '=',
+                    'l.id'
+                )
+                ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
+                ->where('p.business_id', $business_id)
+                ->where('p.enable_stock', 1)
+                ->where('p.is_inactive', 0)
+                ->whereNull('v.deleted_at')
+                ->whereNotNull('p.alert_quantity')
+                ->whereRaw('variation_location_details.qty_available <= p.alert_quantity');
 
             //Check for permitted locations of a user
             $permitted_locations = auth()->user()->permitted_locations();
@@ -411,8 +412,8 @@ class HomeController extends Controller
                 'variation_location_details.qty_available as stock',
                 'u.short_name as unit'
             )
-                    ->groupBy('variation_location_details.id')
-                    ->orderBy('stock', 'asc');
+                ->groupBy('variation_location_details.id')
+                ->orderBy('stock', 'asc');
 
             return Datatables::of($products)
                 ->editColumn('product', function ($row) {
@@ -455,16 +456,16 @@ class HomeController extends Controller
                 '=',
                 'c.id'
             )
-                    ->leftJoin(
-                        'transaction_payments as tp',
-                        'transactions.id',
-                        '=',
-                        'tp.transaction_id'
-                    )
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'purchase')
-                    ->where('transactions.payment_status', '!=', 'paid')
-                    ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
+                ->leftJoin(
+                    'transaction_payments as tp',
+                    'transactions.id',
+                    '=',
+                    'tp.transaction_id'
+                )
+                ->where('transactions.business_id', $business_id)
+                ->where('transactions.type', 'purchase')
+                ->where('transactions.payment_status', '!=', 'paid')
+                ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
 
             //Check for permitted locations of a user
             $permitted_locations = auth()->user()->permitted_locations();
@@ -484,7 +485,7 @@ class HomeController extends Controller
                 'final_total',
                 DB::raw('SUM(tp.amount) as total_paid')
             )
-                        ->groupBy('transactions.id');
+                ->groupBy('transactions.id');
 
             return Datatables::of($dues)
                 ->addColumn('due', function ($row) {
@@ -499,7 +500,7 @@ class HomeController extends Controller
                 ->editColumn('supplier', '@if(!empty($supplier_business_name)) {{$supplier_business_name}}, <br> @endif {{$supplier}}')
                 ->editColumn('ref_no', function ($row) {
                     if (auth()->user()->can('purchase.view')) {
-                        return  '<a href="#" data-href="'.action([\App\Http\Controllers\PurchaseController::class, 'show'], [$row->id]).'"
+                        return '<a href="#" data-href="'.action([\App\Http\Controllers\PurchaseController::class, 'show'], [$row->id]).'"
                                     class="btn-modal" data-container=".view_modal">'.$row->ref_no.'</a>';
                     }
 
@@ -530,18 +531,18 @@ class HomeController extends Controller
                 '=',
                 'c.id'
             )
-                    ->leftJoin(
-                        'transaction_payments as tp',
-                        'transactions.id',
-                        '=',
-                        'tp.transaction_id'
-                    )
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'sell')
-                    ->where('transactions.payment_status', '!=', 'paid')
-                    ->whereNotNull('transactions.pay_term_number')
-                    ->whereNotNull('transactions.pay_term_type')
-                    ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
+                ->leftJoin(
+                    'transaction_payments as tp',
+                    'transactions.id',
+                    '=',
+                    'tp.transaction_id'
+                )
+                ->where('transactions.business_id', $business_id)
+                ->where('transactions.type', 'sell')
+                ->where('transactions.payment_status', '!=', 'paid')
+                ->whereNotNull('transactions.pay_term_number')
+                ->whereNotNull('transactions.pay_term_type')
+                ->whereRaw("DATEDIFF( DATE_ADD( transaction_date, INTERVAL IF(transactions.pay_term_type = 'days', transactions.pay_term_number, 30 * transactions.pay_term_number) DAY), '$today') <= 7");
 
             //Check for permitted locations of a user
             $permitted_locations = auth()->user()->permitted_locations();
@@ -561,7 +562,7 @@ class HomeController extends Controller
                 'final_total',
                 DB::raw('SUM(tp.amount) as total_paid')
             )
-                        ->groupBy('transactions.id');
+                ->groupBy('transactions.id');
 
             return Datatables::of($dues)
                 ->addColumn('due', function ($row) {
@@ -573,7 +574,7 @@ class HomeController extends Controller
                 })
                 ->editColumn('invoice_no', function ($row) {
                     if (auth()->user()->can('sell.view')) {
-                        return  '<a href="#" data-href="'.action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]).'"
+                        return '<a href="#" data-href="'.action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]).'"
                                     class="btn-modal" data-container=".view_modal">'.$row->invoice_no.'</a>';
                     }
 
@@ -658,7 +659,7 @@ class HomeController extends Controller
                     'dataLabels' => [
                         'enabled' => false,
                     ],
-                    'showInLegend' => true
+                    'showInLegend' => true,
                 ],
             ],
         ];
@@ -741,7 +742,7 @@ class HomeController extends Controller
 
                 //find model to which medias are to be attached
                 $model_to_be_attached = $model::where('business_id', $business_id)
-                                        ->findOrFail($model_id);
+                    ->findOrFail($model_id);
 
                 Media::uploadMedia($business_id, $model_to_be_attached, $request, 'file', false, $model_media_type);
 

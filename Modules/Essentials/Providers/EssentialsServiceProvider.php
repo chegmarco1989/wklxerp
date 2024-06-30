@@ -2,12 +2,12 @@
 
 namespace Modules\Essentials\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use Modules\Essentials\Entities\EssentialsAttendance;
 use App\Utils\ModuleUtil;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+use Modules\Essentials\Entities\EssentialsAttendance;
 
 class EssentialsServiceProvider extends ServiceProvider
 {
@@ -38,32 +38,32 @@ class EssentialsServiceProvider extends ServiceProvider
                 $view->with(compact('__is_essentials_enabled'));
             });
 
-            view::composer(['essentials::layouts.partials.header_part'], function ($view) {
-                $is_employee_allowed = false;
-                $clock_in = null;
-    
-                $module_util = new ModuleUtil();
-                if ($module_util->isModuleInstalled('Essentials')) {
-                    $business_id = session()->get('user.business_id');
-    
-                    //Check if employee are allowed or not to enter own attendance.
-                    $is_employee_allowed = auth()->user()->can('essentials.allow_users_for_attendance_from_web');
-    
-                    //Check if clocked in or not.
-                    $clock_in = EssentialsAttendance::where('essentials_attendances.business_id', $business_id)
-                                    ->leftjoin('essentials_shifts as es', 'es.id', '=', 'essentials_attendances.essentials_shift_id')
-                                    ->where('user_id', auth()->user()->id)
-                                    ->whereNull('clock_out_time')
-                                    ->select([
-                                        'clock_in_time', 'es.name as shift_name', 'es.start_time', 'es.end_time',
-                                    ])
-                                    ->first();
-                }
-    
-                $view->with(compact('is_employee_allowed', 'clock_in'));
-            });
-        
-            view::composer(['essentials::attendance.clock_in_clock_out_modal',
+        view::composer(['essentials::layouts.partials.header_part'], function ($view) {
+            $is_employee_allowed = false;
+            $clock_in = null;
+
+            $module_util = new ModuleUtil();
+            if ($module_util->isModuleInstalled('Essentials')) {
+                $business_id = session()->get('user.business_id');
+
+                //Check if employee are allowed or not to enter own attendance.
+                $is_employee_allowed = auth()->user()->can('essentials.allow_users_for_attendance_from_web');
+
+                //Check if clocked in or not.
+                $clock_in = EssentialsAttendance::where('essentials_attendances.business_id', $business_id)
+                    ->leftjoin('essentials_shifts as es', 'es.id', '=', 'essentials_attendances.essentials_shift_id')
+                    ->where('user_id', auth()->user()->id)
+                    ->whereNull('clock_out_time')
+                    ->select([
+                        'clock_in_time', 'es.name as shift_name', 'es.start_time', 'es.end_time',
+                    ])
+                    ->first();
+            }
+
+            $view->with(compact('is_employee_allowed', 'clock_in'));
+        });
+
+        view::composer(['essentials::attendance.clock_in_clock_out_modal',
             'essentials::attendance.create', ], function ($view) {
                 $util = new \App\Utils\Util();
                 $ip_address = $util->getUserIpAddr();
@@ -76,7 +76,7 @@ class EssentialsServiceProvider extends ServiceProvider
             });
 
         $this->registerScheduleCommands();
-    
+
     }
 
     public function registerScheduleCommands()

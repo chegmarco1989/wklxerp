@@ -15,7 +15,6 @@ class DeleteAccountTransaction
     /**
      * Constructor
      *
-     * @param  TransactionUtil  $transactionUtil
      * @return void
      */
     public function __construct(TransactionUtil $transactionUtil, ModuleUtil $moduleUtil)
@@ -42,7 +41,7 @@ class DeleteAccountTransaction
         }
 
         AccountTransaction::where('account_id', $event->transactionPayment->account_id)
-                        ->where('transaction_payment_id', $event->transactionPayment->id)
-                        ->delete();
+            ->where('transaction_payment_id', $event->transactionPayment->id)
+            ->delete();
     }
 }

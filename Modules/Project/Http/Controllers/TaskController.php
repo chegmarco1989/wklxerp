@@ -97,10 +97,10 @@ class TaskController extends Controller
             if (! empty(request()->get('due_date'))) {
                 if (request()->get('due_date') == 'overdue') {
                     $project_task->where('due_date', '<', Carbon::today())
-                                ->where('status', '!=', 'completed');
+                        ->where('status', '!=', 'completed');
                 } elseif (request()->get('due_date') == 'today') {
                     $project_task->where('due_date', Carbon::today())
-                                ->where('status', '!=', 'completed');
+                        ->where('status', '!=', 'completed');
                 } elseif (request()->get('due_date') == 'less_than_one_week') {
                     $project_task->whereBetween('due_date', [Carbon::today(), Carbon::today()->addWeek()])
                         ->where('status', '!=', 'completed');
@@ -351,7 +351,6 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -422,8 +421,8 @@ class TaskController extends Controller
                 $query->latest();
             },
             'comments.media', 'comments.commentedBy', 'timeLogs', 'timeLogs.user', ])
-                        ->where('project_id', $project_id)
-                        ->findOrFail($id);
+            ->where('project_id', $project_id)
+            ->findOrFail($id);
 
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->commonUtil->is_admin(auth()->user(), $business_id);
@@ -449,8 +448,8 @@ class TaskController extends Controller
     {
         $project_id = request()->get('project_id');
         $project_task = ProjectTask::with('members')
-                            ->where('project_id', $project_id)
-                            ->findOrFail($id);
+            ->where('project_id', $project_id)
+            ->findOrFail($id);
 
         $project_members = ProjectMember::projectMembersDropdown($project_id);
         $priorities = ProjectTask::prioritiesDropdown();
@@ -463,7 +462,6 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request, $id)
@@ -562,7 +560,7 @@ class TaskController extends Controller
         $project_id = request()->get('project_id');
         $statuses = ProjectTask::taskStatuses();
         $project_task = ProjectTask::where('project_id', $project_id)
-                            ->findOrFail($task_id);
+            ->findOrFail($task_id);
 
         return view('project::task.change_status')
             ->with(compact('project_task', 'statuses'));

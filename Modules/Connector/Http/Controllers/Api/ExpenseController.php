@@ -14,6 +14,7 @@ use Modules\Connector\Transformers\ExpenseResource;
 
 /**
  * @group Expense management
+ *
  * @authenticated
  *
  * APIs for managing expenses
@@ -135,8 +136,8 @@ class ExpenseController extends ApiController
 
         $filters = request()->only(['location_id', 'payment_status', 'start_date', 'end_date', 'expense_for', 'per_page']);
         $query = Transaction::where('business_id', $business_id)
-                            ->where('type', 'expense')
-                            ->with(['transaction_for']);
+            ->where('type', 'expense')
+            ->with(['transaction_for']);
 
         $permitted_locations = $user->permitted_locations($business_id);
         if ($permitted_locations != 'all') {
@@ -268,10 +269,10 @@ class ExpenseController extends ApiController
 
         $expense_ids = explode(',', $expense_ids);
         $expenses = Transaction::where('business_id', $business_id)
-                            ->whereIn('type', ['expense', 'expense_refund'])
-                            ->whereIn('id', $expense_ids)
-                            ->with(['transaction_for'])
-                            ->get();
+            ->whereIn('type', ['expense', 'expense_refund'])
+            ->whereIn('id', $expense_ids)
+            ->with(['transaction_for'])
+            ->get();
 
         $permitted_locations = $user->permitted_locations($business_id);
         if ($permitted_locations != 'all') {
@@ -301,7 +302,6 @@ class ExpenseController extends ApiController
      * @bodyParam subscription_no string subscription number
      * @bodyParam recur_repetitions int total number of expense to be generated
      * @bodyParam payment array payment lines for the expense
-     *
      * @bodyParam payment.*.amount float amount of the payment Example: 453.1300
      * @bodyParam payment.*.method string payment methods ('cash', 'card', 'cheque', 'bank_transfer', 'other', 'custom_pay_1', 'custom_pay_2', 'custom_pay_3') Example: cash
      * @bodyParam payment.*.account_id int account id
@@ -389,7 +389,6 @@ class ExpenseController extends ApiController
      * @bodyParam subscription_no string subscription number
      * @bodyParam recur_repetitions int total number of expense to be generated
      * @bodyParam payment array payment lines for the expense
-     *
      *
      * @response {
         "data": {
@@ -497,8 +496,8 @@ class ExpenseController extends ApiController
 
         $filters = request()->only(['location_id', 'payment_status', 'start_date', 'end_date', 'expense_for', 'per_page']);
         $query = Transaction::where('business_id', $business_id)
-                            ->where('type', 'expense_refund')
-                            ->with(['transaction_for']);
+            ->where('type', 'expense_refund')
+            ->with(['transaction_for']);
 
         $permitted_locations = $user->permitted_locations($business_id);
         if ($permitted_locations != 'all') {
@@ -605,8 +604,8 @@ class ExpenseController extends ApiController
         $business_id = $user->business_id;
 
         $query = ExpenseCategory::where('business_id', $business_id)
-                        ->onlyParent()
-                        ->with('sub_categories');
+            ->onlyParent()
+            ->with('sub_categories');
 
         $categories = $query->get();
 

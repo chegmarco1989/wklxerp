@@ -48,10 +48,10 @@ class ProposalController extends Controller
 
         if ($request->ajax()) {
             $proposal = Proposal::join('contacts', 'crm_proposals.contact_id', '=', 'contacts.id')
-                            ->join('users', 'crm_proposals.sent_by', '=', 'users.id')
-                            ->where('crm_proposals.business_id', $business_id)
-                            ->select('contacts.name', 'crm_proposals.subject', 'crm_proposals.created_at',
-                                'crm_proposals.id', DB::raw("CONCAT(COALESCE(users.surname, ''), ' ', COALESCE(users.first_name, ''), ' ', COALESCE(users.last_name, '')) as sent_by_full_name"));
+                ->join('users', 'crm_proposals.sent_by', '=', 'users.id')
+                ->where('crm_proposals.business_id', $business_id)
+                ->select('contacts.name', 'crm_proposals.subject', 'crm_proposals.created_at',
+                    'crm_proposals.id', DB::raw("CONCAT(COALESCE(users.surname, ''), ' ', COALESCE(users.first_name, ''), ' ', COALESCE(users.last_name, '')) as sent_by_full_name"));
 
             if (! $is_admin) {
                 $proposal->where('crm_proposals.sent_by', auth()->user()->id);
@@ -79,8 +79,8 @@ class ProposalController extends Controller
         }
 
         $proposal_template = ProposalTemplate::with(['media'])
-                            ->where('business_id', $business_id)
-                            ->first();
+            ->where('business_id', $business_id)
+            ->first();
 
         return view('crm::proposal.index')
             ->with(compact('proposal_template'));
@@ -99,7 +99,6 @@ class ProposalController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -125,8 +124,8 @@ class ProposalController extends Controller
 
             //if template media available make a copy of it for proposal
             $proposal_template = ProposalTemplate::with(['media'])
-                                    ->where('business_id', $business_id)
-                                    ->first();
+                ->where('business_id', $business_id)
+                ->first();
 
             if ($proposal_template->media->count() > 0) {
                 $file_names = [];
@@ -134,8 +133,8 @@ class ProposalController extends Controller
                     $doc_name = time().'_'.$media->display_name;
                     $file_names[] = $doc_name;
                     file_put_contents(
-                            public_path('uploads/media/').$doc_name, file_get_contents($media->display_url)
-                        );
+                        public_path('uploads/media/').$doc_name, file_get_contents($media->display_url)
+                    );
                 }
 
                 Media::attachMediaToModel($proposal, $business_id, $file_names);
@@ -145,11 +144,11 @@ class ProposalController extends Controller
 
             if (! empty($proposal)) {
                 $contact = CrmContact::where('business_id', $business_id)
-                            ->find($proposal->contact_id);
+                    ->find($proposal->contact_id);
 
                 $proposal_with_media = Proposal::with(['media'])
-                                        ->where('business_id', $business_id)
-                                        ->find($proposal->id);
+                    ->where('business_id', $business_id)
+                    ->find($proposal->id);
 
                 $contact->notify(new SendProposalNotification($proposal_with_media));
             }
@@ -186,12 +185,12 @@ class ProposalController extends Controller
 
         if (request()->ajax()) {
             $proposal = Proposal::with(['media'])
-                        ->join('contacts', 'crm_proposals.contact_id', '=', 'contacts.id')
-                        ->join('users', 'crm_proposals.sent_by', '=', 'users.id')
-                        ->where('crm_proposals.business_id', $business_id)
-                        ->where('crm_proposals.id', $id)
-                        ->select('contacts.name as contact', 'crm_proposals.subject as subject', 'crm_proposals.created_at as created_at', DB::raw("CONCAT(COALESCE(users.surname, ''), ' ', COALESCE(users.first_name, ''), ' ', COALESCE(users.last_name, '')) as sent_by_full_name"), 'crm_proposals.body as body', 'crm_proposals.id', 'crm_proposals.cc', 'crm_proposals.bcc')
-                        ->first();
+                ->join('contacts', 'crm_proposals.contact_id', '=', 'contacts.id')
+                ->join('users', 'crm_proposals.sent_by', '=', 'users.id')
+                ->where('crm_proposals.business_id', $business_id)
+                ->where('crm_proposals.id', $id)
+                ->select('contacts.name as contact', 'crm_proposals.subject as subject', 'crm_proposals.created_at as created_at', DB::raw("CONCAT(COALESCE(users.surname, ''), ' ', COALESCE(users.first_name, ''), ' ', COALESCE(users.last_name, '')) as sent_by_full_name"), 'crm_proposals.body as body', 'crm_proposals.id', 'crm_proposals.cc', 'crm_proposals.bcc')
+                ->first();
 
             return view('crm::proposal.show')
                 ->with(compact('proposal'));
@@ -212,7 +211,6 @@ class ProposalController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */

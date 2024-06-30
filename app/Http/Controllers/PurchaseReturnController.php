@@ -25,7 +25,6 @@ class PurchaseReturnController extends Controller
     /**
      * Constructor
      *
-     * @param  TransactionUtil  $transactionUtil
      * @return void
      */
     public function __construct(TransactionUtil $transactionUtil, ProductUtil $productUtil)
@@ -49,41 +48,41 @@ class PurchaseReturnController extends Controller
 
         if (request()->ajax()) {
             $purchases_returns = Transaction::leftJoin('contacts', 'transactions.contact_id', '=', 'contacts.id')
-                    ->join(
-                        'business_locations AS BS',
-                        'transactions.location_id',
-                        '=',
-                        'BS.id'
-                    )
-                    ->leftJoin(
-                        'transactions AS T',
-                        'transactions.return_parent_id',
-                        '=',
-                        'T.id'
-                    )
-                    ->leftJoin(
-                        'transaction_payments AS TP',
-                        'transactions.id',
-                        '=',
-                        'TP.transaction_id'
-                    )
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'purchase_return')
-                    ->select(
-                        'transactions.id',
-                        'transactions.transaction_date',
-                        'transactions.ref_no',
-                        'contacts.name',
-                        'contacts.supplier_business_name',
-                        'transactions.status',
-                        'transactions.payment_status',
-                        'transactions.final_total',
-                        'transactions.return_parent_id',
-                        'BS.name as location_name',
-                        'T.ref_no as parent_purchase',
-                        DB::raw('SUM(TP.amount) as amount_paid')
-                    )
-                    ->groupBy('transactions.id');
+                ->join(
+                    'business_locations AS BS',
+                    'transactions.location_id',
+                    '=',
+                    'BS.id'
+                )
+                ->leftJoin(
+                    'transactions AS T',
+                    'transactions.return_parent_id',
+                    '=',
+                    'T.id'
+                )
+                ->leftJoin(
+                    'transaction_payments AS TP',
+                    'transactions.id',
+                    '=',
+                    'TP.transaction_id'
+                )
+                ->where('transactions.business_id', $business_id)
+                ->where('transactions.type', 'purchase_return')
+                ->select(
+                    'transactions.id',
+                    'transactions.transaction_date',
+                    'transactions.ref_no',
+                    'contacts.name',
+                    'contacts.supplier_business_name',
+                    'transactions.status',
+                    'transactions.payment_status',
+                    'transactions.final_total',
+                    'transactions.return_parent_id',
+                    'BS.name as location_name',
+                    'T.ref_no as parent_purchase',
+                    DB::raw('SUM(TP.amount) as amount_paid')
+                )
+                ->groupBy('transactions.id');
 
             $permitted_locations = auth()->user()->permitted_locations();
             if ($permitted_locations != 'all') {
@@ -102,7 +101,7 @@ class PurchaseReturnController extends Controller
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $purchases_returns->whereDate('transactions.transaction_date', '>=', $start)
-                            ->whereDate('transactions.transaction_date', '<=', $end);
+                    ->whereDate('transactions.transaction_date', '<=', $end);
             }
 
             return Datatables::of($purchases_returns)
@@ -173,7 +172,7 @@ class PurchaseReturnController extends Controller
                         if (auth()->user()->can('purchase.view')) {
                             $return_id = ! empty($row->return_parent_id) ? $row->return_parent_id : $row->id;
 
-                            return  action([\App\Http\Controllers\PurchaseReturnController::class, 'show'], [$return_id]);
+                            return action([\App\Http\Controllers\PurchaseReturnController::class, 'show'], [$return_id]);
                         } else {
                             return '';
                         }
@@ -200,9 +199,9 @@ class PurchaseReturnController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $purchase = Transaction::where('business_id', $business_id)
-                        ->where('type', 'purchase')
-                        ->with(['purchase_lines', 'contact', 'tax', 'return_parent', 'purchase_lines.sub_unit', 'purchase_lines.product', 'purchase_lines.product.unit'])
-                        ->find($id);
+            ->where('type', 'purchase')
+            ->with(['purchase_lines', 'contact', 'tax', 'return_parent', 'purchase_lines.sub_unit', 'purchase_lines.product', 'purchase_lines.product.unit'])
+            ->find($id);
 
         foreach ($purchase->purchase_lines as $key => $value) {
             if (! empty($value->sub_unit_id)) {
@@ -218,13 +217,12 @@ class PurchaseReturnController extends Controller
         }
 
         return view('purchase_return.add')
-                    ->with(compact('purchase'));
+            ->with(compact('purchase'));
     }
 
     /**
      * Saves Purchase returns in the database.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -237,9 +235,9 @@ class PurchaseReturnController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $purchase = Transaction::where('business_id', $business_id)
-                        ->where('type', 'purchase')
-                        ->with(['purchase_lines', 'purchase_lines.sub_unit'])
-                        ->findOrFail($request->input('transaction_id'));
+                ->where('type', 'purchase')
+                ->with(['purchase_lines', 'purchase_lines.sub_unit'])
+                ->findOrFail($request->input('transaction_id'));
 
             $return_quantities = $request->input('returns');
             $return_total = 0;
@@ -288,9 +286,9 @@ class PurchaseReturnController extends Controller
             }
 
             $return_transaction = Transaction::where('business_id', $business_id)
-                                            ->where('type', 'purchase_return')
-                                            ->where('return_parent_id', $purchase->id)
-                                            ->first();
+                ->where('type', 'purchase_return')
+                ->where('return_parent_id', $purchase->id)
+                ->first();
 
             if (! empty($return_transaction)) {
                 $return_transaction_before = $return_transaction->replicate();
@@ -348,8 +346,8 @@ class PurchaseReturnController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $purchase = Transaction::where('business_id', $business_id)
-                        ->with(['return_parent', 'return_parent.tax', 'purchase_lines', 'contact', 'tax', 'purchase_lines.sub_unit', 'purchase_lines.product', 'purchase_lines.product.unit'])
-                        ->find($id);
+            ->with(['return_parent', 'return_parent.tax', 'purchase_lines', 'contact', 'tax', 'purchase_lines.sub_unit', 'purchase_lines.product', 'purchase_lines.product.unit'])
+            ->find($id);
 
         foreach ($purchase->purchase_lines as $key => $value) {
             if (! empty($value->sub_unit_id)) {
@@ -377,12 +375,12 @@ class PurchaseReturnController extends Controller
         }
         $return = ! empty($purchase->return_parent) ? $purchase->return_parent : $purchase;
         $activities = Activity::forSubject($return)
-           ->with(['causer', 'subject'])
-           ->latest()
-           ->get();
+            ->with(['causer', 'subject'])
+            ->latest()
+            ->get();
 
         return view('purchase_return.show')
-                ->with(compact('purchase', 'purchase_taxes', 'activities'));
+            ->with(compact('purchase', 'purchase_taxes', 'activities'));
     }
 
     /**
@@ -402,10 +400,10 @@ class PurchaseReturnController extends Controller
                 $business_id = request()->session()->get('user.business_id');
 
                 $purchase_return = Transaction::where('id', $id)
-                                ->where('business_id', $business_id)
-                                ->where('type', 'purchase_return')
-                                ->with(['purchase_lines'])
-                                ->first();
+                    ->where('business_id', $business_id)
+                    ->where('type', 'purchase_return')
+                    ->with(['purchase_lines'])
+                    ->first();
 
                 DB::beginTransaction();
 
@@ -417,14 +415,14 @@ class PurchaseReturnController extends Controller
                         $this->productUtil->updateProductQuantity($purchase_return->location_id, $purchase_line->product_id, $purchase_line->variation_id, $purchase_line->quantity_returned, 0, null, false);
                     }
                     PurchaseLine::where('transaction_id', $purchase_return->id)
-                                ->whereIn('id', $delete_purchase_line_ids)
-                                ->delete();
+                        ->whereIn('id', $delete_purchase_line_ids)
+                        ->delete();
                 } else {
                     $parent_purchase = Transaction::where('id', $purchase_return->return_parent_id)
-                                ->where('business_id', $business_id)
-                                ->where('type', 'purchase')
-                                ->with(['purchase_lines'])
-                                ->first();
+                        ->where('business_id', $business_id)
+                        ->where('type', 'purchase')
+                        ->with(['purchase_lines'])
+                        ->first();
 
                     $updated_purchase_lines = $parent_purchase->purchase_lines;
                     foreach ($updated_purchase_lines as $purchase_line) {

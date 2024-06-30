@@ -54,9 +54,9 @@ class ContactBookingController extends Controller
             $start_date = request()->start;
             $end_date = request()->end;
             $query = Booking::where('bookings.business_id', $business_id)
-                            ->where('bookings.created_by', $user_id)
-                            ->leftjoin('business_locations as bl', 'bl.id', '=', 'bookings.location_id')
-                            ->select('bookings.*', 'bl.name as location_name');
+                ->where('bookings.created_by', $user_id)
+                ->leftjoin('business_locations as bl', 'bl.id', '=', 'bookings.location_id')
+                ->select('bookings.*', 'bl.name as location_name');
 
             if (! empty(request()->location_id)) {
                 $query->where('bookings.location_id', request()->location_id);
@@ -75,7 +75,7 @@ class ContactBookingController extends Controller
                     return '<span class="label '.$statuses[$row->booking_status]['class'].'" >'.$statuses[$row->booking_status]['label'].'</span>';
                 })
                 ->rawColumns(['booking_status'])
-               ->removeColumn('id')
+                ->removeColumn('id')
                 ->make(true);
         }
 
@@ -97,7 +97,6 @@ class ContactBookingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -114,12 +113,12 @@ class ContactBookingController extends Controller
 
                 //Check if booking is available for the required input
                 $query = Booking::where('business_id', $business_id)
-                                ->where('location_id', $input['location_id'])
-                                ->where('contact_id', $input['contact_id'])
-                                ->where(function ($q) use ($date_range) {
-                                    $q->whereBetween('booking_start', $date_range)
-                                    ->orWhereBetween('booking_end', $date_range);
-                                });
+                    ->where('location_id', $input['location_id'])
+                    ->where('contact_id', $input['contact_id'])
+                    ->where(function ($q) use ($date_range) {
+                        $q->whereBetween('booking_start', $date_range)
+                            ->orWhereBetween('booking_end', $date_range);
+                    });
 
                 $existing_booking = $query->first();
                 if (empty($existing_booking)) {
@@ -182,7 +181,6 @@ class ContactBookingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */

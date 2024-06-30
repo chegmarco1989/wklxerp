@@ -279,7 +279,7 @@ class Transaction extends Model
 
     public static function transactionTypes()
     {
-        return  [
+        return [
             'sell' => __('sale.sale'),
             'purchase' => __('lang_v1.purchase'),
             'sell_return' => __('lang_v1.sell_return'),
@@ -353,9 +353,9 @@ class Transaction extends Model
     public function scopeOverDue($query)
     {
         return $query->whereIn('transactions.payment_status', ['due', 'partial'])
-                    ->whereNotNull('transactions.pay_term_number')
-                    ->whereNotNull('transactions.pay_term_type')
-                    ->whereRaw("IF(transactions.pay_term_type='days', DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number DAY) < CURDATE(), DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number MONTH) < CURDATE())");
+            ->whereNotNull('transactions.pay_term_number')
+            ->whereNotNull('transactions.pay_term_type')
+            ->whereRaw("IF(transactions.pay_term_type='days', DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number DAY) < CURDATE(), DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number MONTH) < CURDATE())");
     }
 
     public static function sell_statuses()
@@ -399,13 +399,11 @@ class Transaction extends Model
         $sales_orders = null;
         if (! empty($this->sales_order_ids)) {
             $sales_orders = Transaction::where('business_id', $this->business_id)
-                                ->where('type', 'sales_order')
-                                ->whereIn('id', $this->sales_order_ids)
-                                ->get();
+                ->where('type', 'sales_order')
+                ->whereIn('id', $this->sales_order_ids)
+                ->get();
         }
 
         return $sales_orders;
     }
-
-   
 }

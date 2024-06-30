@@ -27,8 +27,8 @@ class BusinessLocation extends Model
      * Return list of locations for a business
      *
      * @param  int  $business_id
-     * @param  bool  $show_all = false
-     * @param  array  $receipt_printer_type_attribute =
+     * @param  bool  $show_all  = false
+     * @param  array  $receipt_printer_type_attribute  =
      * @return array
      */
     public static function forDropdown($business_id, $show_all = false, $receipt_printer_type_attribute = false, $append_id = true, $check_permission = true)
@@ -117,11 +117,11 @@ class BusinessLocation extends Model
             return [];
         }
         $query = Variation::whereIn('variations.id', $this->featured_products)
-                                    ->join('product_locations as pl', 'pl.product_id', '=', 'variations.product_id')
-                                    ->join('products as p', 'p.id', '=', 'variations.product_id')
-                                    ->where('p.not_for_selling', 0)
-                                    ->with(['product_variation', 'product', 'media'])
-                                    ->select('variations.*');
+            ->join('product_locations as pl', 'pl.product_id', '=', 'variations.product_id')
+            ->join('products as p', 'p.id', '=', 'variations.product_id')
+            ->where('p.not_for_selling', 0)
+            ->with(['product_variation', 'product', 'media'])
+            ->select('variations.*');
 
         if ($check_location) {
             $query->where('pl.location_id', $this->id);

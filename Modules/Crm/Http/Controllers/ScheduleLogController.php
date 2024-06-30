@@ -8,7 +8,6 @@ use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use Modules\Crm\Entities\CrmCallLog;
 use Modules\Crm\Entities\Schedule;
 use Modules\Crm\Entities\ScheduleLog;
@@ -52,32 +51,32 @@ class ScheduleLogController extends Controller
         if (request()->ajax()) {
             try {
                 $schedule = Schedule::with(['invoices', 'invoices.payment_lines'])
-                        ->where('business_id', $business_id)
-                        ->findOrFail($schedule_id);
+                    ->where('business_id', $business_id)
+                    ->findOrFail($schedule_id);
 
                 $schedule_logs = ScheduleLog::with('createdBy')
-                                ->where('schedule_id', $schedule_id)
-                                ->latest()->get();
+                    ->where('schedule_id', $schedule_id)
+                    ->latest()->get();
                 //->simplePaginate(10);
 
                 //if call log is enabled
                 $call_logs = [];
                 if (config('constants.enable_crm_call_log')) {
                     $call_logs = CrmCallLog::leftJoin('users as created_users', 'crm_call_logs.created_by', '=', 'created_users.id')
-                                    ->where('contact_id', $schedule->contact_id)
-                                    ->whereIn('created_by', $schedule->users->pluck('id')->toArray())
-                                    ->where('start_time', '>=', $schedule->start_datetime)
-                                    ->where('end_time', '<=', $schedule->end_datetime)
-                                    ->latest()
-                                    ->select('crm_call_logs.*',
-                                        DB::raw("CONCAT(COALESCE(created_users.surname, ''), ' ', COALESCE(created_users.first_name, ''), ' ', COALESCE(created_users.last_name, '')) as created_user_name")
-                                    )
-                                    ->get();
+                        ->where('contact_id', $schedule->contact_id)
+                        ->whereIn('created_by', $schedule->users->pluck('id')->toArray())
+                        ->where('start_time', '>=', $schedule->start_datetime)
+                        ->where('end_time', '<=', $schedule->end_datetime)
+                        ->latest()
+                        ->select('crm_call_logs.*',
+                            DB::raw("CONCAT(COALESCE(created_users.surname, ''), ' ', COALESCE(created_users.first_name, ''), ' ', COALESCE(created_users.last_name, '')) as created_user_name")
+                        )
+                        ->get();
                 }
 
                 $logs_html = view('crm::schedule_log.partial.log')
-                                ->with(compact('schedule_logs', 'modal_content', 'schedule', 'call_logs'))
-                                ->render();
+                    ->with(compact('schedule_logs', 'modal_content', 'schedule', 'call_logs'))
+                    ->render();
 
                 $output = [
                     'success' => true,
@@ -111,7 +110,7 @@ class ScheduleLogController extends Controller
 
         $id = request()->get('schedule_id');
         $schedule = Schedule::where('business_id', $business_id)
-                        ->findOrFail($id);
+            ->findOrFail($id);
         $customers = Contact::customersDropdown($business_id, false);
         $statuses = Schedule::statusDropdown();
 
@@ -122,7 +121,6 @@ class ScheduleLogController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -139,7 +137,7 @@ class ScheduleLogController extends Controller
             $input['created_by'] = $request->user()->id;
 
             $schedule = Schedule::where('business_id', $business_id)
-                        ->findOrFail($request->get('schedule_id'));
+                ->findOrFail($request->get('schedule_id'));
 
             //update schedule status
             if (! empty($request->input('status'))) {
@@ -181,8 +179,8 @@ class ScheduleLogController extends Controller
         $schedule_id = request()->get('schedule_id');
 
         $schedule_log = ScheduleLog::with('schedule')
-                        ->where('schedule_id', $schedule_id)
-                        ->findOrFail($id);
+            ->where('schedule_id', $schedule_id)
+            ->findOrFail($id);
 
         return view('crm::schedule_log.show')
             ->with(compact('schedule_log'));
@@ -204,10 +202,10 @@ class ScheduleLogController extends Controller
         $schedule_id = request()->get('schedule_id');
 
         $schedule = Schedule::where('business_id', $business_id)
-                        ->findOrFail($schedule_id);
+            ->findOrFail($schedule_id);
 
         $schedule_log = ScheduleLog::where('schedule_id', $schedule_id)
-                            ->findOrFail($id);
+            ->findOrFail($id);
 
         $customers = Contact::customersDropdown($business_id, false);
         $statuses = Schedule::statusDropdown();
@@ -219,7 +217,6 @@ class ScheduleLogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -237,12 +234,12 @@ class ScheduleLogController extends Controller
 
             $schedule_id = $request->get('schedule_id');
             $schedule_log = ScheduleLog::where('schedule_id', $schedule_id)
-                            ->findOrFail($id);
+                ->findOrFail($id);
 
             //update schedule status
             if (! empty($request->input('status'))) {
                 $schedule = Schedule::where('business_id', $business_id)
-                        ->findOrFail($schedule_id);
+                    ->findOrFail($schedule_id);
 
                 $schedule->status = $request->input('status');
                 $schedule->save();
@@ -283,7 +280,7 @@ class ScheduleLogController extends Controller
             try {
                 $schedule_id = request()->get('schedule_id');
                 $schedule_log = ScheduleLog::where('schedule_id', $schedule_id)
-                                    ->findOrFail($id);
+                    ->findOrFail($id);
 
                 $schedule_log->delete();
 

@@ -8,9 +8,9 @@ use App\System;
 use Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\Superadmin\Entities\Subscription;
-use Illuminate\Routing\Controller;
 
 class SuperadminController extends Controller
 {
@@ -82,8 +82,8 @@ class SuperadminController extends Controller
     /**
      * Returns the stats for superadmin
      *
-     * @param $start date
-     * @param $end date
+     * @param  $start  date
+     * @param  $end  date
      * @return json
      */
     public function stats(Request $request)

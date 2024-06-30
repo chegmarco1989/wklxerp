@@ -42,11 +42,11 @@ class SuperadminCommunicator extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject($this->input['subject'])
-                    ->view(
-                        'emails.plain_html',
-                        ['content' => $this->input['message']]
-                    );
+            ->subject($this->input['subject'])
+            ->view(
+                'emails.plain_html',
+                ['content' => $this->input['message']]
+            );
     }
 
     /**

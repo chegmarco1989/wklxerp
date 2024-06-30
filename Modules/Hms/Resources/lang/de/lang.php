@@ -1,5 +1,6 @@
 <?php
-return 
+
+return
     [
         'hms' => 'HMS',
         'type' => 'Unterkunftstyp',
@@ -177,8 +178,8 @@ return
         'coupon_help_text' => 'Erstellen Sie verschiedene Gutscheincodes für jedes Zimmer während einer bestimmten Jahreszeit. Der Gutscheincode-Rabatt kann entweder in % oder als fester Betrag sein. Klicken Sie einfach auf die Schaltfläche "Hinzufügen" und füllen Sie das Formular aus.',
         'report_help_text' => 'Wählen Sie einen Datumsbereich aus und klicken Sie auf "GENERIEREN", um Informationen zu allen Buchungen für den ausgewählten Zeitraum anzuzeigen.',
         'print_pdf' => 'Buchungs-PDF',
-        'footer_text' => 'Fußzeilentext',  
-        'no_rooms_or_extras' => 'Keine Zimmer/Extras hinzugefügt, bitte fügen Sie welche hinzu, um fortzufahren', 
+        'footer_text' => 'Fußzeilentext',
+        'no_rooms_or_extras' => 'Keine Zimmer/Extras hinzugefügt, bitte fügen Sie welche hinzu, um fortzufahren',
         'add_booking_payment' => 'Buchungszahlung hinzufügen',
         'edit_booking_payment' => 'Buchungszahlung bearbeiten',
         'delete_booking_payment' => 'Buchungszahlung löschen',

@@ -9,7 +9,6 @@ use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\View;
 use Modules\Essentials\Entities\EssentialsTodoComment;
 use Modules\Essentials\Entities\ToDo;
 use Modules\Essentials\Notifications\NewTaskCommentNotification;
@@ -72,8 +71,8 @@ class ToDoController extends Controller
 
         if (request()->ajax()) {
             $todos = ToDo::where('business_id', $business_id)
-                        ->with(['users', 'assigned_by'])
-                        ->select('*');
+                ->with(['users', 'assigned_by'])
+                ->select('*');
 
             if (! empty($request->priority)) {
                 $todos->where('priority', $request->priority);
@@ -106,7 +105,7 @@ class ToDoController extends Controller
                 $start = $request->start_date;
                 $end = $request->end_date;
                 $todos->whereDate('date', '>=', $start)
-                            ->whereDate('date', '<=', $end);
+                    ->whereDate('date', '<=', $end);
             }
 
             return Datatables::of($todos)
@@ -226,14 +225,14 @@ class ToDoController extends Controller
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
 
         $query = ToDo::where('business_id', $business_id)
-                    ->with([
-                        'assigned_by',
-                        'comments',
-                        'comments.added_by',
-                        'media',
-                        'users',
-                        'media.uploaded_by_user',
-                    ]);
+            ->with([
+                'assigned_by',
+                'comments',
+                'comments.added_by',
+                'media',
+                'users',
+                'media.uploaded_by_user',
+            ]);
 
         //If not admin show only assigned task
         if (! $is_admin) {
@@ -255,9 +254,9 @@ class ToDoController extends Controller
         $priorities = ToDo::getTaskPriorities();
 
         $activities = Activity::forSubject($todo)
-           ->with(['causer', 'subject'])
-           ->latest()
-           ->get();
+            ->with(['causer', 'subject'])
+            ->latest()
+            ->get();
 
         return view('essentials::todo.view')->with(compact(
             'todo',
@@ -309,7 +308,6 @@ class ToDoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -386,7 +384,6 @@ class ToDoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request, $id)
@@ -504,7 +501,6 @@ class ToDoController extends Controller
     /**
      * Add comment to the task
      *
-     * @param  Request  $request
      * @return Response
      */
     public function addComment(Request $request)
@@ -518,7 +514,7 @@ class ToDoController extends Controller
             try {
                 $input = $request->only(['task_id', 'comment']);
                 $query = ToDo::where('business_id', $business_id)
-                            ->with('users');
+                    ->with('users');
                 $auth_id = auth()->user()->id;
 
                 //Non admin can add comment to only assigned tasks
@@ -539,8 +535,8 @@ class ToDoController extends Controller
                 $comment = EssentialsTodoComment::create($input);
 
                 $comment_html = view('essentials::todo.comment')
-                                ->with(compact('comment'))
-                                ->render();
+                    ->with(compact('comment'))
+                    ->render();
                 $output = [
                     'success' => true,
                     'comment_html' => $comment_html,
@@ -569,7 +565,6 @@ class ToDoController extends Controller
     /**
      * Upload documents for a task
      *
-     * @param  Request  $request
      * @return Response
      */
     public function uploadDocument(Request $request)
@@ -644,8 +639,8 @@ class ToDoController extends Controller
 
         try {
             $comment = EssentialsTodoComment::where('comment_by', auth()->user()->id)
-                                    ->where('id', $id)
-                                    ->delete();
+                ->where('id', $id)
+                ->delete();
             $output = [
                 'success' => true,
                 'msg' => __('lang_v1.success'),

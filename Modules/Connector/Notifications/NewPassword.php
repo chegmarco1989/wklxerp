@@ -40,10 +40,10 @@ class NewPassword extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Hello, '.$notifiable->first_name.'!')
-                    ->line('New password generated successfully')
-                    ->line('Your new password is: '.$this->new_password)
-                    ->line('Thank you for using our application!');
+            ->greeting('Hello, '.$notifiable->first_name.'!')
+            ->line('New password generated successfully')
+            ->line('Your new password is: '.$this->new_password)
+            ->line('Thank you for using our application!');
     }
 
     /**

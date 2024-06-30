@@ -42,7 +42,7 @@ class AccountingAccount extends Model
     public static function forDropdown($business_id, $with_data = false, $q = '')
     {
         $query = AccountingAccount::where('accounting_accounts.business_id', $business_id)
-                        ->where('status', 'active');
+            ->where('status', 'active');
         if ($with_data) {
             $account_types = AccountingAccountType::accounting_primary_type();
 
@@ -51,7 +51,7 @@ class AccountingAccount extends Model
             }
             $accounts = $query->leftJoin('accounting_account_types as at', 'at.id', '=', 'accounting_accounts.account_sub_type_id')
                 ->select('accounting_accounts.name', 'accounting_accounts.id', 'at.name as sub_type',
-                 'accounting_accounts.account_primary_type', 'at.business_id as sub_type_business_id')
+                    'accounting_accounts.account_primary_type', 'at.business_id as sub_type_business_id')
                 ->get();
 
             foreach ($accounts as $k => $v) {

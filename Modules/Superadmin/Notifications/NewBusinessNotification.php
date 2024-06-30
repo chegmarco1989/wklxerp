@@ -43,10 +43,10 @@ class NewBusinessNotification extends Notification
         ', Business contact number: '.$this->business->locations->first()->mobile;
 
         return (new MailMessage)
-                ->subject('New Business Registration')
-                ->greeting('Hello!')
-                ->line('New business registered successfully')
-                ->line($details);
+            ->subject('New Business Registration')
+            ->greeting('Hello!')
+            ->line('New business registered successfully')
+            ->line($details);
     }
 
     /**

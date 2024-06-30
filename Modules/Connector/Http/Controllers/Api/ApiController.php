@@ -77,9 +77,9 @@ class ApiController extends Controller
     {
         $client = request()->user()->token()->client;
 
-        if(!empty($client) && !empty($client->name)){
+        if (! empty($client) && ! empty($client->name)) {
             return $client->name;
-        } else{
+        } else {
             return '';
         }
     }

@@ -52,7 +52,6 @@ class SettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -70,7 +69,7 @@ class SettingsController extends Controller
             $settings['enable_updating_product_price'] = ! empty($request->input('enable_updating_product_price')) ? true : false;
 
             $business = Business::where('id', $business_id)
-                                ->update(['manufacturing_settings' => json_encode($settings)]);
+                ->update(['manufacturing_settings' => json_encode($settings)]);
 
             $output = ['success' => 1,
                 'msg' => __('lang_v1.updated_success'),

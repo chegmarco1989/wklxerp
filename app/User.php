@@ -2,33 +2,33 @@
 
 namespace App;
 
+use App\Notifications\RegisterSuccessful;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
-
 // Implémentation de MessengerProvider et de la Façade de "Messenger" (https://github.com/RTippin/messenger):
+use Laravel\Passport\HasApiTokens;
 use RTippin\Messenger\Contracts\MessengerProvider;
-use RTippin\Messenger\Traits\Messageable;
-use RTippin\Messenger\Traits\Search;
 use RTippin\Messenger\Facades\Messenger;
-use Illuminate\Support\Facades\App;						// AJOUTE
-use App\Notifications\RegisterSuccessful;				// Notification généré avec "php artisan make:notification RegisterSuccessful"
+use RTippin\Messenger\Traits\Messageable;
+use RTippin\Messenger\Traits\Search;						// AJOUTE
+use Spatie\Permission\Traits\HasRoles;				// Notification généré avec "php artisan make:notification RegisterSuccessful"
 
 class User extends Authenticatable implements MessengerProvider
 {
-    use HasFactory;
-    use Notifiable;
-    use SoftDeletes;
-    use HasRoles;
     use HasApiTokens;
-	//Default trait to satisfy MessengerProvider interface:
-	use Messageable;
-	use Search;
+    use HasFactory;
+    use HasRoles;
+    //Default trait to satisfy MessengerProvider interface:
+    use Messageable;
+    use Notifiable;
+
+    use Search;
+    use SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
@@ -97,21 +97,21 @@ class User extends Authenticatable implements MessengerProvider
             'username' => $details['username'],
             'email' => $details['email'],
             'password' => Hash::make($details['password']),
-            'name' => $details['surname'] . " " . $details['first_name'],
+            'name' => $details['surname'].' '.$details['first_name'],
             'language' => ! empty($details['language']) ? $details['language'] : 'en',
         ]);
-		
-		if ($user) {
-			// Set the application's locale to the user's preferred language
-			App::setLocale($user->language);
 
-			// Send the notification to the newly created user
-			$user->notify(new RegisterSuccessful($user->username));
-		
-			Messenger::getProviderMessenger($user);				// USAGE de "Messenger" (https://github.com/RTippin/messenger) importé ci-dessus.
-		}
-		 
-		return $user;
+        if ($user) {
+            // Set the application's locale to the user's preferred language
+            App::setLocale($user->language);
+
+            // Send the notification to the newly created user
+            $user->notify(new RegisterSuccessful($user->username));
+
+            Messenger::getProviderMessenger($user);				// USAGE de "Messenger" (https://github.com/RTippin/messenger) importé ci-dessus.
+        }
+
+        return $user;
     }
 
     /**
@@ -188,15 +188,15 @@ class User extends Authenticatable implements MessengerProvider
     /**
      * Return list of users dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
-     * @param $include_commission_agents = false (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
+     * @param  $include_commission_agents  = false (boolean)
      * @return array users
      */
     public static function forDropdown($business_id, $prepend_none = true, $include_commission_agents = false, $prepend_all = false, $check_location_permission = false)
     {
         $query = User::where('business_id', $business_id)
-                    ->user();
+            ->user();
 
         if (! $include_commission_agents) {
             $query->where('is_cmmsn_agnt', 0);
@@ -225,15 +225,15 @@ class User extends Authenticatable implements MessengerProvider
     /**
      * Return list of sales commission agents dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
     public static function saleCommissionAgentsDropdown($business_id, $prepend_none = true)
     {
         $all_cmmsn_agnts = User::where('business_id', $business_id)
-                        ->where('is_cmmsn_agnt', 1)
-                        ->select('id', DB::raw("CONCAT(COALESCE(surname, ''),' ',COALESCE(first_name, ''),' ',COALESCE(last_name,'')) as full_name"));
+            ->where('is_cmmsn_agnt', 1)
+            ->select('id', DB::raw("CONCAT(COALESCE(surname, ''),' ',COALESCE(first_name, ''),' ',COALESCE(last_name,'')) as full_name"));
 
         $users = $all_cmmsn_agnts->pluck('full_name', 'id');
 
@@ -248,15 +248,15 @@ class User extends Authenticatable implements MessengerProvider
     /**
      * Return list of users dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
-     * @param $prepend_all = false (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
+     * @param  $prepend_all  = false (boolean)
      * @return array users
      */
     public static function allUsersDropdown($business_id, $prepend_none = true, $prepend_all = false)
     {
         $all_users = User::where('business_id', $business_id)
-                        ->select('id', DB::raw("CONCAT(COALESCE(surname, ''),' ',COALESCE(first_name, ''),' ',COALESCE(last_name,'')) as full_name"));
+            ->select('id', DB::raw("CONCAT(COALESCE(surname, ''),' ',COALESCE(first_name, ''),' ',COALESCE(last_name,'')) as full_name"));
 
         $users = $all_users->pluck('full_name', 'id');
 
@@ -342,9 +342,9 @@ class User extends Authenticatable implements MessengerProvider
 
         return $img_src;
     }
-	
-   /* 1er USAGE de "MessengerProvider" (https://github.com/RTippin/messenger) à travers la méthode "getProviderSettings" :*/
-	public static function getProviderSettings(): array
+
+    /* 1er USAGE de "MessengerProvider" (https://github.com/RTippin/messenger) à travers la méthode "getProviderSettings" :*/
+    public static function getProviderSettings(): array
     {
         return [
             'alias' => 'user',
@@ -357,16 +357,16 @@ class User extends Authenticatable implements MessengerProvider
             'cant_friend' => [],
         ];
     }
-	
-	/* 2ème USAGE de "MessengerProvider" (https://github.com/RTippin/messenger) à travers la méthode "getProviderAvatarColumn" :*/
-	//User model override (Réécriture ou écrasement de la méthode "getProviderAvatarColumn" appelant la colonne "messenger_avatar" de la Migration "users"):
-	public function getProviderAvatarColumn(): string
-	{
-		return 'messenger_avatar';
-	}
-	
-	// AJOUTE POUR RECUPERER LA LANGUE
-	public function preferredLocale()
+
+    /* 2ème USAGE de "MessengerProvider" (https://github.com/RTippin/messenger) à travers la méthode "getProviderAvatarColumn" :*/
+    //User model override (Réécriture ou écrasement de la méthode "getProviderAvatarColumn" appelant la colonne "messenger_avatar" de la Migration "users"):
+    public function getProviderAvatarColumn(): string
+    {
+        return 'messenger_avatar';
+    }
+
+    // AJOUTE POUR RECUPERER LA LANGUE
+    public function preferredLocale()
     {
         // Here you retrieve the user's preferred language from the 'language' column
         return $this->language;

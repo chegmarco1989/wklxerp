@@ -48,7 +48,6 @@ class ConnectorServiceProvider extends ServiceProvider
     /**
      * Register the filters.
      *
-     * @param  Router  $router
      * @return void
      */
     public function registerMiddleware(Router $router)

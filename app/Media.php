@@ -76,7 +76,7 @@ class Media extends Model
     /**
      * Uploads files from the request and add's medias to the supplied model.
      *
-     * @param  int  $business_id, obj $model, $obj $request, string $file_name
+     * @param  int  $business_id,  obj $model, $obj $request, string $file_name
      */
     public static function uploadMedia($business_id, $model, $request, $file_name, $is_single = false, $model_media_type = null)
     {
@@ -172,7 +172,7 @@ class Media extends Model
     public static function deleteMedia($business_id, $media_id)
     {
         $media = Media::where('business_id', $business_id)
-                        ->findOrFail($media_id);
+            ->findOrFail($media_id);
 
         $media_path = public_path('uploads/media/'.$media->file_name);
 

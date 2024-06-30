@@ -99,8 +99,8 @@ class InstallController extends Controller
             ];
 
             return redirect()
-            ->action([\App\Http\Controllers\Install\ModulesController::class, 'index'])
-            ->with('status', $output);
+                ->action([\App\Http\Controllers\Install\ModulesController::class, 'index'])
+                ->with('status', $output);
         } catch (Exception $e) {
             DB::rollBack();
             exit($e->getMessage());

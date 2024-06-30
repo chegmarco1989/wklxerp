@@ -19,11 +19,11 @@ return new class extends Migration
         });
 
         Transaction::where('type', 'sell_transfer')
-                ->where('status', 'completed')
-                ->update(['status' => 'final']);
+            ->where('status', 'completed')
+            ->update(['status' => 'final']);
 
         Transaction::where('type', 'purchase_transfer')
-                ->where('status', 'completed')
-                ->update(['status' => 'received']);
+            ->where('status', 'completed')
+            ->update(['status' => 'received']);
     }
 };

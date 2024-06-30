@@ -2,18 +2,21 @@
 
 namespace Modules\Hms\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use App\Utils\NotificationUtil;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class CustomerNotification extends Notification
 {
     use Queueable;
+
     protected $notificationInfo;
+
     protected $cc;
+
     protected $bcc;
+
     /**
      * Create a new notification instance.
      *
@@ -31,7 +34,7 @@ class CustomerNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -42,7 +45,7 @@ class CustomerNotification extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -50,24 +53,25 @@ class CustomerNotification extends Notification
         $data = $this->notificationInfo;
 
         $mail = (new MailMessage)
-                    ->subject($data['subject'])
-                    ->view(
-                        'emails.plain_html',
-                        ['content' => $data['email_body']]
-                    );
+            ->subject($data['subject'])
+            ->view(
+                'emails.plain_html',
+                ['content' => $data['email_body']]
+            );
         if (! empty($this->cc)) {
             $mail->cc($this->cc);
         }
         if (! empty($this->bcc)) {
             $mail->bcc($this->bcc);
         }
+
         return $mail;
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)

@@ -18,8 +18,8 @@ class CreateCrmCampaignsTable extends Migration
 
             $table->integer('business_id')->unsigned();
             $table->foreign('business_id')
-                    ->references('id')->on('business')
-                    ->onDelete('cascade');
+                ->references('id')->on('business')
+                ->onDelete('cascade');
 
             $table->string('name');
             $table->enum('campaign_type', ['sms', 'email'])->default('email');

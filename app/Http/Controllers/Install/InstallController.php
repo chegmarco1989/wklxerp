@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Utils\InstallUtil;
 use Composer\Semver\Comparator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Abort;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Illuminate\Support\Facades\Abort;
 
 //use Illuminate\Support\Facades\Storage;
 
@@ -305,7 +305,7 @@ class InstallController extends Controller
             return view('install.update_confirmation');
         } else {
             // abort(404);
-            exit("<b> Update already done to Version <code>".$db_version."</code></b>");
+            exit('<b> Update already done to Version <code>'.$db_version.'</code></b>');
         }
     }
 

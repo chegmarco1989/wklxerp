@@ -1,4 +1,5 @@
 <?php
+
 return [
     'hms' => 'Hệ thống quản lý khách sạn',
     'type' => 'Loại Chỗ ở',
@@ -134,7 +135,7 @@ return [
     'stay' => 'Lưu trú',
     'hms_module' => 'Mô-đun HMS',
     'manage_rooms' => 'Quản lý Phòng',
-    'manage_price' =>'Quản lý Giá',
+    'manage_price' => 'Quản lý Giá',
     'manage_unavailable' => 'Quản lý Không khả dụng',
     'manage_extra' => 'Quản lý Thêm',
     'manage_coupon' => 'Quản lý Phiếu giảm giá',
@@ -176,7 +177,7 @@ return [
     'coupon_help_text' => 'Tạo các mã giảm giá khác nhau cho bất kỳ loại phòng nào trong suốt một khoảng thời gian cụ thể trong năm. Giảm giá có thể là phần trăm (%) hoặc số tiền cố định. Chỉ cần nhấp vào nút "Thêm" và điền vào biểu mẫu.',
     'report_help_text' => 'Chọn khoảng thời gian và nhấp vào nút "TẠO" để xem thông tin về tất cả các đặt phòng được thực hiện cho khoảng thời gian đã chọn.',
     'print_pdf' => 'PDF Đặt phòng',
-    'footer_text' => 'Văn bản chân trang', 
+    'footer_text' => 'Văn bản chân trang',
     'no_rooms_or_extras' => 'Không có Phòng/Thêm dịch vụ nào được thêm, vui lòng thêm để tiếp tục',
     'add_booking_payment' => 'Thêm thanh toán đặt phòng',
     'edit_booking_payment' => 'Chỉnh sửa thanh toán đặt phòng',

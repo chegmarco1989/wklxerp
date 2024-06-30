@@ -20,7 +20,6 @@ class CashRegisterController extends Controller
     /**
      * Constructor
      *
-     * @param  CashRegisterUtil  $cashRegisterUtil
      * @return void
      */
     public function __construct(CashRegisterUtil $cashRegisterUtil, ModuleUtil $moduleUtil)
@@ -62,7 +61,6 @@ class CashRegisterController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -123,7 +121,7 @@ class CashRegisterController extends Controller
         $payment_types = $this->cashRegisterUtil->payment_types(null, false, $business_id);
 
         return view('cash_register.register_details')
-                    ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
+            ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
     }
 
     /**
@@ -153,7 +151,7 @@ class CashRegisterController extends Controller
         $payment_types = $this->cashRegisterUtil->payment_types($register_details->location_id, true, $business_id);
 
         return view('cash_register.register_details')
-                ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
+            ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
     }
 
     /**
@@ -184,13 +182,12 @@ class CashRegisterController extends Controller
         $pos_settings = ! empty(request()->session()->get('business.pos_settings')) ? json_decode(request()->session()->get('business.pos_settings'), true) : [];
 
         return view('cash_register.close_register_modal')
-                    ->with(compact('register_details', 'details', 'payment_types', 'pos_settings'));
+            ->with(compact('register_details', 'details', 'payment_types', 'pos_settings'));
     }
 
     /**
      * Closes currently opened register.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function postCloseRegister(Request $request)
@@ -217,8 +214,8 @@ class CashRegisterController extends Controller
             $input['denominations'] = ! empty(request()->input('denominations')) ? json_encode(request()->input('denominations')) : null;
 
             CashRegister::where('user_id', $user_id)
-                                ->where('status', 'open')
-                                ->update($input);
+                ->where('status', 'open')
+                ->update($input);
             $output = ['success' => 1,
                 'msg' => __('cash_register.close_success'),
             ];

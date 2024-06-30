@@ -88,7 +88,7 @@ return [
     'delete_booking' => '删除预订',
     'click_on_any_booking_to_view_or_change_status' => '单击任何预订以查看详细信息或更改状态',
     'double_click_on_any_day_to_add_new_booking' => '双击任何天以添加新预订',
-    'todays_bookings' => "今天的预订",
+    'todays_bookings' => '今天的预订',
     'hello_name' => '你好 :name！',
     'booking_confirmed' => '您的预订已确认。',
     'table_info' => '桌子：:table',

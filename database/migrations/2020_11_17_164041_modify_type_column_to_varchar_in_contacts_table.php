@@ -15,8 +15,8 @@ return new class extends Migration
         DB::statement('ALTER TABLE contacts MODIFY COLUMN `type` VARCHAR(191) NOT NULL');
 
         Contact::where('type', '=', '')
-                 ->orWhereNull('type')
-                ->update(['type' => 'lead']);
+            ->orWhereNull('type')
+            ->update(['type' => 'lead']);
     }
 
     /**

@@ -52,15 +52,15 @@ class RecurringInvoice extends Command
             ini_set('max_execution_time', 0);
             ini_set('memory_limit', '512M');
             $transactions = Transaction::where('is_recurring', 1)
-                                ->where('type', 'sell')
-                                ->where('status', 'final')
-                                ->whereNull('recur_stopped_on')
-                                ->whereNotNull('recur_interval')
-                                ->whereNotNull('recur_interval_type')
-                                ->with(['recurring_invoices',
-                                    'sell_lines', 'business',
-                                    'sell_lines.product', ])
-                                ->get();
+                ->where('type', 'sell')
+                ->where('status', 'final')
+                ->whereNull('recur_stopped_on')
+                ->whereNotNull('recur_interval')
+                ->whereNotNull('recur_interval_type')
+                ->with(['recurring_invoices',
+                    'sell_lines', 'business',
+                    'sell_lines.product', ])
+                ->get();
 
             foreach ($transactions as $transaction) {
                 date_default_timezone_set($transaction->business->time_zone);
@@ -139,7 +139,7 @@ class RecurringInvoice extends Command
                                 $sell_line->variation_id,
                                 $transaction->location_id,
                                 $sell_line->quantity
-                                );
+                            );
                         }
 
                         $business = ['id' => $transaction->business_id,

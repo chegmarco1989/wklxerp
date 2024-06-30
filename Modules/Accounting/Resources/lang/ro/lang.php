@@ -1,4 +1,5 @@
 <?php
+
 return [
     'accounting' => 'Contabilitate',
     'accounting_module' => 'Modul de contabilitate',
@@ -159,7 +160,7 @@ return [
     'ordinary_shares_desc' => 'Corporațiile folosesc Acțiunile Obișnuite pentru a urmări acțiunile obișnuite în posesia acționarilor săi. Suma din această cont trebuie să fie valoarea nominală (sau par) a acțiunilor.',
     'other_comprehensive_income' => 'Venituri cuprinzând alte elemente de rezultat global',
     'other_comprehensive_income_desc' => 'Utilizați Veniturile cu Alte Elemente de Rezultat Global pentru a urmări creșterile sau scăderile veniturilor din diferite afaceri care nu sunt încă absorbite de companie.',
-    "owner's_equity" => "Capitaluri proprii",
+    "owner's_equity" => 'Capitaluri proprii',
     "owner's_equity_desc" => 'Corporațiile folosesc Capitalurile Proprii pentru a arăta suma netă cumulată sau pierderea afacerilor lor începând cu începutul anului financiar.',
     'paid-in_capital_or_surplus' => 'Capital social varsat sau excedent de capital',
     'paid-in_capital_or_surplus_desc' => 'Corporațiile folosesc Capitalul Varsat pentru a urmări sumele primite de la acționari în schimbul acțiunilor care sunt peste valoarea nominală (sau par) a acțiunilor.',
@@ -167,7 +168,7 @@ return [
     'partner_contributions_desc' => 'Asociațiile în participațiune folosesc Contribuțiile Partenerilor pentru a urmări sumele pe care partenerii le contribuie la asociație pe parcursul anului.',
     'partner_distributions' => 'Distribuții ale partenerilor',
     'partner_distributions_desc' => 'Asociațiile în participațiune folosesc Distribuțiile Partenerilor pentru a urmări sumele distribuite de asociație partenerilor săi pe parcursul anului. Nu folosiți aceasta pentru plăți regulate către parteneri pentru dobânzi sau servicii. În schimb, utilizați un cont de Plăți garantate (un cont de Cheltuieli în Cheltuielile cu salariile), în schimb.',
-    "partner's_equity" => "Capitalurile proprii ale partenerilor",
+    "partner's_equity" => 'Capitalurile proprii ale partenerilor',
     "partner's_equity_desc" => 'Asociațiile în participațiune folosesc Capitolurile Propri ale Partenerilor pentru a arăta veniturile rămase în asociație pentru fiecare partener, începând cu sfârșitul anului anterior.',
     'preferred_shares' => 'Acțiuni preferențiale',
     'preferred_shares_desc' => 'Corporațiile folosesc acest cont pentru a urmări acțiunile lor preferențiale în posesia acționarilor. Suma din acest cont ar trebui să fie valoarea nominală (sau par) a acțiunilor.',
@@ -257,7 +258,7 @@ return [
     'management_compensation_desc' => 'Utilizați Remunerarea managementului pentru a urmări remunerațiile plătite Managerilor, Executivilor și Non-executivilor. De exemplu, salariu, taxe și avantaje.',
     'meals_and_entertainment' => 'Mese și divertisment',
     'meals_and_entertainment_desc' => 'Utilizați Mesele și divertismentul pentru a urmări cât cheltuiți pe a vă lua masa cu angajații dumneavoastră pentru a promova moralul. Dacă luați masa cu un client pentru a promova afacerea dumneavoastră, utilizați un cont de Mese promoționale, în loc. Asigurați-vă că includeți cu cine ați mâncat și scopul mesei atunci când introduceți tranzacția.',
-    'office/general_administrative_expenses' => 'Cheltuieli de birou/administrative generale', 
+    'office/general_administrative_expenses' => 'Cheltuieli de birou/administrative generale',
     'office/general_administrative_expenses_desc' => 'Utilizați Cheltuielile de birou/administrative generale pentru a urmări toate tipurile de cheltuieli generale sau legate de birou.',
     'other_miscellaneous_service_cost' => 'Alte costuri de servicii diverse',
     'other_miscellaneous_service_cost_desc' => 'Utilizați Alte costuri de servicii diversi pentru a urmări costurile legate de furnizarea de servicii care nu se încadrează în alt tip de cheltuieli. Acest cont este disponibil de asemenea ca un cont de Costuri ale Vânzărilor (COS).',
@@ -265,7 +266,7 @@ return [
     'other_selling_expenses_desc' => 'Utilizați Alte cheltuieli de vânzare pentru a urmări cheltuieli de vânzare realizate care nu cad sub nicio altă categorie.',
     'payroll_expenses' => 'Cheltuieli de salarii',
     'payroll_expenses_desc' => 'Utilizați Cheltuielile de salarii pentru a urmări cheltuielile de salarii. Puteți avea conturi diferite de acest tip pentru lucruri precum: - Remunerația ofițerilor - Plățile garantate - Asigurare pentru lucrători - Salarizarea și salariile - Taxele de salarii',
-    'rent_or_lease_of_buildings' => 'Chirie sau închiriere clădiri', 
+    'rent_or_lease_of_buildings' => 'Chirie sau închiriere clădiri',
     'rent_or_lease_of_buildings_desc' => 'Utilizați Chiria sau închirierea clădirilor pentru a urmări plățile de chirie pe care le faceți.',
     'repair_and_maintenance' => 'Reparații și întreținere',
     'repair_and_maintenance_desc' => 'Utilizați Reparațiile și întreținerea pentru a urmări orice reparații și taxe periodice de întreținere. Puteți avea conturi diferite de acest tip pentru a urmări diferite tipuri de cheltuieli de reparatii si întreținere (auto, echipamente, peisaj, etc.).',

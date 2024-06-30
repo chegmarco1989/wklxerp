@@ -42,21 +42,21 @@ class CrmContact extends Contact
     /**
      * Return list of lead dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
     public static function leadsDropdown($business_id, $prepend_none = true, $append_id = true)
     {
         $all_contacts = CrmContact::where('business_id', $business_id)
-                        ->where('type', 'lead')
-                        ->active();
+            ->where('type', 'lead')
+            ->active();
 
         if ($append_id) {
             $all_contacts->select(
                 DB::raw("IF(contact_id IS NULL OR contact_id='', CONCAT( COALESCE(supplier_business_name, ''), ' - ', name), CONCAT(COALESCE(supplier_business_name, ''), ' - ', name, ' (', contact_id, ')')) AS leads"),
                 'id'
-                );
+            );
         } else {
             $all_contacts->select('id', DB::raw('name as leads'));
         }
@@ -96,13 +96,13 @@ class CrmContact extends Contact
     public static function contactsDropdownForLogin($business_id, $append_contact_id = true)
     {
         $all_contacts = Contact::where('business_id', $business_id)
-                        ->active();
+            ->active();
 
         if ($append_contact_id) {
             $all_contacts->select(
                 DB::raw("IF(contact_id IS NULL OR contact_id='', CONCAT( COALESCE(supplier_business_name, ''), ' - ', name), CONCAT(COALESCE(supplier_business_name, ''), ' - ', name, ' (', contact_id, ')')) AS contacts"),
                 'id'
-                );
+            );
         } else {
             $all_contacts->select('id', DB::raw('name as contacts'));
         }
@@ -118,8 +118,8 @@ class CrmContact extends Contact
         $count = 0;
         if (! empty($input['contact_id'])) {
             $count = CrmContact::where('business_id', $input['business_id'])
-                      ->where('contact_id', $input['contact_id'])
-                      ->count();
+                ->where('contact_id', $input['contact_id'])
+                ->count();
         }
 
         if ($count == 0) {
@@ -155,9 +155,9 @@ class CrmContact extends Contact
         $count = 0;
         if (! empty($input['contact_id'])) {
             $count = CrmContact::where('business_id', $business_id)
-                        ->where('contact_id', $input['contact_id'])
-                        ->where('id', '!=', $id)
-                        ->count();
+                ->where('contact_id', $input['contact_id'])
+                ->where('id', '!=', $id)
+                ->count();
         }
 
         if ($count == 0) {
@@ -191,16 +191,16 @@ class CrmContact extends Contact
     public static function getContactsCountBySourceOfGivenTyps($business_id, $types = [])
     {
         $query = Contact::where('business_id', $business_id)
-                    ->Active();
+            ->Active();
 
         if (! empty($types)) {
             $query->whereIn('type', $types);
         }
 
         $contacts_count_by_source = $query->select(\DB::raw('count(crm_source) as count, crm_source'))
-                                    ->groupBy('crm_source')
-                                    ->get()
-                                    ->keyBy('crm_source');
+            ->groupBy('crm_source')
+            ->get()
+            ->keyBy('crm_source');
 
         return $contacts_count_by_source;
     }

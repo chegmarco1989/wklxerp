@@ -58,7 +58,6 @@ class CmsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -91,7 +90,6 @@ class CmsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -114,9 +112,9 @@ class CmsController extends Controller
     public function getBlogList()
     {
         $blogs = CmsPage::where('type', 'blog')
-                    ->orderBy('priority', 'asc')
-                    ->where('is_enabled', 1)
-                    ->get();
+            ->orderBy('priority', 'asc')
+            ->where('is_enabled', 1)
+            ->get();
 
         return view('cms::frontend.blogs.index')
             ->with(compact('blogs'));
@@ -127,8 +125,8 @@ class CmsController extends Controller
         $id = $this->cmsUtil->findIdFromGivenUrl($request->url());
 
         $blog = CmsPage::where('type', 'blog')
-                    ->where('is_enabled', 1)
-                    ->findOrFail($id);
+            ->where('is_enabled', 1)
+            ->findOrFail($id);
 
         return view('cms::frontend.blogs.show')
             ->with(compact('blog'));

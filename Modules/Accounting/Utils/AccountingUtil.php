@@ -12,7 +12,7 @@ use Modules\Accounting\Entities\AccountingAccountsTransaction;
 class AccountingUtil extends Util
 {
     public function balanceFormula($accounting_accounts_alias = 'accounting_accounts',
-                                 $accounting_account_transaction_alias = 'AAT')
+        $accounting_account_transaction_alias = 'AAT')
     {
         return "SUM( IF(
             ($accounting_accounts_alias.account_primary_type='asset' AND $accounting_account_transaction_alias.type='debit')
@@ -26,7 +26,7 @@ class AccountingUtil extends Util
     public function getAccountingSettings($business_id)
     {
         $accounting_settings = Business::where('id', $business_id)
-                                ->value('accounting_settings');
+            ->value('accounting_settings');
 
         $accounting_settings = ! empty($accounting_settings) ? json_decode($accounting_settings, true) : [];
 
@@ -40,7 +40,7 @@ class AccountingUtil extends Util
 
         if ($type == 'sell') {
             $query->where('transactions.type', 'sell')
-            ->where('transactions.status', 'final');
+                ->where('transactions.status', 'final');
         } elseif ($type == 'purchase') {
             $query->where('transactions.type', 'purchase')
                 ->where('transactions.status', 'received');
@@ -51,11 +51,11 @@ class AccountingUtil extends Util
         }
 
         $dues = $query->whereNotNull('transactions.pay_term_number')
-                ->whereIn('transactions.payment_status', ['partial', 'due'])
-                ->join('contacts as c', 'c.id', '=', 'transactions.contact_id')
-                ->select(
-                    DB::raw(
-                        'DATEDIFF(
+            ->whereIn('transactions.payment_status', ['partial', 'due'])
+            ->join('contacts as c', 'c.id', '=', 'transactions.contact_id')
+            ->select(
+                DB::raw(
+                    'DATEDIFF(
                             "'.$today.'", 
                             IF(
                                 transactions.pay_term_type="days",
@@ -63,25 +63,25 @@ class AccountingUtil extends Util
                                 DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number MONTH)
                             )
                         ) as diff'
-                    ),
-                    DB::raw('SUM(transactions.final_total - 
+                ),
+                DB::raw('SUM(transactions.final_total - 
                         (SELECT COALESCE(SUM(IF(tp.is_return = 1, -1*tp.amount, tp.amount)), 0) 
                         FROM transaction_payments as tp WHERE tp.transaction_id = transactions.id) )  
                         as total_due'),
 
-                    'c.name as contact_name',
-                    'transactions.contact_id',
-                    'transactions.invoice_no',
-                    'transactions.ref_no',
-                    'transactions.transaction_date',
-                    DB::raw('IF(
+                'c.name as contact_name',
+                'transactions.contact_id',
+                'transactions.invoice_no',
+                'transactions.ref_no',
+                'transactions.transaction_date',
+                DB::raw('IF(
                         transactions.pay_term_type="days",
                         DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number DAY),
                         DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number MONTH)
                     ) as due_date')
-                )
-                ->groupBy('transactions.id')
-                ->get();
+            )
+            ->groupBy('transactions.id')
+            ->get();
 
         $report_details = [];
         if ($group_by == 'contact') {
@@ -149,7 +149,8 @@ class AccountingUtil extends Util
     /**
      * Function to delete a mapping
      */
-    public function deleteMap($transaction_id, $transaction_payment_id){
+    public function deleteMap($transaction_id, $transaction_payment_id)
+    {
         AccountingAccountsTransaction::where('transaction_id', $transaction_id)
             ->whereIn('map_type', ['payment_account', 'deposit_to'])
             ->where('transaction_payment_id', $transaction_payment_id)
@@ -159,7 +160,8 @@ class AccountingUtil extends Util
     /**
      * Function to save a mapping
      */
-    public function saveMap($type, $id, $user_id, $business_id, $deposit_to, $payment_account, $note = null){
+    public function saveMap($type, $id, $user_id, $business_id, $deposit_to, $payment_account, $note = null)
+    {
         if ($type == 'sell') {
             $transaction = Transaction::where('business_id', $business_id)->where('id', $id)->firstorFail();
 
@@ -192,7 +194,7 @@ class AccountingUtil extends Util
             ];
         } elseif (in_array($type, ['purchase_payment', 'sell_payment'])) {
             $transaction_payment = TransactionPayment::where('id', $id)->where('business_id', $business_id)
-                            ->firstorFail();
+                ->firstorFail();
 
             //$payment_account will increase = sales = credit
             $payment_data = [
@@ -251,8 +253,8 @@ class AccountingUtil extends Util
                 'created_by' => $user_id,
                 'operation_date' => \Carbon::now(),
             ];
-        }elseif ($type == 'expense') {
-            $transaction = Transaction::where('business_id', $business_id)->where('id', $id)->firstorFail();            
+        } elseif ($type == 'expense') {
+            $transaction = Transaction::where('business_id', $business_id)->where('id', $id)->firstorFail();
             $payment_data = [
                 'accounting_account_id' => $payment_account,
                 'transaction_id' => $id,

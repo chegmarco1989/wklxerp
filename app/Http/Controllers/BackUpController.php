@@ -138,7 +138,7 @@ class BackUpController extends Controller
      */
     public function delete($file_name)
     {
-        
+
         if (! auth()->user()->can('backup')) {
             abort(403, 'Unauthorized action.');
         }

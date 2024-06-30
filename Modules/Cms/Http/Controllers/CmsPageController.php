@@ -34,8 +34,8 @@ class CmsPageController extends Controller
         $post_type = $request->get('type', 'page');
 
         $pages = CmsPage::where('type', $post_type)
-                    ->orderBy('priority', 'asc')
-                    ->get();
+            ->orderBy('priority', 'asc')
+            ->get();
 
         return view('cms::page.index')
             ->with(compact('pages', 'post_type'));
@@ -57,7 +57,6 @@ class CmsPageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -108,14 +107,14 @@ class CmsPageController extends Controller
         $title = str_replace('-', ' ', $page_title);
 
         $page = CmsPage::where('title', $title)
-                    ->first();
+            ->first();
 
         if (empty($page)) {
             abort(404);
         }
 
         return view('cms::frontend.pages.custom_view')
-        ->with(compact('page'));
+            ->with(compact('page'));
     }
 
     /**
@@ -129,11 +128,11 @@ class CmsPageController extends Controller
         $post_type = request()->get('type', 'page');
 
         $page = CmsPage::where('type', $post_type)
-                    ->findOrFail($id);
+            ->findOrFail($id);
 
         $page_meta = CmsPageMeta::where('cms_page_id', $id)
-                        ->get()
-                        ->keyBy('meta_key');
+            ->get()
+            ->keyBy('meta_key');
 
         return view('cms::page.edit')
             ->with(compact('page', 'post_type', 'page_meta'));
@@ -142,7 +141,6 @@ class CmsPageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -212,7 +210,7 @@ class CmsPageController extends Controller
                 $post_type = request()->get('type');
 
                 $page = CmsPage::where('type', $post_type)
-                        ->findOrFail($id);
+                    ->findOrFail($id);
 
                 if (! empty($page->feature_image_path) && file_exists($page->feature_image_path)) {
                     unlink($page->feature_image_path);

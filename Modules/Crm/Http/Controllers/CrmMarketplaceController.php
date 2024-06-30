@@ -84,7 +84,6 @@ class CrmMarketplaceController extends Controller
     /**
      * Fetches leads from api and creates leads and followups
      *
-     * @param  Request  $request
      * @return Response
      */
     public function importLeads(Request $request)
@@ -113,7 +112,7 @@ class CrmMarketplaceController extends Controller
 
                 //check if email exists
                 $lead = CrmContact::where('email', $user_data['email'])
-                                ->first();
+                    ->first();
 
                 //if lead don't exist create one
                 if (empty($lead)) {
@@ -143,9 +142,9 @@ class CrmMarketplaceController extends Controller
 
                 if (! empty($user_data['inq_id'])) {
                     $schedule = Schedule::where('business_id', $business_id)
-                                        ->where('contact_id', $lead->id)
-                                        ->where('title', 'like', "%{$inq_id}%")
-                                        ->first();
+                        ->where('contact_id', $lead->id)
+                        ->where('title', 'like', "%{$inq_id}%")
+                        ->first();
 
                     if (! empty($schedule)) {
                         continue;

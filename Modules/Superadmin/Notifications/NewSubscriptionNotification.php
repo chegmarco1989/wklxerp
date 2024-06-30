@@ -44,10 +44,10 @@ class NewSubscriptionNotification extends Notification
         $details = 'Package: '.$this->subscription->package->name.', Transaction ID: '.$this->subscription->payment_transaction_id.', Paid Via: '.$paid_via;
 
         return (new MailMessage)
-                ->subject('New Subscription')
-                ->greeting('Hello!')
-                ->line('New package has been subscribed by '.$this->subscription->business->name)
-                ->line($details);
+            ->subject('New Subscription')
+            ->greeting('Hello!')
+            ->line('New package has been subscribed by '.$this->subscription->business->name)
+            ->line($details);
     }
 
     /**

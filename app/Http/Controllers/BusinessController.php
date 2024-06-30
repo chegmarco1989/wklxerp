@@ -220,6 +220,7 @@ class BusinessController extends Controller
                 $package = \Modules\Superadmin\Entities\Package::find($package_id);
                 if (! empty($package)) {
                     Auth::login($user);
+
                     return redirect()->route('register-pay', ['package_id' => $package_id]);
                 }
             }
@@ -339,7 +340,6 @@ class BusinessController extends Controller
     /**
      * Updates business settings
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function postBusinessSettings(Request $request)
@@ -519,7 +519,7 @@ class BusinessController extends Controller
             $api_settings = $this->moduleUtil->getApiSettings($api_token);
 
             $settings = Business::where('id', $api_settings->business_id)
-                        ->value('ecom_settings');
+                ->value('ecom_settings');
 
             $settings_array = ! empty($settings) ? json_decode($settings, true) : [];
 
@@ -549,7 +549,7 @@ class BusinessController extends Controller
 
             $data['email_settings'] = $email_settings;
             \Notification::route('mail', $email_settings['mail_from_address'])
-            ->notify(new TestEmailNotification($data));
+                ->notify(new TestEmailNotification($data));
 
             $output = [
                 'success' => 1,

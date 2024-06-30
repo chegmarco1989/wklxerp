@@ -83,7 +83,6 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -103,12 +102,12 @@ class BookingController extends Controller
 
                 //Check if booking is available for the required input
                 $query = Booking::where('business_id', $business_id)
-                                ->where('location_id', $input['location_id'])
-                                ->where('contact_id', $input['contact_id'])
-                                ->where(function ($q) use ($date_range) {
-                                    $q->whereBetween('booking_start', $date_range)
-                                    ->orWhereBetween('booking_end', $date_range);
-                                });
+                    ->where('location_id', $input['location_id'])
+                    ->where('contact_id', $input['contact_id'])
+                    ->where(function ($q) use ($date_range) {
+                        $q->whereBetween('booking_start', $date_range)
+                            ->orWhereBetween('booking_end', $date_range);
+                    });
 
                 if (isset($input['res_table_id'])) {
                     $query->where('table_id', $input['res_table_id']);
@@ -167,9 +166,9 @@ class BookingController extends Controller
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
             $booking = Booking::where('business_id', $business_id)
-                                ->where('id', $id)
-                                ->with(['table', 'customer', 'correspondent', 'waiter', 'location'])
-                                ->first();
+                ->where('id', $id)
+                ->with(['table', 'customer', 'correspondent', 'waiter', 'location'])
+                ->first();
             if (! empty($booking)) {
                 $booking_start = $this->commonUtil->format_date($booking->booking_start, true);
                 $booking_end = $this->commonUtil->format_date($booking->booking_end, true);
@@ -200,7 +199,6 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Booking  $booking
      * @return \Illuminate\Http\Response
      */
@@ -212,7 +210,7 @@ class BookingController extends Controller
         try {
             $business_id = $request->session()->get('user.business_id');
             $booking = Booking::where('business_id', $business_id)
-                                ->find($id);
+                ->find($id);
             if (! empty($booking)) {
                 $booking->booking_status = $request->booking_status;
                 $booking->save();
@@ -245,8 +243,8 @@ class BookingController extends Controller
         try {
             $business_id = request()->session()->get('user.business_id');
             $booking = Booking::where('business_id', $business_id)
-                                ->where('id', $id)
-                                ->delete();
+                ->where('id', $id)
+                ->delete();
             $output = ['success' => 1,
                 'msg' => trans('lang_v1.deleted_success'),
             ];
@@ -277,9 +275,9 @@ class BookingController extends Controller
             $user_id = request()->session()->get('user.id');
             $today = \Carbon::now()->format('Y-m-d');
             $query = Booking::where('business_id', $business_id)
-                        ->where('booking_status', 'booked')
-                        ->whereDate('booking_start', $today)
-                        ->with(['table', 'customer', 'correspondent', 'waiter', 'location']);
+                ->where('booking_status', 'booked')
+                ->whereDate('booking_start', $today)
+                ->with(['table', 'customer', 'correspondent', 'waiter', 'location']);
 
             if (! empty(request()->location_id)) {
                 $query->where('location_id', request()->location_id);
@@ -317,7 +315,7 @@ class BookingController extends Controller
                 ->editColumn('booking_end', function ($row) {
                     return $this->commonUtil->format_date($row->booking_end, true);
                 })
-               ->removeColumn('id')
+                ->removeColumn('id')
                 ->make(true);
         }
     }

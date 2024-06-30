@@ -1,4 +1,5 @@
 <?php
+
 return [
     'accounting' => 'Boekhouding',
     'accounting_module' => 'Boekhoudmodule',
@@ -11,7 +12,7 @@ return [
     'credit_card' => 'Creditcard',
     'current_liabilities' => 'Kortlopende schulden',
     'non_current_liabilities' => 'Langlopende schulden',
-    'owners_equity' => "Eigen vermogen",
+    'owners_equity' => 'Eigen vermogen',
     'income' => 'Inkomsten',
     'other_income' => 'Overige inkomsten',
     'cost_of_sale' => 'Verkoopkosten',
@@ -159,7 +160,7 @@ return [
     'ordinary_shares_desc' => 'Gewone aandelen worden door bedrijven gebruikt om hun gewone aandelen bij aandeelhouders bij te houden. Het bedrag op deze rekening moet de nominale waarde van de aandelen zijn.',
     'other_comprehensive_income' => 'Andere uitgebreide inkomsten',
     'other_comprehensive_income_desc' => 'Gebruik Andere uitgebreide inkomsten om de toename of afname van inkomen uit verschillende activiteiten te volgen die nog niet door het bedrijf zijn geabsorbeerd.',
-    "owner's_equity" => "Eigen vermogen van de eigenaar",
+    "owner's_equity" => 'Eigen vermogen van de eigenaar',
     "owner's_equity_desc" => 'Bedrijven gebruiken Eigen vermogen van de eigenaar om het cumulatieve nettoresultaat of -verlies van hun bedrijf te tonen aan het begin van het financiële jaar.',
     'paid-in_capital_or_surplus' => 'Inbetaald kapitaal of surplus',
     'paid-in_capital_or_surplus_desc' => 'Bedrijven gebruiken Inbetaald kapitaal om bedragen bij te houden die ontvangen zijn van aandeelhouders in ruil voor aandelen die meer bedragen dan de nominale waarde van de aandelen.',
@@ -167,7 +168,7 @@ return [
     'partner_contributions_desc' => 'Partnerships gebruiken Bijdragen van partners om de bedragen bij te houden die partners tijdens het jaar bijdragen aan de partnership.',
     'partner_distributions' => 'Partneruitkeringen',
     'partner_distributions_desc' => 'Partnerships gebruiken Partneruitkeringen om de bedragen bij te houden die door de partnership aan haar partners worden uitgekeerd gedurende het jaar. Gebruik dit niet voor reguliere betalingen aan partners voor rente of service. Gebruik in plaats daarvan een account voor Gegarandeerde betalingen (een Expense-account in Payroll Expenses).',
-    "partner's_equity" => "Eigen vermogen van de partner",
+    "partner's_equity" => 'Eigen vermogen van de partner',
     "partner's_equity_desc" => 'Partnerships gebruiken Eigen vermogen van de partner om de resterende winst in de partnership te laten zien voor elke partner aan het einde van het voorgaande jaar.',
     'preferred_shares' => 'Voorkeursaandelen',
     'preferred_shares_desc' => 'Bedrijven gebruiken deze rekening om hun voorkeursaandelen bij aandeelhouders bij te houden. Het bedrag op deze rekening moet de nominale waarde van de aandelen zijn.',
@@ -357,7 +358,7 @@ return [
     'balance_sheet' => 'Balans',
     'balance_sheet_description' => 'Dit rapport geeft u een directe status van uw accounts op een bepaalde datum. U kunt het zien als een "Snapshot" -weergave van de huidige positie (dag) van het boekjaar.',
     'assets' => 'Activa',
-    'liab_owners_capital' => "Passiva en eigen vermogen",
+    'liab_owners_capital' => 'Passiva en eigen vermogen',
     'total_liab_owners' => 'Totaal passiva en eigen vermogen',
     'total_assets' => 'Totale activa',
     'account_setting' => 'Accountinstellingen',

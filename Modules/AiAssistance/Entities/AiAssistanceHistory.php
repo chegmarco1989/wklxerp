@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AiAssistanceHistory extends Model
 {
-
     protected $table = 'aiassistance_history';
 
     /**

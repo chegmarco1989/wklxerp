@@ -51,9 +51,9 @@ class Util
      * This function formats a number and returns them in specified format
      *
      * @param  int  $input_number
-     * @param  bool  $add_symbol = false
-     * @param  array  $business_details = null
-     * @param  bool  $is_quantity = false; If number represents quantity
+     * @param  bool  $add_symbol  = false
+     * @param  array  $business_details  = null
+     * @param  bool  $is_quantity  = false; If number represents quantity
      * @return string
      */
     public function num_f($input_number, $add_symbol = false, $business_details = null, $is_quantity = false)
@@ -88,7 +88,7 @@ class Util
      *
      * @param  int  $number
      * @param  int  $percent
-     * @param  int  $addition default = 0
+     * @param  int  $addition  default = 0
      * @return float
      */
     public function calc_percentage($number, $percent, $addition = 0)
@@ -224,7 +224,7 @@ class Util
      * Converts date in business format to mysql format
      *
      * @param  string  $date
-     * @param  bool  $time (default = false)
+     * @param  bool  $time  (default = false)
      * @return strin
      */
     public function uf_date($date, $time = false)
@@ -279,7 +279,7 @@ class Util
      * Converts date in mysql format to business format
      *
      * @param  string  $date
-     * @param  bool  $time (default = false)
+     * @param  bool  $time  (default = false)
      * @return strin
      */
     public function format_date($date, $show_time = false, $business_details = null)
@@ -550,8 +550,8 @@ class Util
      *
      * @param  int  $business_id
      * @param  int  $unit_id
-     * @param  bool  $return_main_unit_if_empty = false
-     * @param  int  $product_id = null
+     * @param  bool  $return_main_unit_if_empty  = false
+     * @param  int  $product_id  = null
      * @return array
      */
     public function getSubUnits($business_id, $unit_id, $return_main_unit_if_empty = false, $product_id = null)
@@ -630,7 +630,7 @@ class Util
     /**
      * Generates invoice url for the transaction
      *
-     * @param  int  $transaction_id, int $business_id
+     * @param  int  $transaction_id,  int $business_id
      * @return string
      */
     public function getInvoiceUrl($transaction_id, $business_id)
@@ -653,7 +653,7 @@ class Util
     /**
      * Generates payment link for the transaction
      *
-     * @param  int  $transaction_id, int $business_id
+     * @param  int  $transaction_id,  int $business_id
      * @return string
      */
     public function getInvoicePaymentLink($transaction_id, $business_id)
@@ -676,7 +676,7 @@ class Util
     /**
      * Uploads document to the server if present in the request
      *
-     * @param  obj  $request, string $file_name, string dir_name
+     * @param  obj  $request,  string $file_name, string dir_name
      * @return string
      */
     public function uploadFile($request, $file_name, $dir_name, $file_type = 'document')
@@ -1152,7 +1152,7 @@ class Util
      *
      * @param  array  $lines
      * @param  int  $location_id
-     * @param  bool  $adjust_stock = true
+     * @param  bool  $adjust_stock  = true
      * @return void
      */
     public function updateEditedSellLineCombo($lines, $location_id, $adjust_stock = true)
@@ -1412,13 +1412,13 @@ class Util
     /**
      * Logs activities to database
      *
-     * @param $on object Model instance
-     * @param $action string name of the operation performed on the model instance
-     * @param $before object Previous state of the model instance
-     * @param $properties array Extra properties to be saved along with model properties
-     * update_note key to directly show message in note section,
-     * from_api key to show api client if added from api
-     * @param $log_changes boolean whether to log changes to modal properties
+     * @param  $on  object Model instance
+     * @param  $action  string name of the operation performed on the model instance
+     * @param  $before  object Previous state of the model instance
+     * @param  $properties  array Extra properties to be saved along with model properties
+     *                     update_note key to directly show message in note section,
+     *                     from_api key to show api client if added from api
+     * @param  $log_changes  boolean whether to log changes to modal properties
      * @return string
      */
     public function activityLog($on, $action = null, $before = null, $properties = [], $log_changes = true, $business_id = null)
@@ -1474,8 +1474,8 @@ class Util
      * Get location from latitude and longitude
      * Uses Google's Geocoding api
      *
-     * @param $lat string latitude
-     * @param $long string longitude
+     * @param  $lat  string latitude
+     * @param  $long  string longitude
      * @return string
      */
     public function getLocationFromCoordinates($lat, $long)

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Install;
 use App\Http\Controllers\Controller;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Module;
 use ZipArchive;
-use Illuminate\Support\Facades\Artisan;
 
 class ModulesController extends Controller
 {
@@ -16,7 +16,6 @@ class ModulesController extends Controller
     /**
      * Constructor
      *
-     * @param  ModuleUtil  $moduleUtil
      * @return void
      */
     public function __construct(ModuleUtil $moduleUtil)
@@ -75,7 +74,7 @@ class ModulesController extends Controller
 
         $is_demo = (config('app.env') == 'demo');
         $mods = $this->__available_modules();
-        
+
         return view('install.modules.index')
             ->with(compact('modules', 'is_demo', 'mods'));
 
@@ -127,7 +126,6 @@ class ModulesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -160,7 +158,6 @@ class ModulesController extends Controller
     /**
      * Activate/Deaactivate the specified module.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -220,7 +217,7 @@ class ModulesController extends Controller
 
             $path = $module->getPath();
 
-            die("To delete the module delete this folder <br/>" . $path . '<br/> Go back after deleting');
+            exit('To delete the module delete this folder <br/>'.$path.'<br/> Go back after deleting');
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.success'),

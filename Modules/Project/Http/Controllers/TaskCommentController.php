@@ -38,7 +38,6 @@ class TaskCommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -134,7 +133,6 @@ class TaskCommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request)
@@ -154,7 +152,7 @@ class TaskCommentController extends Controller
                 $task_id = request()->get('task_id');
 
                 $comment = ProjectTaskComment::where('project_task_id', $task_id)
-                                ->findOrFail($id);
+                    ->findOrFail($id);
 
                 $comment->delete();
                 $comment->media()->delete();

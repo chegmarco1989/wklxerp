@@ -39,12 +39,12 @@ class AccountTypeController extends Controller
 
         if (request()->ajax()) {
             $query = AccountingAccountType::where('account_type', request()->input('account_type'))
-                        ->where(function ($q) use ($business_id) {
-                            $q->whereNull('business_id')
-                              ->orWhere('business_id', $business_id);
-                        })
-                        ->with('parent')
-                        ->select(['name', 'description', 'id', 'business_id', 'parent_id', 'account_primary_type']);
+                ->where(function ($q) use ($business_id) {
+                    $q->whereNull('business_id')
+                        ->orWhere('business_id', $business_id);
+                })
+                ->with('parent')
+                ->select(['name', 'description', 'id', 'business_id', 'parent_id', 'account_primary_type']);
 
             return Datatables::of($query)
                 ->editColumn('name', function ($row) {
@@ -103,7 +103,6 @@ class AccountTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -169,11 +168,11 @@ class AccountTypeController extends Controller
 
         $account_type = AccountingAccountType::find($id);
         $account_sub_types = AccountingAccountType::where('account_type', 'sub_type')
-                                              ->where(function ($q) use ($business_id) {
-                                                  $q->whereNull('business_id')
-                                                  ->orWhere('business_id', $business_id);
-                                              })
-                                               ->get();
+            ->where(function ($q) use ($business_id) {
+                $q->whereNull('business_id')
+                    ->orWhere('business_id', $business_id);
+            })
+            ->get();
 
         return view('accounting::account_type.edit')->with(compact('account_type', 'account_sub_types'));
     }
@@ -181,7 +180,6 @@ class AccountTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -198,7 +196,7 @@ class AccountTypeController extends Controller
             $input = $request->only(['name', 'description']);
 
             $account_type = AccountingAccountType::where('business_id', $business_id)
-                                            ->find($id);
+                ->find($id);
 
             $input['parent_id'] = $account_type->account_type == 'detail_type' ? $request->input('parent_id') : null;
 
@@ -236,8 +234,8 @@ class AccountTypeController extends Controller
         if (request()->ajax()) {
             try {
                 AccountingAccountType::where('business_id', $business_id)
-                                      ->where('id', $id)
-                                      ->delete();
+                    ->where('id', $id)
+                    ->delete();
 
                 $output = ['success' => true,
                     'msg' => __('lang_v1.deleted_success'),

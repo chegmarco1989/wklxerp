@@ -36,7 +36,7 @@ class SellController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $contact_type = Contact::where('business_id', $business_id)
-                            ->find(auth()->user()->crm_contact_id)
+            ->find(auth()->user()->crm_contact_id)
                             ->type;
 
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module') && in_array($contact_type, ['customer', 'both']))) {
@@ -70,14 +70,14 @@ class SellController extends Controller
             $sells->groupBy('transactions.id');
 
             return Datatables::of($sells)
-                    ->addColumn(
-                        'action',
-                        function ($row) {
-                            $html = '<div class="btn-group">
+                ->addColumn(
+                    'action',
+                    function ($row) {
+                        $html = '<div class="btn-group">
                                     <button type="button" class="btn btn-info dropdown-toggle btn-xs" 
                                         data-toggle="dropdown" aria-expanded="false">'.
-                                        __('messages.actions').
-                                        '<span class="caret"></span><span class="sr-only">Toggle Dropdown
+                                    __('messages.actions').
+                                    '<span class="caret"></span><span class="sr-only">Toggle Dropdown
                                         </span>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-left" role="menu">
@@ -87,10 +87,10 @@ class SellController extends Controller
 
                                 <li><a href="'.action([\App\Http\Controllers\SellPosController::class, 'showInvoiceUrl'], [$row->id]).'" class="view_invoice_url"><i class="fas fa-eye"></i> '.__('lang_v1.view_invoice_url').'</a></li>';
 
-                            $html .= '</ul></div>';
+                        $html .= '</ul></div>';
 
-                            return $html;
-                        }
+                        return $html;
+                    }
                 )
                 ->removeColumn('id')
                 ->editColumn(
@@ -202,7 +202,7 @@ class SellController extends Controller
                 })
                 ->setRowAttr([
                     'data-href' => function ($row) {
-                        return  action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]);
+                        return action([\App\Http\Controllers\SellController::class, 'show'], [$row->id]);
                     }, ])
                 ->rawColumns(['final_total', 'action', 'total_paid', 'total_remaining', 'payment_status', 'invoice_no', 'discount_amount', 'tax_amount', 'total_before_tax', 'shipping_status', 'types_of_service_name', 'payment_methods', 'return_due'])
                 ->make(true);

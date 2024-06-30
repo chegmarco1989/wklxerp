@@ -2,8 +2,8 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
-use Modules\Superadmin\Entities\Subscription;
 use Illuminate\Routing\Controller;
+use Modules\Superadmin\Entities\Subscription;
 
 class PesaPalController extends Controller
 {

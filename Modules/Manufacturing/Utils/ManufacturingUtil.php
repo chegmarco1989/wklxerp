@@ -31,9 +31,9 @@ class ManufacturingUtil extends Util
         }
 
         $ingredient_variations = MfgRecipeIngredient::where('mfg_recipe_id', $recipe->id)
-                            ->with($with)
-                            ->orderBy('sort_order', 'asc')
-                            ->get();
+            ->with($with)
+            ->orderBy('sort_order', 'asc')
+            ->get();
 
         //Format variation data
         foreach ($ingredient_variations as $ingredient_variation) {
@@ -114,8 +114,8 @@ class ManufacturingUtil extends Util
      *
      * @param  int  $business_id
      * @param int location_id = null
-     * @param  string  $start_date = null
-     * @param  string  $end_date = null
+     * @param  string  $start_date  = null
+     * @param  string  $end_date  = null
      */
     public function getProductionTotals(
         $business_id,
@@ -125,12 +125,12 @@ class ManufacturingUtil extends Util
         $user_id = null
     ) {
         $query = Transaction::where('business_id', $business_id)
-                    ->where('type', 'production_purchase')
-                    ->where('mfg_is_final', 1)
-                    ->leftJoin('purchase_lines as pl', 'transactions.id', '=', 'pl.transaction_id')
-                    ->select(
-                        DB::raw('SUM(final_total) as total_production'),
-                        DB::raw("SUM( 
+            ->where('type', 'production_purchase')
+            ->where('mfg_is_final', 1)
+            ->leftJoin('purchase_lines as pl', 'transactions.id', '=', 'pl.transaction_id')
+            ->select(
+                DB::raw('SUM(final_total) as total_production'),
+                DB::raw("SUM( 
                                 IF(
                                     mfg_production_cost_type='percentage', 
                                     final_total - ((final_total * 100) / (mfg_production_cost + 100) ),
@@ -141,8 +141,8 @@ class ManufacturingUtil extends Util
                                     )
                                 )
                             ) as total_production_cost")
-                    )
-                    ->groupBy('transactions.id');
+            )
+            ->groupBy('transactions.id');
 
         //Check for permitted locations of a user
         $permitted_locations = auth()->user()->permitted_locations();
@@ -182,8 +182,8 @@ class ManufacturingUtil extends Util
      *
      * @param  int  $business_id
      * @param int location_id = null
-     * @param  string  $start_date = null
-     * @param  string  $end_date = null
+     * @param  string  $start_date  = null
+     * @param  string  $end_date  = null
      */
     public function getTotalSold(
         $business_id,
@@ -192,11 +192,11 @@ class ManufacturingUtil extends Util
         $end_date = null
     ) {
         $query = TransactionSellLinesPurchaseLines::join('purchase_lines as pl', 'pl.id', '=', 'transaction_sell_lines_purchase_lines.purchase_line_id')
-                            ->join('transaction_sell_lines as tsl', 'tsl.id', '=', 'transaction_sell_lines_purchase_lines.sell_line_id')
-                                ->join('transactions as t', 'pl.transaction_id', '=', 't.id')
-                                ->where('t.business_id', $business_id)
-                                ->where('t.type', 'production_purchase')
-                                ->select(DB::raw('SUM((tsl.quantity - tsl.quantity_returned) * tsl.unit_price_inc_tax) as total_sold'));
+            ->join('transaction_sell_lines as tsl', 'tsl.id', '=', 'transaction_sell_lines_purchase_lines.sell_line_id')
+            ->join('transactions as t', 'pl.transaction_id', '=', 't.id')
+            ->where('t.business_id', $business_id)
+            ->where('t.type', 'production_purchase')
+            ->select(DB::raw('SUM((tsl.quantity - tsl.quantity_returned) * tsl.unit_price_inc_tax) as total_sold'));
 
         //Check for permitted locations of a user
         $permitted_locations = auth()->user()->permitted_locations();

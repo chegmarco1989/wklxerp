@@ -16,7 +16,6 @@ class AddAccountTransaction
     /**
      * Constructor
      *
-     * @param  TransactionUtil  $transactionUtil
      * @return void
      */
     public function __construct(TransactionUtil $transactionUtil, ModuleUtil $moduleUtil)

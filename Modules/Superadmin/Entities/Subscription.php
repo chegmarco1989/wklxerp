@@ -55,7 +55,7 @@ class Subscription extends Model
     /**
      * Returns the active subscription details for a business
      *
-     * @param $business_id int
+     * @param  $business_id  int
      * @return Response
      */
     public static function active_subscription($business_id)
@@ -63,10 +63,10 @@ class Subscription extends Model
         $date_today = \Carbon::today()->toDateString();
 
         $subscription = Subscription::where('business_id', $business_id)
-                            ->whereDate('start_date', '<=', $date_today)
-                            ->whereDate('end_date', '>=', $date_today)
-                            ->approved()
-                            ->first();
+            ->whereDate('start_date', '<=', $date_today)
+            ->whereDate('end_date', '>=', $date_today)
+            ->approved()
+            ->first();
 
         return $subscription;
     }
@@ -74,7 +74,7 @@ class Subscription extends Model
     /**
      * Returns the upcoming subscription details for a business
      *
-     * @param $business_id int
+     * @param  $business_id  int
      * @return Response
      */
     public static function upcoming_subscriptions($business_id)
@@ -82,9 +82,9 @@ class Subscription extends Model
         $date_today = \Carbon::today();
 
         $subscription = Subscription::where('business_id', $business_id)
-                            ->whereDate('start_date', '>', $date_today)
-                            ->approved()
-                            ->get();
+            ->whereDate('start_date', '>', $date_today)
+            ->approved()
+            ->get();
 
         return $subscription;
     }
@@ -92,15 +92,15 @@ class Subscription extends Model
     /**
      * Returns the subscriptions waiting for approval for superadmin
      *
-     * @param $business_id int
+     * @param  $business_id  int
      * @return Response
      */
     public static function waiting_approval($business_id)
     {
         $subscriptions = Subscription::where('business_id', $business_id)
-                            ->whereNull('start_date')
-                            ->waiting()
-                            ->get();
+            ->whereNull('start_date')
+            ->waiting()
+            ->get();
 
         return $subscriptions;
     }
@@ -110,9 +110,9 @@ class Subscription extends Model
         $date_today = \Carbon::today();
 
         $subscription = Subscription::where('business_id', $business_id)
-                            ->approved()
-                            ->select(DB::raw('MAX(end_date) as end_date'))
-                            ->first();
+            ->approved()
+            ->select(DB::raw('MAX(end_date) as end_date'))
+            ->first();
 
         if (empty($subscription->end_date)) {
             return $date_today;

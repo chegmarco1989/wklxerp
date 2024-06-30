@@ -10,7 +10,6 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -32,15 +31,15 @@ class Kernel extends ConsoleKernel
         if ($env === 'demo') {
             //IMPORTANT NOTE: This command will delete all business details and create dummy business, run only in demo server.
             $schedule->command('pos:dummyBusiness')
-                    ->cron('0 */3 * * *')
+                ->cron('0 */3 * * *')
                     //->everyThirtyMinutes()
-                    ->emailOutputTo($email);
+                ->emailOutputTo($email);
         }
-    
-    	// Let's clear "cache", "config", "view", ... every day with CRON Job:
-    	// $schedule->command('optimize:clear')->daily();
-		// $schedule->command('optimize:clear')->weekly();
-		$schedule->command('route:cache')->daily();
+
+        // Let's clear "cache", "config", "view", ... every day with CRON Job:
+        // $schedule->command('optimize:clear')->daily();
+        // $schedule->command('optimize:clear')->weekly();
+        $schedule->command('route:cache')->daily();
     }
 
     /**

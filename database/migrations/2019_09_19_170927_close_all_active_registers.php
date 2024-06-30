@@ -13,11 +13,11 @@ return new class extends Migration
     public function up()
     {
         CashRegister::where('status', 'open')
-                ->whereNull('location_id')
-                ->update([
-                    'closed_at' => \Carbon::now()->format('Y-m-d H:i:s'),
-                    'status' => 'close',
-                ]);
+            ->whereNull('location_id')
+            ->update([
+                'closed_at' => \Carbon::now()->format('Y-m-d H:i:s'),
+                'status' => 'close',
+            ]);
     }
 
     /**

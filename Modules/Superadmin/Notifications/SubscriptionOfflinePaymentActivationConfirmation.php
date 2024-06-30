@@ -43,10 +43,10 @@ class SubscriptionOfflinePaymentActivationConfirmation extends Notification
         $details = 'Business: '.$this->business->name.', Package: '.$this->package->name.', Price: '.$this->package->price;
 
         return (new MailMessage)
-                ->greeting('Hello!')
-                ->line('Please confirm Offline Payment for subscription')
-                ->line($details)
-                ->line('To confirm go to superadmin subscriptions tab and confirm it.');
+            ->greeting('Hello!')
+            ->line('Please confirm Offline Payment for subscription')
+            ->line($details)
+            ->line('To confirm go to superadmin subscriptions tab and confirm it.');
     }
 
     /**

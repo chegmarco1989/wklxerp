@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Business;
+use App\Contact;
 use App\Notifications\CustomerNotification;
 use App\Notifications\RecurringExpenseNotification;
 use App\Notifications\RecurringInvoiceNotification;
@@ -12,8 +13,6 @@ use App\Restaurant\Booking;
 use App\System;
 use Config;
 use Notification;
-use App\Contact;
-
 
 class NotificationUtil extends Util
 {
@@ -29,8 +28,8 @@ class NotificationUtil extends Util
     public function autoSendNotification($business_id, $notification_type, $transaction, $contact)
     {
         $notification_template = NotificationTemplate::where('business_id', $business_id)
-                ->where('template_for', $notification_type)
-                ->first();
+            ->where('template_for', $notification_type)
+            ->first();
 
         $business = Business::findOrFail($business_id);
         $data['email_settings'] = $business->email_settings;
@@ -61,10 +60,10 @@ class NotificationUtil extends Util
                     try {
                         if (array_key_exists($notification_type, $customer_notifications)) {
                             Notification::route('mail', $data['to_email'])
-                                            ->notify(new CustomerNotification($data));
+                                ->notify(new CustomerNotification($data));
                         } elseif (array_key_exists($notification_type, $supplier_notifications)) {
                             Notification::route('mail', $data['to_email'])
-                                            ->notify(new SupplierNotification($data));
+                                ->notify(new SupplierNotification($data));
                         }
                         $this->activityLog($transaction, 'email_notification_sent', null, [], false, $business_id);
                     } catch (\Exception $e) {
@@ -109,8 +108,8 @@ class NotificationUtil extends Util
     {
         $business = Business::findOrFail($business_id);
         $booking = Booking::where('business_id', $business_id)
-                    ->with(['customer', 'table', 'correspondent', 'waiter', 'location', 'business'])
-                    ->findOrFail($booking_id);
+            ->with(['customer', 'table', 'correspondent', 'waiter', 'location', 'business'])
+            ->findOrFail($booking_id);
         foreach ($data as $key => $value) {
             //Replace contact name
             if (strpos($value, '{contact_name}') !== false) {
@@ -316,68 +315,67 @@ class NotificationUtil extends Util
         Config::set('mail.from.name', $email_settings['mail_from_name']);
     }
 
-    public function replaceHmsBookingTags($data, $transaction, $adults, $childrens, $customer){
-        
+    public function replaceHmsBookingTags($data, $transaction, $adults, $childrens, $customer)
+    {
+
         $business = Business::findOrFail($transaction->business_id);
 
         foreach ($data as $key => $value) {
             //Replace contact name
             if (strpos($value, '{customer_name}') !== false) {
-                $data[$key] = str_replace('{customer_name}',$customer->name , $data[$key]);
+                $data[$key] = str_replace('{customer_name}', $customer->name, $data[$key]);
             }
 
             //Replace business name
-             if (strpos($value, '{business_name}') !== false) {
-                $data[$key] = str_replace('{business_name}',$business->name, $data[$key]);
+            if (strpos($value, '{business_name}') !== false) {
+                $data[$key] = str_replace('{business_name}', $business->name, $data[$key]);
             }
             //Replace business name
             if (strpos($value, '{business_name}') !== false) {
-                $data[$key] = str_replace('{business_name}',$business->name, $data[$key]);
+                $data[$key] = str_replace('{business_name}', $business->name, $data[$key]);
             }
-             //Replace business_logo
-             if (strpos($value, '{business_logo}') !== false) {
+            //Replace business_logo
+            if (strpos($value, '{business_logo}') !== false) {
                 $logo_name = $business->logo;
                 $business_logo = ! empty($logo_name) ? '<img src="'.url('storage/business_logos/'.$logo_name).'" alt="Business Logo" >' : '';
                 $data[$key] = str_replace('{business_logo}', $business_logo, $data[$key]);
             }
 
             //Replace business id
-             if (strpos($value, '{booking_id}') !== false) {
-                $data[$key] = str_replace('{booking_id}',$transaction->ref_no, $data[$key]);
+            if (strpos($value, '{booking_id}') !== false) {
+                $data[$key] = str_replace('{booking_id}', $transaction->ref_no, $data[$key]);
             }
 
             //Replace business status
             if (strpos($value, '{booking_status}') !== false) {
-                $data[$key] = str_replace('{booking_status}',$transaction->status, $data[$key]);
+                $data[$key] = str_replace('{booking_status}', $transaction->status, $data[$key]);
             }
 
             //Replace arrival date
             if (strpos($value, '{arrival_date}') !== false) {
 
                 $start_date = $this->format_date($transaction->hms_booking_arrival_date_time, true);
-                
-                $data[$key] = str_replace('{arrival_date}',$start_date, $data[$key]);
+
+                $data[$key] = str_replace('{arrival_date}', $start_date, $data[$key]);
             }
 
             //Replace arrival date
             if (strpos($value, '{departure_date}') !== false) {
                 $end_time = $this->format_date($transaction->hms_booking_departure_date_time, true);
-                $data[$key] = str_replace('{departure_date}',$end_time, $data[$key]);
+                $data[$key] = str_replace('{departure_date}', $end_time, $data[$key]);
             }
 
             //Replace adults
             if (strpos($value, '{adults}') !== false) {
-            $data[$key] = str_replace('{adults}',$adults, $data[$key]);
+                $data[$key] = str_replace('{adults}', $adults, $data[$key]);
             }
             //Replace childrens
             if (strpos($value, '{childrens}') !== false) {
-                $data[$key] = str_replace('{childrens}',$childrens, $data[$key]);
+                $data[$key] = str_replace('{childrens}', $childrens, $data[$key]);
             }
 
         }
 
         return $data;
     }
-
 }
-

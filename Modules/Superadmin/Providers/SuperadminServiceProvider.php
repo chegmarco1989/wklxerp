@@ -41,8 +41,8 @@ class SuperadminServiceProvider extends ServiceProvider
 
         view::composer(['layouts.partials.home_header'], function ($view) {
             $frontend_pages = SuperadminFrontendPage::where('is_shown', 1)
-                                                ->orderBy('menu_order', 'asc')
-                                                ->get();
+                ->orderBy('menu_order', 'asc')
+                ->get();
             $view->with(compact('frontend_pages'));
         });
 
@@ -86,7 +86,7 @@ class SuperadminServiceProvider extends ServiceProvider
     protected function registerCommands()
     {
         $this->commands([
-            \Modules\Superadmin\Console\SubscriptionExpiryAlert::class
+            \Modules\Superadmin\Console\SubscriptionExpiryAlert::class,
         ]);
     }
 

@@ -67,7 +67,7 @@ class ProductionController extends Controller
                 'transactions.location_id',
                 '=',
                 'bl.id'
-                )->join('purchase_lines as pl', 'pl.transaction_id', '=', 'transactions.id')
+            )->join('purchase_lines as pl', 'pl.transaction_id', '=', 'transactions.id')
                 ->leftJoin('units as su', 'pl.sub_unit_id', '=', 'su.id')
                 ->join('variations as v', 'v.id', '=', 'pl.variation_id')
                 ->join('product_variations as pv', 'pv.id', '=', 'v.product_variation_id')
@@ -96,7 +96,7 @@ class ProductionController extends Controller
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $productions->whereDate('transactions.transaction_date', '>=', $start)
-                            ->whereDate('transactions.transaction_date', '<=', $end);
+                    ->whereDate('transactions.transaction_date', '<=', $end);
             }
 
             if (request()->has('location_id')) {
@@ -164,13 +164,12 @@ class ProductionController extends Controller
         $recipe_dropdown = MfgRecipe::forDropdown($business_id);
 
         return view('manufacturing::production.create')
-                ->with(compact('business_locations', 'recipe_dropdown'));
+            ->with(compact('business_locations', 'recipe_dropdown'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -211,8 +210,8 @@ class ProductionController extends Controller
             }
             $variation_id = $request->input('variation_id');
             $variation = Variation::where('id', $variation_id)
-                                ->with(['product'])
-                                ->first();
+                ->with(['product'])
+                ->first();
             $final_total = $request->input('final_total');
             $quantity = $request->input('quantity');
             $waste_units = $this->productUtil->num_uf($request->input('mfg_wasted_units'));
@@ -384,24 +383,24 @@ class ProductionController extends Controller
         }
 
         $production_purchase = Transaction::where('business_id', $business_id)
-                                    ->where('type', 'production_purchase')
-                                    ->with(['purchase_lines', 'purchase_lines.variations', 'purchase_lines.variations.product_variation', 'purchase_lines.variations.product',
-                                        'purchase_lines.sub_unit', 'purchase_lines.variations.product.unit', 'media', ])
-                                    ->findOrFail($id);
+            ->where('type', 'production_purchase')
+            ->with(['purchase_lines', 'purchase_lines.variations', 'purchase_lines.variations.product_variation', 'purchase_lines.variations.product',
+                'purchase_lines.sub_unit', 'purchase_lines.variations.product.unit', 'media', ])
+            ->findOrFail($id);
 
         $production_sell = Transaction::where('business_id', $business_id)
-                                    ->where('type', 'production_sell')
-                                    ->where('mfg_parent_production_purchase_id', $production_purchase->id)
-                                    ->with([
-                                        'sell_lines',
-                                        'sell_lines.variations',
-                                        'sell_lines.variations.product_variation',
-                                        'sell_lines.variations.product',
-                                        'sell_lines.sub_unit',
-                                        'sell_lines.sell_line_purchase_lines',
-                                        'sell_lines.sell_line_purchase_lines.purchase_line',
-                                    ])
-                                    ->first();
+            ->where('type', 'production_sell')
+            ->where('mfg_parent_production_purchase_id', $production_purchase->id)
+            ->with([
+                'sell_lines',
+                'sell_lines.variations',
+                'sell_lines.variations.product_variation',
+                'sell_lines.variations.product',
+                'sell_lines.sub_unit',
+                'sell_lines.sell_line_purchase_lines',
+                'sell_lines.sell_line_purchase_lines.purchase_line',
+            ])
+            ->first();
 
         $purchase_line = $production_purchase->purchase_lines[0];
         $base_unit_multiplier = ! empty($purchase_line->sub_unit) ? $purchase_line->sub_unit->base_unit_multiplier : 1;
@@ -508,9 +507,9 @@ class ProductionController extends Controller
         }
 
         $production_purchase = Transaction::where('business_id', $business_id)
-                                    ->where('type', 'production_purchase')
-                                    ->with(['purchase_lines', 'purchase_lines.variations', 'purchase_lines.variations.product_variation', 'purchase_lines.variations.product', 'media'])
-                                    ->findOrFail($id);
+            ->where('type', 'production_purchase')
+            ->with(['purchase_lines', 'purchase_lines.variations', 'purchase_lines.variations.product_variation', 'purchase_lines.variations.product', 'media'])
+            ->findOrFail($id);
 
         //Finalized production should not be editable
         if ($production_purchase->mfg_is_final == 1) {
@@ -522,14 +521,14 @@ class ProductionController extends Controller
         }
 
         $production_sell = Transaction::where('business_id', $business_id)
-                                    ->where('type', 'production_sell')
-                                    ->where('mfg_parent_production_purchase_id', $production_purchase->id)
-                                    ->with(['sell_lines', 'sell_lines.variations', 'sell_lines.variations.product_variation', 'sell_lines.variations.product', 'sell_lines.variations.product.unit'])
-                                    ->first();
+            ->where('type', 'production_sell')
+            ->where('mfg_parent_production_purchase_id', $production_purchase->id)
+            ->with(['sell_lines', 'sell_lines.variations', 'sell_lines.variations.product_variation', 'sell_lines.variations.product', 'sell_lines.variations.product.unit'])
+            ->first();
         $purchase_line = $production_purchase->purchase_lines[0];
 
         $recipe = MfgRecipe::where('variation_id', $purchase_line->variation_id)
-                        ->first();
+            ->first();
 
         $base_unit_multiplier = ! empty($purchase_line->sub_unit) ? $purchase_line->sub_unit->base_unit_multiplier : 1;
         $quantity = $purchase_line->quantity / $base_unit_multiplier;
@@ -632,7 +631,6 @@ class ProductionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request, $id)
@@ -663,8 +661,8 @@ class ProductionController extends Controller
 
             $variation_id = $request->input('variation_id');
             $variation = Variation::where('id', $variation_id)
-                                ->with(['product'])
-                                ->first();
+                ->with(['product'])
+                ->first();
             $final_total = $request->input('final_total');
             $quantity = $request->input('quantity');
             $waste_units = $this->productUtil->num_uf($request->input('mfg_wasted_units'));
@@ -712,8 +710,8 @@ class ProductionController extends Controller
             }
 
             $transaction = Transaction::where('business_id', $business_id)
-                                    ->where('type', 'production_purchase')
-                                    ->findOrFail($id);
+                ->where('type', 'production_purchase')
+                ->findOrFail($id);
 
             //Finalized production should not be editable
             if ($transaction->mfg_is_final == 1) {
@@ -747,10 +745,10 @@ class ProductionController extends Controller
 
             //Create Sell Transfer transaction
             $production_sell = Transaction::where('business_id', $business_id)
-                                    ->where('type', 'production_sell')
-                                    ->with('sell_lines', 'sell_lines.product', 'sell_lines.variations')
-                                    ->where('mfg_parent_production_purchase_id', $transaction->id)
-                                    ->first();
+                ->where('type', 'production_sell')
+                ->with('sell_lines', 'sell_lines.product', 'sell_lines.variations')
+                ->where('mfg_parent_production_purchase_id', $transaction->id)
+                ->first();
 
             $production_sell->update($transaction_sell_data);
 
@@ -848,10 +846,10 @@ class ProductionController extends Controller
         if (request()->ajax()) {
             try {
                 $transaction = Transaction::where('id', $id)
-                            ->where('business_id', $business_id)
-                            ->where('type', 'production_purchase')
-                            ->where('mfg_is_final', 0)
-                            ->delete();
+                    ->where('business_id', $business_id)
+                    ->where('type', 'production_purchase')
+                    ->where('mfg_is_final', 0)
+                    ->delete();
                 $output = [
                     'success' => true,
                     'msg' => __('lang_v1.deleted_success'),

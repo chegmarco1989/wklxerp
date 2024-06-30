@@ -46,7 +46,7 @@ class ProjectTimeLogController extends Controller
             $project_id = request()->get('project_id');
 
             $project = Project::where('business_id', $business_id)
-                            ->findOrFail($project_id);
+                ->findOrFail($project_id);
 
             $project_task_time_logs = ProjectTimeLog::where('project_id', $project_id)
                 ->with('task', 'user', 'project')
@@ -65,8 +65,8 @@ class ProjectTimeLogController extends Controller
             }
 
             return Datatables::of($project_task_time_logs)
-                    ->addColumn('action', function ($row) use ($can_crud) {
-                        $html = '<div class="btn-group">
+                ->addColumn('action', function ($row) use ($can_crud) {
+                    $html = '<div class="btn-group">
                                     <button class="btn btn-info dropdown-toggle btn-xs" type="button"  data-toggle="dropdown" aria-expanded="false">
                                         '.__('messages.action').'
                                         <span class="caret"></span>
@@ -76,8 +76,8 @@ class ProjectTimeLogController extends Controller
                                     </button>
                                     ';
 
-                        if ($can_crud) {
-                            $html .= '<ul class="dropdown-menu dropdown-menu-left" role="menu">
+                    if ($can_crud) {
+                        $html .= '<ul class="dropdown-menu dropdown-menu-left" role="menu">
                                 <li>
                                     <a data-href="'.action([\Modules\Project\Http\Controllers\ProjectTimeLogController::class, 'edit'], [$row->id, 'project_id' => $row->project_id]).'" class="cursor-pointer time_log_btn">
                                         <i class="fa fa-edit"></i>
@@ -91,13 +91,13 @@ class ProjectTimeLogController extends Controller
                                     </a>
                                 </li>
                                 </ul>';
-                        }
+                    }
 
-                        $html .= '
+                    $html .= '
                                 </div>';
 
-                        return $html;
-                    })
+                    return $html;
+                })
                 ->editColumn('task', function ($row) {
                     $task = '';
                     if (! empty($row->task)) {
@@ -162,7 +162,6 @@ class ProjectTimeLogController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -191,12 +190,12 @@ class ProjectTimeLogController extends Controller
             $added_from = $request->get('added_from');
             if (! empty($added_from) && $added_from == 'task') {
                 $project_task = ProjectTask::with(['timeLogs', 'timeLogs.user'])
-                        ->where('project_id', $input['project_id'])
-                        ->findOrFail($input['project_task_id']);
+                    ->where('project_id', $input['project_id'])
+                    ->findOrFail($input['project_task_id']);
 
                 $task_timelog_html = view('project::task.partials.time_log_table_body')
-                ->with(compact('project_task'))
-                ->render();
+                    ->with(compact('project_task'))
+                    ->render();
             }
 
             $output = [
@@ -257,7 +256,6 @@ class ProjectTimeLogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update(Request $request, $id)

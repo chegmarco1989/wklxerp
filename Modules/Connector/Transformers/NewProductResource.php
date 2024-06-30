@@ -34,10 +34,10 @@ class NewProductResource extends JsonResource
                     foreach ($v['variation_location_details'] as $u => $w) {
                         $lot_details = [];
                         $purchase_lines = PurchaseLine::where('variation_id', $w['variation_id'])
-                                                    ->leftJoin('transactions as t', 'purchase_lines.transaction_id', '=', 't.id')
-                                                    ->where('t.location_id', $w['location_id'])
-                                                    ->where('t.status', 'received')
-                                                    ->get();
+                            ->leftJoin('transactions as t', 'purchase_lines.transaction_id', '=', 't.id')
+                            ->where('t.location_id', $w['location_id'])
+                            ->where('t.status', 'received')
+                            ->get();
 
                         foreach ($purchase_lines as $pl) {
                             if ($pl->quantity_remaining > 0) {

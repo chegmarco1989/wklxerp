@@ -72,7 +72,7 @@ class DataController extends Controller
 
             if (! empty($email) && $is_notif_enabled == 1) {
                 Notification::route('mail', $email)
-                ->notify(new NewBusinessNotification($business));
+                    ->notify(new NewBusinessNotification($business));
             }
 
             //Send welcome email to business owner
@@ -88,7 +88,7 @@ class DataController extends Controller
                 ];
 
                 Notification::route('mail', $business->owner->email)
-                ->notify(new NewBusinessWelcomNotification($welcome_email_data));
+                    ->notify(new NewBusinessWelcomNotification($welcome_email_data));
             }
         } catch (\Exception $e) {
             \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());

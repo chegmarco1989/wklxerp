@@ -12,7 +12,6 @@ class AdminSidebarMenu
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -121,7 +120,6 @@ class AdminSidebarMenu
                                 ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'products' && request()->segment(2) == '']
                             );
                         }
-                        
 
                         if (auth()->user()->can('product.create')) {
                             $sub->url(

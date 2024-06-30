@@ -9,6 +9,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group Table management
+ *
  * @authenticated
  *
  * APIs for managing tables
@@ -81,8 +82,8 @@ class TableController extends ApiController
         $table_ids = explode(',', $table_ids);
 
         $tables = ResTable::where('business_id', $business_id)
-                        ->whereIn('id', $table_ids)
-                        ->get();
+            ->whereIn('id', $table_ids)
+            ->get();
 
         return CommonResource::collection($tables);
     }

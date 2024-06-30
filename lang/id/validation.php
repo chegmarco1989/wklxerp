@@ -66,12 +66,12 @@ return [
     ],
     'not_in' => 'The selected :attribute is invalid.',
     'numeric' => 'The :attribute must be a number.',
-	'password' => [
-         'letters' => 'Bidang :attribute harus berisi setidaknya satu huruf.',
-         'mixed' => 'Kolom :attribute harus berisi setidaknya satu huruf besar dan satu huruf kecil.',
-         'numbers' => 'Kolom :attribute harus berisi setidaknya satu angka.',
-         'symbols' => 'Bidang :attribute harus berisi setidaknya satu simbol.',
-         'uncompromised' => 'Kolom :attribute yang diberikan telah muncul dalam kebocoran data. Silakan pilih :attribute yang lain.',
+    'password' => [
+        'letters' => 'Bidang :attribute harus berisi setidaknya satu huruf.',
+        'mixed' => 'Kolom :attribute harus berisi setidaknya satu huruf besar dan satu huruf kecil.',
+        'numbers' => 'Kolom :attribute harus berisi setidaknya satu angka.',
+        'symbols' => 'Bidang :attribute harus berisi setidaknya satu simbol.',
+        'uncompromised' => 'Kolom :attribute yang diberikan telah muncul dalam kebocoran data. Silakan pilih :attribute yang lain.',
     ],
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',

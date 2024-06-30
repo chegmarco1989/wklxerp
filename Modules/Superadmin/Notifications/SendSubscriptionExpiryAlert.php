@@ -56,11 +56,11 @@ class SendSubscriptionExpiryAlert extends Notification
         $days_left = $this->days_left;
 
         return (new MailMessage)
-                ->greeting("Dear $owner_name,")
-                ->subject('Subscription Expiry Alert')
-                ->line("Your subscription for $app_name is expiring in next $days_left days.")
-                ->line("Kindly subscribe to continue using $business_name.")
-                ->action('Subscribe', action([\Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'index']));
+            ->greeting("Dear $owner_name,")
+            ->subject('Subscription Expiry Alert')
+            ->line("Your subscription for $app_name is expiring in next $days_left days.")
+            ->line("Kindly subscribe to continue using $business_name.")
+            ->action('Subscribe', action([\Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'index']));
     }
 
     /**

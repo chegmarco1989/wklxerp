@@ -38,8 +38,8 @@ class ModifierSetsController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $modifer_set = Product::where('business_id', $business_id)
-                            ->where('type', 'modifier')
-                            ->with(['variations', 'modifier_products']);
+                ->where('type', 'modifier')
+                ->with(['variations', 'modifier_products']);
 
             return \Datatables::of($modifer_set)
                 ->addColumn(
@@ -98,7 +98,6 @@ class ModifierSetsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -185,9 +184,9 @@ class ModifierSetsController extends Controller
             $business_id = $request->session()->get('user.business_id');
 
             $modifer_set = Product::where('business_id', $business_id)
-                            ->where('id', $id)
-                            ->with(['variations'])
-                            ->first();
+                ->where('id', $id)
+                ->with(['variations'])
+                ->first();
 
             return view('restaurant.modifier_sets.edit')
                 ->with(compact('modifer_set'));
@@ -201,7 +200,6 @@ class ModifierSetsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function update($id, Request $request)
@@ -218,9 +216,9 @@ class ModifierSetsController extends Controller
             $user_id = $request->session()->get('user.id');
 
             $modifer_set = Product::where('business_id', $business_id)
-                    ->where('id', $id)
-                    ->where('type', 'modifier')
-                    ->first();
+                ->where('id', $id)
+                ->where('type', 'modifier')
+                ->first();
             $modifer_set->update(['name' => $input['name']]);
 
             //Get the dummy product variation

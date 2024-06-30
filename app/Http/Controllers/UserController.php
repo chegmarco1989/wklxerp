@@ -81,8 +81,8 @@ class UserController extends Controller
                 $input['bank_details'] = json_encode($request->input('bank_details'));
             }
 
-            $input['name'] = $input['surname'] . " " . $input['first_name'];											// AJOUTE
-			$user = User::find($user_id);
+            $input['name'] = $input['surname'].' '.$input['first_name'];											// AJOUTE
+            $user = User::find($user_id);
             $user->update($input);
 
             Media::uploadMedia($user->business_id, $user, request(), 'profile_photo', true);

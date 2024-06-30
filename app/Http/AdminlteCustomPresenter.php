@@ -41,7 +41,6 @@ class AdminlteCustomPresenter extends Presenter
     /**
      * Get active state on child items.
      *
-     * @param $item
      * @param  string  $state
      * @return null|string
      */

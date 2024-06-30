@@ -33,18 +33,18 @@ class MfgRecipe extends Model
     public static function forDropdown($business_id, $variation_id = true)
     {
         $recipes = MfgRecipe::join('variations as v', 'mfg_recipes.variation_id', '=', 'v.id')
-                        ->join('products as p', 'v.product_id', '=', 'p.id')
-                        ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
-                        ->where('p.business_id', $business_id)
-                        ->select(
-                            DB::raw('IF(
+            ->join('products as p', 'v.product_id', '=', 'p.id')
+            ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
+            ->where('p.business_id', $business_id)
+            ->select(
+                DB::raw('IF(
                                         p.type="variable", 
                                         CONCAT(p.name, " - ", pv.name, " - ", v.name, " (", v.sub_sku, ")"), 
                                         CONCAT(p.name, " (", v.sub_sku, ")") 
                                         ) as recipe_name'),
-                            'mfg_recipes.variation_id',
-                            'mfg_recipes.id'
-                        )->get();
+                'mfg_recipes.variation_id',
+                'mfg_recipes.id'
+            )->get();
         if ($variation_id) {
             return $recipes->pluck('recipe_name', 'variation_id');
         } else {
