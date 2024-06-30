@@ -7,8 +7,8 @@ use App\User;
 use App\Utils\RestaurantUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class OrderController extends Controller
 {
@@ -22,8 +22,6 @@ class OrderController extends Controller
     /**
      * Constructor
      *
-     * @param  Util  $commonUtil
-     * @param  RestaurantUtil  $restUtil
      * @return void
      */
     public function __construct(Util $commonUtil, RestaurantUtil $restUtil)
@@ -34,10 +32,8 @@ class OrderController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         // if (!auth()->user()->can('sell.view')) {
         //     abort(403, 'Unauthorized action.');
@@ -72,7 +68,7 @@ class OrderController extends Controller
      *
      * @return json $output
      */
-    public function markAsServed($id)
+    public function markAsServed($id): json
     {
         // if (!auth()->user()->can('sell.update')) {
         //     abort(403, 'Unauthorized action.');
@@ -82,8 +78,8 @@ class OrderController extends Controller
             $user_id = request()->session()->get('user.id');
 
             $query = TransactionSellLine::leftJoin('transactions as t', 't.id', '=', 'transaction_sell_lines.transaction_id')
-                        ->where('t.business_id', $business_id)
-                        ->where('transaction_id', $id);
+                ->where('t.business_id', $business_id)
+                ->where('transaction_id', $id);
 
             if ($this->restUtil->is_service_staff($user_id)) {
                 $query->where('res_waiter_id', $user_id);
@@ -110,7 +106,7 @@ class OrderController extends Controller
      *
      * @return json $output
      */
-    public function markLineOrderAsServed($id)
+    public function markLineOrderAsServed($id): json
     {
         try {
             $business_id = request()->session()->get('user.business_id');

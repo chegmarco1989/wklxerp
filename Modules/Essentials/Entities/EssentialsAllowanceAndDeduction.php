@@ -4,6 +4,7 @@ namespace Modules\Essentials\Entities;
 
 use App\Utils\Util;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EssentialsAllowanceAndDeduction extends Model
 {
@@ -21,7 +22,7 @@ class EssentialsAllowanceAndDeduction extends Model
      */
     protected $table = 'essentials_allowances_and_deductions';
 
-    public function employees()
+    public function employees(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'essentials_user_allowance_and_deductions', 'allowance_deduction_id', 'user_id');
     }
@@ -29,9 +30,9 @@ class EssentialsAllowanceAndDeduction extends Model
     public static function forDropdown($business_id)
     {
         $ads = EssentialsAllowanceAndDeduction::whereNull('applicable_date')
-                    ->where('business_id', $business_id)
-                    ->select('id', 'description', 'type', 'amount', 'amount_type')
-                    ->get();
+            ->where('business_id', $business_id)
+            ->select('id', 'description', 'type', 'amount', 'amount_type')
+            ->get();
 
         $util = new Util();
         $pay_components = [];

@@ -9,10 +9,8 @@ class AccountingServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application events.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -20,41 +18,37 @@ class AccountingServiceProvider extends ServiceProvider
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
-        $this->app['events']->listen(\App\Events\SellCreatedOrModified::class, 
-        \Modules\Accounting\Listeners\MapSellTransaction::class);
+        $this->app['events']->listen(\App\Events\SellCreatedOrModified::class,
+            \Modules\Accounting\Listeners\MapSellTransaction::class);
 
-        $this->app['events']->listen(\App\Events\TransactionPaymentAdded::class, 
-        \Modules\Accounting\Listeners\MapPaymentTransaction::class);
+        $this->app['events']->listen(\App\Events\TransactionPaymentAdded::class,
+            \Modules\Accounting\Listeners\MapPaymentTransaction::class);
 
-        $this->app['events']->listen(\App\Events\TransactionPaymentUpdated::class, 
-        \Modules\Accounting\Listeners\MapPaymentTransaction::class);
+        $this->app['events']->listen(\App\Events\TransactionPaymentUpdated::class,
+            \Modules\Accounting\Listeners\MapPaymentTransaction::class);
 
-        $this->app['events']->listen(\App\Events\TransactionPaymentDeleted::class, 
-        \Modules\Accounting\Listeners\MapPaymentTransaction::class);
+        $this->app['events']->listen(\App\Events\TransactionPaymentDeleted::class,
+            \Modules\Accounting\Listeners\MapPaymentTransaction::class);
 
-        $this->app['events']->listen(\App\Events\PurchaseCreatedOrModified::class, 
-        \Modules\Accounting\Listeners\MapPurchaseTransaction::class);
+        $this->app['events']->listen(\App\Events\PurchaseCreatedOrModified::class,
+            \Modules\Accounting\Listeners\MapPurchaseTransaction::class);
 
-        $this->app['events']->listen(\App\Events\ExpenseCreatedOrModified::class, 
-        \Modules\Accounting\Listeners\MapExpenseTransactions::class);
+        $this->app['events']->listen(\App\Events\ExpenseCreatedOrModified::class,
+            \Modules\Accounting\Listeners\MapExpenseTransactions::class);
     }
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
     }
 
     /**
      * Register config.
-     *
-     * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('accounting.php'),
@@ -66,10 +60,8 @@ class AccountingServiceProvider extends ServiceProvider
 
     /**
      * Register views.
-     *
-     * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/accounting');
 
@@ -86,10 +78,8 @@ class AccountingServiceProvider extends ServiceProvider
 
     /**
      * Register translations.
-     *
-     * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/accounting');
 
@@ -102,10 +92,8 @@ class AccountingServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -114,10 +102,8 @@ class AccountingServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }

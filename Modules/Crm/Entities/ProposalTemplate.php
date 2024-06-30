@@ -3,6 +3,7 @@
 namespace Modules\Crm\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ProposalTemplate extends Model
 {
@@ -20,7 +21,7 @@ class ProposalTemplate extends Model
      */
     protected $guarded = ['id'];
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }

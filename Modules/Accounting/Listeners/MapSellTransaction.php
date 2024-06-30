@@ -2,10 +2,8 @@
 
 namespace Modules\Accounting\Listeners;
 
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Events\SellCreatedOrModified;
 use App\BusinessLocation;
+use App\Events\SellCreatedOrModified;
 
 class MapSellTransaction
 {
@@ -21,11 +19,8 @@ class MapSellTransaction
 
     /**
      * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
      */
-    public function handle(SellCreatedOrModified $event)
+    public function handle(SellCreatedOrModified $event): void
     {
         //get location setting and check if default is set or not, if set the proceed.
         $business_location = BusinessLocation::find($event->transaction->location_id);
@@ -35,18 +30,18 @@ class MapSellTransaction
         $payment_account = isset($accounting_default_map['sale']['payment_account']) ? $accounting_default_map['sale']['payment_account'] : null;
 
         //if purchase is deleted then delete the mapping
-        if(isset($event->isDeleted) && $event->isDeleted){
+        if (isset($event->isDeleted) && $event->isDeleted) {
             $accountingUtil = new \Modules\Accounting\Utils\AccountingUtil();
             $accountingUtil->deleteMap($event->transaction->id, null);
         } else {
 
-            if(!is_null($deposit_to) && !is_null($payment_account)){
+            if (! is_null($deposit_to) && ! is_null($payment_account)) {
 
                 $type = 'sell';
                 $id = $event->transaction->id;
                 $user_id = request()->session()->get('user.id');
                 $business_id = $event->transaction->business_id;
-                
+
                 $accountingUtil = new \Modules\Accounting\Utils\AccountingUtil();
                 $accountingUtil->saveMap($type, $id, $user_id, $business_id, $deposit_to, $payment_account);
             }

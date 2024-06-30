@@ -5,18 +5,16 @@ namespace App\Http\Middleware;
 use App\Business;
 use App\Utils\BusinessUtil;
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class SetSessionData
 {
     /**
      * Checks if session data is set or not for a user. If data is not set then set it.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if (! $request->session()->has('user')) {
             $business_util = new BusinessUtil;

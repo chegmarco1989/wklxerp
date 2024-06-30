@@ -8,6 +8,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsMessage;
 use Modules\Essentials\Notifications\NewMessageNotification;
 
@@ -30,10 +31,8 @@ class EssentialsMessageController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -45,8 +44,8 @@ class EssentialsMessageController extends Controller
         }
 
         $query = EssentialsMessage::where('business_id', $business_id)
-                        ->with(['sender'])
-                        ->orderBy('created_at', 'ASC');
+            ->with(['sender'])
+            ->orderBy('created_at', 'ASC');
 
         $permitted_locations = auth()->user()->permitted_locations();
         if ($permitted_locations != 'all') {
@@ -60,16 +59,13 @@ class EssentialsMessageController extends Controller
         $business_locations = BusinessLocation::forDropdown($business_id);
 
         return view('essentials::messages.index')
-                ->with(compact('messages', 'business_locations'));
+            ->with(compact('messages', 'business_locations'));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -97,9 +93,9 @@ class EssentialsMessageController extends Controller
                 if (! empty($input['message'])) {
                     //Get last message sent to the same users
                     $last_message = EssentialsMessage::where('location_id', $input['location_id'])
-                                                    ->orWhereNull('location_id')
-                                                    ->orderBy('created_at', 'desc')
-                                                    ->first();
+                        ->orWhereNull('location_id')
+                        ->orderBy('created_at', 'desc')
+                        ->first();
 
                     $message = EssentialsMessage::create($input);
 
@@ -124,10 +120,8 @@ class EssentialsMessageController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->user()->business_id;
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -143,9 +137,9 @@ class EssentialsMessageController extends Controller
                 $user_id = request()->user()->id;
 
                 EssentialsMessage::where('business_id', $business_id)
-                            ->where('user_id', $user_id)
-                            ->where('id', $id)
-                            ->delete();
+                    ->where('user_id', $user_id)
+                    ->where('id', $id)
+                    ->delete();
 
                 $output = ['success' => true,
                     'msg' => __('lang_v1.deleted_success'),
@@ -164,14 +158,12 @@ class EssentialsMessageController extends Controller
 
     /**
      * Sends notification to the user.
-     *
-     * @return void
      */
-    private function __notify($message, $database_notification = true)
+    private function __notify($message, $database_notification = true): void
     {
         $business_id = request()->session()->get('user.business_id');
         $query = User::where('id', '!=', $message->user_id)
-                    ->where('business_id', $business_id);
+            ->where('business_id', $business_id);
 
         $users = null;
         if (empty($message->location_id)) {
@@ -188,10 +180,8 @@ class EssentialsMessageController extends Controller
 
     /**
      * Function to get recent messages
-     *
-     * @return void
      */
-    public function getNewMessages()
+    public function getNewMessages(): View
     {
         $last_chat_time = request()->input('last_chat_time');
 
@@ -205,9 +195,9 @@ class EssentialsMessageController extends Controller
         }
 
         $query = EssentialsMessage::where('business_id', $business_id)
-                        ->where('user_id', '!=', auth()->user()->id)
-                        ->with(['sender'])
-                        ->orderBy('created_at', 'ASC');
+            ->where('user_id', '!=', auth()->user()->id)
+            ->with(['sender'])
+            ->orderBy('created_at', 'ASC');
 
         if (! empty($last_chat_time)) {
             $query->where('created_at', '>', $last_chat_time);

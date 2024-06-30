@@ -8,26 +8,22 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('ALTER TABLE transactions MODIFY COLUMN `status` VARCHAR(191) NOT NULL;');
 
         Transaction::where('type', 'sell_transfer')
-                ->update(['status' => 'final']);
+            ->update(['status' => 'final']);
 
         Transaction::where('type', 'purchase_transfer')
-                ->update(['status' => 'received']);
+            ->update(['status' => 'received']);
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
 };

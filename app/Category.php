@@ -3,7 +3,9 @@
 namespace App;
 
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -24,17 +26,14 @@ class Category extends Model
 
     /**
      * Combines Category and sub-category
-     *
-     * @param  int  $business_id
-     * @return array
      */
-    public static function catAndSubCategories($business_id)
+    public static function catAndSubCategories(int $business_id): array
     {
         $all_categories = Category::where('business_id', $business_id)
-                                ->where('category_type', 'product')
-                                ->orderBy('name', 'asc')
-                                ->get()
-                                ->toArray();
+            ->where('category_type', 'product')
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
 
         if (empty($all_categories)) {
             return [];
@@ -73,36 +72,31 @@ class Category extends Model
     /**
      * Category Dropdown
      *
-     * @param  int  $business_id
-     * @param  string  $type category type
-     * @return array
+     * @param  string  $type  category type
      */
-    public static function forDropdown($business_id, $type)
+    public static function forDropdown(int $business_id, string $type): array
     {
         $categories = Category::where('business_id', $business_id)
-                            ->where('parent_id', 0)
-                            ->where('category_type', $type)
-                            ->select(DB::raw('IF(short_code IS NOT NULL, CONCAT(name, "-", short_code), name) as name'), 'id')
-                            ->orderBy('name', 'asc')
-                            ->get();
+            ->where('parent_id', 0)
+            ->where('category_type', $type)
+            ->select(DB::raw('IF(short_code IS NOT NULL, CONCAT(name, "-", short_code), name) as name'), 'id')
+            ->orderBy('name', 'asc')
+            ->get();
 
         $dropdown = $categories->pluck('name', 'id');
 
         return $dropdown;
     }
 
-    public function sub_categories()
+    public function sub_categories(): HasMany
     {
         return $this->hasMany(\App\Category::class, 'parent_id');
     }
 
     /**
      * Scope a query to only include main categories.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOnlyParent($query)
+    public function scopeOnlyParent(Builder $query): Builder
     {
         return $query->where('parent_id', 0);
     }

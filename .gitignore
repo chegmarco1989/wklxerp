@@ -25,3 +25,4 @@ npm-debug.log
 .scribe
 /public/docs
 /public/js/skins/
+/.phpunit.cache

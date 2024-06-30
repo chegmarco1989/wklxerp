@@ -3,8 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class DocumentAndNote extends Model
 {
@@ -24,12 +27,12 @@ class DocumentAndNote extends Model
     /**
      * Get all of the owning notable models.
      */
-    public function notable()
+    public function notable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
@@ -37,7 +40,7 @@ class DocumentAndNote extends Model
     /**
      * Get the user who added note.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }

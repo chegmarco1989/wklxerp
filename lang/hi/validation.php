@@ -61,7 +61,7 @@ return [
     ],
     'not_in' => 'चुना गया :attribute अमान्य है।',
     'numeric' => ':attribute एक संख्या होनी चाहिए।',
-	'password' => [
+    'password' => [
         'letters' => ':attribute फ़ील्ड में कम से कम एक अक्षर होना चाहिए।',
         'mixed' => ':attribute फ़ील्ड में कम से कम एक अपरकेस और एक लोअरकेस अक्षर होना चाहिए।',
         'numbers' => ':attribute फ़ील्ड में कम से कम एक नंबर होना चाहिए।',

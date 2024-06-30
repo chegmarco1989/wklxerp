@@ -9,6 +9,7 @@ use RTippin\Messenger\Facades\MessengerBots;
 
 /**
  * Laravel Messenger System, Created by: Richard Tippin.
+ *
  * @link https://github.com/RTippin/messenger
  * @link https://github.com/RTippin/messenger-bots
  * @link https://github.com/RTippin/messenger-faker
@@ -18,10 +19,8 @@ class MessengerServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // Register all provider models you wish to use in messenger.
         Messenger::registerProviders([

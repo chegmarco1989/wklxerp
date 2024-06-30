@@ -4,7 +4,7 @@ namespace Modules\Essentials\Http\Controllers;
 
 use App\System;
 use Composer\Semver\Comparator;
-use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +19,8 @@ class InstallController extends Controller
 
     /**
      * Install
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -61,7 +59,7 @@ class InstallController extends Controller
     }
 
     //Updating
-    public function update()
+    public function update(): RedirectResponse
     {
         //Check if essentials_version is same as appVersion then 404
         //If appVersion > essentials_version - run update script.
@@ -99,8 +97,8 @@ class InstallController extends Controller
             ];
 
             return redirect()
-            ->action([\App\Http\Controllers\Install\ModulesController::class, 'index'])
-            ->with('status', $output);
+                ->action([\App\Http\Controllers\Install\ModulesController::class, 'index'])
+                ->with('status', $output);
         } catch (Exception $e) {
             DB::rollBack();
             exit($e->getMessage());
@@ -109,10 +107,8 @@ class InstallController extends Controller
 
     /**
      * Uninstall
-     *
-     * @return Response
      */
-    public function uninstall()
+    public function uninstall(): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

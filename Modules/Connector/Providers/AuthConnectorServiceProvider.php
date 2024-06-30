@@ -16,31 +16,24 @@ class AuthConnectorServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //Passport::routes();
     }
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }
 
     /**
      * Register any application authentication / authorization services.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
-     * @return void
      */
-    public function boot(GateContract $gate)
+    public function boot(GateContract $gate): void
     {
         Passport::routes();
     }

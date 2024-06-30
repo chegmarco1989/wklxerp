@@ -1,4 +1,5 @@
 <?php
+
 return [
     'hms' => 'HMS',
     'type' => 'ປະເພດພິເສດ',
@@ -194,4 +195,4 @@ return [
     'confirm_check_in' => 'ຢືນຢັນເຂົ້າພາຍ',
     'confirm_check_out' => 'ຢືນຢັນອອກ',
     'check_out_payment_help_text' => 'ສະຖານະການຈ່າຍບໍ່ໄດ້ຈ່າຍ',
-  ];
+];

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Install;
 use App\Http\Controllers\Controller;
 use App\Utils\InstallUtil;
 use Composer\Semver\Comparator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Abort;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Illuminate\Support\Facades\Abort;
 
 //use Illuminate\Support\Facades\Storage;
 
@@ -80,10 +82,8 @@ class InstallController extends Controller
 
     /**
      * Installation
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         //Check for .env file
         $this->isInstalled();
@@ -92,7 +92,7 @@ class InstallController extends Controller
         return view('install.index');
     }
 
-    public function checkServer()
+    public function checkServer(): View
     {
         //Check for .env file
         $this->isInstalled();
@@ -124,7 +124,7 @@ class InstallController extends Controller
             ->with(compact('output'));
     }
 
-    public function details()
+    public function details(): View
     {
         //Check for .env file
         $this->isInstalled();
@@ -268,7 +268,7 @@ class InstallController extends Controller
         //Artisan::call('storage:link');
     }
 
-    public function installAlternate(Request $request)
+    public function installAlternate(Request $request): RedirectResponse
     {
         try {
             $this->installSettings();
@@ -291,12 +291,12 @@ class InstallController extends Controller
         }
     }
 
-    public function success()
+    public function success(): View
     {
         return view('install.success');
     }
 
-    public function updateConfirmation()
+    public function updateConfirmation(): View
     {
         $installUtil = new installUtil();
         $db_version = $installUtil->getSystemInfo('db_version');
@@ -305,7 +305,7 @@ class InstallController extends Controller
             return view('install.update_confirmation');
         } else {
             // abort(404);
-            exit("<b> Update already done to Version <code>".$db_version."</code></b>");
+            exit('<b> Update already done to Version <code>'.$db_version.'</code></b>');
         }
     }
 

@@ -11,6 +11,7 @@ use App\Transaction;
 use App\Utils\NotificationUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Notification;
 
 class NotificationController extends Controller
@@ -22,7 +23,7 @@ class NotificationController extends Controller
     /**
      * Constructor
      *
-     * @param  NotificationUtil  $notificationUtil, TransactionUtil $transactionUtil
+     * @param  NotificationUtil  $notificationUtil,  TransactionUtil $transactionUtil
      * @return void
      */
     public function __construct(NotificationUtil $notificationUtil, TransactionUtil $transactionUtil)
@@ -33,10 +34,8 @@ class NotificationController extends Controller
 
     /**
      * Display a notification view.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function getTemplate($id, $template_for)
+    public function getTemplate($id, $template_for): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -46,16 +45,16 @@ class NotificationController extends Controller
         $transaction = null;
         if ($template_for == 'new_booking') {
             $transaction = Booking::where('business_id', $business_id)
-                            ->with(['customer'])
-                            ->find($id);
+                ->with(['customer'])
+                ->find($id);
 
             $contact = $transaction->customer;
         } elseif ($template_for == 'send_ledger') {
             $contact = Contact::find($id);
         } else {
             $transaction = Transaction::where('business_id', $business_id)
-                            ->with(['contact'])
-                            ->find($id);
+                ->with(['contact'])
+                ->find($id);
 
             $contact = $transaction->contact;
         }
@@ -85,13 +84,12 @@ class NotificationController extends Controller
         $location_id = request()->input('location_id');
 
         return view('notification.show_template')
-                ->with(compact('notification_template', 'transaction', 'tags', 'template_name', 'contact', 'start_date', 'end_date', 'ledger_format', 'location_id'));
+            ->with(compact('notification_template', 'transaction', 'tags', 'template_name', 'contact', 'start_date', 'end_date', 'ledger_format', 'location_id'));
     }
 
     /**
      * Sends notifications to customer and supplier
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function send(Request $request)
@@ -155,7 +153,7 @@ class NotificationController extends Controller
                     }
 
                     Notification::route('mail', $emails_array)
-                                    ->notify(new CustomerNotification($data));
+                        ->notify(new CustomerNotification($data));
 
                     if (! empty($transaction)) {
                         $this->notificationUtil->activityLog($transaction, 'email_notification_sent', null, [], false);
@@ -178,7 +176,7 @@ class NotificationController extends Controller
                         $data['pdf'] = $this->transactionUtil->getPurchaseOrderPdf($business_id, $transaction_id, true);
                     }
                     Notification::route('mail', $emails_array)
-                                    ->notify(new SupplierNotification($data));
+                        ->notify(new SupplierNotification($data));
 
                     if (! empty($transaction)) {
                         $this->notificationUtil->activityLog($transaction, 'email_notification_sent', null, [], false);

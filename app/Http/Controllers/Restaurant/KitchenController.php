@@ -6,8 +6,8 @@ use App\TransactionSellLine;
 use App\Utils\RestaurantUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class KitchenController extends Controller
 {
@@ -21,8 +21,6 @@ class KitchenController extends Controller
     /**
      * Constructor
      *
-     * @param  Util  $commonUtil
-     * @param  RestaurantUtil  $restUtil
      * @return void
      */
     public function __construct(Util $commonUtil, RestaurantUtil $restUtil)
@@ -33,17 +31,15 @@ class KitchenController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         // if (!auth()->user()->can('sell.view')) {
         //     abort(403, 'Unauthorized action.');
         // }
 
         $business_id = request()->session()->get('user.business_id');
-        
+
         $orders = $this->restUtil->getAllOrders($business_id, ['line_order_status' => 'received', 'is_kitchen_order' => 1]);
 
         return view('restaurant.kitchen.index', compact('orders'));
@@ -54,7 +50,7 @@ class KitchenController extends Controller
      *
      * @return json $output
      */
-    public function markAsCooked($id)
+    public function markAsCooked($id): json
     {
         // if (!auth()->user()->can('sell.update')) {
         //     abort(403, 'Unauthorized action.');
@@ -62,13 +58,13 @@ class KitchenController extends Controller
         try {
             $business_id = request()->session()->get('user.business_id');
             $sl = TransactionSellLine::leftJoin('transactions as t', 't.id', '=', 'transaction_sell_lines.transaction_id')
-                        ->where('t.business_id', $business_id)
-                        ->where('transaction_id', $id)
-                        ->where(function ($q) {
-                            $q->whereNull('res_line_order_status')
-                                ->orWhere('res_line_order_status', 'received');
-                        })
-                        ->update(['res_line_order_status' => 'cooked']);
+                ->where('t.business_id', $business_id)
+                ->where('transaction_id', $id)
+                ->where(function ($q) {
+                    $q->whereNull('res_line_order_status')
+                        ->orWhere('res_line_order_status', 'received');
+                })
+                ->update(['res_line_order_status' => 'cooked']);
 
             $output = ['success' => 1,
                 'msg' => trans('restaurant.order_successfully_marked_cooked'),
@@ -89,7 +85,7 @@ class KitchenController extends Controller
      *
      * @return Json $output
      */
-    public function refreshOrdersList(Request $request)
+    public function refreshOrdersList(Request $request): View
     {
 
         // if (!auth()->user()->can('sell.view')) {
@@ -121,7 +117,7 @@ class KitchenController extends Controller
      *
      * @return Json $output
      */
-    public function refreshLineOrdersList(Request $request)
+    public function refreshLineOrdersList(Request $request): View
     {
 
         // if (!auth()->user()->can('sell.view')) {

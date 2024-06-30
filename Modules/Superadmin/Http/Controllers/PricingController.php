@@ -3,8 +3,8 @@
 namespace Modules\Superadmin\Http\Controllers;
 
 use App\Utils\ModuleUtil;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Superadmin\Entities\Package;
 
 class PricingController extends Controller
@@ -26,10 +26,8 @@ class PricingController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $packages = Package::listPackages(true);
 

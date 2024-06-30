@@ -4,7 +4,9 @@ namespace App;
 
 use App\Utils\Util;
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Account extends Model
@@ -30,8 +32,8 @@ class Account extends Model
         $account_ids = [];
         if ($permitted_locations != 'all') {
             $locations = BusinessLocation::where('business_id', $business_id)
-                            ->whereIn('id', $permitted_locations)
-                            ->get();
+                ->whereIn('id', $permitted_locations)
+                ->get();
 
             foreach ($locations as $location) {
                 if (! empty($location->default_payment_accounts)) {
@@ -58,9 +60,9 @@ class Account extends Model
             //     $join->whereNull('AT.deleted_at');
             // })
             $query->select('accounts.name',
-                    'accounts.id',
-                    DB::raw("(SELECT SUM( IF(account_transactions.type='credit', amount, -1*amount) ) as balance from account_transactions where account_transactions.account_id = accounts.id AND deleted_at is NULL) as balance")
-                );
+                'accounts.id',
+                DB::raw("(SELECT SUM( IF(account_transactions.type='credit', amount, -1*amount) ) as balance from account_transactions where account_transactions.account_id = accounts.id AND deleted_at is NULL) as balance")
+            );
         }
 
         if (! $closed) {
@@ -90,11 +92,8 @@ class Account extends Model
 
     /**
      * Scope a query to only include not closed accounts.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNotClosed($query)
+    public function scopeNotClosed(Builder $query): Builder
     {
         return $query->where('is_closed', 0);
     }
@@ -103,7 +102,6 @@ class Account extends Model
      * Scope a query to only include non capital accounts.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     // public function scopeNotCapital($query)
     // {
@@ -113,7 +111,7 @@ class Account extends Model
     //     });
     // }
 
-    public static function accountTypes()
+    public static function accountTypes(): Builder
     {
         return [
             '' => __('account.not_applicable'),
@@ -122,7 +120,7 @@ class Account extends Model
         ];
     }
 
-    public function account_type()
+    public function account_type(): BelongsTo
     {
         return $this->belongsTo(\App\AccountType::class, 'account_type_id');
     }

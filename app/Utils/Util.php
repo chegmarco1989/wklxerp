@@ -24,11 +24,8 @@ class Util
 {
     /**
      * This function unformats a number and returns them in plain eng format
-     *
-     * @param  int  $input_number
-     * @return float
      */
-    public function num_uf($input_number, $currency_details = null)
+    public function num_uf(int $input_number, $currency_details = null): float
     {
         $thousand_separator = '';
         $decimal_separator = '';
@@ -50,13 +47,11 @@ class Util
     /**
      * This function formats a number and returns them in specified format
      *
-     * @param  int  $input_number
-     * @param  bool  $add_symbol = false
-     * @param  array  $business_details = null
-     * @param  bool  $is_quantity = false; If number represents quantity
-     * @return string
+     * @param  bool  $add_symbol  = false
+     * @param  array  $business_details  = null
+     * @param  bool  $is_quantity  = false; If number represents quantity
      */
-    public function num_f($input_number, $add_symbol = false, $business_details = null, $is_quantity = false)
+    public function num_f(int $input_number, bool $add_symbol = false, ?array $business_details = null, bool $is_quantity = false): string
     {
         $thousand_separator = ! empty($business_details) ? $business_details->thousand_separator : session('currency')['thousand_separator'];
         $decimal_separator = ! empty($business_details) ? $business_details->decimal_separator : session('currency')['decimal_separator'];
@@ -86,36 +81,25 @@ class Util
     /**
      * Calculates percentage for a given number
      *
-     * @param  int  $number
-     * @param  int  $percent
-     * @param  int  $addition default = 0
-     * @return float
+     * @param  int  $addition  default = 0
      */
-    public function calc_percentage($number, $percent, $addition = 0)
+    public function calc_percentage(int $number, int $percent, int $addition = 0): float
     {
         return $addition + ($number * ($percent / 100));
     }
 
     /**
      * Calculates base value on which percentage is calculated
-     *
-     * @param  int  $number
-     * @param  int  $percent
-     * @return float
      */
-    public function calc_percentage_base($number, $percent)
+    public function calc_percentage_base(int $number, int $percent): float
     {
         return ($number * 100) / (100 + $percent);
     }
 
     /**
      * Calculates percentage
-     *
-     * @param  int  $base
-     * @param  int  $number
-     * @return float
      */
-    public function get_percent($base, $number)
+    public function get_percent(int $base, int $number): float
     {
         if ($base == 0) {
             return 0;
@@ -134,10 +118,8 @@ class Util
 
     /**
      * Defines available Payment Types
-     *
-     * @return array
      */
-    public function payment_types($location = null, $show_advance = false, $business_id = null)
+    public function payment_types($location = null, $show_advance = false, $business_id = null): array
     {
         if (! empty($location)) {
             $location = is_object($location) ? $location : BusinessLocation::find($location);
@@ -189,10 +171,8 @@ class Util
 
     /**
      * Returns the list of modules enabled
-     *
-     * @return array
      */
-    public function allModulesEnabled($business_id = null)
+    public function allModulesEnabled($business_id = null): array
     {
         $enabled_modules = session()->has('business') ? session('business')['enabled_modules'] : null;
 
@@ -207,10 +187,8 @@ class Util
 
     /**
      * Returns the list of modules enabled
-     *
-     * @return array
      */
-    public function isModuleEnabled($module, $business_id = null)
+    public function isModuleEnabled($module, $business_id = null): array
     {
         $enabled_modules = $this->allModulesEnabled($business_id);
         if (in_array($module, $enabled_modules)) {
@@ -223,11 +201,9 @@ class Util
     /**
      * Converts date in business format to mysql format
      *
-     * @param  string  $date
-     * @param  bool  $time (default = false)
-     * @return strin
+     * @param  bool  $time  (default = false)
      */
-    public function uf_date($date, $time = false)
+    public function uf_date(string $date, bool $time = false): strin
     {
         $date_format = session('business.date_format');
         $mysql_format = 'Y-m-d';
@@ -245,11 +221,8 @@ class Util
 
     /**
      * Converts time in business format to mysql format
-     *
-     * @param  string  $time
-     * @return strin
      */
-    public function uf_time($time)
+    public function uf_time(string $time): strin
     {
         $time_format = 'H:i';
         if (session('business.time_format') == 12) {
@@ -261,11 +234,8 @@ class Util
 
     /**
      * Converts time in business format to mysql format
-     *
-     * @param  string  $time
-     * @return strin
      */
-    public function format_time($time)
+    public function format_time(string $time): strin
     {
         $time_format = 'H:i';
         if (session('business.time_format') == 12) {
@@ -278,11 +248,9 @@ class Util
     /**
      * Converts date in mysql format to business format
      *
-     * @param  string  $date
-     * @param  bool  $time (default = false)
-     * @return strin
+     * @param  bool  $time  (default = false)
      */
-    public function format_date($date, $show_time = false, $business_details = null)
+    public function format_date(string $date, $show_time = false, $business_details = null): strin
     {
         $format = ! empty($business_details) ? $business_details->date_format : session('business.date_format');
         if (! empty($show_time)) {
@@ -300,12 +268,8 @@ class Util
     /**
      * Increments reference count for a given type and given business
      * and gives the updated reference count
-     *
-     * @param  string  $type
-     * @param  int  $business_id
-     * @return int
      */
-    public function setAndGetReferenceCount($type, $business_id = null)
+    public function setAndGetReferenceCount(string $type, ?int $business_id = null): int
     {
         if (empty($business_id)) {
             $business_id = request()->session()->get('user.business_id');
@@ -332,12 +296,8 @@ class Util
 
     /**
      * Generates reference number
-     *
-     * @param  string  $type
-     * @param  int  $business_id
-     * @return int
      */
-    public function generateReferenceNumber($type, $ref_count, $business_id = null, $default_prefix = null)
+    public function generateReferenceNumber(string $type, $ref_count, ?int $business_id = null, $default_prefix = null): int
     {
         $prefix = '';
 
@@ -368,12 +328,8 @@ class Util
 
     /**
      * Checks if the given user is admin
-     *
-     * @param  obj  $user
-     * @param  int  $business_id
-     * @return bool
      */
-    public function is_admin($user, $business_id = null)
+    public function is_admin(obj $user, ?int $business_id = null): bool
     {
         $business_id = empty($business_id) ? $user->business_id : $business_id;
 
@@ -442,11 +398,8 @@ class Util
 
     /**
      * Sends SMS notification.
-     *
-     * @param  array  $data
-     * @return void
      */
-    public function sendSms($data)
+    public function sendSms(array $data): void
     {
         $sms_settings = $data['sms_settings'];
         $sms_service = isset($sms_settings['sms_service']) ? $sms_settings['sms_service'] : 'other';
@@ -530,11 +483,8 @@ class Util
 
     /**
      * Generates Whatsapp notification link
-     *
-     * @param  array  $data
-     * @return string
      */
-    public function getWhatsappNotificationLink($data)
+    public function getWhatsappNotificationLink(array $data): string
     {
         //Supports only integers without leading zeros
         $whatsapp_number = abs((int) filter_var($data['mobile_number'], FILTER_SANITIZE_NUMBER_INT));
@@ -548,13 +498,10 @@ class Util
     /**
      * Retrieves sub units of a base unit
      *
-     * @param  int  $business_id
-     * @param  int  $unit_id
-     * @param  bool  $return_main_unit_if_empty = false
-     * @param  int  $product_id = null
-     * @return array
+     * @param  bool  $return_main_unit_if_empty  = false
+     * @param  int  $product_id  = null
      */
-    public function getSubUnits($business_id, $unit_id, $return_main_unit_if_empty = false, $product_id = null)
+    public function getSubUnits(int $business_id, int $unit_id, bool $return_main_unit_if_empty = false, ?int $product_id = null): array
     {
         $unit = Unit::where('business_id', $business_id)
             ->with(['sub_units'])
@@ -620,9 +567,8 @@ class Util
      * Generates unique token
      *
      * @param void
-     * @return string
      */
-    public function generateToken()
+    public function generateToken(): string
     {
         return md5(rand(1, 10).microtime());
     }
@@ -630,10 +576,9 @@ class Util
     /**
      * Generates invoice url for the transaction
      *
-     * @param  int  $transaction_id, int $business_id
-     * @return string
+     * @param  int  $transaction_id,  int $business_id
      */
-    public function getInvoiceUrl($transaction_id, $business_id)
+    public function getInvoiceUrl(int $transaction_id, $business_id): string
     {
         $transaction = Transaction::where('business_id', $business_id)
             ->findOrFail($transaction_id);
@@ -653,10 +598,9 @@ class Util
     /**
      * Generates payment link for the transaction
      *
-     * @param  int  $transaction_id, int $business_id
-     * @return string
+     * @param  int  $transaction_id,  int $business_id
      */
-    public function getInvoicePaymentLink($transaction_id, $business_id)
+    public function getInvoicePaymentLink(int $transaction_id, $business_id): string
     {
         $transaction = Transaction::where('business_id', $business_id)
             ->findOrFail($transaction_id);
@@ -676,10 +620,9 @@ class Util
     /**
      * Uploads document to the server if present in the request
      *
-     * @param  obj  $request, string $file_name, string dir_name
-     * @return string
+     * @param  obj  $request,  string $file_name, string dir_name
      */
-    public function uploadFile($request, $file_name, $dir_name, $file_type = 'document')
+    public function uploadFile(obj $request, $file_name, $dir_name, $file_type = 'document'): string
     {
         //If app environment is demo return null
         if (config('app.env') == 'demo') {
@@ -751,9 +694,8 @@ class Util
      *
      * @param  text  $body
      * @param  int  $transaction_id
-     * @return array
      */
-    public function replaceTags($business_id, $data, $transaction, $contact = null)
+    public function replaceTags($business_id, $data, $transaction, $contact = null): array
     {
         if (! empty($transaction) && ! is_object($transaction)) {
             $transaction = Transaction::where('business_id', $business_id)
@@ -1050,10 +992,8 @@ class Util
 
     /**
      * Checks whether mail is configured or not
-     *
-     * @return bool
      */
-    public function IsMailConfigured()
+    public function IsMailConfigured(): bool
     {
         $is_mail_configured = false;
 
@@ -1073,10 +1013,8 @@ class Util
 
     /**
      * Returns the list of barcode types
-     *
-     * @return array
      */
-    public function barcode_types()
+    public function barcode_types(): array
     {
         $types = ['C128' => 'Code 128 (C128)', 'C39' => 'Code 39 (C39)', 'EAN13' => 'EAN-13', 'EAN8' => 'EAN-8', 'UPCA' => 'UPC-A', 'UPCE' => 'UPC-E'];
 
@@ -1085,20 +1023,16 @@ class Util
 
     /**
      * Returns the default barcode.
-     *
-     * @return string
      */
-    public function barcode_default()
+    public function barcode_default(): string
     {
         return 'C128';
     }
 
     /**
      * Retrieves user role name.
-     *
-     * @return string
      */
-    public function getUserRoleName($user_id)
+    public function getUserRoleName($user_id): string
     {
         $user = User::findOrFail($user_id);
 
@@ -1116,11 +1050,8 @@ class Util
 
     /**
      * Retrieves all admins of a business
-     *
-     * @param  int  $business_id
-     * @return obj
      */
-    public function get_admins($business_id)
+    public function get_admins(int $business_id): obj
     {
         $admins = User::role('Admin#'.$business_id)->get();
 
@@ -1129,10 +1060,8 @@ class Util
 
     /**
      * Retrieves IP address of the user
-     *
-     * @return string
      */
-    public function getUserIpAddr()
+    public function getUserIpAddr(): string
     {
         if (! empty($_SERVER['HTTP_CLIENT_IP'])) {
             //ip from share internet
@@ -1150,12 +1079,9 @@ class Util
     /**
      * This function updates the stock of products present in combo product and also updates transaction sell line.
      *
-     * @param  array  $lines
-     * @param  int  $location_id
-     * @param  bool  $adjust_stock = true
-     * @return void
+     * @param  bool  $adjust_stock  = true
      */
-    public function updateEditedSellLineCombo($lines, $location_id, $adjust_stock = true)
+    public function updateEditedSellLineCombo(array $lines, int $location_id, bool $adjust_stock = true): void
     {
         if (empty($lines)) {
             return true;
@@ -1229,10 +1155,9 @@ class Util
     /**
      * Retrieves sum of due amount of a contact
      *
-     * @param  int  $contact_id
      * @return mixed
      */
-    public function getContactDue($contact_id, $business_id = null)
+    public function getContactDue(int $contact_id, $business_id = null)
     {
         $query = Contact::where('contacts.id', $contact_id)
             ->join('transactions AS t', 'contacts.id', '=', 't.contact_id')
@@ -1330,10 +1255,8 @@ class Util
     /**
      * Formats number to words
      * Requires php-intl extension
-     *
-     * @return string
      */
-    public function numToWord($number, $lang = null, $format = 'international')
+    public function numToWord($number, $lang = null, $format = 'international'): string
     {
         if ($format == 'indian') {
             return $this->numToIndianFormat($number);
@@ -1354,10 +1277,8 @@ class Util
 
     /**
      * Formats number to words in indian format
-     *
-     * @return string
      */
-    public function numToIndianFormat(float $number)
+    public function numToIndianFormat(float $number): string
     {
         $decimal = round($number - ($no = floor($number)), 2) * 100;
         $hundred = null;
@@ -1412,16 +1333,15 @@ class Util
     /**
      * Logs activities to database
      *
-     * @param $on object Model instance
-     * @param $action string name of the operation performed on the model instance
-     * @param $before object Previous state of the model instance
-     * @param $properties array Extra properties to be saved along with model properties
-     * update_note key to directly show message in note section,
-     * from_api key to show api client if added from api
-     * @param $log_changes boolean whether to log changes to modal properties
-     * @return string
+     * @param  $on  object Model instance
+     * @param  $action  string name of the operation performed on the model instance
+     * @param  $before  object Previous state of the model instance
+     * @param  $properties  array Extra properties to be saved along with model properties
+     *                     update_note key to directly show message in note section,
+     *                     from_api key to show api client if added from api
+     * @param  $log_changes  boolean whether to log changes to modal properties
      */
-    public function activityLog($on, $action = null, $before = null, $properties = [], $log_changes = true, $business_id = null)
+    public function activityLog($on, $action = null, $before = null, $properties = [], $log_changes = true, $business_id = null): string
     {
         if ($log_changes) {
             $log_properties = $on->log_properties ?? [];
@@ -1474,11 +1394,10 @@ class Util
      * Get location from latitude and longitude
      * Uses Google's Geocoding api
      *
-     * @param $lat string latitude
-     * @param $long string longitude
-     * @return string
+     * @param  $lat  string latitude
+     * @param  $long  string longitude
      */
-    public function getLocationFromCoordinates($lat, $long)
+    public function getLocationFromCoordinates($lat, $long): string
     {
         try {
             $access_token = env('GOOGLE_MAP_API_KEY');

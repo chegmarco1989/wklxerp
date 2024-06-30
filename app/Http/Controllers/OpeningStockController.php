@@ -10,6 +10,7 @@ use App\Utils\ProductUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class OpeningStockController extends Controller
 {
@@ -36,9 +37,8 @@ class OpeningStockController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function add($product_id)
+    public function add($product_id): View
     {
         if (! auth()->user()->can('product.opening_stock')) {
             abort(403, 'Unauthorized action.');
@@ -48,21 +48,21 @@ class OpeningStockController extends Controller
 
         //Get the product
         $product = Product::where('business_id', $business_id)
-                            ->where('id', $product_id)
-                            ->with(['variations',
-                                'variations.product_variation',
-                                'unit',
-                                'product_locations',
-                                'second_unit',
-                            ])
-                            ->first();
+            ->where('id', $product_id)
+            ->with(['variations',
+                'variations.product_variation',
+                'unit',
+                'product_locations',
+                'second_unit',
+            ])
+            ->first();
         if (! empty($product) && $product->enable_stock == 1) {
             //Get Opening Stock Transactions for the product if exists
             $transactions = Transaction::where('business_id', $business_id)
-                                ->where('opening_stock_product_id', $product_id)
-                                ->where('type', 'opening_stock')
-                                ->with(['purchase_lines'])
-                                ->get();
+                ->where('opening_stock_product_id', $product_id)
+                ->where('type', 'opening_stock')
+                ->with(['purchase_lines'])
+                ->get();
 
             $purchases = [];
             $purchase_lines = [];
@@ -120,20 +120,19 @@ class OpeningStockController extends Controller
             }
 
             return view('opening_stock.add')
-                    ->with(compact(
-                        'product',
-                        'locations',
-                        'purchases',
-                        'enable_expiry',
-                        'enable_lot'
-                    ));
+                ->with(compact(
+                    'product',
+                    'locations',
+                    'purchases',
+                    'enable_expiry',
+                    'enable_lot'
+                ));
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -151,9 +150,9 @@ class OpeningStockController extends Controller
             $user_id = $request->session()->get('user.id');
 
             $product = Product::where('business_id', $business_id)
-                                ->where('id', $product_id)
-                                ->with(['variations', 'product_tax'])
-                                ->first();
+                ->where('id', $product_id)
+                ->with(['variations', 'product_tax'])
+                ->first();
 
             $locations = BusinessLocation::forDropdown($business_id)->toArray();
 
@@ -281,8 +280,8 @@ class OpeningStockController extends Controller
                                 $delete_purchase_line_ids = [];
                                 $delete_purchase_lines = null;
                                 $delete_purchase_lines = PurchaseLine::where('transaction_id', $transaction->id)
-                                            ->whereNotIn('id', $updated_purchase_line_ids)
-                                            ->get();
+                                    ->whereNotIn('id', $updated_purchase_line_ids)
+                                    ->get();
 
                                 if ($delete_purchase_lines->count()) {
                                     foreach ($delete_purchase_lines as $delete_purchase_line) {
@@ -298,8 +297,8 @@ class OpeningStockController extends Controller
                                     }
                                     //Delete deleted purchase lines
                                     PurchaseLine::where('transaction_id', $transaction->id)
-                                                ->whereIn('id', $delete_purchase_line_ids)
-                                                ->delete();
+                                        ->whereIn('id', $delete_purchase_line_ids)
+                                        ->delete();
                                 }
 
                                 $this->transactionUtil->adjustMappingPurchaseSellAfterEditingPurchase('received', $transaction, $delete_purchase_lines);

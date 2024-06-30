@@ -11,6 +11,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group Attendance management
+ *
  * @authenticated
  *
  * APIs for managing attendance
@@ -36,6 +37,7 @@ class AttendanceController extends ApiController
      * Get Attendance
      *
      * @urlParam user_id required id of the user Example: 1
+     *
      * @response {
             "data": {
                 "id": 4,
@@ -62,9 +64,9 @@ class AttendanceController extends ApiController
         $business_id = $user->business_id;
 
         $attendance = \Modules\Essentials\Entities\EssentialsAttendance::where('business_id', $business_id)
-                                    ->where('user_id', $user_id)
-                                    ->orderBy('clock_in_time', 'desc')
-                                    ->first();
+            ->where('user_id', $user_id)
+            ->orderBy('clock_in_time', 'desc')
+            ->first();
 
         return new CommonResource($attendance);
     }
@@ -256,7 +258,7 @@ class AttendanceController extends ApiController
             $start = request()->start_date;
             $end = request()->end_date;
             $query->whereDate('start_date', '>=', $start)
-                        ->whereDate('start_date', '<=', $end);
+                ->whereDate('start_date', '<=', $end);
         }
         $holidays = $query->get();
 

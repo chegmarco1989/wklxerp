@@ -3,17 +3,18 @@
 namespace Modules\Crm\Http\Controllers;
 
 use App\Category;
+use App\Charts\CommonChart;
 use App\Contact;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Crm\Entities\CrmCallLog;
 use Modules\Crm\Entities\CrmContact;
 use Modules\Crm\Entities\Schedule;
-use Modules\Crm\Utils\CrmUtil;
-use App\Charts\CommonChart;														// AJOUTE
+use Modules\Crm\Utils\CrmUtil;														// AJOUTE
 
 class CrmDashboardController extends Controller
 {
@@ -32,16 +33,14 @@ class CrmDashboardController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
         $contacts = Contact::where('business_id', $business_id)
-                    ->Active()
-                    ->get();
+            ->Active()
+            ->get();
 
         $customers = $contacts->whereIn('type', ['customer', 'both']);
 
@@ -51,13 +50,13 @@ class CrmDashboardController extends Controller
 
         $total_leads = $leads->count();
         $sources = Category::where('business_id', $business_id)
-                                ->where('category_type', 'source')
-                                ->get();
+            ->where('category_type', 'source')
+            ->get();
         $total_sources = $sources->count();
 
         $life_stages = Category::where('business_id', $business_id)
-                                ->where('category_type', 'life_stage')
-                                ->get();
+            ->where('category_type', 'life_stage')
+            ->get();
 
         $total_life_stage = $life_stages->count();
         $leads_by_life_stage = $leads->groupBy('crm_life_stage');
@@ -99,62 +98,63 @@ class CrmDashboardController extends Controller
         $followup_category = Category::forDropdown($business_id, 'followup_category');
 
         $is_admin = $this->crmUtil->is_admin(auth()->user());
-		
-		// Let's define "Pie" CHART:
-		$values_crm_chart = [
-			__('lang_v1.customers') => $total_customers,
-			__('crm::lang.leads') => $total_leads,
-			__('crm::lang.sources') => $total_sources,
-			__('crm::lang.life_stages') => $total_life_stage,
-		];
 
-		$labels_crm_chart = array_keys($values_crm_chart);
+        // Let's define "Pie" CHART:
+        $values_crm_chart = [
+            __('lang_v1.customers') => $total_customers,
+            __('crm::lang.leads') => $total_leads,
+            __('crm::lang.sources') => $total_sources,
+            __('crm::lang.life_stages') => $total_life_stage,
+        ];
 
-		$colors = ['#f24d1f', '#37A2EC', '#FACD56', '#389609'];
-		$crm_chart = new CommonChart;
-		$crm_chart->labels($labels_crm_chart)
-			->options($this->__chartOptionsPie())
-			->dataset(__('crm::lang.crm'), 'pie', array_values($values_crm_chart))
-			->color($colors);
+        $labels_crm_chart = array_keys($values_crm_chart);
+
+        $colors = ['#f24d1f', '#37A2EC', '#FACD56', '#389609'];
+        $crm_chart = new CommonChart;
+        $crm_chart->labels($labels_crm_chart)
+            ->options($this->__chartOptionsPie())
+            ->dataset(__('crm::lang.crm'), 'pie', array_values($values_crm_chart))
+            ->color($colors);
 
         return view('crm::crm_dashboard.index')->with(compact('total_customers', 'total_leads', 'total_sources', 'total_life_stage', 'leads_by_life_stage', 'crm_chart', 'sources', 'life_stages', 'todays_birthdays', 'upcoming_birthdays', 'leads_count_by_source', 'contacts_count_by_source', 'customers_count_by_source', 'my_follow_ups_arr', 'statuses', 'my_leads', 'my_conversion', 'todays_followups', 'my_call_logs', 'followup_category', 'is_admin'));
     }
 
-    private function __chartOptionsPie() {
-		return [
-			'plotOptions' => [
-				'pie' => [
-					'allowPointSelect' => true,
-					'cursor' => 'pointer',
-					'dataLabels' => [
-						[
-							'enabled' => true,
-							'distance' => 20,
-						],
-						[
-							'enabled' => true,
-							'distance' => -40,
-							'format' => '{point.percentage:.1f}%',
-							'style' => [
-								'fontSize' => '19px',
-								'textOutline' => 'none',
-								'opacity' => 0.7,
-							],
-							'filter' => [
-								'operator' => '>',
-								'property' => 'percentage',
-								'value' => 10,
-							],
-						],
-					],
-					'showInLegend' => true,
-					'tooltip' => [
-						'valueSuffix' => '%', // Add this line
-					],
-				],
-			],
-		];
-	}
+    private function __chartOptionsPie()
+    {
+        return [
+            'plotOptions' => [
+                'pie' => [
+                    'allowPointSelect' => true,
+                    'cursor' => 'pointer',
+                    'dataLabels' => [
+                        [
+                            'enabled' => true,
+                            'distance' => 20,
+                        ],
+                        [
+                            'enabled' => true,
+                            'distance' => -40,
+                            'format' => '{point.percentage:.1f}%',
+                            'style' => [
+                                'fontSize' => '19px',
+                                'textOutline' => 'none',
+                                'opacity' => 0.7,
+                            ],
+                            'filter' => [
+                                'operator' => '>',
+                                'property' => 'percentage',
+                                'value' => 10,
+                            ],
+                        ],
+                    ],
+                    'showInLegend' => true,
+                    'tooltip' => [
+                        'valueSuffix' => '%', // Add this line
+                    ],
+                ],
+            ],
+        ];
+    }
 
     /**
      * Function to fetch all the followups of the logged in user
@@ -162,13 +162,13 @@ class CrmDashboardController extends Controller
     private function myFollowUps()
     {
         $my_follow_ups = User::user()
-                    ->where('users.id', auth()->user()->id)
-                    ->join('crm_schedule_users as su', 'su.user_id', '=', 'users.id')
-                    ->join('crm_schedules as follow_ups', 'follow_ups.id', '=', 'su.schedule_id')
-                    ->select(
-                        'follow_ups.status',
-                        DB::raw('COUNT(su.id) as total_follow_ups')
-                    )->groupBy('follow_ups.status')->get();
+            ->where('users.id', auth()->user()->id)
+            ->join('crm_schedule_users as su', 'su.user_id', '=', 'users.id')
+            ->join('crm_schedules as follow_ups', 'follow_ups.id', '=', 'su.schedule_id')
+            ->select(
+                'follow_ups.status',
+                DB::raw('COUNT(su.id) as total_follow_ups')
+            )->groupBy('follow_ups.status')->get();
 
         return $my_follow_ups;
     }
@@ -185,13 +185,13 @@ class CrmDashboardController extends Controller
         $first_day_of_month = \Carbon::now()->startOfMonth()->format('Y-m-d');
 
         $my_call_logs = CrmCallLog::where('business_id', $business_id)
-                ->where('created_by', auth()->user()->id)
-                ->whereDate('start_time', '>=', $first_day_of_month)
-                ->select(
-                    DB::raw("SUM(IF(DATE(start_time)='{$today}', 1, 0)) as calls_today"),
-                    DB::raw("SUM(IF(DATE(start_time)='{$yesterday}', 1, 0)) as calls_yesterday"),
-                    DB::raw('COUNT(id) as calls_this_month')
-                )->first();
+            ->where('created_by', auth()->user()->id)
+            ->whereDate('start_time', '>=', $first_day_of_month)
+            ->select(
+                DB::raw("SUM(IF(DATE(start_time)='{$today}', 1, 0)) as calls_today"),
+                DB::raw("SUM(IF(DATE(start_time)='{$yesterday}', 1, 0)) as calls_yesterday"),
+                DB::raw('COUNT(id) as calls_this_month')
+            )->first();
 
         return $my_call_logs;
     }
@@ -204,9 +204,9 @@ class CrmDashboardController extends Controller
         $todays_followups = Schedule::whereHas('users', function ($q) {
             $q->where('user_id', auth()->user()->id);
         })
-                    ->whereIn('status', ['open', 'scheduled'])
-                    ->whereDate('start_datetime', \Carbon::now()->format('Y-m-d'))
-                    ->count();
+            ->whereIn('status', ['open', 'scheduled'])
+            ->whereDate('start_datetime', \Carbon::now()->format('Y-m-d'))
+            ->count();
 
         return $todays_followups;
     }
@@ -219,10 +219,10 @@ class CrmDashboardController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $total_leads = CrmContact::where('contacts.business_id', $business_id)
-                        ->where('contacts.type', 'lead')
-                        ->whereHas('leadUsers', function ($q) {
-                            $q->where('user_id', auth()->user()->id);
-                        })->count();
+            ->where('contacts.type', 'lead')
+            ->whereHas('leadUsers', function ($q) {
+                $q->where('user_id', auth()->user()->id);
+            })->count();
 
         return $total_leads;
     }
@@ -233,7 +233,7 @@ class CrmDashboardController extends Controller
     private function myConversion()
     {
         $count = Contact::where('converted_by', auth()->user()->id)
-                        ->count();
+            ->count();
 
         return $count;
     }
@@ -273,66 +273,48 @@ class CrmDashboardController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('crm::create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('crm::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('crm::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

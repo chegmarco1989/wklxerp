@@ -8,14 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         //check if permission exists
         $permission_exists = Permission::where('name', 'print_invoice')
-                                    ->exists();
+            ->exists();
 
         if (! $permission_exists) {
             Permission::create([
@@ -32,10 +30,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
 };

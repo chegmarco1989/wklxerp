@@ -51,7 +51,5 @@ return [
     'persuasive' => 'Persuasive',
     'professional' => 'Professional',
     'casual' => 'Casual',
-    'witty' => 'Witty'
-]
-
-?>
+    'witty' => 'Witty',
+];

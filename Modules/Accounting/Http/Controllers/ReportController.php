@@ -6,8 +6,8 @@ use App\BusinessLocation;
 use App\Utils\BusinessUtil;
 use App\Utils\ModuleUtil;
 use DB;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Accounting\Entities\AccountingAccount;
 use Modules\Accounting\Utils\AccountingUtil;
 
@@ -23,7 +23,7 @@ class ReportController extends Controller
      * @return void
      */
     public function __construct(AccountingUtil $accountingUtil, BusinessUtil $businessUtil,
-    ModuleUtil $moduleUtil)
+        ModuleUtil $moduleUtil)
     {
         $this->accountingUtil = $accountingUtil;
         $this->businessUtil = $businessUtil;
@@ -32,10 +32,8 @@ class ReportController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -46,8 +44,8 @@ class ReportController extends Controller
         }
 
         $first_account = AccountingAccount::where('business_id', $business_id)
-                            ->where('status', 'active')
-                            ->first();
+            ->where('status', 'active')
+            ->first();
         $ledger_url = null;
         if (! empty($first_account)) {
             $ledger_url = route('accounting.ledger', $first_account);
@@ -59,10 +57,8 @@ class ReportController extends Controller
 
     /**
      * Trial Balance
-     *
-     * @return Response
      */
-    public function trialBalance()
+    public function trialBalance(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -82,17 +78,17 @@ class ReportController extends Controller
         }
 
         $accounts = AccountingAccount::join('accounting_accounts_transactions as AAT',
-                                'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                            ->where('business_id', $business_id)
-                            ->whereDate('AAT.operation_date', '>=', $start_date)
-                            ->whereDate('AAT.operation_date', '<=', $end_date)
-                            ->select(
-                                DB::raw("SUM(IF(AAT.type = 'credit', AAT.amount, 0)) as credit_balance"),
-                                DB::raw("SUM(IF(AAT.type = 'debit', AAT.amount, 0)) as debit_balance"),
-                                'accounting_accounts.name'
-                            )
-                            ->groupBy('accounting_accounts.name')
-                            ->get();
+            'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+            ->where('business_id', $business_id)
+            ->whereDate('AAT.operation_date', '>=', $start_date)
+            ->whereDate('AAT.operation_date', '<=', $end_date)
+            ->select(
+                DB::raw("SUM(IF(AAT.type = 'credit', AAT.amount, 0)) as credit_balance"),
+                DB::raw("SUM(IF(AAT.type = 'debit', AAT.amount, 0)) as debit_balance"),
+                'accounting_accounts.name'
+            )
+            ->groupBy('accounting_accounts.name')
+            ->get();
 
         return view('accounting::report.trial_balance')
             ->with(compact('accounts', 'start_date', 'end_date'));
@@ -100,10 +96,8 @@ class ReportController extends Controller
 
     /**
      * Trial Balance
-     *
-     * @return Response
      */
-    public function balanceSheet()
+    public function balanceSheet(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -125,46 +119,46 @@ class ReportController extends Controller
         $balance_formula = $this->accountingUtil->balanceFormula();
 
         $assets = AccountingAccount::join('accounting_accounts_transactions as AAT',
-                                'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                    ->join('accounting_account_types as AATP',
-                                'AATP.id', '=', 'accounting_accounts.account_sub_type_id')
-                    ->whereDate('AAT.operation_date', '>=', $start_date)
-                    ->whereDate('AAT.operation_date', '<=', $end_date)
-                    ->select(DB::raw($balance_formula), 'accounting_accounts.name', 'AATP.name as sub_type')
-                    ->where('accounting_accounts.business_id', $business_id)
-                    ->whereIn('accounting_accounts.account_primary_type', ['asset'])
-                    ->groupBy('accounting_accounts.name')
-                    ->get();
+            'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+            ->join('accounting_account_types as AATP',
+                'AATP.id', '=', 'accounting_accounts.account_sub_type_id')
+            ->whereDate('AAT.operation_date', '>=', $start_date)
+            ->whereDate('AAT.operation_date', '<=', $end_date)
+            ->select(DB::raw($balance_formula), 'accounting_accounts.name', 'AATP.name as sub_type')
+            ->where('accounting_accounts.business_id', $business_id)
+            ->whereIn('accounting_accounts.account_primary_type', ['asset'])
+            ->groupBy('accounting_accounts.name')
+            ->get();
 
         $liabilities = AccountingAccount::join('accounting_accounts_transactions as AAT',
-                                'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                    ->join('accounting_account_types as AATP',
-                                'AATP.id', '=', 'accounting_accounts.account_sub_type_id')
-                    ->whereDate('AAT.operation_date', '>=', $start_date)
-                    ->whereDate('AAT.operation_date', '<=', $end_date)
-                    ->select(DB::raw($balance_formula), 'accounting_accounts.name', 'AATP.name as sub_type')
-                    ->where('accounting_accounts.business_id', $business_id)
-                    ->whereIn('accounting_accounts.account_primary_type', ['liability'])
-                    ->groupBy('accounting_accounts.name')
-                    ->get();
+            'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+            ->join('accounting_account_types as AATP',
+                'AATP.id', '=', 'accounting_accounts.account_sub_type_id')
+            ->whereDate('AAT.operation_date', '>=', $start_date)
+            ->whereDate('AAT.operation_date', '<=', $end_date)
+            ->select(DB::raw($balance_formula), 'accounting_accounts.name', 'AATP.name as sub_type')
+            ->where('accounting_accounts.business_id', $business_id)
+            ->whereIn('accounting_accounts.account_primary_type', ['liability'])
+            ->groupBy('accounting_accounts.name')
+            ->get();
 
         $equities = AccountingAccount::join('accounting_accounts_transactions as AAT',
-                                'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                    ->join('accounting_account_types as AATP',
-                                'AATP.id', '=', 'accounting_accounts.account_sub_type_id')
-                    ->whereDate('AAT.operation_date', '>=', $start_date)
-                    ->whereDate('AAT.operation_date', '<=', $end_date)
-                    ->select(DB::raw($balance_formula), 'accounting_accounts.name', 'AATP.name as sub_type')
-                    ->where('accounting_accounts.business_id', $business_id)
-                    ->whereIn('accounting_accounts.account_primary_type', ['equity'])
-                    ->groupBy('accounting_accounts.name')
-                    ->get();
+            'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+            ->join('accounting_account_types as AATP',
+                'AATP.id', '=', 'accounting_accounts.account_sub_type_id')
+            ->whereDate('AAT.operation_date', '>=', $start_date)
+            ->whereDate('AAT.operation_date', '<=', $end_date)
+            ->select(DB::raw($balance_formula), 'accounting_accounts.name', 'AATP.name as sub_type')
+            ->where('accounting_accounts.business_id', $business_id)
+            ->whereIn('accounting_accounts.account_primary_type', ['equity'])
+            ->groupBy('accounting_accounts.name')
+            ->get();
 
         return view('accounting::report.balance_sheet')
             ->with(compact('assets', 'liabilities', 'equities', 'start_date', 'end_date'));
     }
 
-    public function accountReceivableAgeingReport()
+    public function accountReceivableAgeingReport(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -181,10 +175,10 @@ class ReportController extends Controller
         $business_locations = BusinessLocation::forDropdown($business_id, true);
 
         return view('accounting::report.account_receivable_ageing_report')
-        ->with(compact('report_details', 'business_locations'));
+            ->with(compact('report_details', 'business_locations'));
     }
 
-    public function accountPayableAgeingReport()
+    public function accountPayableAgeingReport(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -196,14 +190,14 @@ class ReportController extends Controller
 
         $location_id = request()->input('location_id', null);
         $report_details = $this->accountingUtil->getAgeingReport($business_id, 'purchase', 'contact',
-        $location_id);
+            $location_id);
         $business_locations = BusinessLocation::forDropdown($business_id, true);
 
         return view('accounting::report.account_payable_ageing_report')
-        ->with(compact('report_details', 'business_locations'));
+            ->with(compact('report_details', 'business_locations'));
     }
 
-    public function accountReceivableAgeingDetails()
+    public function accountReceivableAgeingDetails(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -216,15 +210,15 @@ class ReportController extends Controller
         $location_id = request()->input('location_id', null);
 
         $report_details = $this->accountingUtil->getAgeingReport($business_id, 'sell', 'due_date',
-        $location_id);
+            $location_id);
 
         $business_locations = BusinessLocation::forDropdown($business_id, true);
 
         return view('accounting::report.account_receivable_ageing_details')
-        ->with(compact('business_locations', 'report_details'));
+            ->with(compact('business_locations', 'report_details'));
     }
 
-    public function accountPayableAgeingDetails()
+    public function accountPayableAgeingDetails(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -237,11 +231,11 @@ class ReportController extends Controller
         $location_id = request()->input('location_id', null);
 
         $report_details = $this->accountingUtil->getAgeingReport($business_id, 'purchase', 'due_date',
-        $location_id);
+            $location_id);
 
         $business_locations = BusinessLocation::forDropdown($business_id, true);
 
         return view('accounting::report.account_payable_ageing_details')
-        ->with(compact('business_locations', 'report_details'));
+            ->with(compact('business_locations', 'report_details'));
     }
 }

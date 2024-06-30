@@ -1,5 +1,6 @@
 <?php
-return 
+
+return
     [
         // 'hms' => 'HMS',
         'hms' => '酒店管理',
@@ -85,7 +86,7 @@ return
         'calendar' => '日历',
         'new_booking' => '新预订',
         'unavailable' => '不可用',
-        'unavailable_type' => '不可用类型', 
+        'unavailable_type' => '不可用类型',
         'edit_unavailable' => '编辑不可用',
         'add_unavailable' => '添加不可用',
         'booking_Id' => '预订ID',
@@ -137,12 +138,12 @@ return
         'stay' => '逗留',
         'hms_module' => 'HMS模块',
         'manage_rooms' => '管理房间',
-        'manage_price' =>'管理价格',
+        'manage_price' => '管理价格',
         'manage_unavailable' => '管理不可用',
         'manage_extra' => '管理额外服务',
         'manage_coupon' => '管理优惠券',
         'add_booking' => '添加预订',
-        'delete_booking' => '删除预订', 
+        'delete_booking' => '删除预订',
         'manage_amenities' => '管理设施',
         'rooms_booked_today' => '今日已预订房间',
         'pending_rooms_today' => '今日待定房间',
@@ -189,12 +190,12 @@ return
         'delete_booking_room' => '删除预订房间',
         'are_you_sure_you_want_to_delete_selected_items' => '您确定要删除所选项目吗？',
         'changing_date_will_reset_rooms_selection_do_you_want_to_continue' => '更改日期将重置房间选择，您是否要继续？',
-		'are_you_sure' => '您确定吗！',
-		'check_in' => '入住',
-		'check_out' => '退房',
-		'check_in_date_time' => '入住日期时间',
-		'check_out_date_time' => '退房日期时间',
-		'confirm_check_in' => '确认入住',
-		'confirm_check_out' => '确认退房',
-		'check_out_payment_help_text' => '付款状态未支付',
-];
+        'are_you_sure' => '您确定吗！',
+        'check_in' => '入住',
+        'check_out' => '退房',
+        'check_in_date_time' => '入住日期时间',
+        'check_out_date_time' => '退房日期时间',
+        'confirm_check_in' => '确认入住',
+        'confirm_check_out' => '确认退房',
+        'check_out_payment_help_text' => '付款状态未支付',
+    ];

@@ -7,25 +7,21 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         CashRegister::where('status', 'open')
-                ->whereNull('location_id')
-                ->update([
-                    'closed_at' => \Carbon::now()->format('Y-m-d H:i:s'),
-                    'status' => 'close',
-                ]);
+            ->whereNull('location_id')
+            ->update([
+                'closed_at' => \Carbon::now()->format('Y-m-d H:i:s'),
+                'status' => 'close',
+            ]);
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         //
     }

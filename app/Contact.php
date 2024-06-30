@@ -3,6 +3,9 @@
 namespace App;
 
 use DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,7 +34,7 @@ class Contact extends Authenticatable
     /**
      * Get the business that owns the user.
      */
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class);
     }
@@ -106,7 +109,7 @@ class Contact extends Authenticatable
     /**
      * Get all of the contacts's notes & documents.
      */
-    public function documentsAndnote()
+    public function documentsAndnote(): MorphMany
     {
         return $this->morphMany(\App\DocumentAndNote::class, 'notable');
     }
@@ -114,16 +117,16 @@ class Contact extends Authenticatable
     /**
      * Return list of contact dropdown for a business
      *
-     * @param $business_id int
-     * @param $exclude_default = false (boolean)
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $exclude_default  = false (boolean)
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function contactDropdown($business_id, $exclude_default = false, $prepend_none = true, $append_id = true)
+    public static function contactDropdown($business_id, $exclude_default = false, $prepend_none = true, $append_id = true): array
     {
         $query = Contact::where('business_id', $business_id)
-                    ->where('type', '!=', 'lead')
-                    ->active();
+            ->where('type', '!=', 'lead')
+            ->active();
 
         if ($exclude_default) {
             $query->where('is_default', 0);
@@ -133,7 +136,7 @@ class Contact extends Authenticatable
             $query->select(
                 DB::raw("IF(contacts.contact_id IS NULL OR contacts.contact_id='', name, CONCAT(name, ' - ', COALESCE(supplier_business_name, ''), '(', contacts.contact_id, ')')) AS supplier"),
                 'contacts.id'
-                    );
+            );
         } else {
             $query->select(
                 'contacts.id',
@@ -163,26 +166,26 @@ class Contact extends Authenticatable
     /**
      * Return list of suppliers dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function suppliersDropdown($business_id, $prepend_none = true, $append_id = true)
+    public static function suppliersDropdown($business_id, $prepend_none = true, $append_id = true): array
     {
         $all_contacts = Contact::where('contacts.business_id', $business_id)
-                        ->whereIn('contacts.type', ['supplier', 'both'])
-                        ->active();
+            ->whereIn('contacts.type', ['supplier', 'both'])
+            ->active();
 
         if ($append_id) {
             $all_contacts->select(
                 DB::raw("IF(contacts.contact_id IS NULL OR contacts.contact_id='', name, CONCAT(contacts.name, ' - ', COALESCE(contacts.supplier_business_name, ''), '(', contacts.contact_id, ')')) AS supplier"),
                 'contacts.id'
-                    );
+            );
         } else {
             $all_contacts->select(
                 'contacts.id',
                 DB::raw("CONCAT(contacts.name, ' (', contacts.supplier_business_name, ')') as supplier")
-                );
+            );
         }
 
         if (auth()->check() && ! auth()->user()->can('supplier.view') && auth()->user()->can('supplier.view_own')) {
@@ -202,21 +205,21 @@ class Contact extends Authenticatable
     /**
      * Return list of customers dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function customersDropdown($business_id, $prepend_none = true, $append_id = true)
+    public static function customersDropdown($business_id, $prepend_none = true, $append_id = true): array
     {
         $all_contacts = Contact::where('contacts.business_id', $business_id)
-                        ->whereIn('contacts.type', ['customer', 'both'])
-                        ->active();
+            ->whereIn('contacts.type', ['customer', 'both'])
+            ->active();
 
         if ($append_id) {
             $all_contacts->select(
                 DB::raw("IF(contacts.contact_id IS NULL OR contacts.contact_id='', CONCAT( COALESCE(contacts.supplier_business_name, ''), ' - ', contacts.name), CONCAT(COALESCE(contacts.supplier_business_name, ''), ' - ', name, ' (', contacts.contact_id, ')')) AS customer"),
                 'contacts.id'
-                );
+            );
         } else {
             $all_contacts->select('contacts.id', DB::raw('contacts.name as customer'));
         }
@@ -238,10 +241,9 @@ class Contact extends Authenticatable
     /**
      * Return list of contact type.
      *
-     * @param $prepend_all = false (boolean)
-     * @return array
+     * @param  $prepend_all  = false (boolean)
      */
-    public static function typeDropdown($prepend_all = false)
+    public static function typeDropdown($prepend_all = false): array
     {
         $types = [];
 
@@ -258,10 +260,8 @@ class Contact extends Authenticatable
 
     /**
      * Return list of contact type by permissions.
-     *
-     * @return array
      */
-    public static function getContactTypes()
+    public static function getContactTypes(): array
     {
         $types = [];
         if (auth()->check() && auth()->user()->can('supplier.create')) {
@@ -384,7 +384,7 @@ class Contact extends Authenticatable
      * Applied only when selected_contacts is true for a user in
      * users table
      */
-    public function userHavingAccess()
+    public function userHavingAccess(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'user_contact_access');
     }

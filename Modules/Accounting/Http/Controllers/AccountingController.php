@@ -5,8 +5,8 @@ namespace Modules\Accounting\Http\Controllers;
 use App\Charts\CommonChart;
 use App\Utils\ModuleUtil;
 use DB;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Accounting\Entities\AccountingAccount;
 use Modules\Accounting\Entities\AccountingAccountType;
 use Modules\Accounting\Utils\AccountingUtil;
@@ -28,10 +28,8 @@ class AccountingController extends Controller
 
     /**
      * Display dashboard for accounting module.
-     *
-     * @return Response
      */
-    public function dashboard()
+    public function dashboard(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -45,16 +43,16 @@ class AccountingController extends Controller
         $balance_formula = $this->accountingUtil->balanceFormula();
 
         $coa_overview = AccountingAccount::leftjoin('accounting_accounts_transactions as AAT',
-                                    'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                                ->where('business_id', $business_id)
-                                ->whereDate('AAT.operation_date', '>=', $start_date)
-                                ->whereDate('AAT.operation_date', '<=', $end_date)
-                                ->select(
-                                    DB::raw($balance_formula),
-                                    'accounting_accounts.account_primary_type'
-                                )
-                                ->groupBy('accounting_accounts.account_primary_type')
-                                ->get();
+            'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+            ->where('business_id', $business_id)
+            ->whereDate('AAT.operation_date', '>=', $start_date)
+            ->whereDate('AAT.operation_date', '<=', $end_date)
+            ->select(
+                DB::raw($balance_formula),
+                'accounting_accounts.account_primary_type'
+            )
+            ->groupBy('accounting_accounts.account_primary_type')
+            ->get();
 
         $account_types = AccountingAccountType::accounting_primary_type();
 
@@ -84,30 +82,30 @@ class AccountingController extends Controller
             '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a', ];
         $coa_overview_chart = new CommonChart;
         $coa_overview_chart->labels($labels)
-                    ->options($this->__chartOptions())
-                    ->dataset(__('accounting::lang.current_balance'), 'area', $values)
-                    ->color($colors);
+            ->options($this->__chartOptions())
+            ->dataset(__('accounting::lang.current_balance'), 'area', $values)
+            ->color($colors);
 
         $all_charts = [];
         foreach ($account_types as $k => $v) {
             $sub_types = AccountingAccountType::where('account_primary_type', $k)
-                                        ->where(function ($q) use ($business_id) {
-                                            $q->whereNull('business_id')
-                                                ->orWhere('business_id', $business_id);
-                                        })
-                                        ->get();
+                ->where(function ($q) use ($business_id) {
+                    $q->whereNull('business_id')
+                        ->orWhere('business_id', $business_id);
+                })
+                ->get();
 
             $balances = AccountingAccount::leftjoin('accounting_accounts_transactions as AAT',
-                                        'AAT.accounting_account_id', '=', 'accounting_accounts.id')
-                                ->where('business_id', $business_id)
-                                ->whereDate('AAT.operation_date', '>=', $start_date)
-                                ->whereDate('AAT.operation_date', '<=', $end_date)
-                                ->select(
-                                    DB::raw($balance_formula),
-                                    'accounting_accounts.account_sub_type_id'
-                                )
-                                ->groupBy('accounting_accounts.account_sub_type_id')
-                                ->get();
+                'AAT.accounting_account_id', '=', 'accounting_accounts.id')
+                ->where('business_id', $business_id)
+                ->whereDate('AAT.operation_date', '>=', $start_date)
+                ->whereDate('AAT.operation_date', '<=', $end_date)
+                ->select(
+                    DB::raw($balance_formula),
+                    'accounting_accounts.account_sub_type_id'
+                )
+                ->groupBy('accounting_accounts.account_sub_type_id')
+                ->get();
 
             $labels = [];
             $values = [];
@@ -126,14 +124,14 @@ class AccountingController extends Controller
             $chart = new CommonChart;
             $chart->labels($labels)
                 ->options($this->__chartOptions())
-                 ->dataset(__('accounting::lang.current_balance'), 'pie', $values)
-                 ->color($colors);
+                ->dataset(__('accounting::lang.current_balance'), 'pie', $values)
+                ->color($colors);
 
             $all_charts[$k] = $chart;
         }
 
         return view('accounting::accounting.dashboard')->with(compact('coa_overview_chart',
-                'all_charts', 'coa_overview', 'account_types', 'end_date', 'start_date'));
+            'all_charts', 'coa_overview', 'account_types', 'end_date', 'start_date'));
     }
 
     private function __chartOptions()

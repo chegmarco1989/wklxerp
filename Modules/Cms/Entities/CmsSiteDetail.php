@@ -31,10 +31,8 @@ class CmsSiteDetail extends Model
 
     /**
      * Get the feature image path.
-     *
-     * @return string
      */
-    public function getLogoPathAttribute()
+    public function getLogoPathAttribute(): string
     {
         $logo_path = null;
         $logo = CmsSiteDetail::getValue('logo');
@@ -55,13 +53,13 @@ class CmsSiteDetail extends Model
     /**
      * Return the value of the key
      *
-     * @param $key string
+     * @param  $key  string
      * @return mixed
      */
     public static function getValue($key, $jsonDecode = true)
     {
         $row = CmsSiteDetail::where('site_key', $key)
-                ->first();
+            ->first();
 
         if (! $jsonDecode) {
             return $row;

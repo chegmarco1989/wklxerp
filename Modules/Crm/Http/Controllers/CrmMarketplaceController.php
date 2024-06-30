@@ -6,9 +6,10 @@ use App\Category;
 use App\User;
 use App\Utils\Util;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Crm\Entities\CrmContact;
 use Modules\Crm\Entities\CrmMarketplace;
 use Modules\Crm\Entities\Schedule;
@@ -30,10 +31,8 @@ class CrmMarketplaceController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->commonUtil->is_admin(auth()->user());
@@ -52,10 +51,8 @@ class CrmMarketplaceController extends Controller
 
     /**
      * Saves marketplace details
-     *
-     * @return Response
      */
-    public function save(Request $request)
+    public function save(Request $request): RedirectResponse
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 
@@ -83,11 +80,8 @@ class CrmMarketplaceController extends Controller
 
     /**
      * Fetches leads from api and creates leads and followups
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function importLeads(Request $request)
+    public function importLeads(Request $request): RedirectResponse
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 
@@ -113,7 +107,7 @@ class CrmMarketplaceController extends Controller
 
                 //check if email exists
                 $lead = CrmContact::where('email', $user_data['email'])
-                                ->first();
+                    ->first();
 
                 //if lead don't exist create one
                 if (empty($lead)) {
@@ -143,9 +137,9 @@ class CrmMarketplaceController extends Controller
 
                 if (! empty($user_data['inq_id'])) {
                     $schedule = Schedule::where('business_id', $business_id)
-                                        ->where('contact_id', $lead->id)
-                                        ->where('title', 'like', "%{$inq_id}%")
-                                        ->first();
+                        ->where('contact_id', $lead->id)
+                        ->where('title', 'like', "%{$inq_id}%")
+                        ->first();
 
                     if (! empty($schedule)) {
                         continue;

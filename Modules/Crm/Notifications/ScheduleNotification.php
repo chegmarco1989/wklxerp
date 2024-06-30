@@ -30,9 +30,8 @@ class ScheduleNotification extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         if (isPusherEnabled()) {
             $this->channels[] = 'broadcast';
@@ -45,9 +44,8 @@ class ScheduleNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('Invitation for schedule')
@@ -60,9 +58,8 @@ class ScheduleNotification extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             'schedule_id' => $this->schedule->id,
@@ -74,9 +71,8 @@ class ScheduleNotification extends Notification
      * Get the broadcastable representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return BroadcastMessage
      */
-    public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
             'title' => $this->schedule->broadcast_title,

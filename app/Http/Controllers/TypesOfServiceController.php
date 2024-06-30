@@ -7,6 +7,7 @@ use App\SellingPriceGroup;
 use App\TypesOfService;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class TypesOfServiceController extends Controller
@@ -42,7 +43,7 @@ class TypesOfServiceController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $tax_rates = TypesOfService::where('business_id', $business_id)
-                        ->select('*');
+                ->select('*');
 
             return Datatables::of($tax_rates)
                 ->addColumn(
@@ -70,10 +71,8 @@ class TypesOfServiceController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('access_types_of_service')) {
             abort(403, 'Unauthorized action.');
@@ -84,13 +83,12 @@ class TypesOfServiceController extends Controller
         $price_groups = SellingPriceGroup::forDropdown($business_id);
 
         return view('types_of_service.create')
-                ->with(compact('locations', 'price_groups'));
+            ->with(compact('locations', 'price_groups'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -127,7 +125,6 @@ class TypesOfServiceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\TypesOfService  $typesOfService
      * @return \Illuminate\Http\Response
      */
     public function show(TypesOfService $typesOfService)
@@ -139,9 +136,8 @@ class TypesOfServiceController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\TypesOfService  $typesOfService
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('access_types_of_service')) {
             abort(403, 'Unauthorized action.');
@@ -152,16 +148,15 @@ class TypesOfServiceController extends Controller
         $price_groups = SellingPriceGroup::forDropdown($business_id);
 
         $type_of_service = TypesOfService::where('business_id', $business_id)
-                                        ->findOrFail($id);
+            ->findOrFail($id);
 
         return view('types_of_service.edit')
-                ->with(compact('locations', 'price_groups', 'type_of_service'));
+            ->with(compact('locations', 'price_groups', 'type_of_service'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\TypesOfService  $typesOfService
      * @return \Illuminate\Http\Response
      */
@@ -182,8 +177,8 @@ class TypesOfServiceController extends Controller
             $input['location_price_group'] = ! empty($input['location_price_group']) ? json_encode($input['location_price_group']) : null;
 
             TypesOfService::where('business_id', $business_id)
-                        ->where('id', $id)
-                        ->update($input);
+                ->where('id', $id)
+                ->update($input);
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.updated_success'),
@@ -215,8 +210,8 @@ class TypesOfServiceController extends Controller
             try {
                 $business_id = request()->session()->get('user.business_id');
                 TypesOfService::where('business_id', $business_id)
-                        ->where('id', $id)
-                        ->delete();
+                    ->where('id', $id)
+                    ->delete();
 
                 $output = ['success' => true,
                     'msg' => __('lang_v1.deleted_success'),

@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AccountTransaction extends Model
@@ -15,12 +17,12 @@ class AccountTransaction extends Model
         'operation_date' => 'datetime',
     ];
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
 
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(\App\Transaction::class, 'transaction_id');
     }
@@ -29,9 +31,8 @@ class AccountTransaction extends Model
      * Gives account transaction type from payment transaction type
      *
      * @param  string  $payment_transaction_type
-     * @return string
      */
-    public static function getAccountTransactionType($tansaction_type)
+    public static function getAccountTransactionType($tansaction_type): string
     {
         $account_transaction_types = [
             'sell' => 'credit',
@@ -49,10 +50,8 @@ class AccountTransaction extends Model
 
     /**
      * Creates new account transaction
-     *
-     * @return obj
      */
-    public static function createAccountTransaction($data)
+    public static function createAccountTransaction($data): obj
     {
         $transaction_data = [
             'amount' => $data['amount'],
@@ -75,19 +74,16 @@ class AccountTransaction extends Model
     /**
      * Updates transaction payment from transaction payment
      *
-     * @param  obj  $transaction_payment
      * @param  array  $inputs
-     * @param  string  $transaction_type
-     * @return string
      */
-    public static function updateAccountTransaction($transaction_payment, $transaction_type)
+    public static function updateAccountTransaction(obj $transaction_payment, string $transaction_type): string
     {
         if (! empty($transaction_payment->account_id)) {
             $account_transaction = AccountTransaction::where(
                 'transaction_payment_id',
                 $transaction_payment->id
             )
-                    ->first();
+                ->first();
             if (! empty($account_transaction)) {
                 $account_transaction->amount = $transaction_payment->amount;
                 $account_transaction->account_id = $transaction_payment->account_id;
@@ -107,7 +103,7 @@ class AccountTransaction extends Model
                 ];
 
                 //If change return then set type as debit
-                if (!empty($transaction_payment->transaction) && $transaction_payment->transaction->type == 'sell' && $transaction_payment->is_return == 1) {
+                if (! empty($transaction_payment->transaction) && $transaction_payment->transaction->type == 'sell' && $transaction_payment->is_return == 1) {
                     $accnt_trans_data['type'] = 'debit';
                 }
 
@@ -116,12 +112,12 @@ class AccountTransaction extends Model
         }
     }
 
-    public function transfer_transaction()
+    public function transfer_transaction(): BelongsTo
     {
         return $this->belongsTo(\App\AccountTransaction::class, 'transfer_transaction_id');
     }
 
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(\App\Account::class, 'account_id');
     }

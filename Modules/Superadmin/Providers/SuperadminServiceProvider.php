@@ -14,10 +14,8 @@ class SuperadminServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application events.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -41,8 +39,8 @@ class SuperadminServiceProvider extends ServiceProvider
 
         view::composer(['layouts.partials.home_header'], function ($view) {
             $frontend_pages = SuperadminFrontendPage::where('is_shown', 1)
-                                                ->orderBy('menu_order', 'asc')
-                                                ->get();
+                ->orderBy('menu_order', 'asc')
+                ->get();
             $view->with(compact('frontend_pages'));
         });
 
@@ -69,10 +67,8 @@ class SuperadminServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
         $this->registerCommands();
@@ -80,22 +76,18 @@ class SuperadminServiceProvider extends ServiceProvider
 
     /**
      * Register commands.
-     *
-     * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         $this->commands([
-            \Modules\Superadmin\Console\SubscriptionExpiryAlert::class
+            \Modules\Superadmin\Console\SubscriptionExpiryAlert::class,
         ]);
     }
 
     /**
      * Register config.
-     *
-     * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('superadmin.php'),
@@ -107,10 +99,8 @@ class SuperadminServiceProvider extends ServiceProvider
 
     /**
      * Register views.
-     *
-     * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/superadmin');
 
@@ -127,10 +117,8 @@ class SuperadminServiceProvider extends ServiceProvider
 
     /**
      * Register translations.
-     *
-     * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/superadmin');
 
@@ -143,10 +131,8 @@ class SuperadminServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -155,10 +141,8 @@ class SuperadminServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }

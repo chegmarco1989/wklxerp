@@ -6,9 +6,11 @@ use App\User;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\AssetManagement\Entities\Asset;
 use Modules\AssetManagement\Entities\AssetTransaction;
 use Modules\AssetManagement\Utils\AssetUtil;
@@ -37,10 +39,8 @@ class AssetAllocationController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -50,26 +50,26 @@ class AssetAllocationController extends Controller
 
         if ($request->ajax()) {
             $asset_allocated = AssetTransaction::join('assets',
-                                'asset_transactions.asset_id', '=', 'assets.id')
-                                ->join('users as receiver', 'asset_transactions.receiver', '=', 'receiver.id')
-                                ->join('users as provider', 'asset_transactions.created_by', '=', 'provider.id')
-                                ->leftJoin('categories as CAT', 'assets.category_id',
-                                    '=', 'CAT.id')
-                                ->leftJoin('asset_transactions as PT',
-                                'asset_transactions.id', '=', 'PT.parent_id')
-                                ->where('asset_transactions.business_id', $business_id)
-                                ->where('asset_transactions.transaction_type', 'allocate')
-                                ->select('asset_transactions.ref_no as ref_no',
-                                'asset_transactions.quantity as quantity',
-                                'asset_transactions.transaction_datetime as allocated_at', 'asset_transactions.id as id',
-                                'assets.name as asset', 'assets.model as model',
-                                'CAT.name as category', DB::raw("CONCAT(COALESCE(receiver.surname, ''),' ',COALESCE(receiver.first_name, ''),' ',COALESCE(receiver.last_name,'')) as receiver_name"),
-                                DB::raw("CONCAT(COALESCE(provider.surname, ''),' ',COALESCE(provider.first_name, ''),' ',COALESCE(provider.last_name,'')) as provider_name"),
-                                DB::raw('SUM(COALESCE(PT.quantity, 0)) as revoked_quantity'),
-                                'asset_transactions.reason as reason',
-                                'asset_transactions.allocated_upto'
-                                )
-                                ->groupBy('asset_transactions.id');
+                'asset_transactions.asset_id', '=', 'assets.id')
+                ->join('users as receiver', 'asset_transactions.receiver', '=', 'receiver.id')
+                ->join('users as provider', 'asset_transactions.created_by', '=', 'provider.id')
+                ->leftJoin('categories as CAT', 'assets.category_id',
+                    '=', 'CAT.id')
+                ->leftJoin('asset_transactions as PT',
+                    'asset_transactions.id', '=', 'PT.parent_id')
+                ->where('asset_transactions.business_id', $business_id)
+                ->where('asset_transactions.transaction_type', 'allocate')
+                ->select('asset_transactions.ref_no as ref_no',
+                    'asset_transactions.quantity as quantity',
+                    'asset_transactions.transaction_datetime as allocated_at', 'asset_transactions.id as id',
+                    'assets.name as asset', 'assets.model as model',
+                    'CAT.name as category', DB::raw("CONCAT(COALESCE(receiver.surname, ''),' ',COALESCE(receiver.first_name, ''),' ',COALESCE(receiver.last_name,'')) as receiver_name"),
+                    DB::raw("CONCAT(COALESCE(provider.surname, ''),' ',COALESCE(provider.first_name, ''),' ',COALESCE(provider.last_name,'')) as provider_name"),
+                    DB::raw('SUM(COALESCE(PT.quantity, 0)) as revoked_quantity'),
+                    'asset_transactions.reason as reason',
+                    'asset_transactions.allocated_upto'
+                )
+                ->groupBy('asset_transactions.id');
 
             return Datatables::of($asset_allocated)
                 ->addColumn('action', function ($row) {
@@ -144,10 +144,8 @@ class AssetAllocationController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -167,11 +165,8 @@ class AssetAllocationController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -181,7 +176,7 @@ class AssetAllocationController extends Controller
 
         try {
             $input = $request->only('ref_no', 'asset_id', 'quantity',
-                        'receiver', 'transaction_datetime', 'reason', 'allocated_upto');
+                'receiver', 'transaction_datetime', 'reason', 'allocated_upto');
             $input['transaction_type'] = 'allocate';
             $input['business_id'] = $business_id;
             $input['created_by'] = request()->session()->get('user.id');
@@ -230,22 +225,16 @@ class AssetAllocationController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('assetmanagement::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -255,8 +244,8 @@ class AssetAllocationController extends Controller
 
         if (request()->ajax()) {
             $asset_allocated = AssetTransaction::with('asset', 'revokeTransaction')
-                                ->where('business_id', $business_id)
-                                ->findOrfail($id);
+                ->where('business_id', $business_id)
+                ->findOrfail($id);
 
             $users = User::forDropdown($business_id, false);
             $assets = Asset::forDropdown($business_id, true, false);
@@ -264,18 +253,14 @@ class AssetAllocationController extends Controller
 
             return view('assetmanagement::asset_allocation.edit')
                 ->with(compact('users', 'assets', 'asset_allocated',
-                'total_available_asset'));
+                    'total_available_asset'));
         }
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -285,7 +270,7 @@ class AssetAllocationController extends Controller
 
         try {
             $input = $request->only('asset_id', 'quantity', 'receiver',
-                    'transaction_datetime', 'reason', 'allocated_upto');
+                'transaction_datetime', 'reason', 'allocated_upto');
 
             DB::beginTransaction();
 
@@ -302,7 +287,7 @@ class AssetAllocationController extends Controller
             }
 
             $a_trans = AssetTransaction::where('business_id', $business_id)
-                            ->findOrfail($id);
+                ->findOrfail($id);
 
             $a_trans->update($input);
 
@@ -326,11 +311,8 @@ class AssetAllocationController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -341,7 +323,7 @@ class AssetAllocationController extends Controller
         if (request()->ajax()) {
             try {
                 $asset_allocated = AssetTransaction::where('business_id', $business_id)
-                                        ->findOrfail($id);
+                    ->findOrfail($id);
 
                 $asset_allocated->delete();
 
@@ -365,21 +347,19 @@ class AssetAllocationController extends Controller
     /**
      * Get total available qty
      * of an asset
-     *
-     * @return int
      */
-    protected function _getAvailableQtyOfAsset($asset_allocated)
+    protected function _getAvailableQtyOfAsset($asset_allocated): int
     {
         $asset = Asset::leftJoin('asset_transactions as AT', function ($join) {
             $join->on('assets.id', '=', 'AT.asset_id')
-                                ->where('transaction_type', 'allocate');
+                ->where('transaction_type', 'allocate');
         })
-                        ->where('assets.business_id', $asset_allocated->business_id)
-                        ->where('assets.id', $asset_allocated->asset_id)
-                        ->select('assets.id as id', DB::raw('SUM(COALESCE(AT.quantity, 0)) as allocated_qty'),
-                        DB::raw('(SELECT SUM(COALESCE(AR.quantity, 0)) FROM asset_transactions AS AR WHERE(AR.asset_id=assets.id AND AR.transaction_type=\'revoke\')) as revoked_qty')
-                        )
-                        ->first();
+            ->where('assets.business_id', $asset_allocated->business_id)
+            ->where('assets.id', $asset_allocated->asset_id)
+            ->select('assets.id as id', DB::raw('SUM(COALESCE(AT.quantity, 0)) as allocated_qty'),
+                DB::raw('(SELECT SUM(COALESCE(AR.quantity, 0)) FROM asset_transactions AS AR WHERE(AR.asset_id=assets.id AND AR.transaction_type=\'revoke\')) as revoked_qty')
+            )
+            ->first();
 
         $available_qty = $asset->allocated_qty - $asset->revoked_qty;
 

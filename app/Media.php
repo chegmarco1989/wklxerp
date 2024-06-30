@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
@@ -19,7 +21,7 @@ class Media extends Model
     /**
      * Get all of the owning mediable models.
      */
-    public function mediable()
+    public function mediable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -76,9 +78,9 @@ class Media extends Model
     /**
      * Uploads files from the request and add's medias to the supplied model.
      *
-     * @param  int  $business_id, obj $model, $obj $request, string $file_name
+     * @param  int  $business_id,  obj $model, $obj $request, string $file_name
      */
-    public static function uploadMedia($business_id, $model, $request, $file_name, $is_single = false, $model_media_type = null)
+    public static function uploadMedia(int $business_id, $model, $request, $file_name, $is_single = false, $model_media_type = null)
     {
         //If app environment is demo return null
         if (config('app.env') == 'demo') {
@@ -172,7 +174,7 @@ class Media extends Model
     public static function deleteMedia($business_id, $media_id)
     {
         $media = Media::where('business_id', $business_id)
-                        ->findOrFail($media_id);
+            ->findOrFail($media_id);
 
         $media_path = public_path('uploads/media/'.$media->file_name);
 
@@ -182,7 +184,7 @@ class Media extends Model
         $media->delete();
     }
 
-    public function uploaded_by_user()
+    public function uploaded_by_user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'uploaded_by');
     }

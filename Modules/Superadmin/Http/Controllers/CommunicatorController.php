@@ -6,38 +6,34 @@ use App\Business;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Superadmin\Entities\SuperadminCommunicatorLog;
 use Modules\Superadmin\Notifications\SuperadminCommunicator;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Routing\Controller;
 
 class CommunicatorController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
         }
 
         $businesses = Business::orderby('name')
-                                ->pluck('name', 'id');
+            ->pluck('name', 'id');
 
         return view('superadmin::communicator.index')
-                ->with(compact('businesses'));
+            ->with(compact('businesses'));
     }
 
     /**
      * Sends notification to the required business owners.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function send(Request $request)
+    public function send(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -56,10 +52,10 @@ class CommunicatorController extends Controller
 
         //Get business owners
         $business_owners = User::join('business as B', 'users.id', '=', 'B.owner_id')
-                        ->whereIn('B.id', $input['recipients'])
-                        ->select('users.*')
-                        ->groupBy('users.id')
-                        ->get();
+            ->whereIn('B.id', $input['recipients'])
+            ->select('users.*')
+            ->groupBy('users.id')
+            ->get();
 
         //Send notifications
         \Notification::send($business_owners, new SuperadminCommunicator($input));
@@ -83,11 +79,11 @@ class CommunicatorController extends Controller
         $history = SuperadminCommunicatorLog::select('subject', 'message', 'created_at');
 
         return Datatables::of($history)
-                         ->editColumn(
-                             'created_at',
-                             '{{@format_date($created_at)}} {{@format_time($created_at)}}'
-                         )
-                         ->rawColumns([1])
-                         ->make(false);
+            ->editColumn(
+                'created_at',
+                '{{@format_date($created_at)}} {{@format_time($created_at)}}'
+            )
+            ->rawColumns([1])
+            ->make(false);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'welcome' => 'Worklx ERP में आपका स्वागत है, :username',
+    'welcome' => 'Worklx ERP में आपका स्वागत है, :username',
     'greeting' => 'नमस्ते :username',
     'line' => 'आपका खाता Worklx ERP पर सफलतापूर्वक बनाया गया है',
     'action' => 'डैशबोर्ड देखें',

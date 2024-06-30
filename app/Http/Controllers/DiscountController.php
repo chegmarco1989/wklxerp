@@ -8,8 +8,10 @@ use App\Category;
 use App\Discount;
 use App\SellingPriceGroup;
 use App\Utils\Util;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class DiscountController extends Controller
@@ -45,12 +47,12 @@ class DiscountController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $discounts = Discount::where('discounts.business_id', $business_id)
-                        ->leftjoin('brands as b', 'discounts.brand_id', '=', 'b.id')
-                        ->leftjoin('categories as c', 'discounts.category_id', '=', 'c.id')
-                        ->leftjoin('business_locations as l', 'discounts.location_id', '=', 'l.id')
-                        ->select(['discounts.id', 'discounts.name', 'starts_at', 'ends_at',
-                            'priority', 'b.name as brand', 'c.name as category', 'l.name as location', 'discounts.is_active', 'discounts.discount_amount', 'discount_type', ])
-                        ->with(['variations', 'variations.product', 'variations.product_variation']);
+                ->leftjoin('brands as b', 'discounts.brand_id', '=', 'b.id')
+                ->leftjoin('categories as c', 'discounts.category_id', '=', 'c.id')
+                ->leftjoin('business_locations as l', 'discounts.location_id', '=', 'l.id')
+                ->select(['discounts.id', 'discounts.name', 'starts_at', 'ends_at',
+                    'priority', 'b.name as brand', 'c.name as category', 'l.name as location', 'discounts.is_active', 'discounts.discount_amount', 'discount_type', ])
+                ->with(['variations', 'variations.product', 'variations.product_variation']);
 
             return Datatables::of($discounts)
                 ->addColumn(
@@ -65,7 +67,7 @@ class DiscountController extends Controller
                         '
                 )
                 ->addColumn('row_select', function ($row) {
-                    return  '<input type="checkbox" class="row-select" value="'.$row->id.'">';
+                    return '<input type="checkbox" class="row-select" value="'.$row->id.'">';
                 })
                 ->addColumn('products', function ($row) {
                     $products = [];
@@ -101,10 +103,8 @@ class DiscountController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');
@@ -113,8 +113,8 @@ class DiscountController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $categories = Category::where('business_id', $business_id)
-                            ->where('parent_id', 0)
-                            ->pluck('name', 'id');
+            ->where('parent_id', 0)
+            ->pluck('name', 'id');
 
         $brands = Brands::forDropdown($business_id);
 
@@ -123,13 +123,12 @@ class DiscountController extends Controller
         $price_groups = SellingPriceGroup::forDropdown($business_id);
 
         return view('discount.create')
-                ->with(compact('categories', 'brands', 'locations', 'price_groups'));
+            ->with(compact('categories', 'brands', 'locations', 'price_groups'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -184,9 +183,8 @@ class DiscountController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Discount  $discount
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');
@@ -196,15 +194,15 @@ class DiscountController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $discount = Discount::where('business_id', $business_id)
-                            ->with(['variations', 'variations.product', 'variations.product_variation'])
-                            ->find($id);
+                ->with(['variations', 'variations.product', 'variations.product_variation'])
+                ->find($id);
 
             $starts_at = $this->commonUtil->format_date($discount->starts_at->toDateTimeString(), true);
             $ends_at = $this->commonUtil->format_date($discount->ends_at->toDateTimeString(), true);
 
             $categories = Category::where('business_id', $business_id)
-                            ->where('parent_id', 0)
-                            ->pluck('name', 'id');
+                ->where('parent_id', 0)
+                ->pluck('name', 'id');
 
             $brands = Brands::forDropdown($business_id);
 
@@ -226,7 +224,6 @@ class DiscountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Discount  $discount
      * @return \Illuminate\Http\Response
      */
@@ -259,7 +256,7 @@ class DiscountController extends Controller
                 }
 
                 $discount = Discount::where('business_id', $business_id)
-                            ->find($id);
+                    ->find($id);
 
                 $discount->update($input);
 
@@ -316,11 +313,8 @@ class DiscountController extends Controller
 
     /**
      * Mass deactivates discounts.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function massDeactivate(Request $request)
+    public function massDeactivate(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');
@@ -334,8 +328,8 @@ class DiscountController extends Controller
                 DB::beginTransaction();
 
                 Discount::where('business_id', $business_id)
-                            ->whereIn('id', $selected_discounts)
-                            ->update(['is_active' => 0]);
+                    ->whereIn('id', $selected_discounts)
+                    ->update(['is_active' => 0]);
 
                 DB::commit();
             }
@@ -358,10 +352,9 @@ class DiscountController extends Controller
     /**
      * Activates the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function activate($id)
+    public function activate(int $id)
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');

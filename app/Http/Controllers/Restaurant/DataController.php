@@ -8,6 +8,7 @@ use App\User;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class DataController extends Controller
 {
@@ -23,10 +24,8 @@ class DataController extends Controller
 
     /**
      * Show the restaurant module related details in pos screen.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function getPosDetails(Request $request)
+    public function getPosDetails(Request $request): View
     {
         if (request()->ajax()) {
             $business_id = $request->session()->get('user.business_id');
@@ -53,8 +52,8 @@ class DataController extends Controller
                 if ($this->commonUtil->isModuleEnabled('tables')) {
                     $tables_enabled = true;
                     $tables = ResTable::where('business_id', $business_id)
-                            ->where('location_id', $location_id)
-                            ->pluck('name', 'id');
+                        ->where('location_id', $location_id)
+                        ->pluck('name', 'id');
                 }
             } else {
                 $tables = [];
@@ -69,7 +68,7 @@ class DataController extends Controller
             $is_service_staff_required = (! empty($pos_settings['is_service_staff_required']) && $pos_settings['is_service_staff_required'] == 1) ? true : false;
 
             return view('restaurant.partials.pos_table_dropdown')
-                    ->with(compact('tables', 'waiters', 'view_data', 'waiters_enabled', 'tables_enabled', 'is_service_staff_required'));
+                ->with(compact('tables', 'waiters', 'view_data', 'waiters_enabled', 'tables_enabled', 'is_service_staff_required'));
         }
     }
 
@@ -90,7 +89,8 @@ class DataController extends Controller
                 'res_waiter_id' => $res_waiter_id, ]);
     }
 
-    public function checkStaffPin(Request $request){
+    public function checkStaffPin(Request $request)
+    {
         $service_staff_pin = $request->get('service_staff_pin');
         $user_id = $request->get('user_id');
 

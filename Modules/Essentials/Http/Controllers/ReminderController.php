@@ -7,6 +7,7 @@ use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\Reminder;
 
 class ReminderController extends Controller
@@ -26,10 +27,8 @@ class ReminderController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -57,11 +56,8 @@ class ReminderController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -106,10 +102,8 @@ class ReminderController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -120,8 +114,8 @@ class ReminderController extends Controller
             $user_id = request()->session()->get('user.id');
 
             $reminder = Reminder::where('business_id', $business_id)
-                              ->where('user_id', $user_id)
-                              ->find($id);
+                ->where('user_id', $user_id)
+                ->find($id);
 
             $time = $this->commonUtil->format_time($reminder->time);
 
@@ -139,11 +133,8 @@ class ReminderController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -177,10 +168,8 @@ class ReminderController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -193,9 +182,9 @@ class ReminderController extends Controller
                 $user_id = request()->session()->get('user.id');
 
                 Reminder::where('business_id', $business_id)
-                  ->where('user_id', $user_id)
-                  ->where('id', $id)
-                  ->delete();
+                    ->where('user_id', $user_id)
+                    ->where('id', $id)
+                    ->delete();
 
                 $output = ['success' => true,
                     'msg' => trans('lang_v1.deleted_success'),

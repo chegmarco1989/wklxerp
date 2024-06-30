@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DashboardConfiguration;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DashboardConfiguratorController extends Controller
 {
@@ -30,7 +31,6 @@ class DashboardConfiguratorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,21 +41,17 @@ class DashboardConfiguratorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -76,11 +72,9 @@ class DashboardConfiguratorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('configure_dashboard')) {
             abort(403, 'Unauthorized action.');
@@ -111,10 +105,9 @@ class DashboardConfiguratorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         //
     }

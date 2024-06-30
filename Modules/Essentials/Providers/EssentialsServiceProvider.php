@@ -2,21 +2,19 @@
 
 namespace Modules\Essentials\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use Modules\Essentials\Entities\EssentialsAttendance;
 use App\Utils\ModuleUtil;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+use Modules\Essentials\Entities\EssentialsAttendance;
 
 class EssentialsServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application events.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -38,32 +36,32 @@ class EssentialsServiceProvider extends ServiceProvider
                 $view->with(compact('__is_essentials_enabled'));
             });
 
-            view::composer(['essentials::layouts.partials.header_part'], function ($view) {
-                $is_employee_allowed = false;
-                $clock_in = null;
-    
-                $module_util = new ModuleUtil();
-                if ($module_util->isModuleInstalled('Essentials')) {
-                    $business_id = session()->get('user.business_id');
-    
-                    //Check if employee are allowed or not to enter own attendance.
-                    $is_employee_allowed = auth()->user()->can('essentials.allow_users_for_attendance_from_web');
-    
-                    //Check if clocked in or not.
-                    $clock_in = EssentialsAttendance::where('essentials_attendances.business_id', $business_id)
-                                    ->leftjoin('essentials_shifts as es', 'es.id', '=', 'essentials_attendances.essentials_shift_id')
-                                    ->where('user_id', auth()->user()->id)
-                                    ->whereNull('clock_out_time')
-                                    ->select([
-                                        'clock_in_time', 'es.name as shift_name', 'es.start_time', 'es.end_time',
-                                    ])
-                                    ->first();
-                }
-    
-                $view->with(compact('is_employee_allowed', 'clock_in'));
-            });
-        
-            view::composer(['essentials::attendance.clock_in_clock_out_modal',
+        view::composer(['essentials::layouts.partials.header_part'], function ($view) {
+            $is_employee_allowed = false;
+            $clock_in = null;
+
+            $module_util = new ModuleUtil();
+            if ($module_util->isModuleInstalled('Essentials')) {
+                $business_id = session()->get('user.business_id');
+
+                //Check if employee are allowed or not to enter own attendance.
+                $is_employee_allowed = auth()->user()->can('essentials.allow_users_for_attendance_from_web');
+
+                //Check if clocked in or not.
+                $clock_in = EssentialsAttendance::where('essentials_attendances.business_id', $business_id)
+                    ->leftjoin('essentials_shifts as es', 'es.id', '=', 'essentials_attendances.essentials_shift_id')
+                    ->where('user_id', auth()->user()->id)
+                    ->whereNull('clock_out_time')
+                    ->select([
+                        'clock_in_time', 'es.name as shift_name', 'es.start_time', 'es.end_time',
+                    ])
+                    ->first();
+            }
+
+            $view->with(compact('is_employee_allowed', 'clock_in'));
+        });
+
+        view::composer(['essentials::attendance.clock_in_clock_out_modal',
             'essentials::attendance.create', ], function ($view) {
                 $util = new \App\Utils\Util();
                 $ip_address = $util->getUserIpAddr();
@@ -76,7 +74,7 @@ class EssentialsServiceProvider extends ServiceProvider
             });
 
         $this->registerScheduleCommands();
-    
+
     }
 
     public function registerScheduleCommands()
@@ -93,10 +91,8 @@ class EssentialsServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->registerCommands();
         $this->app->register(RouteServiceProvider::class);
@@ -104,10 +100,8 @@ class EssentialsServiceProvider extends ServiceProvider
 
     /**
      * Register config.
-     *
-     * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('essentials.php'),
@@ -119,10 +113,8 @@ class EssentialsServiceProvider extends ServiceProvider
 
     /**
      * Register views.
-     *
-     * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/essential');
 
@@ -139,10 +131,8 @@ class EssentialsServiceProvider extends ServiceProvider
 
     /**
      * Register translations.
-     *
-     * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/essential');
 
@@ -155,10 +145,8 @@ class EssentialsServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -167,20 +155,16 @@ class EssentialsServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }
 
     /**
      * Register commands.
-     *
-     * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         $this->commands([
             \Modules\Essentials\Console\AutoClockOutUser::class,

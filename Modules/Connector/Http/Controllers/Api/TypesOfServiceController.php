@@ -9,6 +9,7 @@ use Modules\Connector\Transformers\TypesOfServiceResource;
 
 /**
  * @group Types of service management
+ *
  * @authenticated
  *
  * APIs for managing Types of services
@@ -44,7 +45,7 @@ class TypesOfServiceController extends ApiController
         $business_id = $user->business_id;
 
         $types_of_service = TypesOfService::where('business_id', $business_id)
-                                        ->get();
+            ->get();
 
         return TypesOfServiceResource::collection($types_of_service);
     }
@@ -81,8 +82,8 @@ class TypesOfServiceController extends ApiController
         $types_of_service_ids = explode(',', $types_of_service_ids);
 
         $types_of_service = TypesOfService::where('business_id', $business_id)
-                        ->whereIn('id', $types_of_service_ids)
-                        ->get();
+            ->whereIn('id', $types_of_service_ids)
+            ->get();
 
         return TypesOfServiceResource::collection($types_of_service);
     }

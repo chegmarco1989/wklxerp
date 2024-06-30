@@ -7,7 +7,9 @@ use App\Providers\RouteServiceProvider;
 use App\Utils\BusinessUtil;
 use App\Utils\ModuleUtil;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -50,7 +52,7 @@ class LoginController extends Controller
         $this->moduleUtil = $moduleUtil;
     }
 
-    public function showLoginForm()
+    public function showLoginForm(): View
     {
         return view('auth.login');
     }
@@ -65,7 +67,7 @@ class LoginController extends Controller
         return 'username';
     }
 
-    public function logout()
+    public function logout(): RedirectResponse
     {
         $this->businessUtil->activityLog(auth()->user(), 'logout');
 
@@ -79,7 +81,6 @@ class LoginController extends Controller
      * The user has been authenticated.
      * Check if the business is active or not.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
      * @return mixed
      */
@@ -91,18 +92,18 @@ class LoginController extends Controller
             \Auth::logout();
 
             return redirect('/login')
-              ->with(
-                  'status',
-                  ['success' => 0, 'msg' => __('lang_v1.business_inactive')]
-              );
+                ->with(
+                    'status',
+                    ['success' => 0, 'msg' => __('lang_v1.business_inactive')]
+                );
         } elseif ($user->status != 'active') {
             \Auth::logout();
 
             return redirect('/login')
-              ->with(
-                  'status',
-                  ['success' => 0, 'msg' => __('lang_v1.user_inactive')]
-              );
+                ->with(
+                    'status',
+                    ['success' => 0, 'msg' => __('lang_v1.user_inactive')]
+                );
         } elseif (! $user->allow_login) {
             \Auth::logout();
 

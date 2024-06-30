@@ -9,21 +9,19 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->index('status');
         });
 
         Transaction::where('type', 'sell_transfer')
-                ->where('status', 'completed')
-                ->update(['status' => 'final']);
+            ->where('status', 'completed')
+            ->update(['status' => 'final']);
 
         Transaction::where('type', 'purchase_transfer')
-                ->where('status', 'completed')
-                ->update(['status' => 'received']);
+            ->where('status', 'completed')
+            ->update(['status' => 'received']);
     }
 };

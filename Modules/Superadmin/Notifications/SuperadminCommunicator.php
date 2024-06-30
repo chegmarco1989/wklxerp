@@ -26,9 +26,8 @@ class SuperadminCommunicator extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail', 'database'];
     }
@@ -37,25 +36,23 @@ class SuperadminCommunicator extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject($this->input['subject'])
-                    ->view(
-                        'emails.plain_html',
-                        ['content' => $this->input['message']]
-                    );
+            ->subject($this->input['subject'])
+            ->view(
+                'emails.plain_html',
+                ['content' => $this->input['message']]
+            );
     }
 
     /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase($notifiable): array
     {
         return [
             'msg' => $this->input['message'],

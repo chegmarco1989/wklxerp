@@ -8,6 +8,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsLeave;
 use Modules\Essentials\Entities\EssentialsLeaveType;
 use Modules\Essentials\Notifications\LeaveStatusNotification;
@@ -51,10 +52,8 @@ class EssentialsLeaveController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -69,20 +68,20 @@ class EssentialsLeaveController extends Controller
         }
         if (request()->ajax()) {
             $leaves = EssentialsLeave::where('essentials_leaves.business_id', $business_id)
-                        ->join('users as u', 'u.id', '=', 'essentials_leaves.user_id')
-                        ->join('essentials_leave_types as lt', 'lt.id', '=', 'essentials_leaves.essentials_leave_type_id')
-                        ->select([
-                            'essentials_leaves.id',
-                            DB::raw("CONCAT(COALESCE(u.surname, ''), ' ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as user"),
-                            'lt.leave_type',
-                            'start_date',
-                            'end_date',
-                            'ref_no',
-                            'essentials_leaves.status',
-                            'essentials_leaves.business_id',
-                            'reason',
-                            'status_note',
-                        ]);
+                ->join('users as u', 'u.id', '=', 'essentials_leaves.user_id')
+                ->join('essentials_leave_types as lt', 'lt.id', '=', 'essentials_leaves.essentials_leave_type_id')
+                ->select([
+                    'essentials_leaves.id',
+                    DB::raw("CONCAT(COALESCE(u.surname, ''), ' ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as user"),
+                    'lt.leave_type',
+                    'start_date',
+                    'end_date',
+                    'ref_no',
+                    'essentials_leaves.status',
+                    'essentials_leaves.business_id',
+                    'reason',
+                    'status_note',
+                ]);
 
             if (! empty(request()->input('user_id'))) {
                 $leaves->where('essentials_leaves.user_id', request()->input('user_id'));
@@ -104,7 +103,7 @@ class EssentialsLeaveController extends Controller
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $leaves->whereDate('essentials_leaves.start_date', '>=', $start)
-                            ->whereDate('essentials_leaves.start_date', '<=', $end);
+                    ->whereDate('essentials_leaves.start_date', '<=', $end);
             }
 
             return Datatables::of($leaves)
@@ -162,10 +161,8 @@ class EssentialsLeaveController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -186,11 +183,8 @@ class EssentialsLeaveController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -260,40 +254,31 @@ class EssentialsLeaveController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('essentials::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         return view('essentials::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -336,7 +321,7 @@ class EssentialsLeaveController extends Controller
             $input = $request->only(['status', 'leave_id', 'status_note']);
 
             $leave = EssentialsLeave::where('business_id', $business_id)
-                            ->find($input['leave_id']);
+                ->find($input['leave_id']);
 
             $leave->status = $input['status'];
             $leave->status_note = $input['status_note'];
@@ -364,10 +349,8 @@ class EssentialsLeaveController extends Controller
 
     /**
      * Function to show activity log related to a leave
-     *
-     * @return Response
      */
-    public function activity($id)
+    public function activity($id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -376,22 +359,20 @@ class EssentialsLeaveController extends Controller
         }
 
         $leave = EssentialsLeave::where('business_id', $business_id)
-                                ->find($id);
+            ->find($id);
 
         $activities = Activity::forSubject($leave)
-                           ->with(['causer', 'subject'])
-                           ->latest()
-                           ->get();
+            ->with(['causer', 'subject'])
+            ->latest()
+            ->get();
 
         return view('essentials::leave.activity_modal')->with(compact('leave', 'activities'));
     }
 
     /**
      * Function to get leave summary of a user
-     *
-     * @return Response
      */
-    public function getUserLeaveSummary()
+    public function getUserLeaveSummary(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -408,20 +389,20 @@ class EssentialsLeaveController extends Controller
         }
 
         $query = EssentialsLeave::where('business_id', $business_id)
-                            ->where('user_id', $user_id)
-                            ->with(['leave_type'])
-                            ->select(
-                                'status',
-                                'essentials_leave_type_id',
-                                'start_date',
-                                'end_date'
-                            );
+            ->where('user_id', $user_id)
+            ->with(['leave_type'])
+            ->select(
+                'status',
+                'essentials_leave_type_id',
+                'start_date',
+                'end_date'
+            );
 
         if (! empty(request()->start_date) && ! empty(request()->end_date)) {
             $start = request()->start_date;
             $end = request()->end_date;
             $query->whereDate('start_date', '>=', $start)
-                        ->whereDate('start_date', '<=', $end);
+                ->whereDate('start_date', '<=', $end);
         }
         $leaves = $query->get();
         $statuses = $this->leave_statuses;
@@ -444,9 +425,9 @@ class EssentialsLeaveController extends Controller
         }
 
         $leave_types = EssentialsLeaveType::where('business_id', $business_id)
-                                    ->get();
+            ->get();
         $user = User::where('business_id', $business_id)
-                    ->find($user_id);
+            ->find($user_id);
 
         return view('essentials::leave.user_leave_summary')->with(compact('leaves_summary', 'leave_types', 'statuses', 'user', 'status_summary'));
     }

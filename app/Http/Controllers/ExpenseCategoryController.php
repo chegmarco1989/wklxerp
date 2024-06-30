@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ExpenseCategory;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseCategoryController extends Controller
@@ -23,7 +24,7 @@ class ExpenseCategoryController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $expense_category = ExpenseCategory::where('business_id', $business_id)
-                        ->select(['name', 'code', 'id', 'parent_id']);
+                ->select(['name', 'code', 'id', 'parent_id']);
 
             return Datatables::of($expense_category)
                 ->addColumn(
@@ -50,10 +51,8 @@ class ExpenseCategoryController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! (auth()->user()->can('expense.add') || auth()->user()->can('expense.edit'))) {
             abort(403, 'Unauthorized action.');
@@ -61,8 +60,8 @@ class ExpenseCategoryController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $categories = ExpenseCategory::where('business_id', $business_id)
-                        ->whereNull('parent_id')
-                        ->pluck('name', 'id');
+            ->whereNull('parent_id')
+            ->pluck('name', 'id');
 
         return view('expense_category.create')->with(compact('categories'));
     }
@@ -70,7 +69,6 @@ class ExpenseCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -105,7 +103,6 @@ class ExpenseCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ExpenseCategory  $expenseCategory
      * @return \Illuminate\Http\Response
      */
     public function show(ExpenseCategory $expenseCategory)
@@ -115,11 +112,8 @@ class ExpenseCategoryController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! (auth()->user()->can('expense.add') || auth()->user()->can('expense.edit'))) {
             abort(403, 'Unauthorized action.');
@@ -130,22 +124,20 @@ class ExpenseCategoryController extends Controller
             $expense_category = ExpenseCategory::where('business_id', $business_id)->find($id);
 
             $categories = ExpenseCategory::where('business_id', $business_id)
-                        ->whereNull('parent_id')
-                        ->pluck('name', 'id');
+                ->whereNull('parent_id')
+                ->pluck('name', 'id');
 
             return view('expense_category.edit')
-                    ->with(compact('expense_category', 'categories'));
+                ->with(compact('expense_category', 'categories'));
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! (auth()->user()->can('expense.add') || auth()->user()->can('expense.edit'))) {
             abort(403, 'Unauthorized action.');
@@ -186,10 +178,9 @@ class ExpenseCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! (auth()->user()->can('expense.add') || auth()->user()->can('expense.edit'))) {
             abort(403, 'Unauthorized action.');
@@ -226,9 +217,9 @@ class ExpenseCategoryController extends Controller
             $category_id = $request->input('cat_id');
             $business_id = $request->session()->get('user.business_id');
             $sub_categories = ExpenseCategory::where('business_id', $business_id)
-                        ->where('parent_id', $category_id)
-                        ->select(['name', 'id'])
-                        ->get();
+                ->where('parent_id', $category_id)
+                ->select(['name', 'id'])
+                ->get();
         }
 
         $html = '<option value="">'.__('lang_v1.none').'</option>';

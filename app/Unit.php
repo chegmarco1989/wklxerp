@@ -4,6 +4,8 @@ namespace App;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unit extends Model
@@ -25,11 +27,9 @@ class Unit extends Model
     /**
      * Return list of units for a business
      *
-     * @param  int  $business_id
-     * @param  bool  $show_none = true
-     * @return array
+     * @param  bool  $show_none  = true
      */
-    public static function forDropdown($business_id, $show_none = false, $only_base = true)
+    public static function forDropdown(int $business_id, bool $show_none = false, $only_base = true): array
     {
         $query = Unit::where('business_id', $business_id);
         if ($only_base) {
@@ -45,12 +45,12 @@ class Unit extends Model
         return $dropdown;
     }
 
-    public function sub_units()
+    public function sub_units(): HasMany
     {
         return $this->hasMany(\App\Unit::class, 'base_unit_id');
     }
 
-    public function base_unit()
+    public function base_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'base_unit_id');
     }

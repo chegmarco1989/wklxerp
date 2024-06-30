@@ -43,10 +43,8 @@ class MapPurchaseSell extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         try {
             ini_set('max_execution_time', 0);
@@ -82,11 +80,11 @@ class MapPurchaseSell extends Command
             foreach ($businesses as $business) {
                 //Get all transactions
                 $transactions = Transaction::where('business_id', $business->id)
-                                    ->with('sell_lines')
-                                    ->where('type', 'sell')
-                                    ->where('status', 'final')
-                                    ->orderBy('created_at', 'asc')
-                                    ->get();
+                    ->with('sell_lines')
+                    ->where('type', 'sell')
+                    ->where('status', 'final')
+                    ->orderBy('created_at', 'asc')
+                    ->get();
 
                 $pos_settings = empty($business->pos_settings) ? $this->businessUtil->defaultPosSettings() : json_decode($business->pos_settings, true);
                 $pos_settings['allow_overselling'] = 1;

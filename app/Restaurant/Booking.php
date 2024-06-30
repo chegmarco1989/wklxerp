@@ -3,6 +3,7 @@
 namespace App\Restaurant;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
@@ -15,32 +16,32 @@ class Booking extends Model
      */
     protected $guarded = ['id'];
 
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(\App\Contact::class, 'contact_id');
     }
 
-    public function table()
+    public function table(): BelongsTo
     {
         return $this->belongsTo(\App\Restaurant\ResTable::class, 'table_id');
     }
 
-    public function correspondent()
+    public function correspondent(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'correspondent_id');
     }
 
-    public function waiter()
+    public function waiter(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'waiter_id');
     }
 
-    public function location()
+    public function location(): BelongsTo
     {
         return $this->belongsTo(\App\BusinessLocation::class, 'location_id');
     }
 
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class, 'business_id');
     }

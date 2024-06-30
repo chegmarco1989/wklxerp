@@ -4,18 +4,16 @@ namespace App\Http\Middleware;
 
 use App\Utils\ModuleUtil;
 use Closure;
+use Illuminate\Http\Request;
 use Menu;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminSidebarMenu
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if ($request->ajax()) {
             return $next($request);
@@ -121,7 +119,6 @@ class AdminSidebarMenu
                                 ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'products' && request()->segment(2) == '']
                             );
                         }
-                        
 
                         if (auth()->user()->can('product.create')) {
                             $sub->url(

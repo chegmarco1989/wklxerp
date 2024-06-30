@@ -30,13 +30,13 @@ class System extends Model
     /**
      * Return the value of the property
      *
-     * @param $key string
+     * @param  $key  string
      * @return mixed
      */
     public static function getProperty($key)
     {
         $row = System::where('key', $key)
-                ->first();
+            ->first();
 
         if (isset($row->value)) {
             return $row->value;
@@ -48,10 +48,9 @@ class System extends Model
     /**
      * Return the value of the multiple properties
      *
-     * @param $keys array
-     * @return array
+     * @param  $keys  array
      */
-    public static function getProperties($keys, $pluck = false)
+    public static function getProperties($keys, $pluck = false): array
     {
         if ($pluck == true) {
             return System::whereIn('key', $keys)
@@ -67,12 +66,11 @@ class System extends Model
      * Return the system default currency details
      *
      * @param void
-     * @return object
      */
-    public static function getCurrency()
+    public static function getCurrency(): object
     {
         $c_id = System::where('key', 'app_currency_id')
-                ->first()
+            ->first()
                 ->value;
 
         $currency = Currency::find($c_id);
@@ -82,12 +80,8 @@ class System extends Model
 
     /**
      * Set the property
-     *
-     * @param $key
-     * @param $value
-     * @return void
      */
-    public static function setProperty($key, $value)
+    public static function setProperty($key, $value): void
     {
         System::where('key', $key)
             ->update(['value' => $value]);
@@ -95,11 +89,8 @@ class System extends Model
 
     /**
      * Remove the specified property
-     *
-     * @param $key
-     * @return void
      */
-    public static function removeProperty($key)
+    public static function removeProperty($key): void
     {
         System::where('key', $key)
             ->delete();
@@ -107,12 +98,8 @@ class System extends Model
 
     /**
      * Add a new property, if exist update the value
-     *
-     * @param $key
-     * @param $value
-     * @return void
      */
-    public static function addProperty($key, $value)
+    public static function addProperty($key, $value): void
     {
         System::updateOrCreate(
             ['key' => $key],

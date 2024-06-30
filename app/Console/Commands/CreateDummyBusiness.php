@@ -35,10 +35,8 @@ class CreateDummyBusiness extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '512M');

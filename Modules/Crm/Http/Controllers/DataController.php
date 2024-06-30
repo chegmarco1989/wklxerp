@@ -18,11 +18,8 @@ class DataController extends Controller
 {
     /**
      * Calculates contact person's commission and saves to the database
-     *
-     * @param  array  $data
-     * @return obj
      */
-    public function after_payment_status_updated($data)
+    public function after_payment_status_updated(array $data): obj
     {
         $transaction = $data['transaction'];
 
@@ -38,14 +35,14 @@ class DataController extends Controller
         }
 
         $crm_contact_persons = User::where('business_id', $transaction->business_id)
-                                ->where('crm_contact_id', $transaction->contact_id)
-                                ->where('cmmsn_percent', '>', 0)
-                                ->get();
+            ->where('crm_contact_id', $transaction->contact_id)
+            ->where('cmmsn_percent', '>', 0)
+            ->get();
 
         //delete previous commission rows if contact is changed
         CrmContactPersonCommission::where('transaction_id', $transaction->id)
-                                ->whereNotIn('contact_person_id', $crm_contact_persons->pluck('id'))
-                                ->delete();
+            ->whereNotIn('contact_person_id', $crm_contact_persons->pluck('id'))
+            ->delete();
 
         //if paid add/update commission
         if ($transaction->payment_status == 'paid') {
@@ -78,13 +75,11 @@ class DataController extends Controller
 
     /**
      * Deletes sales commissions for a sell
-     *
-     * @param  int  $transaction_id
      */
-    public function deleteCommissionWithSale($transaction_id)
+    public function deleteCommissionWithSale(int $transaction_id)
     {
         CrmContactPersonCommission::where('transaction_id', $transaction_id)
-                                    ->delete();
+            ->delete();
     }
 
     /**
@@ -204,7 +199,7 @@ class DataController extends Controller
 
         if ($is_crm_enabled) {
             //for multiple tab just add another array of tab details and if js is in common file just include once in any array
-            return  [
+            return [
                 [
                     'tab_menu_path' => 'crm::contact_login.partial.tab_menu',
                     'tab_content_path' => 'crm::contact_login.partial.tab_content',
@@ -377,10 +372,9 @@ class DataController extends Controller
     /**
      * Fetches all calender events for the module
      *
-     * @param  array  $data
      * @return array
      */
-    public function calendarEvents($data)
+    public function calendarEvents(array $data)
     {
         if (! in_array('schedule', $data['events'])) {
             return [];
@@ -435,7 +429,7 @@ class DataController extends Controller
     {
         $path = 'crm::contact_login.partial.contact_form_part';
 
-        return  [
+        return [
             'template_path' => $path,
             'template_data' => [],
         ];

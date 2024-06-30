@@ -40,21 +40,19 @@ class RecurringExpense extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         try {
             ini_set('max_execution_time', 0);
             ini_set('memory_limit', '512M');
             $transactions = Transaction::where('is_recurring', 1)
-                                ->where('type', 'expense')
-                                ->whereNull('recur_stopped_on')
-                                ->whereNotNull('recur_interval')
-                                ->whereNotNull('recur_interval_type')
-                                ->with(['recurring_invoices', 'business'])
-                                ->get();
+                ->where('type', 'expense')
+                ->whereNull('recur_stopped_on')
+                ->whereNotNull('recur_interval')
+                ->whereNotNull('recur_interval_type')
+                ->with(['recurring_invoices', 'business'])
+                ->get();
 
             foreach ($transactions as $transaction) {
                 date_default_timezone_set($transaction->business->time_zone);

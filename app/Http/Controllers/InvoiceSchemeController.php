@@ -6,6 +6,7 @@ use App\InvoiceLayout;
 use App\InvoiceScheme;
 use Datatables;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class InvoiceSchemeController extends Controller
 {
@@ -13,7 +14,7 @@ class InvoiceSchemeController extends Controller
 
     public function __construct()
     {
-        $this->number_types = ['sequential' => __('invoice.sequential'), 'random'=> __('invoice.random')];
+        $this->number_types = ['sequential' => __('invoice.sequential'), 'random' => __('invoice.random')];
     }
 
     /**
@@ -30,7 +31,7 @@ class InvoiceSchemeController extends Controller
         $business_id = request()->session()->get('user.business_id');
         if (request()->ajax()) {
             $schemes = InvoiceScheme::where('business_id', $business_id)
-                            ->select(['id', 'name', 'scheme_type', 'prefix', 'number_type', 'start_number', 'invoice_count', 'total_digits', 'is_default']);
+                ->select(['id', 'name', 'scheme_type', 'prefix', 'number_type', 'start_number', 'invoice_count', 'total_digits', 'is_default']);
 
             return Datatables::of($schemes)
                 ->addColumn(
@@ -70,32 +71,30 @@ class InvoiceSchemeController extends Controller
         }
 
         $invoice_layouts = InvoiceLayout::where('business_id', $business_id)
-                                        ->with(['locations'])
-                                        ->get();
+            ->with(['locations'])
+            ->get();
 
         return view('invoice_scheme.index')
-                    ->with(compact('invoice_layouts'));
+            ->with(compact('invoice_layouts'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('invoice_settings.access')) {
             abort(403, 'Unauthorized action.');
         }
 
         $number_types = $this->number_types;
+
         return view('invoice_scheme.create')->with(compact('number_types'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -110,12 +109,12 @@ class InvoiceSchemeController extends Controller
             $input['business_id'] = $business_id;
 
             $input['start_number'] = ($input['number_type'] == 'aleatory') ? '' : $input['start_number'];
-            
+
             if (! empty($request->input('is_default'))) {
                 //get_default
                 $default = InvoiceScheme::where('business_id', $business_id)
-                                ->where('is_default', 1)
-                                ->update(['is_default' => 0]);
+                    ->where('is_default', 1)
+                    ->update(['is_default' => 0]);
                 $input['is_default'] = 1;
             }
             InvoiceScheme::create($input);
@@ -136,10 +135,9 @@ class InvoiceSchemeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         if (! auth()->user()->can('invoice_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -150,11 +148,8 @@ class InvoiceSchemeController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('invoice_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -172,11 +167,9 @@ class InvoiceSchemeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('invoice_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -206,10 +199,9 @@ class InvoiceSchemeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('invoice_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -243,10 +235,9 @@ class InvoiceSchemeController extends Controller
     /**
      * Sets invoice scheme setting as default
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function setDefault($id)
+    public function setDefault(int $id)
     {
         if (! auth()->user()->can('invoice_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -257,8 +248,8 @@ class InvoiceSchemeController extends Controller
                 //get_default
                 $business_id = request()->session()->get('user.business_id');
                 $default = InvoiceScheme::where('business_id', $business_id)
-                                ->where('is_default', 1)
-                                 ->update(['is_default' => 0]);
+                    ->where('is_default', 1)
+                    ->update(['is_default' => 0]);
 
                 $invoice = InvoiceScheme::find($id);
                 $invoice->is_default = 1;

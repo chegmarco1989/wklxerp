@@ -11,7 +11,7 @@
         "format": "prettier --write 'public/js/*.{css,js,vue}'"
     },
     "devDependencies": {
-        "axios": "^0.25",
+        "axios": "^1.6.4",
         "jquery": "^3.5.1",
         "laravel-mix": "^6.0.12",
         "lodash": "^4.17.19",

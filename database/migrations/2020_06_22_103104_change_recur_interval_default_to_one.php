@@ -7,22 +7,18 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Transaction::where('is_recurring', 1)
-                ->whereNull('recur_interval')
-                ->update(['recur_interval' => 1]);
+            ->whereNull('recur_interval')
+            ->update(['recur_interval' => 1]);
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
 };

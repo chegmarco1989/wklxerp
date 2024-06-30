@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\SellingPriceGroup;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -41,7 +43,7 @@ class RoleController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $roles = Role::where('business_id', $business_id)
-                        ->select(['name', 'id', 'is_default', 'business_id']);
+                ->select(['name', 'id', 'is_default', 'business_id']);
 
             return DataTables::of($roles)
                 ->addColumn('action', function ($row) {
@@ -80,10 +82,8 @@ class RoleController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('roles.create')) {
             abort(403, 'Unauthorized action.');
@@ -92,24 +92,21 @@ class RoleController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $selling_price_groups = SellingPriceGroup::where('business_id', $business_id)
-                                    ->active()
-                                    ->get();
+            ->active()
+            ->get();
 
         $module_permissions = $this->moduleUtil->getModuleData('user_permissions');
 
         $common_settings = ! empty(session('business.common_settings')) ? session('business.common_settings') : [];
 
         return view('role.create')
-                ->with(compact('selling_price_groups', 'module_permissions', 'common_settings'));
+            ->with(compact('selling_price_groups', 'module_permissions', 'common_settings'));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('roles.create')) {
             abort(403, 'Unauthorized action.');
@@ -121,8 +118,8 @@ class RoleController extends Controller
             $business_id = $request->session()->get('user.business_id');
 
             $count = Role::where('name', $role_name.'#'.$business_id)
-                        ->where('business_id', $business_id)
-                        ->count();
+                ->where('business_id', $business_id)
+                ->count();
             if ($count == 0) {
                 $is_service_staff = 0;
                 if ($request->input('is_service_staff') == 1) {
@@ -177,21 +174,17 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('roles.update')) {
             abort(403, 'Unauthorized action.');
@@ -199,16 +192,16 @@ class RoleController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $role = Role::where('business_id', $business_id)
-                    ->with(['permissions'])
-                    ->find($id);
+            ->with(['permissions'])
+            ->find($id);
         $role_permissions = [];
         foreach ($role->permissions as $role_perm) {
             $role_permissions[] = $role_perm->name;
         }
 
         $selling_price_groups = SellingPriceGroup::where('business_id', $business_id)
-                                    ->active()
-                                    ->get();
+            ->active()
+            ->get();
 
         $module_permissions = $this->moduleUtil->getModuleData('user_permissions');
 
@@ -220,12 +213,8 @@ class RoleController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         if (! auth()->user()->can('roles.update')) {
             abort(403, 'Unauthorized action.');
@@ -237,9 +226,9 @@ class RoleController extends Controller
             $business_id = $request->session()->get('user.business_id');
 
             $count = Role::where('name', $role_name.'#'.$business_id)
-                        ->where('id', '!=', $id)
-                        ->where('business_id', $business_id)
-                        ->count();
+                ->where('id', '!=', $id)
+                ->where('business_id', $business_id)
+                ->count();
             if ($count == 0) {
                 $role = Role::findOrFail($id);
 
@@ -304,10 +293,9 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('roles.delete')) {
             abort(403, 'Unauthorized action.');
@@ -343,15 +331,12 @@ class RoleController extends Controller
 
     /**
      * Creates new permission if doesn't exist
-     *
-     * @param  array  $permissions
-     * @return void
      */
-    private function __createPermissionIfNotExists($permissions)
+    private function __createPermissionIfNotExists(array $permissions): void
     {
         $exising_permissions = Permission::whereIn('name', $permissions)
-                                    ->pluck('name')
-                                    ->toArray();
+            ->pluck('name')
+            ->toArray();
 
         $non_existing_permissions = array_diff($permissions, $exising_permissions);
 

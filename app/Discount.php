@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Discount extends Model
 {
@@ -18,7 +19,7 @@ class Discount extends Model
      */
     protected $guarded = ['id'];
 
-    public function variations()
+    public function variations(): BelongsToMany
     {
         return $this->belongsToMany(\App\Variation::class, 'discount_variations', 'discount_id', 'variation_id');
     }

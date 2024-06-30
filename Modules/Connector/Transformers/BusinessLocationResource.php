@@ -11,9 +11,8 @@ class BusinessLocationResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
-     * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $array = parent::toArray($request);
         $default_payment_accounts = ! empty($array['default_payment_accounts']) ? json_decode($array['default_payment_accounts'], true) : [];

@@ -7,6 +7,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsUserShift;
 use Modules\Essentials\Entities\Shift;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,7 +22,6 @@ class ShiftController extends Controller
     /**
      * Constructor
      *
-     * @param  ModuleUtil  $moduleUtil
      * @return void
      */
     public function __construct(ModuleUtil $moduleUtil)
@@ -31,10 +31,8 @@ class ShiftController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -46,14 +44,14 @@ class ShiftController extends Controller
 
         if (request()->ajax()) {
             $shifts = Shift::where('essentials_shifts.business_id', $business_id)
-                        ->select([
-                            'id',
-                            'name',
-                            'type',
-                            'start_time',
-                            'end_time',
-                            'holidays',
-                        ]);
+                ->select([
+                    'id',
+                    'name',
+                    'type',
+                    'start_time',
+                    'end_time',
+                    'holidays',
+                ]);
 
             return Datatables::of($shifts)
                 ->editColumn('start_time', function ($row) {
@@ -91,21 +89,16 @@ class ShiftController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('essentials::create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -152,22 +145,16 @@ class ShiftController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('essentials::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -176,7 +163,7 @@ class ShiftController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $shift = Shift::where('business_id', $business_id)
-                    ->findOrFail($id);
+            ->findOrFail($id);
 
         $days = $this->moduleUtil->getDays();
 
@@ -185,12 +172,8 @@ class ShiftController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         try {
             $business_id = request()->session()->get('user.business_id');
@@ -223,8 +206,8 @@ class ShiftController extends Controller
             }
 
             $shift = Shift::where('business_id', $business_id)
-                        ->where('id', $id)
-                        ->update($input);
+                ->where('id', $id)
+                ->update($input);
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.updated_success'),
@@ -243,16 +226,13 @@ class ShiftController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }
 
-    public function getAssignUsers($shift_id)
+    public function getAssignUsers($shift_id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -261,8 +241,8 @@ class ShiftController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $shift = Shift::where('business_id', $business_id)
-                    ->with(['user_shifts'])
-                    ->findOrFail($shift_id);
+            ->with(['user_shifts'])
+            ->findOrFail($shift_id);
 
         $users = User::forDropdown($business_id, false);
 
@@ -278,7 +258,7 @@ class ShiftController extends Controller
         }
 
         return view('essentials::attendance.add_shift_users')
-                ->with(compact('shift', 'users', 'user_shifts'));
+            ->with(compact('shift', 'users', 'user_shifts'));
     }
 
     public function postAssignUsers(Request $request)
@@ -293,7 +273,7 @@ class ShiftController extends Controller
         try {
             $shift_id = $request->input('shift_id');
             $shift = Shift::where('business_id', $business_id)
-                        ->find($shift_id);
+                ->find($shift_id);
 
             $user_shifts = $request->input('user_shift');
             $user_shift_data = [];
@@ -315,8 +295,8 @@ class ShiftController extends Controller
             }
 
             EssentialsUserShift::where('essentials_shift_id', $shift_id)
-                            ->whereNotIn('user_id', $user_ids)
-                            ->delete();
+                ->whereNotIn('user_id', $user_ids)
+                ->delete();
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.added_success'),

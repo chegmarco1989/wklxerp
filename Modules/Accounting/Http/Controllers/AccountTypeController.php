@@ -6,6 +6,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Accounting\Entities\AccountingAccountType;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,10 +26,8 @@ class AccountTypeController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -39,12 +38,12 @@ class AccountTypeController extends Controller
 
         if (request()->ajax()) {
             $query = AccountingAccountType::where('account_type', request()->input('account_type'))
-                        ->where(function ($q) use ($business_id) {
-                            $q->whereNull('business_id')
-                              ->orWhere('business_id', $business_id);
-                        })
-                        ->with('parent')
-                        ->select(['name', 'description', 'id', 'business_id', 'parent_id', 'account_primary_type']);
+                ->where(function ($q) use ($business_id) {
+                    $q->whereNull('business_id')
+                        ->orWhere('business_id', $business_id);
+                })
+                ->with('parent')
+                ->select(['name', 'description', 'id', 'business_id', 'parent_id', 'account_primary_type']);
 
             return Datatables::of($query)
                 ->editColumn('name', function ($row) {
@@ -92,21 +91,16 @@ class AccountTypeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('accounting::create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -143,22 +137,16 @@ class AccountTypeController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('accounting::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -169,23 +157,19 @@ class AccountTypeController extends Controller
 
         $account_type = AccountingAccountType::find($id);
         $account_sub_types = AccountingAccountType::where('account_type', 'sub_type')
-                                              ->where(function ($q) use ($business_id) {
-                                                  $q->whereNull('business_id')
-                                                  ->orWhere('business_id', $business_id);
-                                              })
-                                               ->get();
+            ->where(function ($q) use ($business_id) {
+                $q->whereNull('business_id')
+                    ->orWhere('business_id', $business_id);
+            })
+            ->get();
 
         return view('accounting::account_type.edit')->with(compact('account_type', 'account_sub_types'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -198,7 +182,7 @@ class AccountTypeController extends Controller
             $input = $request->only(['name', 'description']);
 
             $account_type = AccountingAccountType::where('business_id', $business_id)
-                                            ->find($id);
+                ->find($id);
 
             $input['parent_id'] = $account_type->account_type == 'detail_type' ? $request->input('parent_id') : null;
 
@@ -220,11 +204,8 @@ class AccountTypeController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -236,8 +217,8 @@ class AccountTypeController extends Controller
         if (request()->ajax()) {
             try {
                 AccountingAccountType::where('business_id', $business_id)
-                                      ->where('id', $id)
-                                      ->delete();
+                    ->where('id', $id)
+                    ->delete();
 
                 $output = ['success' => true,
                     'msg' => __('lang_v1.deleted_success'),

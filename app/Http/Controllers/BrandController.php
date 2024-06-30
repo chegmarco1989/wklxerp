@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Brands;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class BrandController extends Controller
@@ -40,7 +41,7 @@ class BrandController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $brands = Brands::where('business_id', $business_id)
-                        ->select(['name', 'description', 'id']);
+                ->select(['name', 'description', 'id']);
 
             return Datatables::of($brands)
                 ->addColumn(
@@ -63,10 +64,8 @@ class BrandController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('brand.create')) {
             abort(403, 'Unauthorized action.');
@@ -80,13 +79,12 @@ class BrandController extends Controller
         $is_repair_installed = $this->moduleUtil->isModuleInstalled('Repair');
 
         return view('brand.create')
-                ->with(compact('quick_add', 'is_repair_installed'));
+            ->with(compact('quick_add', 'is_repair_installed'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -124,21 +122,17 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('brand.update')) {
             abort(403, 'Unauthorized action.');
@@ -158,11 +152,9 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('brand.update')) {
             abort(403, 'Unauthorized action.');
@@ -201,10 +193,9 @@ class BrandController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('brand.delete')) {
             abort(403, 'Unauthorized action.');
@@ -240,7 +231,7 @@ class BrandController extends Controller
             $api_settings = $this->moduleUtil->getApiSettings($api_token);
 
             $brands = Brands::where('business_id', $api_settings->business_id)
-                                ->get();
+                ->get();
         } catch (\Exception $e) {
             \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 

@@ -27,10 +27,9 @@ Route::middleware('web', 'auth', 'language', 'AdminSidebarMenu')->prefix('hms')-
     Route::post('settings', [Modules\Hms\Http\Controllers\HmsSettingController::class, 'store']);
     Route::post('settings-print-pdf', [Modules\Hms\Http\Controllers\HmsSettingController::class, 'post_pdf']);
 
-
     Route::post('store-email-template', [Modules\Hms\Http\Controllers\HmsSettingController::class, 'store_email_template']);
-    
-    // booking route 
+
+    // booking route
     Route::resource('/bookings', Modules\Hms\Http\Controllers\HmsBookingController::class);
 
     Route::get('/booking-room-add', [Modules\Hms\Http\Controllers\HmsBookingController::class, 'booking_room_add'])->name('booking_room_add');
@@ -63,4 +62,4 @@ Route::middleware('web', 'auth', 'language', 'AdminSidebarMenu')->prefix('hms')-
     Route::get('install/uninstall', [\Modules\Hms\Http\Controllers\InstallController::class, 'uninstall']);
     Route::get('install/update', [\Modules\Hms\Http\Controllers\InstallController::class, 'update']);
 
-}); 
+});

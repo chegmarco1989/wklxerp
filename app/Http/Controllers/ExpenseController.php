@@ -6,6 +6,7 @@ use App\Account;
 use App\AccountTransaction;
 use App\BusinessLocation;
 use App\Contact;
+use App\Events\ExpenseCreatedOrModified;
 use App\ExpenseCategory;
 use App\TaxRate;
 use App\Transaction;
@@ -17,14 +18,12 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
-use App\Events\ExpenseCreatedOrModified;
 
 class ExpenseController extends Controller
 {
     /**
      * Constructor
      *
-     * @param  TransactionUtil  $transactionUtil
      * @return void
      */
     public function __construct(TransactionUtil $transactionUtil, ModuleUtil $moduleUtil, CashRegisterUtil $cashRegisterUtil)
@@ -51,51 +50,51 @@ class ExpenseController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $expenses = Transaction::leftJoin('expense_categories AS ec', 'transactions.expense_category_id', '=', 'ec.id')
-                        ->leftJoin('expense_categories AS esc', 'transactions.expense_sub_category_id', '=', 'esc.id')
-                        ->join(
-                            'business_locations AS bl',
-                            'transactions.location_id',
-                            '=',
-                            'bl.id'
-                        )
-                        ->leftJoin('tax_rates as tr', 'transactions.tax_id', '=', 'tr.id')
-                        ->leftJoin('users AS U', 'transactions.expense_for', '=', 'U.id')
-                        ->leftJoin('users AS usr', 'transactions.created_by', '=', 'usr.id')
-                        ->leftJoin('contacts AS c', 'transactions.contact_id', '=', 'c.id')
-                        ->leftJoin(
-                            'transaction_payments AS TP',
-                            'transactions.id',
-                            '=',
-                            'TP.transaction_id'
-                        )
-                        ->where('transactions.business_id', $business_id)
-                        ->whereIn('transactions.type', ['expense', 'expense_refund'])
-                        ->select(
-                            'transactions.id',
-                            'transactions.document',
-                            'transaction_date',
-                            'ref_no',
-                            'ec.name as category',
-                            'esc.name as sub_category',
-                            'payment_status',
-                            'additional_notes',
-                            'final_total',
-                            'transactions.is_recurring',
-                            'transactions.recur_interval',
-                            'transactions.recur_interval_type',
-                            'transactions.recur_repetitions',
-                            'transactions.subscription_repeat_on',
-                            'bl.name as location_name',
-                            DB::raw("CONCAT(COALESCE(U.surname, ''),' ',COALESCE(U.first_name, ''),' ',COALESCE(U.last_name,'')) as expense_for"),
-                            DB::raw("CONCAT(tr.name ,' (', tr.amount ,' )') as tax"),
-                            DB::raw('SUM(TP.amount) as amount_paid'),
-                            DB::raw("CONCAT(COALESCE(usr.surname, ''),' ',COALESCE(usr.first_name, ''),' ',COALESCE(usr.last_name,'')) as added_by"),
-                            'transactions.recur_parent_id',
-                            'c.name as contact_name',
-                            'transactions.type'
-                        )
-                        ->with(['recurring_parent'])
-                        ->groupBy('transactions.id');
+                ->leftJoin('expense_categories AS esc', 'transactions.expense_sub_category_id', '=', 'esc.id')
+                ->join(
+                    'business_locations AS bl',
+                    'transactions.location_id',
+                    '=',
+                    'bl.id'
+                )
+                ->leftJoin('tax_rates as tr', 'transactions.tax_id', '=', 'tr.id')
+                ->leftJoin('users AS U', 'transactions.expense_for', '=', 'U.id')
+                ->leftJoin('users AS usr', 'transactions.created_by', '=', 'usr.id')
+                ->leftJoin('contacts AS c', 'transactions.contact_id', '=', 'c.id')
+                ->leftJoin(
+                    'transaction_payments AS TP',
+                    'transactions.id',
+                    '=',
+                    'TP.transaction_id'
+                )
+                ->where('transactions.business_id', $business_id)
+                ->whereIn('transactions.type', ['expense', 'expense_refund'])
+                ->select(
+                    'transactions.id',
+                    'transactions.document',
+                    'transaction_date',
+                    'ref_no',
+                    'ec.name as category',
+                    'esc.name as sub_category',
+                    'payment_status',
+                    'additional_notes',
+                    'final_total',
+                    'transactions.is_recurring',
+                    'transactions.recur_interval',
+                    'transactions.recur_interval_type',
+                    'transactions.recur_repetitions',
+                    'transactions.subscription_repeat_on',
+                    'bl.name as location_name',
+                    DB::raw("CONCAT(COALESCE(U.surname, ''),' ',COALESCE(U.first_name, ''),' ',COALESCE(U.last_name,'')) as expense_for"),
+                    DB::raw("CONCAT(tr.name ,' (', tr.amount ,' )') as tax"),
+                    DB::raw('SUM(TP.amount) as amount_paid'),
+                    DB::raw("CONCAT(COALESCE(usr.surname, ''),' ',COALESCE(usr.first_name, ''),' ',COALESCE(usr.last_name,'')) as added_by"),
+                    'transactions.recur_parent_id',
+                    'c.name as contact_name',
+                    'transactions.type'
+                )
+                ->with(['recurring_parent'])
+                ->groupBy('transactions.id');
 
             //Add condition for expense for,used in sales representative expense report & list of expense
             if (request()->has('expense_for')) {
@@ -141,7 +140,7 @@ class ExpenseController extends Controller
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $expenses->whereDate('transaction_date', '>=', $start)
-                        ->whereDate('transaction_date', '<=', $end);
+                    ->whereDate('transaction_date', '<=', $end);
             }
 
             $permitted_locations = auth()->user()->permitted_locations();
@@ -260,8 +259,8 @@ class ExpenseController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $categories = ExpenseCategory::where('business_id', $business_id)
-                            ->whereNull('parent_id')
-                            ->pluck('name', 'id');
+            ->whereNull('parent_id')
+            ->pluck('name', 'id');
 
         $users = User::forDropdown($business_id, false, true, true);
 
@@ -270,9 +269,9 @@ class ExpenseController extends Controller
         $contacts = Contact::contactDropdown($business_id, false, false);
 
         $sub_categories = ExpenseCategory::where('business_id', $business_id)
-                        ->whereNotNull('parent_id')
-                        ->pluck('name', 'id')
-                        ->toArray();
+            ->whereNotNull('parent_id')
+            ->pluck('name', 'id')
+            ->toArray();
 
         return view('expense.index')
             ->with(compact('categories', 'business_locations', 'users', 'contacts', 'sub_categories'));
@@ -302,8 +301,8 @@ class ExpenseController extends Controller
         $business_locations = $business_locations['locations'];
 
         $expense_categories = ExpenseCategory::where('business_id', $business_id)
-                                ->whereNull('parent_id')
-                                ->pluck('name', 'id');
+            ->whereNull('parent_id')
+            ->pluck('name', 'id');
         $users = User::forDropdown($business_id, true, true);
 
         $taxes = TaxRate::forBusinessDropdown($business_id, true, true);
@@ -332,7 +331,6 @@ class ExpenseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -394,10 +392,9 @@ class ExpenseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -405,10 +402,9 @@ class ExpenseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if (! auth()->user()->can('expense.edit')) {
             abort(403, 'Unauthorized action.');
@@ -424,11 +420,11 @@ class ExpenseController extends Controller
         $business_locations = BusinessLocation::forDropdown($business_id);
 
         $expense_categories = ExpenseCategory::where('business_id', $business_id)
-                                ->whereNull('parent_id')
-                                ->pluck('name', 'id');
+            ->whereNull('parent_id')
+            ->pluck('name', 'id');
         $expense = Transaction::where('business_id', $business_id)
-                                ->where('id', $id)
-                                ->first();
+            ->where('id', $id)
+            ->first();
 
         $users = User::forDropdown($business_id, true, true);
 
@@ -441,9 +437,9 @@ class ExpenseController extends Controller
 
         if (! empty($expense->expense_category_id)) {
             $sub_categories = ExpenseCategory::where('business_id', $business_id)
-                        ->where('parent_id', $expense->expense_category_id)
-                        ->pluck('name', 'id')
-                        ->toArray();
+                ->where('parent_id', $expense->expense_category_id)
+                ->pluck('name', 'id')
+                ->toArray();
         }
 
         return view('expense.edit')
@@ -453,11 +449,9 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('expense.edit')) {
             abort(403, 'Unauthorized action.');
@@ -499,10 +493,9 @@ class ExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('expense.delete')) {
             abort(403, 'Unauthorized action.');
@@ -513,12 +506,12 @@ class ExpenseController extends Controller
                 $business_id = request()->session()->get('user.business_id');
 
                 $expense = Transaction::where('business_id', $business_id)
-                                        ->where(function ($q) {
-                                            $q->where('type', 'expense')
-                                                ->orWhere('type', 'expense_refund');
-                                        })
-                                        ->where('id', $id)
-                                        ->first();
+                    ->where(function ($q) {
+                        $q->where('type', 'expense')
+                            ->orWhere('type', 'expense_refund');
+                    })
+                    ->where('id', $id)
+                    ->first();
 
                 //Delete Cash register transactions
                 $expense->cash_register_payments()->delete();

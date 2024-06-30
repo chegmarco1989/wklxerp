@@ -5,6 +5,8 @@ namespace Modules\Crm\Entities;
 use App\Contact;
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class CrmContact extends Contact
 {
@@ -18,7 +20,7 @@ class CrmContact extends Contact
     /**
      * The member that assigned to the lead.
      */
-    public function leadUsers()
+    public function leadUsers(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'crm_lead_users', 'contact_id', 'user_id');
     }
@@ -26,7 +28,7 @@ class CrmContact extends Contact
     /**
      * get source for contact
      */
-    public function Source()
+    public function Source(): BelongsTo
     {
         return $this->belongsTo(\App\Category::class, 'crm_source');
     }
@@ -34,7 +36,7 @@ class CrmContact extends Contact
     /**
      * get life_stage for contact
      */
-    public function lifeStage()
+    public function lifeStage(): BelongsTo
     {
         return $this->belongsTo(\App\Category::class, 'crm_life_stage');
     }
@@ -42,21 +44,21 @@ class CrmContact extends Contact
     /**
      * Return list of lead dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function leadsDropdown($business_id, $prepend_none = true, $append_id = true)
+    public static function leadsDropdown($business_id, $prepend_none = true, $append_id = true): array
     {
         $all_contacts = CrmContact::where('business_id', $business_id)
-                        ->where('type', 'lead')
-                        ->active();
+            ->where('type', 'lead')
+            ->active();
 
         if ($append_id) {
             $all_contacts->select(
                 DB::raw("IF(contact_id IS NULL OR contact_id='', CONCAT( COALESCE(supplier_business_name, ''), ' - ', name), CONCAT(COALESCE(supplier_business_name, ''), ' - ', name, ' (', contact_id, ')')) AS leads"),
                 'id'
-                );
+            );
         } else {
             $all_contacts->select('id', DB::raw('name as leads'));
         }
@@ -96,13 +98,13 @@ class CrmContact extends Contact
     public static function contactsDropdownForLogin($business_id, $append_contact_id = true)
     {
         $all_contacts = Contact::where('business_id', $business_id)
-                        ->active();
+            ->active();
 
         if ($append_contact_id) {
             $all_contacts->select(
                 DB::raw("IF(contact_id IS NULL OR contact_id='', CONCAT( COALESCE(supplier_business_name, ''), ' - ', name), CONCAT(COALESCE(supplier_business_name, ''), ' - ', name, ' (', contact_id, ')')) AS contacts"),
                 'id'
-                );
+            );
         } else {
             $all_contacts->select('id', DB::raw('name as contacts'));
         }
@@ -118,8 +120,8 @@ class CrmContact extends Contact
         $count = 0;
         if (! empty($input['contact_id'])) {
             $count = CrmContact::where('business_id', $input['business_id'])
-                      ->where('contact_id', $input['contact_id'])
-                      ->count();
+                ->where('contact_id', $input['contact_id'])
+                ->count();
         }
 
         if ($count == 0) {
@@ -155,9 +157,9 @@ class CrmContact extends Contact
         $count = 0;
         if (! empty($input['contact_id'])) {
             $count = CrmContact::where('business_id', $business_id)
-                        ->where('contact_id', $input['contact_id'])
-                        ->where('id', '!=', $id)
-                        ->count();
+                ->where('contact_id', $input['contact_id'])
+                ->where('id', '!=', $id)
+                ->count();
         }
 
         if ($count == 0) {
@@ -191,16 +193,16 @@ class CrmContact extends Contact
     public static function getContactsCountBySourceOfGivenTyps($business_id, $types = [])
     {
         $query = Contact::where('business_id', $business_id)
-                    ->Active();
+            ->Active();
 
         if (! empty($types)) {
             $query->whereIn('type', $types);
         }
 
         $contacts_count_by_source = $query->select(\DB::raw('count(crm_source) as count, crm_source'))
-                                    ->groupBy('crm_source')
-                                    ->get()
-                                    ->keyBy('crm_source');
+            ->groupBy('crm_source')
+            ->get()
+            ->keyBy('crm_source');
 
         return $contacts_count_by_source;
     }

@@ -28,5 +28,5 @@ return [
     'due_amount' => 'Due Amount',
     'stock_expiry_alert' => 'Stock Expiry Alert',
     'todays_profit' => "Today's profit",
-	'accounting_overview_in_chart' => "Accounting Overview",
+    'accounting_overview_in_chart' => 'Accounting Overview',
 ];

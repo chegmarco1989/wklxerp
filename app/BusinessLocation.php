@@ -3,7 +3,9 @@
 namespace App;
 
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BusinessLocation extends Model
 {
@@ -26,12 +28,10 @@ class BusinessLocation extends Model
     /**
      * Return list of locations for a business
      *
-     * @param  int  $business_id
-     * @param  bool  $show_all = false
-     * @param  array  $receipt_printer_type_attribute =
-     * @return array
+     * @param  bool  $show_all  = false
+     * @param  array  $receipt_printer_type_attribute  =
      */
-    public static function forDropdown($business_id, $show_all = false, $receipt_printer_type_attribute = false, $append_id = true, $check_permission = true)
+    public static function forDropdown(int $business_id, bool $show_all = false, array $receipt_printer_type_attribute = false, $append_id = true, $check_permission = true): array
     {
         $query = BusinessLocation::where('business_id', $business_id)->Active();
 
@@ -90,18 +90,15 @@ class BusinessLocation extends Model
         }
     }
 
-    public function price_group()
+    public function price_group(): BelongsTo
     {
         return $this->belongsTo(\App\SellingPriceGroup::class, 'selling_price_group_id');
     }
 
     /**
      * Scope a query to only include active location.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', 1);
     }
@@ -117,11 +114,11 @@ class BusinessLocation extends Model
             return [];
         }
         $query = Variation::whereIn('variations.id', $this->featured_products)
-                                    ->join('product_locations as pl', 'pl.product_id', '=', 'variations.product_id')
-                                    ->join('products as p', 'p.id', '=', 'variations.product_id')
-                                    ->where('p.not_for_selling', 0)
-                                    ->with(['product_variation', 'product', 'media'])
-                                    ->select('variations.*');
+            ->join('product_locations as pl', 'pl.product_id', '=', 'variations.product_id')
+            ->join('products as p', 'p.id', '=', 'variations.product_id')
+            ->where('p.not_for_selling', 0)
+            ->with(['product_variation', 'product', 'media'])
+            ->select('variations.*');
 
         if ($check_location) {
             $query->where('pl.location_id', $this->id);

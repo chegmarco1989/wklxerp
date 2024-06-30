@@ -7,6 +7,7 @@ use App\Utils\BusinessUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class SuperadminSettingsController extends Controller
 {
@@ -37,10 +38,8 @@ class SuperadminSettingsController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -115,11 +114,8 @@ class SuperadminSettingsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -149,7 +145,7 @@ class SuperadminSettingsController extends Controller
                 System::updateOrCreate(
                     ['key' => $key],
                     ['value' => $setting]
-                            );
+                );
             }
 
             $env_settings = $request->only(['APP_NAME', 'APP_TITLE',

@@ -3,6 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Transaction extends Model
 {
@@ -36,97 +40,97 @@ class Transaction extends Model
      */
     protected $table = 'transactions';
 
-    public function purchase_lines()
+    public function purchase_lines(): HasMany
     {
         return $this->hasMany(\App\PurchaseLine::class);
     }
 
-    public function sell_lines()
+    public function sell_lines(): HasMany
     {
         return $this->hasMany(\App\TransactionSellLine::class);
     }
 
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(\App\Contact::class, 'contact_id');
     }
 
-    public function delivery_person_user()
+    public function delivery_person_user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'delivery_person');
     }
 
-    public function payment_lines()
+    public function payment_lines(): HasMany
     {
         return $this->hasMany(\App\TransactionPayment::class, 'transaction_id');
     }
 
-    public function location()
+    public function location(): BelongsTo
     {
         return $this->belongsTo(\App\BusinessLocation::class, 'location_id');
     }
 
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class, 'business_id');
     }
 
-    public function tax()
+    public function tax(): BelongsTo
     {
         return $this->belongsTo(\App\TaxRate::class, 'tax_id');
     }
 
-    public function stock_adjustment_lines()
+    public function stock_adjustment_lines(): HasMany
     {
         return $this->hasMany(\App\StockAdjustmentLine::class);
     }
 
-    public function sales_person()
+    public function sales_person(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
 
-    public function sale_commission_agent()
+    public function sale_commission_agent(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'commission_agent');
     }
 
-    public function return_parent()
+    public function return_parent(): HasOne
     {
         return $this->hasOne(\App\Transaction::class, 'return_parent_id');
     }
 
-    public function return_parent_sell()
+    public function return_parent_sell(): BelongsTo
     {
         return $this->belongsTo(\App\Transaction::class, 'return_parent_id');
     }
 
-    public function table()
+    public function table(): BelongsTo
     {
         return $this->belongsTo(\App\Restaurant\ResTable::class, 'res_table_id');
     }
 
-    public function service_staff()
+    public function service_staff(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'res_waiter_id');
     }
 
-    public function recurring_invoices()
+    public function recurring_invoices(): HasMany
     {
         return $this->hasMany(\App\Transaction::class, 'recur_parent_id');
     }
 
-    public function recurring_parent()
+    public function recurring_parent(): HasOne
     {
         return $this->hasOne(\App\Transaction::class, 'id', 'recur_parent_id');
     }
 
-    public function price_group()
+    public function price_group(): BelongsTo
     {
         return $this->belongsTo(\App\SellingPriceGroup::class, 'selling_price_group_id');
     }
 
-    public function types_of_service()
+    public function types_of_service(): BelongsTo
     {
         return $this->belongsTo(\App\TypesOfService::class, 'types_of_service_id');
     }
@@ -151,7 +155,7 @@ class Transaction extends Model
         return $document_name;
     }
 
-    public function subscription_invoices()
+    public function subscription_invoices(): HasMany
     {
         return $this->hasMany(\App\Transaction::class, 'recur_parent_id');
     }
@@ -242,17 +246,17 @@ class Transaction extends Model
         }
     }
 
-    public function cash_register_payments()
+    public function cash_register_payments(): HasMany
     {
         return $this->hasMany(\App\CashRegisterTransaction::class);
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
 
-    public function transaction_for()
+    public function transaction_for(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'expense_for');
     }
@@ -261,7 +265,7 @@ class Transaction extends Model
      * Returns preferred account for payment.
      * Used in download pdfs
      */
-    public function preferredAccount()
+    public function preferredAccount(): BelongsTo
     {
         return $this->belongsTo(\App\Account::class, 'prefer_payment_account');
     }
@@ -279,7 +283,7 @@ class Transaction extends Model
 
     public static function transactionTypes()
     {
-        return  [
+        return [
             'sell' => __('sale.sale'),
             'purchase' => __('lang_v1.purchase'),
             'sell_return' => __('lang_v1.sell_return'),
@@ -353,9 +357,9 @@ class Transaction extends Model
     public function scopeOverDue($query)
     {
         return $query->whereIn('transactions.payment_status', ['due', 'partial'])
-                    ->whereNotNull('transactions.pay_term_number')
-                    ->whereNotNull('transactions.pay_term_type')
-                    ->whereRaw("IF(transactions.pay_term_type='days', DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number DAY) < CURDATE(), DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number MONTH) < CURDATE())");
+            ->whereNotNull('transactions.pay_term_number')
+            ->whereNotNull('transactions.pay_term_type')
+            ->whereRaw("IF(transactions.pay_term_type='days', DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number DAY) < CURDATE(), DATE_ADD(transactions.transaction_date, INTERVAL transactions.pay_term_number MONTH) < CURDATE())");
     }
 
     public static function sell_statuses()
@@ -399,13 +403,11 @@ class Transaction extends Model
         $sales_orders = null;
         if (! empty($this->sales_order_ids)) {
             $sales_orders = Transaction::where('business_id', $this->business_id)
-                                ->where('type', 'sales_order')
-                                ->whereIn('id', $this->sales_order_ids)
-                                ->get();
+                ->where('type', 'sales_order')
+                ->whereIn('id', $this->sales_order_ids)
+                ->get();
         }
 
         return $sales_orders;
     }
-
-   
 }

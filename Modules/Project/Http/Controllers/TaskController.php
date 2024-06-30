@@ -43,10 +43,8 @@ class TaskController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->commonUtil->is_admin(auth()->user(), $business_id);
@@ -97,10 +95,10 @@ class TaskController extends Controller
             if (! empty(request()->get('due_date'))) {
                 if (request()->get('due_date') == 'overdue') {
                     $project_task->where('due_date', '<', Carbon::today())
-                                ->where('status', '!=', 'completed');
+                        ->where('status', '!=', 'completed');
                 } elseif (request()->get('due_date') == 'today') {
                     $project_task->where('due_date', Carbon::today())
-                                ->where('status', '!=', 'completed');
+                        ->where('status', '!=', 'completed');
                 } elseif (request()->get('due_date') == 'less_than_one_week') {
                     $project_task->whereBetween('due_date', [Carbon::today(), Carbon::today()->addWeek()])
                         ->where('status', '!=', 'completed');
@@ -334,10 +332,8 @@ class TaskController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $project_id = request()->get('project_id');
         $project_members = ProjectMember::projectMembersDropdown($project_id);
@@ -350,11 +346,8 @@ class TaskController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             $input = $request->only('subject', 'project_id', 'description', 'priority', 'custom_field_1', 'custom_field_2', 'custom_field_3', 'custom_field_4', 'status');
@@ -410,10 +403,8 @@ class TaskController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show($id)
+    public function show($id): \Illuminate\View\View
     {
         $project_id = request()->get('project_id');
 
@@ -422,8 +413,8 @@ class TaskController extends Controller
                 $query->latest();
             },
             'comments.media', 'comments.commentedBy', 'timeLogs', 'timeLogs.user', ])
-                        ->where('project_id', $project_id)
-                        ->findOrFail($id);
+            ->where('project_id', $project_id)
+            ->findOrFail($id);
 
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->commonUtil->is_admin(auth()->user(), $business_id);
@@ -442,15 +433,13 @@ class TaskController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit($id)
+    public function edit($id): \Illuminate\View\View
     {
         $project_id = request()->get('project_id');
         $project_task = ProjectTask::with('members')
-                            ->where('project_id', $project_id)
-                            ->findOrFail($id);
+            ->where('project_id', $project_id)
+            ->findOrFail($id);
 
         $project_members = ProjectMember::projectMembersDropdown($project_id);
         $priorities = ProjectTask::prioritiesDropdown();
@@ -462,11 +451,8 @@ class TaskController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         try {
             $input = $request->only('subject', 'description', 'priority', 'custom_field_1', 'custom_field_2', 'custom_field_3', 'custom_field_4', 'status');
@@ -522,10 +508,8 @@ class TaskController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         try {
             $project_id = request()->get('project_id');
@@ -553,16 +537,14 @@ class TaskController extends Controller
 
     /**
      * get task status for update.
-     *
-     * @return Response
      */
-    public function getTaskStatus()
+    public function getTaskStatus(): \Illuminate\View\View
     {
         $task_id = request()->get('id');
         $project_id = request()->get('project_id');
         $statuses = ProjectTask::taskStatuses();
         $project_task = ProjectTask::where('project_id', $project_id)
-                            ->findOrFail($task_id);
+            ->findOrFail($task_id);
 
         return view('project::task.change_status')
             ->with(compact('project_task', 'statuses'));
@@ -570,10 +552,8 @@ class TaskController extends Controller
 
     /**
      * update task status
-     *
-     * @return Response
      */
-    public function postTaskStatus($id)
+    public function postTaskStatus($id): Response
     {
         try {
             $project_id = request()->get('project_id');
@@ -602,10 +582,8 @@ class TaskController extends Controller
 
     /**
      * update task description
-     *
-     * @return Response
      */
-    public function postTaskDescription($id)
+    public function postTaskDescription($id): Response
     {
         try {
             $project_id = request()->get('project_id');

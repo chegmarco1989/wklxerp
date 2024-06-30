@@ -46,15 +46,13 @@ class SendScheduleNotification extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $schedules = Schedule::with('users', 'createdBy')
-                        ->where('allow_notification', 1)
-                        ->where('start_datetime', '>=', Carbon::now())
-                        ->get();
+            ->where('allow_notification', 1)
+            ->where('start_datetime', '>=', Carbon::now())
+            ->get();
 
         foreach ($schedules as $key => $schedule) {
             $notifiy_before = 0;
@@ -73,8 +71,8 @@ class SendScheduleNotification extends Command
                 $business_id = $schedule->business_id;
                 $contact_id = $schedule->contact_id;
                 $users = User::where('business_id', $business_id)
-                            ->where('contact_id', $contact_id)
-                            ->get();
+                    ->where('contact_id', $contact_id)
+                    ->get();
 
                 $notifiable_users = $users->merge($schedule->users);
 

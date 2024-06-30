@@ -12,6 +12,7 @@ use Modules\Connector\Http\Controllers\Api\ApiController;
 
 /**
  * @group CRM
+ *
  * @authenticated
  *
  * APIs for managing follow up
@@ -109,9 +110,9 @@ class CallLogsController extends ApiController
                 $data['end_time'] = $end_time->toDateTimeString();
 
                 $is_call_log_exist = \Modules\Crm\Entities\CrmCallLog::where('call_type', $data['call_type'])
-                                        ->where('mobile_number', $data['mobile_number'])
-                                        ->where('start_time', $data['start_time'])
-                                        ->exists();
+                    ->where('mobile_number', $data['mobile_number'])
+                    ->where('start_time', $data['start_time'])
+                    ->exists();
 
                 if (! $is_call_log_exist) {
                     $call_log_data[] = $data;
@@ -132,19 +133,19 @@ class CallLogsController extends ApiController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return  $this->otherExceptions($e);
+            return $this->otherExceptions($e);
         }
     }
 
     public function searchUser($business_id, $number)
     {
         $users = User::where('business_id', $business_id)
-                    ->where(function ($q) use ($number) {
-                        $q->where('contact_number', 'like', "%{$number}")
-                            ->orWhere('alt_number', 'like', "%{$number}")
-                            ->orWhere('family_number', 'like', "%{$number}");
-                    })
-                    ->get();
+            ->where(function ($q) use ($number) {
+                $q->where('contact_number', 'like', "%{$number}")
+                    ->orWhere('alt_number', 'like', "%{$number}")
+                    ->orWhere('family_number', 'like', "%{$number}");
+            })
+            ->get();
 
         //get user with exact match
         $matched_user = null;
@@ -175,12 +176,12 @@ class CallLogsController extends ApiController
     {
         //get contacts with matches
         $contacts = Contact::where('business_id', $business_id)
-                                ->where(function ($q) use ($number) {
-                                    $q->where('mobile', 'like', "%{$number}")
-                                        ->orWhere('landline', 'like', "%{$number}")
-                                        ->orWhere('alternate_number', 'like', "%{$number}");
-                                })
-                                ->get();
+            ->where(function ($q) use ($number) {
+                $q->where('mobile', 'like', "%{$number}")
+                    ->orWhere('landline', 'like', "%{$number}")
+                    ->orWhere('alternate_number', 'like', "%{$number}");
+            })
+            ->get();
 
         //get contact with exact match
         $matched_contact = null;

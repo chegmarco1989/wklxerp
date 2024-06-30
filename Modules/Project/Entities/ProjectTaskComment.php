@@ -3,6 +3,8 @@
 namespace Modules\Project\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ProjectTaskComment extends Model
 {
@@ -20,12 +22,12 @@ class ProjectTaskComment extends Model
      */
     protected $guarded = ['id'];
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
 
-    public function commentedBy()
+    public function commentedBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'commented_by');
     }

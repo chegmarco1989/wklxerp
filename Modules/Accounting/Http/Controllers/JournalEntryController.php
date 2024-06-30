@@ -4,10 +4,12 @@ namespace Modules\Accounting\Http\Controllers;
 
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Accounting\Entities\AccountingAccountsTransaction;
 use Modules\Accounting\Entities\AccountingAccTransMapping;
 use Modules\Accounting\Utils\AccountingUtil;
@@ -35,10 +37,8 @@ class JournalEntryController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -50,17 +50,17 @@ class JournalEntryController extends Controller
 
         if (request()->ajax()) {
             $journal = AccountingAccTransMapping::where('accounting_acc_trans_mappings.business_id', $business_id)
-                        ->join('users as u', 'accounting_acc_trans_mappings.created_by', 'u.id')
-                        ->where('type', 'journal_entry')
-                        ->select(['accounting_acc_trans_mappings.id', 'ref_no', 'operation_date', 'note',
-                            DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) as added_by"),
-                        ]);
+                ->join('users as u', 'accounting_acc_trans_mappings.created_by', 'u.id')
+                ->where('type', 'journal_entry')
+                ->select(['accounting_acc_trans_mappings.id', 'ref_no', 'operation_date', 'note',
+                    DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) as added_by"),
+                ]);
 
             if (! empty(request()->start_date) && ! empty(request()->end_date)) {
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $journal->whereDate('accounting_acc_trans_mappings.operation_date', '>=', $start)
-                            ->whereDate('accounting_acc_trans_mappings.operation_date', '<=', $end);
+                    ->whereDate('accounting_acc_trans_mappings.operation_date', '<=', $end);
             }
 
             return Datatables::of($journal)
@@ -111,10 +111,8 @@ class JournalEntryController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -129,11 +127,8 @@ class JournalEntryController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -220,11 +215,8 @@ class JournalEntryController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -239,11 +231,8 @@ class JournalEntryController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -254,12 +243,12 @@ class JournalEntryController extends Controller
         }
 
         $journal = AccountingAccTransMapping::where('business_id', $business_id)
-                    ->where('type', 'journal_entry')
-                    ->where('id', $id)
-                    ->firstOrFail();
+            ->where('type', 'journal_entry')
+            ->where('id', $id)
+            ->firstOrFail();
         $accounts_transactions = AccountingAccountsTransaction::with('account')
-                                    ->where('acc_trans_mapping_id', $id)
-                                    ->get()->toArray();
+            ->where('acc_trans_mapping_id', $id)
+            ->get()->toArray();
 
         return view('accounting::journal_entry.edit')
             ->with(compact('journal', 'accounts_transactions'));
@@ -267,12 +256,8 @@ class JournalEntryController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -294,9 +279,9 @@ class JournalEntryController extends Controller
             $journal_date = $request->get('journal_date');
 
             $acc_trans_mapping = AccountingAccTransMapping::where('business_id', $business_id)
-                        ->where('type', 'journal_entry')
-                        ->where('id', $id)
-                        ->firstOrFail();
+                ->where('type', 'journal_entry')
+                ->where('id', $id)
+                ->firstOrFail();
             $acc_trans_mapping->note = $request->get('note');
             $acc_trans_mapping->operation_date = $this->util->uf_date($journal_date, true);
             $acc_trans_mapping->update();
@@ -357,11 +342,8 @@ class JournalEntryController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') ||
@@ -373,7 +355,7 @@ class JournalEntryController extends Controller
         $user_id = request()->session()->get('user.id');
 
         $acc_trans_mapping = AccountingAccTransMapping::where('id', $id)
-                        ->where('business_id', $business_id)->firstOrFail();
+            ->where('business_id', $business_id)->firstOrFail();
 
         if (! empty($acc_trans_mapping)) {
             $acc_trans_mapping->delete();

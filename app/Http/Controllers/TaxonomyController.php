@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class TaxonomyController extends Controller
@@ -51,8 +52,8 @@ class TaxonomyController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $category = Category::where('business_id', $business_id)
-                            ->where('category_type', $category_type)
-                            ->select(['name', 'short_code', 'description', 'id', 'parent_id']);
+                ->where('category_type', $category_type)
+                ->select(['name', 'short_code', 'description', 'id', 'parent_id']);
 
             return Datatables::of($category)
                 ->addColumn(
@@ -89,10 +90,8 @@ class TaxonomyController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $category_type = request()->get('type');
         if ($category_type == 'product' && ! auth()->user()->can('category.create')) {
@@ -103,10 +102,10 @@ class TaxonomyController extends Controller
         $module_category_data = $this->moduleUtil->getTaxonomyData($category_type);
 
         $categories = Category::where('business_id', $business_id)
-                        ->where('parent_id', 0)
-                        ->where('category_type', $category_type)
-                        ->select(['name', 'short_code', 'id'])
-                        ->get();
+            ->where('parent_id', 0)
+            ->where('category_type', $category_type)
+            ->select(['name', 'short_code', 'id'])
+            ->get();
 
         $parent_categories = [];
         if (! empty($categories)) {
@@ -116,13 +115,12 @@ class TaxonomyController extends Controller
         }
 
         return view('taxonomy.create')
-                    ->with(compact('parent_categories', 'module_category_data', 'category_type'));
+            ->with(compact('parent_categories', 'module_category_data', 'category_type'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -161,7 +159,6 @@ class TaxonomyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
@@ -171,11 +168,8 @@ class TaxonomyController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $category_type = request()->get('type');
         if ($category_type == 'product' && ! auth()->user()->can('category.update')) {
@@ -189,10 +183,10 @@ class TaxonomyController extends Controller
             $module_category_data = $this->moduleUtil->getTaxonomyData($category_type);
 
             $parent_categories = Category::where('business_id', $business_id)
-                                        ->where('parent_id', 0)
-                                        ->where('category_type', $category_type)
-                                        ->where('id', '!=', $id)
-                                        ->pluck('name', 'id');
+                ->where('parent_id', 0)
+                ->where('category_type', $category_type)
+                ->where('id', '!=', $id)
+                ->pluck('name', 'id');
             $is_parent = false;
 
             if ($category->parent_id == 0) {
@@ -210,11 +204,9 @@ class TaxonomyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (request()->ajax()) {
             try {
@@ -256,10 +248,9 @@ class TaxonomyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (request()->ajax()) {
             try {
@@ -308,10 +299,8 @@ class TaxonomyController extends Controller
     /**
      * get taxonomy index page
      * through ajax
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function getTaxonomyIndexPage(Request $request)
+    public function getTaxonomyIndexPage(Request $request): View
     {
         if (request()->ajax()) {
             $category_type = $request->get('category_type');

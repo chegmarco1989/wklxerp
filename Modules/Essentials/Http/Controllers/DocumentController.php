@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\Document;
 use Modules\Essentials\Entities\DocumentShare;
 use Yajra\DataTables\Facades\DataTables;
@@ -20,7 +21,6 @@ class DocumentController extends Controller
     /**
      * Constructor
      *
-     * @param  ModuleUtil  $moduleUtil
      * @return void
      */
     public function __construct(ModuleUtil $moduleUtil)
@@ -30,10 +30,8 @@ class DocumentController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -92,7 +90,7 @@ class DocumentController extends Controller
                                 @lang("essentials::lang.view")
                             </button>
                     @endif'
-                    )
+                )
                 ->editColumn(
                     'name',
                     '@php
@@ -132,13 +130,13 @@ class DocumentController extends Controller
                             {{$name}}
                         @endif
                     @endif'
-                    )
+                )
                 ->editColumn(
                     'created_at',
                     '@if(!empty($created_at))
                         {{@format_date($created_at)}}
                     @endif'
-                    )
+                )
                 ->removeColumn('id')
                 ->rawColumns(['name', 'created_at', 'action'])
                 ->make(true);
@@ -153,11 +151,8 @@ class DocumentController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -199,12 +194,12 @@ class DocumentController extends Controller
 
             if ($type == 'document') {
                 return redirect()
-                ->action([\Modules\Essentials\Http\Controllers\DocumentController::class, 'index'])
-                ->with('status', $output);
+                    ->action([\Modules\Essentials\Http\Controllers\DocumentController::class, 'index'])
+                    ->with('status', $output);
             } else {
                 return redirect()
-                ->action([\Modules\Essentials\Http\Controllers\DocumentController::class, 'index'], ['type' => 'memos'])
-                ->with('status', $output);
+                    ->action([\Modules\Essentials\Http\Controllers\DocumentController::class, 'index'], ['type' => 'memos'])
+                    ->with('status', $output);
             }
         } catch (\Exception $e) {
             \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
@@ -220,10 +215,8 @@ class DocumentController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -232,39 +225,32 @@ class DocumentController extends Controller
 
         if (request()->ajax()) {
             $memo = Document::where('business_id', $business_id)
-                            ->find($id);
+                ->find($id);
 
             return view('essentials::document.show')
-                    ->with(compact('memo'));
+                ->with(compact('memo'));
         }
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         return view('essentials::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -276,7 +262,7 @@ class DocumentController extends Controller
                 $user_id = $request->session()->get('user.id');
 
                 $document = Document::where('business_id', $business_id)
-                                    ->find($id);
+                    ->find($id);
 
                 $document_user_id = $document->user_id;
 
@@ -313,10 +299,8 @@ class DocumentController extends Controller
 
     /**
      * Download a document
-     *
-     * @return Response
      */
-    public function download(Request $request, $id)
+    public function download(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -328,17 +312,17 @@ class DocumentController extends Controller
             $role_id = User::find($user_id)->roles()->first()->id;
 
             $document = Document::where('business_id', $business_id)
-                                ->find($id);
+                ->find($id);
             $creator = $document->user_id;
 
             $document_shares = DocumentShare::where('document_id', $id)
                 ->where(function ($query) use ($user_id) {
                     $query->where('essentials_document_shares.value', '=', $user_id)
-                    ->where('essentials_document_shares.value_type', '=', 'user');
+                        ->where('essentials_document_shares.value_type', '=', 'user');
                 })
                 ->orWhere(function ($query) use ($role_id) {
                     $query->where('essentials_document_shares.value', '=', $role_id)
-                    ->where('essentials_document_shares.value_type', '=', 'role');
+                        ->where('essentials_document_shares.value_type', '=', 'role');
                 })
                 ->first();
 

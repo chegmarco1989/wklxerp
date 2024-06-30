@@ -1,4 +1,5 @@
 <?php
+
 return [
     'accounting' => 'Muhasebe',
     'accounting_module' => 'Muhasebe Modülü',
@@ -11,7 +12,7 @@ return [
     'credit_card' => 'Kredi Kartı',
     'current_liabilities' => 'Dönen yükümlülükler',
     'non_current_liabilities' => 'Duran yükümlülükler',
-    'owners_equity' => "Sahip sermayesi",
+    'owners_equity' => 'Sahip sermayesi',
     'income' => 'Gelir',
     'other_income' => 'Diğer gelir',
     'cost_of_sale' => 'Satış maliyeti',
@@ -159,7 +160,7 @@ return [
     'ordinary_shares_desc' => 'Şirketler, Adi payları hissedarların elinde izlemek için kullanır. Bu hesaptaki tutar, payların belirtilen (veya itibari) değeri olmalıdır.',
     'other_comprehensive_income' => 'Diğer kapsamlı gelir',
     'other_comprehensive_income_desc' => 'Şirket tarafından henüz emilmediği halde çeşitli işletmelerden gelen gelir artışlarını veya azalışlarını takip etmek için Diğer kapsamlı gelir hesabını kullanın.',
-    "owner's_equity" => "Sahip oldukları özkaynak",
+    "owner's_equity" => 'Sahip oldukları özkaynak',
     "owner's_equity_desc" => 'Şirketler, finansal yılın başında işletmenin birikmiş net gelir veya zararını göstermek için Sahip olunan özkaynak hesabını kullanır.',
     'paid-in_capital_or_surplus' => 'Sermaye avansı ya da fazlası',
     'paid-in_capital_or_surplus_desc' => 'Şirketler, hissedarlardan pay karşılığında elde ettikleri sermaye miktarını izlemek için Sermaye avansı hesabını kullanır. Bu payların belirtilen (veya itibari) değerinden fazla olduğu paylar için kullanılır.',
@@ -357,7 +358,7 @@ return [
     'balance_sheet' => 'Bilanço',
     'balance_sheet_description' => 'Bu rapor, belirtilen bir tarihteki hesaplarınızın anlık durumunu verir. Mevcut durumun (gün) bir "anlık" görünümü olarak adlandırabilirsiniz.',
     'assets' => 'Varlıklar',
-    'liab_owners_capital' => "Yükümlülükler ve Sahip Sermayesi",
+    'liab_owners_capital' => 'Yükümlülükler ve Sahip Sermayesi',
     'total_liab_owners' => 'Toplam Yükümlülükler & Sahip Sermayesi',
     'total_assets' => 'Toplam Varlıklar',
     'account_setting' => 'Muhasebe Ayarları',

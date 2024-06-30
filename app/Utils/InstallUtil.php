@@ -19,10 +19,8 @@ class InstallUtil extends Util
      * USED ONLY TO UPDATE FROM VERSION 1.1 to 1.2
      *
      * DEPRECIATED AFTER 1.2
-     *
-     * @return int
      */
-    public function resetStockAdjustmentForAllBusiness()
+    public function resetStockAdjustmentForAllBusiness(): int
     {
         try {
             DB::beginTransaction();
@@ -32,20 +30,20 @@ class InstallUtil extends Util
 
             foreach ($businesses as $business) {
                 $stock_adjustments = DB::table('stock_adjustments')
-                                        ->where('business_id', $business->id)
-                                        ->get();
+                    ->where('business_id', $business->id)
+                    ->get();
 
                 if (! empty($stock_adjustments)) {
                     foreach ($stock_adjustments as $sa) {
                         $sa_lines = DB::table('stock_adjustment_lines')
-                                        ->where('stock_adjustment_id', $sa->id)
-                                        ->get();
+                            ->where('stock_adjustment_id', $sa->id)
+                            ->get();
 
                         if (! empty($sa_lines) && is_array($sa_lines)) {
                             foreach ($sa_lines as $line) {
                                 $variation = Variation::where('id', $line->variation_id)
-                                                ->where('product_id', $line->product_id)
-                                                ->first();
+                                    ->where('product_id', $line->product_id)
+                                    ->first();
 
                                 if (! empty($variation)) {
                                     $variation_location_d = VariationLocationDetails::where('variation_id', $variation->id)
@@ -71,10 +69,9 @@ class InstallUtil extends Util
     /**
      * Get system information as per the key passed.
      *
-     * @param  string  $key
      * @return mixed
      */
-    public function getSystemInfo($key)
+    public function getSystemInfo(string $key)
     {
         $system = DB::table('system')->where('key', $key)->first();
 
@@ -88,23 +85,17 @@ class InstallUtil extends Util
     /**
      * Set system information as per the key value passed
      *
-     * @param  string  $key
-     * @param  string  $value
      * @return mixed
      */
-    public function setSystemInfo($key, $value)
+    public function setSystemInfo(string $key, string $value)
     {
         DB::table('system')->where('key', $key)->update(['value' => $value]);
     }
 
     /**
      * Runs only if updated from v 1.3 to v2.0
-     *
-     * @param  float  $db_version
-     * @param  float  $app_version
-     * @return bool
      */
-    public function updateFrom13To20($db_version, $app_version)
+    public function updateFrom13To20(float $db_version, float $app_version): bool
     {
         if ($db_version == 1.3 && $app_version == 2.0) {
             //Fix for purchase_lines table, copy data from  purchase_price to pp_without_discount
@@ -117,27 +108,25 @@ class InstallUtil extends Util
     /**
      * This function checks for product variations, maps if existing in
      * template or else create a new variation template
-     *
-     * @return void
      */
-    public function createExistingProductsVariationsToTemplate()
+    public function createExistingProductsVariationsToTemplate(): void
     {
         try {
             DB::beginTransaction();
 
             //Get all the variable products
             $variable_products = Product::where('type', 'variable')
-                                    ->with('product_variations', 'product_variations.variations')
-                                    ->get();
+                ->with('product_variations', 'product_variations.variations')
+                ->get();
 
             //Check if variation template exists; If not create new
             foreach ($variable_products as $product) {
                 foreach ($product->product_variations as $product_variation) {
                     //Update Product variations
                     $variation_template = VariationTemplate::where('business_id', $product->business_id)
-                                    ->whereRaw('LOWER(name) = "'.strtolower($product_variation->name).'"')
-                                    ->with(['values'])
-                                    ->first();
+                        ->whereRaw('LOWER(name) = "'.strtolower($product_variation->name).'"')
+                        ->with(['values'])
+                        ->first();
 
                     if (empty($variation_template)) {
                         $variation_template = VariationTemplate::create([

@@ -4,9 +4,10 @@ namespace Modules\Essentials\Http\Controllers;
 
 use App\Business;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class EssentialsSettingsController extends Controller
 {
@@ -28,10 +29,8 @@ class EssentialsSettingsController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -50,11 +49,8 @@ class EssentialsSettingsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);

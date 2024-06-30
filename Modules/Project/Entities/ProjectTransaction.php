@@ -3,13 +3,15 @@
 namespace Modules\Project\Entities;
 
 use App\Transaction;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProjectTransaction extends Transaction
 {
     /**
      * Get the invoice lines for the transaction.
      */
-    public function invoiceLines()
+    public function invoiceLines(): HasMany
     {
         return $this->hasMany('Modules\Project\Entities\InvoiceLine', 'transaction_id');
     }
@@ -17,7 +19,7 @@ class ProjectTransaction extends Transaction
     /**
      * Get the project for the transaction.
      */
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo('Modules\Project\Entities\Project', 'pjt_project_id');
     }

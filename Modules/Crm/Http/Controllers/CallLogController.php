@@ -7,6 +7,7 @@ use App\User;
 use App\Utils\Util;
 use Carbon\CarbonInterval;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -27,10 +28,8 @@ class CallLogController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if ((! auth()->user()->can('crm.view_all_call_log') && ! auth()->user()->can('crm.view_own_call_log')) || ! config('constants.enable_crm_call_log')) {
             abort(403, 'Unauthorized action.');
@@ -39,16 +38,16 @@ class CallLogController extends Controller
         $business_id = request()->session()->get('user.business_id');
         if (request()->ajax()) {
             $query = CrmCallLog::where('crm_call_logs.business_id', $business_id)
-                            ->leftJoin('contacts as c', 'crm_call_logs.contact_id', '=', 'c.id')
-                            ->leftJoin('users as u', 'crm_call_logs.user_id', '=', 'u.id')
-                            ->leftJoin('users as created_users', 'crm_call_logs.created_by', '=', 'created_users.id')
-                            ->select(
-                                'crm_call_logs.*',
-                                'c.name as customer_name',
-                                'c.supplier_business_name',
-                                DB::raw("CONCAT(COALESCE(u.surname, ''), ' ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as user_full_name"),
-                                DB::raw("CONCAT(COALESCE(created_users.surname, ''), ' ', COALESCE(created_users.first_name, ''), ' ', COALESCE(created_users.last_name, '')) as created_user_name")
-                            );
+                ->leftJoin('contacts as c', 'crm_call_logs.contact_id', '=', 'c.id')
+                ->leftJoin('users as u', 'crm_call_logs.user_id', '=', 'u.id')
+                ->leftJoin('users as created_users', 'crm_call_logs.created_by', '=', 'created_users.id')
+                ->select(
+                    'crm_call_logs.*',
+                    'c.name as customer_name',
+                    'c.supplier_business_name',
+                    DB::raw("CONCAT(COALESCE(u.surname, ''), ' ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as user_full_name"),
+                    DB::raw("CONCAT(COALESCE(created_users.surname, ''), ' ', COALESCE(created_users.first_name, ''), ' ', COALESCE(created_users.last_name, '')) as created_user_name")
+                );
 
             if (! auth()->user()->can('crm.view_all_call_log')) {
                 $query->where('crm_call_logs.created_by', auth()->user()->id);
@@ -81,7 +80,7 @@ class CallLogController extends Controller
                 <br> ({{$mobile_name}}) @endif')
                 ->addColumn('contact_name', '@if(!empty($supplier_business_name)) {{$supplier_business_name}} <br> @endif {{$customer_name}}')
                 ->addColumn('mass_delete', function ($row) {
-                    return  '<input type="checkbox" class="row-select" value="'.$row->id.'">';
+                    return '<input type="checkbox" class="row-select" value="'.$row->id.'">';
                 })
                 ->rawColumns(['contact_name', 'contact_number', 'mass_delete'])
                 ->filterColumn('user_full_name', function ($query, $keyword) {
@@ -115,11 +114,8 @@ class CallLogController extends Controller
 
     /**
      * Mass deletes call logs.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function massDestroy(Request $request)
+    public function massDestroy(Request $request): RedirectResponse
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 
@@ -129,8 +125,8 @@ class CallLogController extends Controller
 
         if (! empty($selected_rows)) {
             CrmCallLog::where('business_id', $business_id)
-                    ->whereIn('id', $selected_rows)
-                    ->delete();
+                ->whereIn('id', $selected_rows)
+                ->delete();
         }
         $output = ['success' => 1,
             'msg' => __('lang_v1.deleted_success'),
@@ -148,16 +144,16 @@ class CallLogController extends Controller
             $yesterday = \Carbon::yesterday()->format('Y-m-d');
 
             $query = CrmCallLog::where('crm_call_logs.business_id', $business_id)
-                    ->join('users as u', 'crm_call_logs.created_by', '=', 'u.id')
-                    ->select(
-                        'u.username',
-                        DB::raw("SUM(IF(DATE(start_time)='{$today}', 1, 0)) as calls_today"),
-                        DB::raw("SUM(IF(DATE(start_time)='{$yesterday}', 1, 0)) as calls_yesterday"),
-                        DB::raw('COUNT(crm_call_logs.id) as all_calls')
-                    )->groupBy('u.id');
+                ->join('users as u', 'crm_call_logs.created_by', '=', 'u.id')
+                ->select(
+                    'u.username',
+                    DB::raw("SUM(IF(DATE(start_time)='{$today}', 1, 0)) as calls_today"),
+                    DB::raw("SUM(IF(DATE(start_time)='{$yesterday}', 1, 0)) as calls_yesterday"),
+                    DB::raw('COUNT(crm_call_logs.id) as all_calls')
+                )->groupBy('u.id');
 
             return Datatables::of($query)
-                        ->make(true);
+                ->make(true);
         }
     }
 }

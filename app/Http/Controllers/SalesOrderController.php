@@ -9,6 +9,7 @@ use App\Utils\BusinessUtil;
 use App\Utils\TransactionUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SalesOrderController extends Controller
 {
@@ -47,10 +48,8 @@ class SalesOrderController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('so.view_own') && ! auth()->user()->can('so.view_all') && ! auth()->user()->can('so.create')) {
             abort(403, 'Unauthorized action.');
@@ -78,12 +77,12 @@ class SalesOrderController extends Controller
         $location_id = request()->input('location_id');
 
         $sales_orders = Transaction::where('business_id', $business_id)
-                            ->where('location_id', $location_id)
-                            ->where('type', 'sales_order')
-                            ->whereIn('status', ['partial', 'ordered'])
-                            ->where('contact_id', $customer_id)
-                            ->select('invoice_no as text', 'id')
-                            ->get();
+            ->where('location_id', $location_id)
+            ->where('type', 'sales_order')
+            ->whereIn('status', ['partial', 'ordered'])
+            ->where('contact_id', $customer_id)
+            ->select('invoice_no as text', 'id')
+            ->get();
 
         return $sales_orders;
     }
@@ -92,10 +91,8 @@ class SalesOrderController extends Controller
      * get required resources
      *
      * to edit sales order status
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function getEditSalesOrderStatus(Request $request, $id)
+    public function getEditSalesOrderStatus(Request $request, $id): View
     {
         $is_admin = $this->businessUtil->is_admin(auth()->user());
         if (! $is_admin) {
@@ -105,7 +102,7 @@ class SalesOrderController extends Controller
         if ($request->ajax()) {
             $business_id = request()->session()->get('user.business_id');
             $transaction = Transaction::where('business_id', $business_id)
-                                ->findOrFail($id);
+                ->findOrFail($id);
 
             $status = $transaction->status;
             $statuses = $this->sales_order_statuses;
@@ -131,7 +128,7 @@ class SalesOrderController extends Controller
             try {
                 $business_id = request()->session()->get('user.business_id');
                 $transaction = Transaction::where('business_id', $business_id)
-                                ->findOrFail($id);
+                    ->findOrFail($id);
 
                 $transaction_before = $transaction->replicate();
 

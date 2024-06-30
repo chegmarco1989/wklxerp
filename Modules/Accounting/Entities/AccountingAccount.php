@@ -3,6 +3,8 @@
 namespace Modules\Accounting\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AccountingAccount extends Model
 {
@@ -13,7 +15,7 @@ class AccountingAccount extends Model
      */
     protected $guarded = ['id'];
 
-    public function child_accounts()
+    public function child_accounts(): HasMany
     {
         return $this->hasMany(\Modules\Accounting\Entities\AccountingAccount::class, 'parent_account_id');
     }
@@ -23,26 +25,23 @@ class AccountingAccount extends Model
     //     return $this->belongsTo(\Modules\Accounting\Entities\AccountingAccountType::class, 'account_type_id');
     // }
 
-    public function account_sub_type()
+    public function account_sub_type(): BelongsTo
     {
         return $this->belongsTo(\Modules\Accounting\Entities\AccountingAccountType::class, 'account_sub_type_id');
     }
 
-    public function detail_type()
+    public function detail_type(): BelongsTo
     {
         return $this->belongsTo(\Modules\Accounting\Entities\AccountingAccountType::class, 'detail_type_id');
     }
 
     /**
      * Accounts Dropdown
-     *
-     * @param  int  $business_id
-     * @return array
      */
-    public static function forDropdown($business_id, $with_data = false, $q = '')
+    public static function forDropdown(int $business_id, $with_data = false, $q = ''): array
     {
         $query = AccountingAccount::where('accounting_accounts.business_id', $business_id)
-                        ->where('status', 'active');
+            ->where('status', 'active');
         if ($with_data) {
             $account_types = AccountingAccountType::accounting_primary_type();
 
@@ -51,7 +50,7 @@ class AccountingAccount extends Model
             }
             $accounts = $query->leftJoin('accounting_account_types as at', 'at.id', '=', 'accounting_accounts.account_sub_type_id')
                 ->select('accounting_accounts.name', 'accounting_accounts.id', 'at.name as sub_type',
-                 'accounting_accounts.account_primary_type', 'at.business_id as sub_type_business_id')
+                    'accounting_accounts.account_primary_type', 'at.business_id as sub_type_business_id')
                 ->get();
 
             foreach ($accounts as $k => $v) {

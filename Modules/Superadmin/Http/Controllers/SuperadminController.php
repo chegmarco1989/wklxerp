@@ -7,19 +7,17 @@ use App\Charts\CommonChart;
 use App\System;
 use Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Modules\Superadmin\Entities\Subscription;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Modules\Superadmin\Entities\Subscription;
 
 class SuperadminController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -56,10 +54,8 @@ class SuperadminController extends Controller
 
     /**
      * Returns the monthly sell data for chart
-     *
-     * @return array
      */
-    protected function _monthly_sell_data()
+    protected function _monthly_sell_data(): array
     {
         $start = Carbon::today()->subYear();
         $end = Carbon::today();
@@ -82,11 +78,10 @@ class SuperadminController extends Controller
     /**
      * Returns the stats for superadmin
      *
-     * @param $start date
-     * @param $end date
-     * @return json
+     * @param  $start  date
+     * @param  $end  date
      */
-    public function stats(Request $request)
+    public function stats(Request $request): json
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

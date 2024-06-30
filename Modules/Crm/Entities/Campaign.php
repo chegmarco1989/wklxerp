@@ -3,6 +3,7 @@
 namespace Modules\Crm\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Campaign extends Model
 {
@@ -33,7 +34,7 @@ class Campaign extends Model
     /**
      * user who created a campaign.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }

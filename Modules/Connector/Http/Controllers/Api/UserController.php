@@ -13,6 +13,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group User management
+ *
  * @authenticated
  *
  * APIs for managing users
@@ -93,7 +94,7 @@ class UserController extends ApiController
             $users = $this->commonUtil->getServiceStaff($business_id);
         } else {
             $users = User::where('business_id', $business_id)
-                        ->get();
+                ->get();
         }
 
         return CommonResource::collection($users);
@@ -103,52 +104,6 @@ class UserController extends ApiController
      * Get the specified user
      *
      * @response {
-            "data": [
-                {
-                    "id": 1,
-                    "user_type": "user",
-                    "surname": "Mr",
-                    "first_name": "Admin",
-                    "last_name": null,
-                    "username": "admin",
-                    "email": "admin@example.com",
-                    "language": "en",
-                    "contact_no": null,
-                    "address": null,
-                    "business_id": 1,
-                    "max_sales_discount_percent": null,
-                    "allow_login": 1,
-                    "essentials_department_id": null,
-                    "essentials_designation_id": null,
-                    "status": "active",
-                    "crm_contact_id": null,
-                    "is_cmmsn_agnt": 0,
-                    "cmmsn_percent": "0.00",
-                    "selected_contacts": 0,
-                    "dob": null,
-                    "gender": null,
-                    "marital_status": null,
-                    "blood_group": null,
-                    "contact_number": null,
-                    "fb_link": null,
-                    "twitter_link": null,
-                    "social_media_1": null,
-                    "social_media_2": null,
-                    "permanent_address": null,
-                    "current_address": null,
-                    "guardian_name": null,
-                    "custom_field_1": null,
-                    "custom_field_2": null,
-                    "custom_field_3": null,
-                    "custom_field_4": null,
-                    "bank_details": null,
-                    "id_proof_name": null,
-                    "id_proof_number": null,
-                    "deleted_at": null,
-                    "created_at": "2018-01-04 02:15:19",
-                    "updated_at": "2018-01-04 02:15:19"
-                }
-            ]
         }
      * @urlParam user required comma separated ids of the required users Example: 1
      */
@@ -160,8 +115,8 @@ class UserController extends ApiController
         $user_ids = explode(',', $user_ids);
 
         $users = User::where('business_id', $business_id)
-                    ->whereIn('id', $user_ids)
-                    ->get();
+            ->whereIn('id', $user_ids)
+            ->get();
 
         return CommonResource::collection($users);
     }
@@ -430,8 +385,8 @@ class UserController extends ApiController
 
             if (! empty($request->input('email'))) {
                 $forgotten_user = User::where('business_id', $user->business_id)
-                                    ->where('email', $request->input('email'))
-                                    ->first();
+                    ->where('email', $request->input('email'))
+                    ->first();
                 if (! empty($forgotten_user)) {
                     $new_password = $this->generateRandomString();
                     $forgotten_user->password = Hash::make($new_password);

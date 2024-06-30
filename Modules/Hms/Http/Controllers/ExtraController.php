@@ -2,13 +2,13 @@
 
 namespace Modules\Hms\Http\Controllers;
 
+use App\Utils\ModuleUtil;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Hms\Entities\HmsExtra;
 use Yajra\DataTables\Facades\DataTables;
-use App\Utils\ModuleUtil;
-
 
 class ExtraController extends Controller
 {
@@ -21,22 +21,22 @@ class ExtraController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return Renderable
      */
-    public function index()
+    public function index(): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
-        
-        if (! (auth()->user()->can('superadmin')  || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
+
+        if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
-        if(!auth()->user()->can( 'hms.manage_extra')){
+        if (! auth()->user()->can('hms.manage_extra')) {
             abort(403, 'Unauthorized action.');
         }
 
         if (request()->ajax()) {
             $extra = HmsExtra::where('business_id', $business_id);
+
             return Datatables::of($extra)
                 ->editColumn('created_at', '{{@format_datetime($created_at)}}')
 
@@ -45,27 +45,27 @@ class ExtraController extends Controller
                 ->editColumn('price', '<span>@format_currency($price) </span> {{str_replace("_", " ", $price_per)}}<span></span>')
 
                 ->addColumn('action', function ($row) {
-                    $html = '<a type="button" class="btn btn-primary btn-xs btn-modal-extra " href="' . action([\Modules\Hms\Http\Controllers\ExtraController::class, 'edit'], ['extra' => $row->id]) . '">'
-                        . __('hms::lang.edit_extra') . '</a>';
-                    $html .= ' <a href="' . route('delete_extra', $row->id) . '"
-                    class="btn btn-danger btn-xs delete_extra_confirmation">' . __('messages.delete') . '</a>';
+                    $html = '<a type="button" class="btn btn-primary btn-xs btn-modal-extra " href="'.action([\Modules\Hms\Http\Controllers\ExtraController::class, 'edit'], ['extra' => $row->id]).'">'
+                        .__('hms::lang.edit_extra').'</a>';
+                    $html .= ' <a href="'.route('delete_extra', $row->id).'"
+                    class="btn btn-danger btn-xs delete_extra_confirmation">'.__('messages.delete').'</a>';
 
                     return $html;
                 })
                 ->rawColumns(['created_at', 'action', 'price'])
                 ->make(true);
         }
+
         return view('hms::extras.index');
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Renderable
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
-        
+
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
             abort(403, 'Unauthorized action.');
         }
@@ -82,24 +82,22 @@ class ExtraController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): Renderable
     {
 
         $business_id = request()->session()->get('user.business_id');
-        
+
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
-        if(!auth()->user()->can( 'hms.manage_extra')){
+        if (! auth()->user()->can('hms.manage_extra')) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         try {
-            $input =  $request->except(['_token']);
+            $input = $request->except(['_token']);
             $input['created_by'] = auth()->user()->id;
             $input['business_id'] = request()->session()->get('user.business_id');
             $extra = HmsExtra::create($input);
@@ -113,7 +111,7 @@ class ExtraController extends Controller
                 ->action([\Modules\Hms\Http\Controllers\ExtraController::class, 'index'])
                 ->with('status', $output);
         } catch (\Exception $e) {
-            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
             $output = [
                 'success' => 0,
@@ -126,30 +124,25 @@ class ExtraController extends Controller
 
     /**
      * Show the specified resource.
-     * @param int $id
-     * @return Renderable
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('hms::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
-    
+
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
-        if(!auth()->user()->can( 'hms.manage_extra')){
+        if (! auth()->user()->can('hms.manage_extra')) {
             abort(403, 'Unauthorized action.');
         }
-
 
         $extra = HmsExtra::findOrFail($id);
 
@@ -160,30 +153,27 @@ class ExtraController extends Controller
             'per_day_per_person' => 'Per Day / Per Person',
         ];
 
-        return view('hms::extras.edit',compact('price_per', 'extra'));
+        return view('hms::extras.edit', compact('price_per', 'extra'));
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Renderable
     {
-     
+
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
-        if(!auth()->user()->can( 'hms.manage_extra')){
+        if (! auth()->user()->can('hms.manage_extra')) {
             abort(403, 'Unauthorized action.');
         }
 
         $extra = HmsExtra::findOrFail($id);
-      
+
         try {
-            $input =  $request->except(['_token']);
+            $input = $request->except(['_token']);
             $extra = $extra->update($input);
             $output = [
                 'success' => 1,
@@ -194,7 +184,7 @@ class ExtraController extends Controller
                 ->action([\Modules\Hms\Http\Controllers\ExtraController::class, 'index'])
                 ->with('status', $output);
         } catch (\Exception $e) {
-            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
             $output = [
                 'success' => 0,
@@ -207,18 +197,15 @@ class ExtraController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id): Renderable
     {
-
 
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
             abort(403, 'Unauthorized action.');
         }
 
-        if(!auth()->user()->can( 'hms.manage_extra')){
+        if (! auth()->user()->can('hms.manage_extra')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -227,11 +214,12 @@ class ExtraController extends Controller
             HmsExtra::where('id', $id)->delete();
 
             $output = ['success' => 1, 'msg' => __('lang_v1.success')];
+
             return redirect()
                 ->action([\Modules\Hms\Http\Controllers\ExtraController::class, 'index'])
                 ->with('status', $output);
         } catch (\Exception $e) {
-            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
             $output = [
                 'success' => 0,

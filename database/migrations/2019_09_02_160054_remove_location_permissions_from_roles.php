@@ -8,14 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $location_permissions = Permission::where('name', 'like', 'location.%')
-                                            ->orWhere('name', 'access_all_locations')
-                                            ->pluck('id');
+            ->orWhere('name', 'access_all_locations')
+            ->pluck('id');
 
         DB::table('role_has_permissions')
             ->whereIn('permission_id', $location_permissions)
@@ -26,10 +24,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         //
     }

@@ -6,9 +6,11 @@ use App\Business;
 use App\NotificationTemplate;
 use App\User;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\AssetManagement\Utils\AssetUtil;
 
 class AssetSettingsController extends Controller
@@ -31,10 +33,8 @@ class AssetSettingsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -47,9 +47,9 @@ class AssetSettingsController extends Controller
         $asset_settings = $this->assetUtil->getAssetSettings($business_id);
 
         $send_for_maintenance_template = NotificationTemplate::where('business_id',
-                                            $business_id)
-                                            ->where('template_for', 'send_for_maintenance')
-                                            ->first();
+            $business_id)
+            ->where('template_for', 'send_for_maintenance')
+            ->first();
 
         if (empty($send_for_maintenance_template)) {
             $send_for_maintenance_template['subject'] = 'Asset {asset_code} sent for maintaiaince';
@@ -64,9 +64,9 @@ class AssetSettingsController extends Controller
         }
 
         $assigned_for_maintenance_template = NotificationTemplate::where('business_id',
-                                            $business_id)
-                                            ->where('template_for', 'assigned_for_maintenance')
-                                            ->first();
+            $business_id)
+            ->where('template_for', 'assigned_for_maintenance')
+            ->first();
 
         if (empty($assigned_for_maintenance_template)) {
             $assigned_for_maintenance_template['subject'] = 'Asset {asset_code} assigned for maintaiaince';
@@ -88,21 +88,16 @@ class AssetSettingsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('assetmanagement::create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $is_admin = $this->moduleUtil->is_admin(auth()->user());
         $business_id = request()->session()->get('user.business_id');
@@ -165,45 +160,32 @@ class AssetSettingsController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('assetmanagement::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('assetmanagement::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

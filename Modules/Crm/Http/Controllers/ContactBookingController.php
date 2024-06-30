@@ -8,6 +8,7 @@ use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class ContactBookingController extends Controller
@@ -42,10 +43,8 @@ class ContactBookingController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $user_id = request()->session()->get('user.id');
@@ -54,9 +53,9 @@ class ContactBookingController extends Controller
             $start_date = request()->start;
             $end_date = request()->end;
             $query = Booking::where('bookings.business_id', $business_id)
-                            ->where('bookings.created_by', $user_id)
-                            ->leftjoin('business_locations as bl', 'bl.id', '=', 'bookings.location_id')
-                            ->select('bookings.*', 'bl.name as location_name');
+                ->where('bookings.created_by', $user_id)
+                ->leftjoin('business_locations as bl', 'bl.id', '=', 'bookings.location_id')
+                ->select('bookings.*', 'bl.name as location_name');
 
             if (! empty(request()->location_id)) {
                 $query->where('bookings.location_id', request()->location_id);
@@ -75,7 +74,7 @@ class ContactBookingController extends Controller
                     return '<span class="label '.$statuses[$row->booking_status]['class'].'" >'.$statuses[$row->booking_status]['label'].'</span>';
                 })
                 ->rawColumns(['booking_status'])
-               ->removeColumn('id')
+                ->removeColumn('id')
                 ->make(true);
         }
 
@@ -86,21 +85,16 @@ class ContactBookingController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('crm::create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             if ($request->ajax()) {
@@ -114,12 +108,12 @@ class ContactBookingController extends Controller
 
                 //Check if booking is available for the required input
                 $query = Booking::where('business_id', $business_id)
-                                ->where('location_id', $input['location_id'])
-                                ->where('contact_id', $input['contact_id'])
-                                ->where(function ($q) use ($date_range) {
-                                    $q->whereBetween('booking_start', $date_range)
-                                    ->orWhereBetween('booking_end', $date_range);
-                                });
+                    ->where('location_id', $input['location_id'])
+                    ->where('contact_id', $input['contact_id'])
+                    ->where(function ($q) use ($date_range) {
+                        $q->whereBetween('booking_start', $date_range)
+                            ->orWhereBetween('booking_end', $date_range);
+                    });
 
                 $existing_booking = $query->first();
                 if (empty($existing_booking)) {
@@ -159,45 +153,32 @@ class ContactBookingController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('crm::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('crm::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

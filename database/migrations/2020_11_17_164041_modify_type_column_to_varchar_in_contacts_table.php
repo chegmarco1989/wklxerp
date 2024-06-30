@@ -7,24 +7,20 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('ALTER TABLE contacts MODIFY COLUMN `type` VARCHAR(191) NOT NULL');
 
         Contact::where('type', '=', '')
-                 ->orWhereNull('type')
-                ->update(['type' => 'lead']);
+            ->orWhereNull('type')
+            ->update(['type' => 'lead']);
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
 };

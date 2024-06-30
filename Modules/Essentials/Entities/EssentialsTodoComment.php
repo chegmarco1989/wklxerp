@@ -3,6 +3,8 @@
 namespace Modules\Essentials\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class EssentialsTodoComment extends Model
 {
@@ -13,17 +15,17 @@ class EssentialsTodoComment extends Model
      */
     protected $guarded = ['id'];
 
-    public function added_by()
+    public function added_by(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'comment_by');
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
 
-    public function task()
+    public function task(): BelongsTo
     {
         return $this->belongsTo(\Modules\Essentials\Entities\ToDo::class, 'task_id');
     }

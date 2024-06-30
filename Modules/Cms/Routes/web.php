@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\CmsController;
-use App\Http\Controllers\CmsPageController;
 use Illuminate\Support\Facades\Route;
 
 /*

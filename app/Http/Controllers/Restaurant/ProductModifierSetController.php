@@ -8,23 +8,22 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class ProductModifierSetController extends Controller
 {
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
             $modifer_set = Product::where('business_id', $business_id)
-                        ->where('type', 'modifier')
-                        ->where('id', $id)
-                        ->with(['modifier_products'])
-                        ->first();
+                ->where('type', 'modifier')
+                ->where('id', $id)
+                ->with(['modifier_products'])
+                ->first();
 
             return view('restaurant.product_modifier_set.edit')
                 ->with(compact('modifer_set'));
@@ -33,17 +32,15 @@ class ProductModifierSetController extends Controller
 
     /**
      * Add new product row
-     *
-     * @return Response
      */
-    public function product_row($product_id)
+    public function product_row($product_id): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
 
             $product = Product::where('business_id', $business_id)
-                        ->where('id', $product_id)
-                        ->first();
+                ->where('id', $product_id)
+                ->first();
 
             return view('restaurant.product_modifier_set.product_row')
                 ->with(compact('product'));
@@ -52,11 +49,8 @@ class ProductModifierSetController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update($modifier_set_id, Request $request)
+    public function update($modifier_set_id, Request $request): Response
     {
         try {
             DB::beginTransaction();
@@ -66,9 +60,9 @@ class ProductModifierSetController extends Controller
             $user_id = $request->session()->get('user.id');
 
             $modifer_set = Product::where('business_id', $business_id)
-                    ->where('id', $modifier_set_id)
-                    ->where('type', 'modifier')
-                    ->first();
+                ->where('id', $modifier_set_id)
+                ->where('type', 'modifier')
+                ->first();
 
             $products = [];
             if (! empty($input['products'])) {
@@ -99,7 +93,7 @@ class ProductModifierSetController extends Controller
         $quantity = $request->input('quantity', 1);
 
         $modifiers = Variation::whereIn('id', $selected)
-                        ->get();
+            ->get();
 
         if (count($modifiers) > 0) {
             return view('restaurant.product_modifier_set.add_selected_modifiers')

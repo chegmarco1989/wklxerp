@@ -11,6 +11,7 @@ use App\Utils\ProductUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class CombinedPurchaseReturnController extends Controller
 {
@@ -57,8 +58,8 @@ class CombinedPurchaseReturnController extends Controller
         $business_locations = BusinessLocation::forDropdown($business_id);
 
         $taxes = TaxRate::where('business_id', $business_id)
-                        ->ExcludeForTaxGroup()
-                        ->get();
+            ->ExcludeForTaxGroup()
+            ->get();
 
         return view('purchase_return.create')
             ->with(compact('business_locations', 'taxes'));
@@ -67,7 +68,6 @@ class CombinedPurchaseReturnController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function save(Request $request)
@@ -163,11 +163,8 @@ class CombinedPurchaseReturnController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('purchase.update')) {
             abort(403, 'Unauthorized action.');
@@ -176,51 +173,51 @@ class CombinedPurchaseReturnController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $purchase_return = Transaction::where('business_id', $business_id)
-                                    ->with(['contact'])
-                                    ->find($id);
+            ->with(['contact'])
+            ->find($id);
         $location_id = $purchase_return->location_id;
         $purchase_lines = PurchaseLine::join(
-                            'products AS p',
-                            'purchase_lines.product_id',
-                            '=',
-                            'p.id'
-                        )
-                        ->join(
-                            'variations AS variations',
-                            'purchase_lines.variation_id',
-                            '=',
-                            'variations.id'
-                        )
-                        ->join(
-                            'product_variations AS pv',
-                            'variations.product_variation_id',
-                            '=',
-                            'pv.id'
-                        )
-                        ->leftjoin('variation_location_details AS vld', function ($join) use ($location_id) {
-                            $join->on('variations.id', '=', 'vld.variation_id')
-                                ->where('vld.location_id', '=', $location_id);
-                        })
-                        ->leftjoin('units', 'units.id', '=', 'p.unit_id')
-                        ->where('purchase_lines.transaction_id', $id)
-                        ->select(
-                            DB::raw("IF(pv.is_dummy = 0, CONCAT(p.name, 
+            'products AS p',
+            'purchase_lines.product_id',
+            '=',
+            'p.id'
+        )
+            ->join(
+                'variations AS variations',
+                'purchase_lines.variation_id',
+                '=',
+                'variations.id'
+            )
+            ->join(
+                'product_variations AS pv',
+                'variations.product_variation_id',
+                '=',
+                'pv.id'
+            )
+            ->leftjoin('variation_location_details AS vld', function ($join) use ($location_id) {
+                $join->on('variations.id', '=', 'vld.variation_id')
+                    ->where('vld.location_id', '=', $location_id);
+            })
+            ->leftjoin('units', 'units.id', '=', 'p.unit_id')
+            ->where('purchase_lines.transaction_id', $id)
+            ->select(
+                DB::raw("IF(pv.is_dummy = 0, CONCAT(p.name, 
                                     ' (', pv.name, ':',variations.name, ')'), p.name) AS product_name"),
-                            'p.id as product_id',
-                            'p.enable_stock',
-                            'pv.is_dummy as is_dummy',
-                            'variations.sub_sku',
-                            'vld.qty_available',
-                            'variations.id as variation_id',
-                            'units.short_name as unit',
-                            'units.allow_decimal as unit_allow_decimal',
-                            'purchase_lines.purchase_price',
-                            'purchase_lines.id as purchase_line_id',
-                            'purchase_lines.quantity_returned as quantity_returned',
-                            'purchase_lines.lot_number',
-                            'purchase_lines.exp_date'
-                        )
-                        ->get();
+                'p.id as product_id',
+                'p.enable_stock',
+                'pv.is_dummy as is_dummy',
+                'variations.sub_sku',
+                'vld.qty_available',
+                'variations.id as variation_id',
+                'units.short_name as unit',
+                'units.allow_decimal as unit_allow_decimal',
+                'purchase_lines.purchase_price',
+                'purchase_lines.id as purchase_line_id',
+                'purchase_lines.quantity_returned as quantity_returned',
+                'purchase_lines.lot_number',
+                'purchase_lines.exp_date'
+            )
+            ->get();
 
         foreach ($purchase_lines as $key => $value) {
             $purchase_lines[$key]->qty_available += $value->quantity_returned;
@@ -230,8 +227,8 @@ class CombinedPurchaseReturnController extends Controller
         $business_locations = BusinessLocation::forDropdown($business_id);
 
         $taxes = TaxRate::where('business_id', $business_id)
-                        ->ExcludeForTaxGroup()
-                        ->get();
+            ->ExcludeForTaxGroup()
+            ->get();
 
         return view('purchase_return.edit')
             ->with(compact('business_locations', 'taxes', 'purchase_return', 'purchase_lines'));
@@ -240,7 +237,6 @@ class CombinedPurchaseReturnController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -279,8 +275,8 @@ class CombinedPurchaseReturnController extends Controller
             $products = $request->input('products');
             $purchase_return_id = $request->input('purchase_return_id');
             $purchase_return = Transaction::where('business_id', $business_id)
-                                ->where('type', 'purchase_return')
-                                ->find($purchase_return_id);
+                ->where('type', 'purchase_return')
+                ->find($purchase_return_id);
 
             if (! empty($products)) {
                 $product_data = [];
@@ -327,16 +323,16 @@ class CombinedPurchaseReturnController extends Controller
 
                 //If purchase line deleted add return quantity to stock
                 $deleted_purchase_lines = PurchaseLine::where('transaction_id', $purchase_return_id)
-                            ->whereNotIn('id', $updated_purchase_lines)
-                            ->get();
+                    ->whereNotIn('id', $updated_purchase_lines)
+                    ->get();
 
                 foreach ($deleted_purchase_lines as $dpl) {
                     $this->productUtil->updateProductQuantity($purchase_return->location_id, $dpl->product_id, $dpl->variation_id, $dpl->quantity_returned, 0, null, false);
                 }
 
                 PurchaseLine::where('transaction_id', $purchase_return_id)
-                            ->whereNotIn('id', $updated_purchase_lines)
-                            ->delete();
+                    ->whereNotIn('id', $updated_purchase_lines)
+                    ->delete();
 
                 $purchase_return->purchase_lines()->saveMany($product_data);
 
@@ -364,11 +360,8 @@ class CombinedPurchaseReturnController extends Controller
 
     /**
      * Return product rows
-     *
-     * @param  Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function getProductRow(Request $request)
+    public function getProductRow(Request $request): View
     {
         if (request()->ajax()) {
             $row_index = $request->input('row_index');
@@ -380,7 +373,7 @@ class CombinedPurchaseReturnController extends Controller
             $product->formatted_qty_available = $this->productUtil->num_f($product->qty_available);
 
             return view('purchase_return.partials.product_table_row')
-            ->with(compact('product', 'row_index'));
+                ->with(compact('product', 'row_index'));
         }
     }
 }

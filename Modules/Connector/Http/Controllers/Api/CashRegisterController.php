@@ -12,6 +12,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group Cash register management
+ *
  * @authenticated
  *
  * APIs for managing cash registers
@@ -119,7 +120,7 @@ class CashRegisterController extends ApiController
         $filters = request()->only(['status', 'user_id', 'location_id', 'start_date', 'end_date', 'per_page']);
 
         $query = CashRegister::where('business_id', $business_id)
-                            ->with(['cash_register_transactions']);
+            ->with(['cash_register_transactions']);
 
         if (! empty($filters['status']) && in_array($filters['status'], ['open', 'close'])) {
             $query->where('status', $filters['status']);
@@ -206,12 +207,12 @@ class CashRegisterController extends ApiController
         $transaction_ids = explode(',', $transaction_ids_string);
 
         $sells = Transaction::where('business_id', $business_id)
-                            ->whereIn('id', $transaction_ids)
-                            ->where('status', 'final')
-                            ->where('type', 'sell')
-                            ->where('created_by', $user->id)
-                            ->with(['payment_lines'])
-                            ->get();
+            ->whereIn('id', $transaction_ids)
+            ->where('status', 'final')
+            ->where('type', 'sell')
+            ->where('created_by', $user->id)
+            ->with(['payment_lines'])
+            ->get();
 
         foreach ($sells as $sell) {
             foreach ($sell->payment_lines as $payment) {
@@ -287,9 +288,9 @@ class CashRegisterController extends ApiController
 
         $register_ids = explode(',', $register_ids);
         $cash_registers = CashRegister::where('business_id', $business_id)
-                            ->whereIn('id', $register_ids)
-                            ->with(['cash_register_transactions'])
-                            ->get();
+            ->whereIn('id', $register_ids)
+            ->with(['cash_register_transactions'])
+            ->get();
 
         return CommonResource::collection($cash_registers);
     }

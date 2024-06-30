@@ -6,7 +6,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\View;
+use Illuminate\View\View;
 use Modules\Project\Entities\Project;
 use Modules\Project\Entities\ProjectUser;
 
@@ -30,10 +30,8 @@ class ReportController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -47,10 +45,8 @@ class ReportController extends Controller
     /**
      * Display the time log report
      * by employee
-     *
-     * @return Response
      */
-    public function getEmployeeTimeLogReport(Request $request)
+    public function getEmployeeTimeLogReport(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -82,7 +78,7 @@ class ReportController extends Controller
                         }
                     },
                     'projects.timeLogs.task', ])
-                ->where('business_id', $business_id);
+                    ->where('business_id', $business_id);
 
                 //filter by user
                 if (! empty($user_ids)) {
@@ -142,10 +138,8 @@ class ReportController extends Controller
     /**
      * Display the time log report
      * by project
-     *
-     * @return Response
      */
-    public function getProjectTimeLogReport(Request $request)
+    public function getProjectTimeLogReport(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -171,7 +165,7 @@ class ReportController extends Controller
                     },
                     'timeLogs.task',
                     'timeLogs.user', ])
-                ->where('business_id', $business_id);
+                    ->where('business_id', $business_id);
 
                 //filter by project id
                 if (! empty($request->input('project_id'))) {

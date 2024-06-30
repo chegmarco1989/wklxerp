@@ -7,14 +7,12 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Essentials\Entities\ToDo;
 use Spatie\Permission\Models\Permission;
 
-class AddMoreColumnsToEssentialsToDosTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('essentials_to_dos', function (Blueprint $table) {
             $table->date('end_date')->nullable()->after('date');
@@ -49,11 +47,9 @@ class AddMoreColumnsToEssentialsToDosTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('essentials_todos_users');
     }
-}
+};

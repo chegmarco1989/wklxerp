@@ -13,10 +13,8 @@ class BaseController extends Controller
 {
     /**
      * Returns the list of all configured payment gateway
-     *
-     * @return Response
      */
-    public function _payment_gateways()
+    public function _payment_gateways(): Response
     {
         $gateways = [];
 
@@ -66,7 +64,7 @@ class BaseController extends Controller
      *
      * @return object
      */
-    public function _add_subscription($code,$price, $business_id, $package, $gateway, $payment_transaction_id, $user_id, $is_superadmin = false)
+    public function _add_subscription($code, $price, $business_id, $package, $gateway, $payment_transaction_id, $user_id, $is_superadmin = false)
     {
         if (! is_object($package)) {
             $package = Package::active()->find($package);
@@ -119,7 +117,7 @@ class BaseController extends Controller
 
             if (! empty($email) && $is_notif_enabled == 1) {
                 Notification::route('mail', $email)
-                ->notify(new NewSubscriptionNotification($subscription));
+                    ->notify(new NewSubscriptionNotification($subscription));
             }
         }
 
@@ -128,12 +126,8 @@ class BaseController extends Controller
 
     /**
      * The function returns the start/end/trial end date for a package.
-     *
-     * @param  int  $business_id
-     * @param  object  $package
-     * @return array
      */
-    protected function _get_package_dates($business_id, $package)
+    protected function _get_package_dates(int $business_id, object $package): array
     {
         $output = ['start' => '', 'end' => '', 'trial' => ''];
 

@@ -37,9 +37,8 @@ class CustomerNotification extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -48,18 +47,17 @@ class CustomerNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $data = $this->notificationInfo;
 
         $mail = (new MailMessage)
-                    ->subject($data['subject'])
-                    ->view(
-                        'emails.plain_html',
-                        ['content' => $data['email_body']]
-                    );
+            ->subject($data['subject'])
+            ->view(
+                'emails.plain_html',
+                ['content' => $data['email_body']]
+            );
         if (! empty($this->cc)) {
             $mail->cc($this->cc);
         }
@@ -83,9 +81,8 @@ class CustomerNotification extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

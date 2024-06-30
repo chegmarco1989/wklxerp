@@ -3,22 +3,21 @@
 namespace Modules\Accounting\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccountingAccountsTransaction extends Model
 {
     protected $guarded = [];
 
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo('Modules\Accounting\Entities\AccountingAccount', 'accounting_account_id');
     }
 
     /**
      * Creates new account transaction
-     *
-     * @return obj
      */
-    public static function createTransaction($data)
+    public static function createTransaction($data): obj
     {
         $transaction = new AccountingAccountsTransaction();
 
@@ -37,10 +36,8 @@ class AccountingAccountsTransaction extends Model
 
     /**
      * Creates/updates account transaction
-     *
-     * @return obj
      */
-    public static function updateOrCreateMapTransaction($data)
+    public static function updateOrCreateMapTransaction($data): obj
     {
         $transaction = AccountingAccountsTransaction::updateOrCreate(
             ['transaction_id' => $data['transaction_id'],
@@ -48,7 +45,7 @@ class AccountingAccountsTransaction extends Model
                 'transaction_payment_id' => $data['transaction_payment_id'],
             ],
             ['accounting_account_id' => $data['accounting_account_id'], 'amount' => $data['amount'],
-                'type' => $data['type'], 'sub_type' => $data['sub_type'], 'created_by' => $data['created_by'], 'operation_date' => $data['operation_date'], 'note' => $data['note']
+                'type' => $data['type'], 'sub_type' => $data['sub_type'], 'created_by' => $data['created_by'], 'operation_date' => $data['operation_date'], 'note' => $data['note'],
             ]
         );
     }

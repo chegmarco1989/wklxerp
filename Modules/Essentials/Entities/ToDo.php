@@ -3,6 +3,10 @@
 namespace Modules\Essentials\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ToDo extends Model
 {
@@ -20,22 +24,22 @@ class ToDo extends Model
      */
     protected $table = 'essentials_to_dos';
 
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'essentials_todos_users', 'todo_id', 'user_id');
     }
 
-    public function assigned_by()
+    public function assigned_by(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(\Modules\Essentials\Entities\EssentialsTodoComment::class, 'task_id')->orderBy('id', 'desc');
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }

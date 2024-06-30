@@ -15,6 +15,7 @@ use App\Utils\ProductUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Spatie\Activitylog\Models\Activity;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -62,41 +63,40 @@ class SellReturnController extends Controller
         $business_id = request()->session()->get('user.business_id');
         if (request()->ajax()) {
             $sells = Transaction::leftJoin('contacts', 'transactions.contact_id', '=', 'contacts.id')
-
-                    ->join(
-                        'business_locations AS bl',
-                        'transactions.location_id',
-                        '=',
-                        'bl.id'
-                    )
-                    ->join(
-                        'transactions as T1',
-                        'transactions.return_parent_id',
-                        '=',
-                        'T1.id'
-                    )
-                    ->leftJoin(
-                        'transaction_payments AS TP',
-                        'transactions.id',
-                        '=',
-                        'TP.transaction_id'
-                    )
-                    ->where('transactions.business_id', $business_id)
-                    ->where('transactions.type', 'sell_return')
-                    ->where('transactions.status', 'final')
-                    ->select(
-                        'transactions.id',
-                        'transactions.transaction_date',
-                        'transactions.invoice_no',
-                        'contacts.name',
-                        'contacts.supplier_business_name',
-                        'transactions.final_total',
-                        'transactions.payment_status',
-                        'bl.name as business_location',
-                        'T1.invoice_no as parent_sale',
-                        'T1.id as parent_sale_id',
-                        DB::raw('SUM(TP.amount) as amount_paid')
-                    );
+                ->join(
+                    'business_locations AS bl',
+                    'transactions.location_id',
+                    '=',
+                    'bl.id'
+                )
+                ->join(
+                    'transactions as T1',
+                    'transactions.return_parent_id',
+                    '=',
+                    'T1.id'
+                )
+                ->leftJoin(
+                    'transaction_payments AS TP',
+                    'transactions.id',
+                    '=',
+                    'TP.transaction_id'
+                )
+                ->where('transactions.business_id', $business_id)
+                ->where('transactions.type', 'sell_return')
+                ->where('transactions.status', 'final')
+                ->select(
+                    'transactions.id',
+                    'transactions.transaction_date',
+                    'transactions.invoice_no',
+                    'contacts.name',
+                    'contacts.supplier_business_name',
+                    'transactions.final_total',
+                    'transactions.payment_status',
+                    'bl.name as business_location',
+                    'T1.invoice_no as parent_sale',
+                    'T1.id as parent_sale_id',
+                    DB::raw('SUM(TP.amount) as amount_paid')
+                );
 
             $permitted_locations = auth()->user()->permitted_locations();
             if ($permitted_locations != 'all') {
@@ -131,7 +131,7 @@ class SellReturnController extends Controller
                 $start = request()->start_date;
                 $end = request()->end_date;
                 $sells->whereDate('transactions.transaction_date', '>=', $start)
-                        ->whereDate('transactions.transaction_date', '<=', $end);
+                    ->whereDate('transactions.transaction_date', '<=', $end);
             }
 
             $sells->groupBy('transactions.id');
@@ -182,7 +182,7 @@ class SellReturnController extends Controller
                 ->setRowAttr([
                     'data-href' => function ($row) {
                         if (auth()->user()->can('sell.view')) {
-                            return  action([\App\Http\Controllers\SellReturnController::class, 'show'], [$row->parent_sale_id]);
+                            return action([\App\Http\Controllers\SellReturnController::class, 'show'], [$row->parent_sale_id]);
                         } else {
                             return '';
                         }
@@ -241,8 +241,8 @@ class SellReturnController extends Controller
         }
 
         $sell = Transaction::where('business_id', $business_id)
-                            ->with(['sell_lines', 'location', 'return_parent', 'contact', 'tax', 'sell_lines.sub_unit', 'sell_lines.product', 'sell_lines.product.unit'])
-                            ->find($id);
+            ->with(['sell_lines', 'location', 'return_parent', 'contact', 'tax', 'sell_lines.sub_unit', 'sell_lines.product', 'sell_lines.product.unit'])
+            ->find($id);
 
         foreach ($sell->sell_lines as $key => $value) {
             if (! empty($value->sub_unit_id)) {
@@ -260,7 +260,6 @@ class SellReturnController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -315,11 +314,8 @@ class SellReturnController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (! auth()->user()->can('access_sell_return') && ! auth()->user()->can('access_own_sell_return')) {
             abort(403, 'Unauthorized action.');
@@ -327,19 +323,19 @@ class SellReturnController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $query = Transaction::where('business_id', $business_id)
-                                ->where('id', $id)
-                                ->with(
-                                    'contact',
-                                    'return_parent',
-                                    'tax',
-                                    'sell_lines',
-                                    'sell_lines.product',
-                                    'sell_lines.variations',
-                                    'sell_lines.sub_unit',
-                                    'sell_lines.product',
-                                    'sell_lines.product.unit',
-                                    'location'
-                                );
+            ->where('id', $id)
+            ->with(
+                'contact',
+                'return_parent',
+                'tax',
+                'sell_lines',
+                'sell_lines.product',
+                'sell_lines.variations',
+                'sell_lines.sub_unit',
+                'sell_lines.product',
+                'sell_lines.product.unit',
+                'location'
+            );
 
         if (! auth()->user()->can('access_sell_return') && auth()->user()->can('access_own_sell_return')) {
             $sells->where('created_by', request()->session()->get('user.id'));
@@ -377,9 +373,9 @@ class SellReturnController extends Controller
         }
 
         $activities = Activity::forSubject($sell->return_parent)
-           ->with(['causer', 'subject'])
-           ->latest()
-           ->get();
+            ->with(['causer', 'subject'])
+            ->latest()
+            ->get();
 
         return view('sell_return.show')
             ->with(compact('sell', 'sell_taxes', 'total_discount', 'activities'));
@@ -388,10 +384,9 @@ class SellReturnController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('access_sell_return') && ! auth()->user()->can('access_own_sell_return')) {
             abort(403, 'Unauthorized action.');
@@ -414,8 +409,8 @@ class SellReturnController extends Controller
                 $sell_return = $query->first();
 
                 $sell_lines = TransactionSellLine::where('transaction_id',
-                                            $sell_return->return_parent_id)
-                                    ->get();
+                    $sell_return->return_parent_id)
+                    ->get();
 
                 if (! empty($sell_return)) {
                     $transaction_payments = $sell_return->payment_lines;
@@ -468,18 +463,14 @@ class SellReturnController extends Controller
     /**
      * Returns the content for the receipt
      *
-     * @param  int  $business_id
-     * @param  int  $location_id
-     * @param  int  $transaction_id
-     * @param  string  $printer_type = null
-     * @return array
+     * @param  string  $printer_type  = null
      */
     private function receiptContent(
-        $business_id,
-        $location_id,
-        $transaction_id,
-        $printer_type = null
-    ) {
+        int $business_id,
+        int $location_id,
+        int $transaction_id,
+        ?string $printer_type = null
+    ): array {
         $output = ['is_enabled' => false,
             'print_type' => 'browser',
             'html_content' => null,
@@ -519,7 +510,6 @@ class SellReturnController extends Controller
     /**
      * Prints invoice for sell
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function printInvoice(Request $request, $transaction_id)
@@ -533,8 +523,8 @@ class SellReturnController extends Controller
                 $business_id = $request->session()->get('user.business_id');
 
                 $transaction = Transaction::where('business_id', $business_id)
-                                ->where('id', $transaction_id)
-                                ->first();
+                    ->where('id', $transaction_id)
+                    ->first();
 
                 if (empty($transaction)) {
                     return $output;
@@ -568,7 +558,7 @@ class SellReturnController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $query = Transaction::where('business_id', $business_id)
-                            ->where('invoice_no', $invoice_no);
+            ->where('invoice_no', $invoice_no);
 
         $permitted_locations = auth()->user()->permitted_locations();
         if ($permitted_locations != 'all') {

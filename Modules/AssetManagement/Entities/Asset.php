@@ -4,6 +4,9 @@ namespace Modules\AssetManagement\Entities;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Asset extends Model
 {
@@ -17,7 +20,7 @@ class Asset extends Model
     /**
      * user added asset.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
@@ -25,12 +28,12 @@ class Asset extends Model
     /**
      * get business location for asset
      */
-    public function businessLocation()
+    public function businessLocation(): BelongsTo
     {
         return $this->belongsTo(\App\BusinessLocation::class, 'location_id');
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
@@ -38,31 +41,31 @@ class Asset extends Model
     public static function forDropdown($business_id, $include_attributes = false, $check_qty = true)
     {
         $allocation = AssetTransaction::where('business_id', $business_id)
-                        ->where('transaction_type', 'allocate')
-                        ->select(DB::raw('SUM(COALESCE(quantity, 0)) as allocated'), 'asset_id')
-                        ->groupBy('asset_id');
+            ->where('transaction_type', 'allocate')
+            ->select(DB::raw('SUM(COALESCE(quantity, 0)) as allocated'), 'asset_id')
+            ->groupBy('asset_id');
 
         $revocation = AssetTransaction::where('business_id', $business_id)
-                        ->where('transaction_type', 'revoke')
-                        ->select(DB::raw('SUM(COALESCE(quantity, 0)) as revoked'), 'asset_id')
-                        ->groupBy('asset_id');
+            ->where('transaction_type', 'revoke')
+            ->select(DB::raw('SUM(COALESCE(quantity, 0)) as revoked'), 'asset_id')
+            ->groupBy('asset_id');
 
         $query = Asset::leftJoinSub($allocation, 'allocation', function ($join) {
             $join->on('assets.id', '=', 'allocation.asset_id');
         })
-                    ->leftJoinSub($revocation, 'revocation', function ($join) {
-                        $join->on('assets.id', '=', 'revocation.asset_id');
-                    })
-                    ->where('assets.business_id', $business_id)
-                    ->where('is_allocatable', 1)
-                    ->select('assets.name as name', 'assets.id as id', DB::raw('assets.quantity - COALESCE(allocated, 0) + COALESCE(revoked, 0) as quantity'));
+            ->leftJoinSub($revocation, 'revocation', function ($join) {
+                $join->on('assets.id', '=', 'revocation.asset_id');
+            })
+            ->where('assets.business_id', $business_id)
+            ->where('is_allocatable', 1)
+            ->select('assets.name as name', 'assets.id as id', DB::raw('assets.quantity - COALESCE(allocated, 0) + COALESCE(revoked, 0) as quantity'));
 
         if ($check_qty) {
             $query->havingRaw('quantity > 0');
         }
 
         $query = $query->groupBy('assets.id')
-                    ->get();
+            ->get();
 
         $assets = [];
         foreach ($query as $key => $asset) {
@@ -82,12 +85,12 @@ class Asset extends Model
         return $output;
     }
 
-    public function warranties()
+    public function warranties(): HasMany
     {
         return $this->hasMany(\Modules\AssetManagement\Entities\AssetWarranty::class);
     }
 
-    public function maintenances()
+    public function maintenances(): HasMany
     {
         return $this->hasMany(\Modules\AssetManagement\Entities\AssetMaintenance::class);
     }

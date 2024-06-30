@@ -2,20 +2,17 @@
 
 namespace Modules\Manufacturing\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use App\Utils\ModuleUtil;
-use App\Utils\Util;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class ManufacturingServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application events.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -40,10 +37,8 @@ class ManufacturingServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
         $this->registerCommands();
@@ -51,10 +46,8 @@ class ManufacturingServiceProvider extends ServiceProvider
 
     /**
      * Register config.
-     *
-     * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('manufacturing.php'),
@@ -66,10 +59,8 @@ class ManufacturingServiceProvider extends ServiceProvider
 
     /**
      * Register views.
-     *
-     * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/manufacturing');
 
@@ -86,10 +77,8 @@ class ManufacturingServiceProvider extends ServiceProvider
 
     /**
      * Register translations.
-     *
-     * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/manufacturing');
 
@@ -102,10 +91,8 @@ class ManufacturingServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -114,26 +101,22 @@ class ManufacturingServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }
 
     /**
      * Register commands.
-     *
-     * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
-        
+
     }
 
     public function registerScheduleCommands()
     {
-        
+
     }
 }

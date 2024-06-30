@@ -3,11 +3,12 @@
 namespace Modules\Connector\Http\Controllers;
 
 use App\Utils\Util;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Laravel\Passport\Passport;
 
 class ClientController extends Controller
@@ -19,10 +20,8 @@ class ClientController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -32,33 +31,28 @@ class ClientController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $clients = Passport::client()
-                    ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
-                    ->where('u.business_id', $business_id)
-                    ->where('password_client', 1)
-                    ->select('oauth_clients.*')
-                    ->get()
-                    ->makeVisible('secret');
+            ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
+            ->where('u.business_id', $business_id)
+            ->where('password_client', 1)
+            ->select('oauth_clients.*')
+            ->get()
+            ->makeVisible('secret');
 
         return view('connector::clients.index')->with(compact('clients', 'is_demo'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('connector::create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -93,45 +87,32 @@ class ClientController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('connector::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('connector::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -139,10 +120,10 @@ class ClientController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $clients = Passport::client()
-                        ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
-                        ->where('u.business_id', $business_id)
-                        ->where('oauth_clients.id', $id)
-                        ->delete();
+            ->leftJoin('users as u', 'oauth_clients.user_id', '=', 'u.id')
+            ->where('u.business_id', $business_id)
+            ->where('oauth_clients.id', $id)
+            ->delete();
 
         $output = ['success' => true,
             'msg' => __('lang_v1.deleted_success'),

@@ -9,6 +9,7 @@ use App\VariationGroupPrice;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -45,7 +46,7 @@ class SellingPriceGroupController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $price_groups = SellingPriceGroup::where('business_id', $business_id)
-                        ->select(['name', 'description', 'id', 'is_active']);
+                ->select(['name', 'description', 'id', 'is_active']);
 
             return Datatables::of($price_groups)
                 ->addColumn(
@@ -67,10 +68,8 @@ class SellingPriceGroupController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -82,7 +81,6 @@ class SellingPriceGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -119,7 +117,6 @@ class SellingPriceGroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SellingPriceGroup  $sellingPriceGroup
      * @return \Illuminate\Http\Response
      */
     public function show(SellingPriceGroup $sellingPriceGroup)
@@ -131,9 +128,8 @@ class SellingPriceGroupController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\SellingPriceGroup  $sellingPriceGroup
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -151,7 +147,6 @@ class SellingPriceGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\SellingPriceGroup  $sellingPriceGroup
      * @return \Illuminate\Http\Response
      */
@@ -222,10 +217,9 @@ class SellingPriceGroupController extends Controller
 
     /**
      * Show interface to download product price excel file.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function updateProductPrice(){
+    public function updateProductPrice(): View
+    {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');
         }
@@ -244,12 +238,12 @@ class SellingPriceGroupController extends Controller
         $price_groups = SellingPriceGroup::where('business_id', $business_id)->active()->get();
 
         $variations = Variation::join('products as p', 'variations.product_id', '=', 'p.id')
-                            ->join('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
-                            ->where('p.business_id', $business_id)
-                            ->whereIn('p.type', ['single', 'variable'])
-                            ->select('sub_sku', 'p.name as product_name', 'variations.name as variation_name', 'p.type', 'variations.id', 'pv.name as product_variation_name', 'sell_price_inc_tax')
-                            ->with(['group_prices'])
-                            ->get();
+            ->join('product_variations as pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->where('p.business_id', $business_id)
+            ->whereIn('p.type', ['single', 'variable'])
+            ->select('sub_sku', 'p.name as product_name', 'variations.name as variation_name', 'p.type', 'variations.id', 'pv.name as product_variation_name', 'sell_price_inc_tax')
+            ->with(['group_prices'])
+            ->get();
         $export_data = [];
         foreach ($variations as $variation) {
             $temp = [];
@@ -283,7 +277,6 @@ class SellingPriceGroupController extends Controller
     /**
      * Imports the uploaded file to database.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function import(Request $request)
@@ -324,7 +317,7 @@ class SellingPriceGroupController extends Controller
 
                 foreach ($imported_data as $key => $value) {
                     $variation = Variation::where('sub_sku', $value[1])
-                                        ->first();
+                        ->first();
                     if (empty($variation)) {
                         $row = $key + 1;
                         $error_msg = __('lang_v1.product_not_found_exception', ['sku' => $value[1], 'row' => $row]);
@@ -333,14 +326,14 @@ class SellingPriceGroupController extends Controller
                     }
 
                     //Check if product base price is changed
-                    if($variation->sell_price_inc_tax != $value[2]){
+                    if ($variation->sell_price_inc_tax != $value[2]) {
                         //update price for base selling price, adjust default_sell_price, profit %
                         $variation->sell_price_inc_tax = $value[2];
                         $tax = $variation->product->product_tax()->get();
-                        $tax_percent = !empty($tax) && !empty($tax->first()) ? $tax->first()->amount : 0;
+                        $tax_percent = ! empty($tax) && ! empty($tax->first()) ? $tax->first()->amount : 0;
                         $variation->default_sell_price = $this->commonUtil->calc_percentage_base($value[2], $tax_percent);
                         $variation->profit_percent = $this->commonUtil
-                                        ->get_percent($variation->default_purchase_price, $variation->default_sell_price);
+                            ->get_percent($variation->default_purchase_price, $variation->default_sell_price);
                         $variation->update();
                     }
 

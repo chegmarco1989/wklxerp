@@ -7,15 +7,13 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $exising_permissions = Permission::whereIn('name',
-                            ['view_cash_register', 'close_cash_register'])
-                                    ->pluck('name')
-                                    ->toArray();
+            ['view_cash_register', 'close_cash_register'])
+            ->pluck('name')
+            ->toArray();
 
         if (! in_array('view_cash_register', $exising_permissions)) {
             Permission::create(['name' => 'view_cash_register']);
@@ -28,10 +26,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         //
     }

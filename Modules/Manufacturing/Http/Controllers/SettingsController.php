@@ -5,9 +5,10 @@ namespace Modules\Manufacturing\Http\Controllers;
 use App\Business;
 use App\System;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Manufacturing\Utils\ManufacturingUtil;
 
 class SettingsController extends Controller
@@ -33,10 +34,8 @@ class SettingsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module'))) {
@@ -51,11 +50,8 @@ class SettingsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module'))) {
@@ -70,7 +66,7 @@ class SettingsController extends Controller
             $settings['enable_updating_product_price'] = ! empty($request->input('enable_updating_product_price')) ? true : false;
 
             $business = Business::where('id', $business_id)
-                                ->update(['manufacturing_settings' => json_encode($settings)]);
+                ->update(['manufacturing_settings' => json_encode($settings)]);
 
             $output = ['success' => 1,
                 'msg' => __('lang_v1.updated_success'),

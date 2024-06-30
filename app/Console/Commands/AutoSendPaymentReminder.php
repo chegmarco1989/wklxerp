@@ -40,22 +40,20 @@ class AutoSendPaymentReminder extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         try {
             ini_set('max_execution_time', 0);
             ini_set('memory_limit', '512M');
 
             $templates = NotificationTemplate::where('template_for', 'payment_reminder')
-                                        ->where(function ($q) {
-                                            $q->where('auto_send', 1)
-                                            ->orWhere('auto_send_sms', 1)
-                                            ->orWhere('auto_send_wa_notif', 1);
-                                        })
-                                        ->get();
+                ->where(function ($q) {
+                    $q->where('auto_send', 1)
+                        ->orWhere('auto_send_sms', 1)
+                        ->orWhere('auto_send_wa_notif', 1);
+                })
+                ->get();
 
             foreach ($templates as $template) {
                 $business = Business::with(['currency'])->where('id', $template->business_id)->first();
@@ -83,19 +81,19 @@ class AutoSendPaymentReminder extends Command
 
                 if (! empty($data['auto_send']) || ! empty($data['auto_send_sms'])) {
                     $overdue_sells = Transaction::where('transactions.business_id', $business->id)
-                                    ->where('transactions.type', 'sell')
-                                    ->where('transactions.status', 'final')
-                                    ->leftjoin('activity_log as a', function ($join) {
-                                        $join->on('a.subject_id', '=', 'transactions.id')
-                                            ->where('subject_type', \App\Transaction::class)
-                                            ->where('description', 'payment_reminder');
-                                    })
-                                    ->whereNull('a.id')
-                                    ->with(['contact', 'payment_lines'])
-                                    ->select('transactions.*')
-                                    ->groupBy('transactions.id')
-                                    ->OverDue()
-                                    ->get();
+                        ->where('transactions.type', 'sell')
+                        ->where('transactions.status', 'final')
+                        ->leftjoin('activity_log as a', function ($join) {
+                            $join->on('a.subject_id', '=', 'transactions.id')
+                                ->where('subject_type', \App\Transaction::class)
+                                ->where('description', 'payment_reminder');
+                        })
+                        ->whereNull('a.id')
+                        ->with(['contact', 'payment_lines'])
+                        ->select('transactions.*')
+                        ->groupBy('transactions.id')
+                        ->OverDue()
+                        ->get();
 
                     foreach ($overdue_sells as $sell) {
                         $tag_replaced_data = $this->notificationUtil->replaceTags($business, $orig_data, $sell);

@@ -33,9 +33,8 @@ class SendProposalNotification extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -44,16 +43,15 @@ class SendProposalNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $mail = (new MailMessage)
-                ->subject($this->proposal->subject)
-                ->view(
-                    'emails.plain_html',
-                    ['content' => $this->proposal->body]
-                );
+            ->subject($this->proposal->subject)
+            ->view(
+                'emails.plain_html',
+                ['content' => $this->proposal->body]
+            );
 
         if (! empty($this->proposal->cc)) {
             $mail->cc(explode(',', $this->proposal->cc));
@@ -75,9 +73,8 @@ class SendProposalNotification extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

@@ -6,7 +6,9 @@ use App\BusinessLocation;
 use App\CashRegister;
 use App\Utils\CashRegisterUtil;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CashRegisterController extends Controller
 {
@@ -20,7 +22,6 @@ class CashRegisterController extends Controller
     /**
      * Constructor
      *
-     * @param  CashRegisterUtil  $cashRegisterUtil
      * @return void
      */
     public function __construct(CashRegisterUtil $cashRegisterUtil, ModuleUtil $moduleUtil)
@@ -31,10 +32,8 @@ class CashRegisterController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         return view('cash_register.index');
     }
@@ -61,11 +60,8 @@ class CashRegisterController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         //like:repair
         $sub_type = request()->get('sub_type');
@@ -104,9 +100,8 @@ class CashRegisterController extends Controller
      * Display the specified resource.
      *
      * @param  \App\CashRegister  $cashRegister
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): View
     {
         if (! auth()->user()->can('view_cash_register')) {
             abort(403, 'Unauthorized action.');
@@ -123,16 +118,15 @@ class CashRegisterController extends Controller
         $payment_types = $this->cashRegisterUtil->payment_types(null, false, $business_id);
 
         return view('cash_register.register_details')
-                    ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
+            ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
     }
 
     /**
      * Shows register details modal.
      *
      * @param  void
-     * @return \Illuminate\Http\Response
      */
-    public function getRegisterDetails()
+    public function getRegisterDetails(): View
     {
         if (! auth()->user()->can('view_cash_register')) {
             abort(403, 'Unauthorized action.');
@@ -153,16 +147,15 @@ class CashRegisterController extends Controller
         $payment_types = $this->cashRegisterUtil->payment_types($register_details->location_id, true, $business_id);
 
         return view('cash_register.register_details')
-                ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
+            ->with(compact('register_details', 'details', 'payment_types', 'close_time'));
     }
 
     /**
      * Shows close register form.
      *
      * @param  void
-     * @return \Illuminate\Http\Response
      */
-    public function getCloseRegister($id = null)
+    public function getCloseRegister($id = null): View
     {
         if (! auth()->user()->can('close_cash_register')) {
             abort(403, 'Unauthorized action.');
@@ -184,16 +177,13 @@ class CashRegisterController extends Controller
         $pos_settings = ! empty(request()->session()->get('business.pos_settings')) ? json_decode(request()->session()->get('business.pos_settings'), true) : [];
 
         return view('cash_register.close_register_modal')
-                    ->with(compact('register_details', 'details', 'payment_types', 'pos_settings'));
+            ->with(compact('register_details', 'details', 'payment_types', 'pos_settings'));
     }
 
     /**
      * Closes currently opened register.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function postCloseRegister(Request $request)
+    public function postCloseRegister(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('close_cash_register')) {
             abort(403, 'Unauthorized action.');
@@ -217,8 +207,8 @@ class CashRegisterController extends Controller
             $input['denominations'] = ! empty(request()->input('denominations')) ? json_encode(request()->input('denominations')) : null;
 
             CashRegister::where('user_id', $user_id)
-                                ->where('status', 'open')
-                                ->update($input);
+                ->where('status', 'open')
+                ->update($input);
             $output = ['success' => 1,
                 'msg' => __('cash_register.close_success'),
             ];

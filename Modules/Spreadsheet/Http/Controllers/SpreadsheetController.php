@@ -5,10 +5,12 @@ namespace Modules\Spreadsheet\Http\Controllers;
 use App\Category;
 use App\User;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Spreadsheet\Entities\Spreadsheet;
 use Modules\Spreadsheet\Entities\SpreadsheetShare;
 use Modules\Spreadsheet\Notifications\SpreadsheetShared;
@@ -35,10 +37,8 @@ class SpreadsheetController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -53,33 +53,33 @@ class SpreadsheetController extends Controller
         $todo_ids = $module_data['Essentials'];
 
         $query = Spreadsheet::with(['createdBy', 'shares'])
-                    ->where('business_id', $business_id)
-                    ->leftJoin('sheet_spreadsheet_shares as SSS', 'sheet_spreadsheets.id', '=', 'SSS.sheet_spreadsheet_id');
+            ->where('business_id', $business_id)
+            ->leftJoin('sheet_spreadsheet_shares as SSS', 'sheet_spreadsheets.id', '=', 'SSS.sheet_spreadsheet_id');
 
         if (! auth()->user()->can('superadmin')) {
             $query->where('created_by', auth()->user()->id)
-                    ->orWhere(function ($query) use ($role_id) {
-                        $query->where('SSS.shared_id', '=', $role_id)
-                            ->where('SSS.shared_with', '=', 'role');
-                    })
-                    ->orwhere(function ($query) use ($user_id) {
-                        $query->where('SSS.shared_id', '=', $user_id)
-                            ->where('SSS.shared_with', '=', 'user');
-                    });
+                ->orWhere(function ($query) use ($role_id) {
+                    $query->where('SSS.shared_id', '=', $role_id)
+                        ->where('SSS.shared_with', '=', 'role');
+                })
+                ->orwhere(function ($query) use ($user_id) {
+                    $query->where('SSS.shared_id', '=', $user_id)
+                        ->where('SSS.shared_with', '=', 'user');
+                });
 
             if (! empty($todo_ids)) {
                 $query->orwhere(function ($query) use ($todo_ids) {
                     $query->whereIn('SSS.shared_id', $todo_ids)
-                            ->where('SSS.shared_with', '=', 'todo');
+                        ->where('SSS.shared_with', '=', 'todo');
                 });
             }
         }
 
         $spreadsheets = $query->select('sheet_spreadsheets.id', 'name', 'sheet_spreadsheets.updated_at',
-                            'created_by', 'folder_id')
-                        ->orderByDesc('sheet_spreadsheets.updated_at')
-                        ->groupBy('sheet_spreadsheets.id')
-                        ->get();
+            'created_by', 'folder_id')
+            ->orderByDesc('sheet_spreadsheets.updated_at')
+            ->groupBy('sheet_spreadsheets.id')
+            ->get();
 
         $todos = [];
         if (! empty($module_data['Essentials'])) {
@@ -112,9 +112,9 @@ class SpreadsheetController extends Controller
         }
 
         $folders = Category::where('business_id', $business_id)
-                        ->where('category_type', 'spreadsheet')
-                        ->orderBy('name', 'asc')
-                        ->get();
+            ->where('category_type', 'spreadsheet')
+            ->orderBy('name', 'asc')
+            ->get();
 
         return view('spreadsheet::sheet.index')
             ->with(compact('spreadsheets', 'folders'));
@@ -122,10 +122,8 @@ class SpreadsheetController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -139,11 +137,8 @@ class SpreadsheetController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -184,11 +179,8 @@ class SpreadsheetController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -203,58 +195,51 @@ class SpreadsheetController extends Controller
         $todo_ids = $module_data['Essentials'];
 
         $query = Spreadsheet::where('business_id', $business_id)
-                    ->where('sheet_spreadsheets.id', $id)
-                    ->leftJoin('sheet_spreadsheet_shares as SSS', function($join) use($id){
-                        $join->on('sheet_spreadsheets.id', '=', 'SSS.sheet_spreadsheet_id')
-                            ->where('SSS.sheet_spreadsheet_id', '=', $id);
-                    });
+            ->where('sheet_spreadsheets.id', $id)
+            ->leftJoin('sheet_spreadsheet_shares as SSS', function ($join) use ($id) {
+                $join->on('sheet_spreadsheets.id', '=', 'SSS.sheet_spreadsheet_id')
+                    ->where('SSS.sheet_spreadsheet_id', '=', $id);
+            });
 
         if (! auth()->user()->can('superadmin')) {
             $query->where('created_by', auth()->user()->id)
-                    ->orWhere(function ($query) use ($role_id) {
-                        $query->where('SSS.shared_id', '=', $role_id)
-                            ->where('SSS.shared_with', '=', 'role');
-                    })
-                    ->orwhere(function ($query) use ($user_id) {
-                        $query->where('SSS.shared_id', '=', $user_id)
-                            ->where('SSS.shared_with', '=', 'user');
-                    });
+                ->orWhere(function ($query) use ($role_id) {
+                    $query->where('SSS.shared_id', '=', $role_id)
+                        ->where('SSS.shared_with', '=', 'role');
+                })
+                ->orwhere(function ($query) use ($user_id) {
+                    $query->where('SSS.shared_id', '=', $user_id)
+                        ->where('SSS.shared_with', '=', 'user');
+                });
 
             if (! empty($todo_ids)) {
                 $query->orwhere(function ($query) use ($todo_ids) {
                     $query->whereIn('SSS.shared_id', $todo_ids)
-                            ->where('SSS.shared_with', '=', 'todo');
+                        ->where('SSS.shared_with', '=', 'todo');
                 });
             }
         }
 
         $spreadsheet = $query
-                        ->select('sheet_spreadsheets.business_id', 'sheet_spreadsheets.id', 'sheet_spreadsheets.name', 'sheet_spreadsheets.sheet_data', 'sheet_spreadsheets.created_by')
-                        ->firstOrFail();
-                        
+            ->select('sheet_spreadsheets.business_id', 'sheet_spreadsheets.id', 'sheet_spreadsheets.name', 'sheet_spreadsheets.sheet_data', 'sheet_spreadsheets.created_by')
+            ->firstOrFail();
+
         return view('spreadsheet::sheet.show')
             ->with(compact('spreadsheet'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('spreadsheet::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -274,36 +259,36 @@ class SpreadsheetController extends Controller
 
             DB::beginTransaction();
             $query = Spreadsheet::where('business_id', $business_id)
-                        ->where('sheet_spreadsheets.id', $id)
-                        ->leftJoin('sheet_spreadsheet_shares as SSS', 'sheet_spreadsheets.id', '=', 'SSS.sheet_spreadsheet_id');
+                ->where('sheet_spreadsheets.id', $id)
+                ->leftJoin('sheet_spreadsheet_shares as SSS', 'sheet_spreadsheets.id', '=', 'SSS.sheet_spreadsheet_id');
 
             if (! auth()->user()->can('superadmin')) {
                 $query->where('created_by', auth()->user()->id)
-                            ->orWhere(function ($query) use ($role_id) {
-                                $query->where('SSS.shared_id', '=', $role_id)
-                                    ->where('SSS.shared_with', '=', 'role');
-                            })
-                            ->orwhere(function ($query) use ($user_id) {
-                                $query->where('SSS.shared_id', '=', $user_id)
-                                    ->where('SSS.shared_with', '=', 'user');
-                            });
+                    ->orWhere(function ($query) use ($role_id) {
+                        $query->where('SSS.shared_id', '=', $role_id)
+                            ->where('SSS.shared_with', '=', 'role');
+                    })
+                    ->orwhere(function ($query) use ($user_id) {
+                        $query->where('SSS.shared_id', '=', $user_id)
+                            ->where('SSS.shared_with', '=', 'user');
+                    });
 
                 if (! empty($todo_ids)) {
                     $query->orwhere(function ($query) use ($todo_ids) {
                         $query->whereIn('SSS.shared_id', $todo_ids)
-                                    ->where('SSS.shared_with', '=', 'todo');
+                            ->where('SSS.shared_with', '=', 'todo');
                     });
                 }
             }
 
             $spreadsheet = $query
-                                ->select('sheet_spreadsheets.business_id', 'sheet_spreadsheets.id', 'sheet_spreadsheets.name', 'sheet_spreadsheets.sheet_data')
-                                ->firstOrFail();
+                ->select('sheet_spreadsheets.business_id', 'sheet_spreadsheets.id', 'sheet_spreadsheets.name', 'sheet_spreadsheets.sheet_data')
+                ->firstOrFail();
 
             if (! empty($spreadsheet)) {
                 Spreadsheet::where('business_id', $business_id)
-                        ->where('id', $id)
-                        ->update($input);
+                    ->where('id', $id)
+                    ->update($input);
             }
 
             DB::commit();
@@ -329,11 +314,8 @@ class SpreadsheetController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -370,7 +352,7 @@ class SpreadsheetController extends Controller
         return $output;
     }
 
-    public function getShareSpreadsheet(Request $request, $id)
+    public function getShareSpreadsheet(Request $request, $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -390,8 +372,8 @@ class SpreadsheetController extends Controller
             $roles = $this->moduleUtil->getDropdownForRoles($business_id);
 
             $shared_spreadsheets = SpreadsheetShare::where('sheet_spreadsheet_id', $id)
-                                    ->get()
-                                    ->groupBy('shared_with');
+                ->get()
+                ->groupBy('shared_with');
 
             $shared_todos = [];
             $shared_roles = [];
@@ -428,56 +410,56 @@ class SpreadsheetController extends Controller
                 DB::beginTransaction();
 
                 //Update shared spreadsheets based on selected data
-                    $notify_to_shared_ids = []; //send notification to users
-                    if (! empty($shares)) {
-                        foreach ($shares as $shared_with => $shared_ids) {
-                            $existing_shared_ids = [];
-                            foreach ($shared_ids as $id) {
-                                $existing_shared_ids[] = $id;
-                                $data = [
-                                    'sheet_spreadsheet_id' => $sheet_id,
-                                    'shared_with' => $shared_with,
-                                    'shared_id' => $id,
-                                ];
+                $notify_to_shared_ids = []; //send notification to users
+                if (! empty($shares)) {
+                    foreach ($shares as $shared_with => $shared_ids) {
+                        $existing_shared_ids = [];
+                        foreach ($shared_ids as $id) {
+                            $existing_shared_ids[] = $id;
+                            $data = [
+                                'sheet_spreadsheet_id' => $sheet_id,
+                                'shared_with' => $shared_with,
+                                'shared_id' => $id,
+                            ];
 
-                                $sheet = SpreadsheetShare::firstOrCreate($data, $data);
+                            $sheet = SpreadsheetShare::firstOrCreate($data, $data);
 
-                                if ($sheet->shared_with == 'user' && $sheet->wasRecentlyCreated) {
-                                    $notify_to_shared_ids[] = $sheet->shared_id;
-                                }
-
-                                //get users of the role to notify
-                                if ($sheet->shared_with == 'role' && $sheet->wasRecentlyCreated) {
-                                    $role = Role::where('business_id', $business_id)
-                                        ->find($sheet->shared_id);
-                                    $users = User::role($role->name)->get()->pluck('id')->toArray();
-                                    $notify_to_shared_ids = array_unique(array_merge($notify_to_shared_ids, $users));
-                                }
+                            if ($sheet->shared_with == 'user' && $sheet->wasRecentlyCreated) {
+                                $notify_to_shared_ids[] = $sheet->shared_id;
                             }
-                            SpreadsheetShare::where('sheet_spreadsheet_id', $sheet_id)
-                                ->where('shared_with', $shared_with)
-                                ->whereNotIn('shared_id', $existing_shared_ids)
-                                ->delete();
+
+                            //get users of the role to notify
+                            if ($sheet->shared_with == 'role' && $sheet->wasRecentlyCreated) {
+                                $role = Role::where('business_id', $business_id)
+                                    ->find($sheet->shared_id);
+                                $users = User::role($role->name)->get()->pluck('id')->toArray();
+                                $notify_to_shared_ids = array_unique(array_merge($notify_to_shared_ids, $users));
+                            }
                         }
+                        SpreadsheetShare::where('sheet_spreadsheet_id', $sheet_id)
+                            ->where('shared_with', $shared_with)
+                            ->whereNotIn('shared_id', $existing_shared_ids)
+                            ->delete();
                     }
+                }
 
                 //if shared with is empty then delete whole rows of given sheet & shared with
                 if (empty($shares['todo'])) {
                     SpreadsheetShare::where('sheet_spreadsheet_id', $sheet_id)
-                            ->where('shared_with', 'todo')
-                            ->delete();
+                        ->where('shared_with', 'todo')
+                        ->delete();
                 }
 
                 if (empty($shares['user'])) {
                     SpreadsheetShare::where('sheet_spreadsheet_id', $sheet_id)
-                            ->where('shared_with', 'user')
-                            ->delete();
+                        ->where('shared_with', 'user')
+                        ->delete();
                 }
 
                 if (empty($shares['role'])) {
                     SpreadsheetShare::where('sheet_spreadsheet_id', $sheet_id)
-                            ->where('shared_with', 'role')
-                            ->delete();
+                        ->where('shared_with', 'role')
+                        ->delete();
                 }
 
                 if (! empty($notify_to_shared_ids)) {
@@ -506,20 +488,20 @@ class SpreadsheetController extends Controller
     public function notifyUsersOfSharedSheets($business_id, $sheet_id, $shared_ids)
     {
         $users = User::where('business_id', $business_id)
-                    ->find($shared_ids);
+            ->find($shared_ids);
 
         Notification::send($users, new SpreadsheetShared($sheet_id));
     }
 
-    public function addFolder(Request $request)
+    public function addFolder(Request $request): RedirectResponse
     {
         try {
             $input = $request->only(['name']);
             if (! empty($request->input('folder_id'))) {
                 Category::where('business_id', $request->session()->get('user.business_id'))
-                        ->where('id', $request->input('folder_id'))
-                        ->where('category_type', 'spreadsheet')
-                        ->update($input);
+                    ->where('id', $request->input('folder_id'))
+                    ->where('category_type', 'spreadsheet')
+                    ->update($input);
             } else {
                 $input['parent_id'] = 0;
                 $input['business_id'] = $request->session()->get('user.business_id');
@@ -541,19 +523,19 @@ class SpreadsheetController extends Controller
         }
 
         return redirect()
-                ->action([\Modules\Spreadsheet\Http\Controllers\SpreadsheetController::class, 'index'])
-                ->with('status', $output);
+            ->action([\Modules\Spreadsheet\Http\Controllers\SpreadsheetController::class, 'index'])
+            ->with('status', $output);
     }
 
-    public function moveToFolder(Request $request)
+    public function moveToFolder(Request $request): RedirectResponse
     {
         if (! empty($request->input('move_to_folder'))) {
             $business_id = $request->session()->get('user.business_id');
 
             Spreadsheet::where('business_id', $business_id)
-                    ->where('created_by', auth()->user()->id)
-                    ->where('id', $request->input('spreadsheet_id'))
-                    ->update(['folder_id' => $request->input('move_to_folder')]);
+                ->where('created_by', auth()->user()->id)
+                ->where('id', $request->input('spreadsheet_id'))
+                ->update(['folder_id' => $request->input('move_to_folder')]);
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.success'),

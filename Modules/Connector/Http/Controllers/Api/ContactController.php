@@ -13,6 +13,7 @@ use Modules\Connector\Transformers\CommonResource;
 
 /**
  * @group Contact management
+ *
  * @authenticated
  *
  * APIs for managing contacts
@@ -26,7 +27,6 @@ class ContactController extends ApiController
     /**
      * Constructor
      *
-     * @param  ContactUtil  $contactUtil
      * @return void
      */
     public function __construct(
@@ -48,6 +48,7 @@ class ContactController extends ApiController
      * @queryParam order_by Column name to sort the result, Column: name, supplier_business_name
      * @queryParam direction Direction to sort the result, Direction: desc, asc
      * @queryParam per_page Total records per page. default: 10, Set -1 for no pagination Example:10
+     *
      * @response {
             "data": [
                 {
@@ -458,6 +459,7 @@ class ContactController extends ApiController
      * Get the specified contact
      *
      * @urlParam contact required comma separated ids of contacts Example: 2
+     *
      * @response {
         "data": [
             {
@@ -554,6 +556,7 @@ class ContactController extends ApiController
      * Update contact
      *
      * @urlParam contact required id of the contact to be updated Example: 17
+     *
      * @bodyParam type string Type of contact (supplier, customer, both) Example:customer
      * @bodyParam supplier_business_name string required* Required if type is supplier
      * @bodyParam prefix string Prefix for the name of the contact

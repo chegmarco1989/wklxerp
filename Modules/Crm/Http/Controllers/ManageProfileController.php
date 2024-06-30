@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Media;
 use App\User;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class ManageProfileController extends Controller
 {
@@ -29,10 +31,8 @@ class ManageProfileController extends Controller
 
     /**
      * Shows profile of logged in user
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function getProfile()
+    public function getProfile(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -52,10 +52,8 @@ class ManageProfileController extends Controller
 
     /**
      * updates user profile
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -92,10 +90,8 @@ class ManageProfileController extends Controller
 
     /**
      * Update the password
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {

@@ -8,6 +8,7 @@ use App\User;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class DocumentAndNoteController extends Controller
@@ -48,7 +49,7 @@ class DocumentAndNoteController extends Controller
                     $query->where('is_private', 0)
                         ->orWhere(function ($q) use ($user_id) {
                             $q->where('is_private', 1)
-                              ->where('created_by', $user_id);
+                                ->where('created_by', $user_id);
                         });
                 })
                 ->where('notable_type', $notable_type)
@@ -138,7 +139,7 @@ class DocumentAndNoteController extends Controller
 
                             return $html;
                         }
-                        )
+                    )
                     ->removeColumn('id')
                     ->rawColumns(['action', 'heading', 'createdBy', 'created_at', 'updated_at'])
                     ->make(true);
@@ -151,7 +152,7 @@ class DocumentAndNoteController extends Controller
      *
      * @return array of permissions
      */
-    private function __getPermission($business_id, $notable_id, $notable_type)
+    private function __getPermission($business_id, $notable_id, $notable_type): array
     {
         $permissions = [];
 
@@ -186,10 +187,8 @@ class DocumentAndNoteController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         //model id like project_id, user_id
         $notable_id = request()->get('notable_id');
@@ -203,7 +202,6 @@ class DocumentAndNoteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -259,11 +257,8 @@ class DocumentAndNoteController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         //model id like project_id, user_id
         $notable_id = request()->get('notable_id');
@@ -283,11 +278,8 @@ class DocumentAndNoteController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         //model id like project_id, user_id
         $notable_id = request()->get('notable_id');
@@ -296,9 +288,9 @@ class DocumentAndNoteController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $document_note = DocumentAndNote::where('business_id', $business_id)
-        ->where('notable_id', $notable_id)
-        ->where('notable_type', $notable_type)
-        ->findOrFail($id);
+            ->where('notable_id', $notable_id)
+            ->where('notable_type', $notable_type)
+            ->findOrFail($id);
 
         return view('documents_and_notes.edit')
             ->with(compact('notable_id', 'document_note', 'notable_type'));
@@ -307,11 +299,9 @@ class DocumentAndNoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         try {
 
@@ -370,10 +360,9 @@ class DocumentAndNoteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         try {
             $business_id = request()->session()->get('user.business_id');
@@ -444,10 +433,8 @@ class DocumentAndNoteController extends Controller
     /**
      * get docus & note index page
      * through ajax
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function getDocAndNoteIndexPage(Request $request)
+    public function getDocAndNoteIndexPage(Request $request): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');

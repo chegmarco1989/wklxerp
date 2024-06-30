@@ -3,6 +3,7 @@
 namespace Modules\Project\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class InvoiceLine extends Model
 {
@@ -23,7 +24,7 @@ class InvoiceLine extends Model
     /**
      * Get the tax for invoice line.
      */
-    public function tax()
+    public function tax(): BelongsTo
     {
         return $this->belongsTo(\App\TaxRate::class, 'tax_rate_id');
     }

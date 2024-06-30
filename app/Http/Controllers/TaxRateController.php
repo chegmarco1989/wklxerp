@@ -6,6 +6,7 @@ use App\GroupSubTax;
 use App\TaxRate;
 use App\Utils\TaxUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class TaxRateController extends Controller
@@ -18,7 +19,6 @@ class TaxRateController extends Controller
     /**
      * Constructor
      *
-     * @param  TaxUtil  $taxUtil
      * @return void
      */
     public function __construct(TaxUtil $taxUtil)
@@ -41,8 +41,8 @@ class TaxRateController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $tax_rates = TaxRate::where('business_id', $business_id)
-                        ->where('is_tax_group', '0')
-                        ->select(['name', 'amount', 'id', 'for_tax_group']);
+                ->where('is_tax_group', '0')
+                ->select(['name', 'amount', 'id', 'for_tax_group']);
 
             return Datatables::of($tax_rates)
                 ->addColumn(
@@ -68,10 +68,8 @@ class TaxRateController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('tax_rate.create')) {
             abort(403, 'Unauthorized action.');
@@ -83,7 +81,6 @@ class TaxRateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -118,21 +115,17 @@ class TaxRateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('tax_rate.update')) {
             abort(403, 'Unauthorized action.');
@@ -150,11 +143,9 @@ class TaxRateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('tax_rate.update')) {
             abort(403, 'Unauthorized action.');
@@ -173,7 +164,7 @@ class TaxRateController extends Controller
 
                 //update group tax amount
                 $group_taxes = GroupSubTax::where('tax_id', $id)
-                                            ->get();
+                    ->get();
 
                 foreach ($group_taxes as $group_tax) {
                     $this->taxUtil->updateGroupTaxAmount($group_tax->group_tax_id);
@@ -197,10 +188,9 @@ class TaxRateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('tax_rate.delete')) {
             abort(403, 'Unauthorized action.');
@@ -210,7 +200,7 @@ class TaxRateController extends Controller
             try {
                 //update group tax amount
                 $group_taxes = GroupSubTax::where('tax_id', $id)
-                                            ->get();
+                    ->get();
                 if ($group_taxes->isEmpty()) {
                     $business_id = request()->user()->business_id;
 

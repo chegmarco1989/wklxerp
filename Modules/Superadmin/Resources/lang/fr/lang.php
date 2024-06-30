@@ -234,7 +234,7 @@ return [
     'invalid_coupon' => 'Coupon invalide',
     'discount_amount_not_valid' => 'Montant de réduction non valide',
     'original_price' => "Prix d'origine",
-    'only_for_businesses' => "Réservé aux entreprises",
+    'only_for_businesses' => 'Réservé aux entreprises',
     'tooltip_only_for_businesses' => 'Sélectionnez les entreprises auxquelles ce forfait sera affiché. Si vide, le forfait sera affiché à toutes les entreprises.',
     'paid_amount' => 'Montant payé',
     'infinite_help' => '0 = infini',

@@ -16,7 +16,7 @@ class Warranty extends Model
     public static function forDropdown($business_id)
     {
         $warranties = Warranty::where('business_id', $business_id)
-                            ->get();
+            ->get();
         $dropdown = [];
 
         foreach ($warranties as $warranty) {
@@ -28,10 +28,8 @@ class Warranty extends Model
 
     /**
      * Get the display name.
-     *
-     * @return string
      */
-    public function getDisplayNameAttribute()
+    public function getDisplayNameAttribute(): string
     {
         $name = $this->name.' ('.$this->duration.' '.__('lang_v1.'.$this->duration_type).')';
 

@@ -152,7 +152,7 @@ return [
     'my_leads' => 'Mes prospects',
     'my_leads_to_customer_conversion' => 'Mes prospects en conversion client',
     'todays_followups' => "Les suivis d'aujourd'hui",
-	
+
     'my_call_logs' => "Mon journal d'appels",
     'calls_today' => "Appels d'aujourd'hui",
     'calls_yesterday' => "Appels d'hier",
@@ -171,5 +171,5 @@ return [
     'contact_person' => 'Personne de contact',
     'total_commission' => 'Commission totale',
     'comma_separated_email' => 'Valeurs des e-mails séparées par des virgules',
-	
+
 ];

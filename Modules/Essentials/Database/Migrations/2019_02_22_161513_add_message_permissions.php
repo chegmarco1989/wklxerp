@@ -3,14 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Permission;
 
-class AddMessagePermissions extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Permission::create(['name' => 'essentials.create_message']);
         Permission::create(['name' => 'essentials.view_message']);
@@ -18,10 +16,8 @@ class AddMessagePermissions extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
-}
+};

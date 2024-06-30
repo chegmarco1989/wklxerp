@@ -30,9 +30,8 @@ class SendSubscriptionExpiryAlert extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         $channels = ['mail', 'database'];
         if (isPusherEnabled()) {
@@ -46,9 +45,8 @@ class SendSubscriptionExpiryAlert extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $owner_name = $notifiable->user_full_name;
         $app_name = config('app.name');
@@ -56,20 +54,19 @@ class SendSubscriptionExpiryAlert extends Notification
         $days_left = $this->days_left;
 
         return (new MailMessage)
-                ->greeting("Dear $owner_name,")
-                ->subject('Subscription Expiry Alert')
-                ->line("Your subscription for $app_name is expiring in next $days_left days.")
-                ->line("Kindly subscribe to continue using $business_name.")
-                ->action('Subscribe', action([\Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'index']));
+            ->greeting("Dear $owner_name,")
+            ->subject('Subscription Expiry Alert')
+            ->line("Your subscription for $app_name is expiring in next $days_left days.")
+            ->line("Kindly subscribe to continue using $business_name.")
+            ->action('Subscribe', action([\Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'index']));
     }
 
     /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase($notifiable): array
     {
         return [
             'days_left' => $this->days_left,
@@ -80,9 +77,8 @@ class SendSubscriptionExpiryAlert extends Notification
      * Get the broadcastable representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return BroadcastMessage
      */
-    public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
             'title' => '',

@@ -210,4 +210,3 @@ return [
     'registered_on' => '注册于',
     'map_box_access_token' => 'Mapbox访问令牌',
 ];
-

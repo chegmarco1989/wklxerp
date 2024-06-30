@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Business extends Model
 {
@@ -57,7 +60,7 @@ class Business extends Model
     /**
      * Get the owner details
      */
-    public function owner()
+    public function owner(): HasOne
     {
         return $this->hasOne(\App\User::class, 'id', 'owner_id');
     }
@@ -65,7 +68,7 @@ class Business extends Model
     /**
      * Get the Business currency.
      */
-    public function currency()
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(\App\Currency::class);
     }
@@ -73,7 +76,7 @@ class Business extends Model
     /**
      * Get the Business currency.
      */
-    public function locations()
+    public function locations(): HasMany
     {
         return $this->hasMany(\App\BusinessLocation::class);
     }
@@ -81,7 +84,7 @@ class Business extends Model
     /**
      * Get the Business printers.
      */
-    public function printers()
+    public function printers(): HasMany
     {
         return $this->hasMany(\App\Printer::class);
     }
@@ -89,17 +92,15 @@ class Business extends Model
     /**
      * Get the Business subscriptions.
      */
-    public function subscriptions()
+    public function subscriptions(): HasMany
     {
         return $this->hasMany('\Modules\Superadmin\Entities\Subscription');
     }
 
     /**
      * Creates a new business based on the input provided.
-     *
-     * @return object
      */
-    public static function create_business($details)
+    public static function create_business($details): object
     {
         $business = Business::create($details);
 
@@ -108,12 +109,8 @@ class Business extends Model
 
     /**
      * Updates a business based on the input provided.
-     *
-     * @param  int  $business_id
-     * @param  array  $details
-     * @return object
      */
-    public static function update_business($business_id, $details)
+    public static function update_business(int $business_id, array $details): object
     {
         if (! empty($details)) {
             Business::where('id', $business_id)

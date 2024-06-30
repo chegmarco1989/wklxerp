@@ -3,6 +3,8 @@
 namespace Modules\Cms\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CmsPage extends Model
 {
@@ -22,10 +24,8 @@ class CmsPage extends Model
 
     /**
      * Get the slug for post.
-     *
-     * @return string
      */
-    public function getSlugAttribute()
+    public function getSlugAttribute(): string
     {
         return strtolower(str_replace(' ', '-', $this->title));
     }
@@ -33,17 +33,15 @@ class CmsPage extends Model
     /**
      * Get the business that owns the user.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by', 'id');
     }
 
     /**
      * Get the feature image.
-     *
-     * @return string
      */
-    public function getFeatureImageUrlAttribute()
+    public function getFeatureImageUrlAttribute(): string
     {
         $image_url = null;
 
@@ -56,10 +54,8 @@ class CmsPage extends Model
 
     /**
      * Get the feature image path.
-     *
-     * @return string
      */
-    public function getFeatureImagePathAttribute()
+    public function getFeatureImagePathAttribute(): string
     {
         $image_path = null;
 
@@ -73,7 +69,7 @@ class CmsPage extends Model
     /**
      * Get the meta for the page.
      */
-    public function pageMeta()
+    public function pageMeta(): HasMany
     {
         return $this->hasMany('Modules\Cms\Entities\CmsPageMeta', 'cms_page_id', 'id');
     }
@@ -81,10 +77,10 @@ class CmsPage extends Model
     public static function getEnabledPages($type = 'page')
     {
         $pages = CmsPage::where('type', $type)
-                    ->whereNull('layout')
-                    ->orderBy('priority', 'asc')
-                    ->where('is_enabled', 1)
-                    ->get();
+            ->whereNull('layout')
+            ->orderBy('priority', 'asc')
+            ->where('is_enabled', 1)
+            ->get();
 
         return $pages;
     }
@@ -96,8 +92,8 @@ class CmsPage extends Model
         }
 
         $pages_count = CmsPage::where('type', $type)
-                        ->where('is_enabled', 1)
-                        ->count();
+            ->where('is_enabled', 1)
+            ->count();
 
         return $pages_count;
     }

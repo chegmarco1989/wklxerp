@@ -16,7 +16,6 @@ class AddAccountTransaction
     /**
      * Constructor
      *
-     * @param  TransactionUtil  $transactionUtil
      * @return void
      */
     public function __construct(TransactionUtil $transactionUtil, ModuleUtil $moduleUtil)
@@ -27,11 +26,8 @@ class AddAccountTransaction
 
     /**
      * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
      */
-    public function handle(TransactionPaymentAdded $event)
+    public function handle(TransactionPaymentAdded $event): void
     {
         //echo "<pre>";print_r($event->transactionPayment->toArray());exit;
         if ($event->transactionPayment->method == 'advance') {

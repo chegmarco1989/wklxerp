@@ -7,6 +7,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsAllowanceAndDeduction;
 use Modules\Essentials\Utils\EssentialsUtil;
 use Yajra\DataTables\Facades\DataTables;
@@ -34,10 +35,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -87,10 +86,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -105,11 +102,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -141,10 +135,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show()
+    public function show(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -157,10 +149,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -169,8 +159,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
         }
 
         $allowance = EssentialsAllowanceAndDeduction::where('business_id', $business_id)
-                    ->with('employees')
-                    ->findOrFail($id);
+            ->with('employees')
+            ->findOrFail($id);
         $users = User::forDropdown($business_id, false);
 
         $selected_users = [];
@@ -181,16 +171,13 @@ class EssentialsAllowanceAndDeductionController extends Controller
         $applicable_date = ! empty($allowance->applicable_date) ? $this->essentialsUtil->format_date($allowance->applicable_date) : null;
 
         return view('essentials::allowance_deduction.edit')
-                ->with(compact('allowance', 'users', 'selected_users', 'applicable_date'));
+            ->with(compact('allowance', 'users', 'selected_users', 'applicable_date'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -223,10 +210,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -237,8 +222,8 @@ class EssentialsAllowanceAndDeductionController extends Controller
         if (request()->ajax()) {
             try {
                 EssentialsAllowanceAndDeduction::where('business_id', $business_id)
-                            ->where('id', $id)
-                            ->delete();
+                    ->where('id', $id)
+                    ->delete();
 
                 $output = ['success' => true,
                     'msg' => __('lang_v1.deleted_success'),

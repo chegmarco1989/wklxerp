@@ -10,9 +10,8 @@ class BusinessResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
-     * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $array = parent::toArray($request);
         $array['keyboard_shortcuts'] = ! empty($array['keyboard_shortcuts']) ? json_decode($array['keyboard_shortcuts'], true) : null;

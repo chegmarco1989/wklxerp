@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Barcode;
 use Datatables;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BarcodeController extends Controller
 {
@@ -23,7 +25,7 @@ class BarcodeController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $barcodes = Barcode::where('business_id', $business_id)
-                        ->select(['name', 'description', 'id', 'is_default']);
+                ->select(['name', 'description', 'id', 'is_default']);
 
             return Datatables::of($barcodes)
                 ->addColumn(
@@ -56,10 +58,8 @@ class BarcodeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('barcode_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -70,11 +70,8 @@ class BarcodeController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('barcode_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -90,8 +87,8 @@ class BarcodeController extends Controller
             if (! empty($request->input('is_default'))) {
                 //get_default
                 $default = Barcode::where('business_id', $business_id)
-                                ->where('is_default', 1)
-                                ->update(['is_default' => 0]);
+                    ->where('is_default', 1)
+                    ->update(['is_default' => 0]);
                 $input['is_default'] = 1;
             }
             if (! empty($request->input('is_continuous'))) {
@@ -120,7 +117,6 @@ class BarcodeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Barcode  $barcode
      * @return \Illuminate\Http\Response
      */
     public function show(Barcode $barcode)
@@ -130,11 +126,8 @@ class BarcodeController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('barcode_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -149,12 +142,8 @@ class BarcodeController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         if (! auth()->user()->can('barcode_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -194,10 +183,9 @@ class BarcodeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('barcode_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -231,10 +219,9 @@ class BarcodeController extends Controller
     /**
      * Sets barcode setting as default
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function setDefault($id)
+    public function setDefault(int $id)
     {
         if (! auth()->user()->can('barcode_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -245,8 +232,8 @@ class BarcodeController extends Controller
                 //get_default
                 $business_id = request()->session()->get('user.business_id');
                 $default = Barcode::where('business_id', $business_id)
-                                ->where('is_default', 1)
-                                 ->update(['is_default' => 0]);
+                    ->where('is_default', 1)
+                    ->update(['is_default' => 0]);
 
                 $barcode = Barcode::find($id);
                 $barcode->is_default = 1;

@@ -3,6 +3,8 @@
 namespace Modules\Manufacturing\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class MfgRecipe extends Model
@@ -17,7 +19,7 @@ class MfgRecipe extends Model
     /**
      * Get the variations associated with the product.
      */
-    public function variation()
+    public function variation(): BelongsTo
     {
         return $this->belongsTo(\App\Variation::class, 'variation_id');
     }
@@ -25,7 +27,7 @@ class MfgRecipe extends Model
     /**
      * Get all the ingredients for the recipe.
      */
-    public function ingredients()
+    public function ingredients(): HasMany
     {
         return $this->hasMany(\Modules\Manufacturing\Entities\MfgRecipeIngredient::class, 'mfg_recipe_id');
     }
@@ -33,18 +35,18 @@ class MfgRecipe extends Model
     public static function forDropdown($business_id, $variation_id = true)
     {
         $recipes = MfgRecipe::join('variations as v', 'mfg_recipes.variation_id', '=', 'v.id')
-                        ->join('products as p', 'v.product_id', '=', 'p.id')
-                        ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
-                        ->where('p.business_id', $business_id)
-                        ->select(
-                            DB::raw('IF(
+            ->join('products as p', 'v.product_id', '=', 'p.id')
+            ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
+            ->where('p.business_id', $business_id)
+            ->select(
+                DB::raw('IF(
                                         p.type="variable", 
                                         CONCAT(p.name, " - ", pv.name, " - ", v.name, " (", v.sub_sku, ")"), 
                                         CONCAT(p.name, " (", v.sub_sku, ")") 
                                         ) as recipe_name'),
-                            'mfg_recipes.variation_id',
-                            'mfg_recipes.id'
-                        )->get();
+                'mfg_recipes.variation_id',
+                'mfg_recipes.id'
+            )->get();
         if ($variation_id) {
             return $recipes->pluck('recipe_name', 'variation_id');
         } else {
@@ -55,7 +57,7 @@ class MfgRecipe extends Model
     /**
      * Get the unit associated with the recipe.
      */
-    public function sub_unit()
+    public function sub_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'sub_unit_id');
     }

@@ -14,35 +14,34 @@ class RestaurantUtil extends Util
     /**
      * Retrieves all orders/sales
      *
-     * @param  int  $business_id
      * @param  array  $filter
-     * *For new orders order_status is 'received'
+     *                         *For new orders order_status is 'received'
      * @return obj $orders
      */
-    public function getAllOrders($business_id, $filter = [])
+    public function getAllOrders(int $business_id, array $filter = []): obj
     {
         $query = Transaction::leftJoin('contacts', 'transactions.contact_id', '=', 'contacts.id')
-                ->leftjoin(
-                    'business_locations AS bl',
-                    'transactions.location_id',
-                    '=',
-                    'bl.id'
-                )
-                ->leftjoin(
-                    'res_tables AS rt',
-                    'transactions.res_table_id',
-                    '=',
-                    'rt.id'
-                )
-                ->where('transactions.business_id', $business_id)
-                ->where('transactions.type', 'sell')
-                ->where('transactions.status', 'final');
+            ->leftjoin(
+                'business_locations AS bl',
+                'transactions.location_id',
+                '=',
+                'bl.id'
+            )
+            ->leftjoin(
+                'res_tables AS rt',
+                'transactions.res_table_id',
+                '=',
+                'rt.id'
+            )
+            ->where('transactions.business_id', $business_id)
+            ->where('transactions.type', 'sell')
+            ->where('transactions.status', 'final');
         // ->where('transactions.res_order_status', '!=' ,'served');
 
         if (empty($filter['order_status'])) {
             $query->where(function ($q) {
                 $q->where('res_order_status', '!=', 'served')
-                ->orWhereNull('res_order_status');
+                    ->orWhereNull('res_order_status');
             });
         }
 
@@ -55,7 +54,7 @@ class RestaurantUtil extends Util
             if ($filter['line_order_status'] == 'received') {
                 $query->whereHas('sell_lines', function ($q) {
                     $q->whereNull('res_line_order_status')
-                      ->orWhere('res_line_order_status', 'received');
+                        ->orWhere('res_line_order_status', 'received');
                 }, '>=', 1);
             }
 
@@ -92,8 +91,8 @@ class RestaurantUtil extends Util
             'bl.name as business_location',
             'rt.name as table_name'
         )->with(['sell_lines'])
-                ->orderBy('created_at', 'desc')
-                ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return $orders;
     }
@@ -102,10 +101,10 @@ class RestaurantUtil extends Util
     {
         //Get all service staff roles
         $service_staff_roles = Role::where('business_id', $business_id)
-                                ->where('is_service_staff', 1)
-                                ->get()
-                                ->pluck('name')
-                                ->toArray();
+            ->where('is_service_staff', 1)
+            ->get()
+            ->pluck('name')
+            ->toArray();
 
         $service_staff = [];
 
@@ -131,41 +130,40 @@ class RestaurantUtil extends Util
     /**
      * Retrieves line orders/sales
      *
-     * @param  int  $business_id
      * @param  array  $filter
-     * *For new orders order_status is 'received'
+     *                         *For new orders order_status is 'received'
      * @return obj $orders
      */
-    public function getLineOrders($business_id, $filter = [])
+    public function getLineOrders(int $business_id, array $filter = []): obj
     {
         $query = TransactionSellLine::with(['modifiers', 'modifiers.product', 'modifiers.variations'])
-                ->leftJoin('transactions as t', 't.id', '=', 'transaction_sell_lines.transaction_id')
-                ->leftJoin('contacts as c', 't.contact_id', '=', 'c.id')
-                ->leftJoin('variations as v', 'transaction_sell_lines.variation_id', '=', 'v.id')
-                ->leftJoin('products as p', 'v.product_id', '=', 'p.id')
-                ->leftJoin('units as u', 'p.unit_id', '=', 'u.id')
-                ->leftJoin('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
-                ->leftJoin('users as line_service_staff', 'transaction_sell_lines.res_service_staff_id', '=', 'line_service_staff.id')
-                ->leftjoin(
-                    'business_locations AS bl',
-                    't.location_id',
-                    '=',
-                    'bl.id'
-                )
-                ->leftjoin(
-                    'res_tables AS rt',
-                    't.res_table_id',
-                    '=',
-                    'rt.id'
-                )
-                ->where('t.business_id', $business_id)
-                ->where('t.type', 'sell')
-                ->where('t.status', 'final');
+            ->leftJoin('transactions as t', 't.id', '=', 'transaction_sell_lines.transaction_id')
+            ->leftJoin('contacts as c', 't.contact_id', '=', 'c.id')
+            ->leftJoin('variations as v', 'transaction_sell_lines.variation_id', '=', 'v.id')
+            ->leftJoin('products as p', 'v.product_id', '=', 'p.id')
+            ->leftJoin('units as u', 'p.unit_id', '=', 'u.id')
+            ->leftJoin('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
+            ->leftJoin('users as line_service_staff', 'transaction_sell_lines.res_service_staff_id', '=', 'line_service_staff.id')
+            ->leftjoin(
+                'business_locations AS bl',
+                't.location_id',
+                '=',
+                'bl.id'
+            )
+            ->leftjoin(
+                'res_tables AS rt',
+                't.res_table_id',
+                '=',
+                'rt.id'
+            )
+            ->where('t.business_id', $business_id)
+            ->where('t.type', 'sell')
+            ->where('t.status', 'final');
 
         if (empty($filter['order_status'])) {
             $query->where(function ($q) {
                 $q->where('res_line_order_status', '!=', 'served')
-                ->orWhereNull('res_line_order_status');
+                    ->orWhereNull('res_line_order_status');
             });
         }
 
@@ -200,25 +198,22 @@ class RestaurantUtil extends Util
             'transaction_sell_lines.id',
             DB::raw("CONCAT(COALESCE(line_service_staff.surname, ''),' ',COALESCE(line_service_staff.first_name, ''),' ',COALESCE(line_service_staff.last_name,'')) as service_staff_name")
         )
-                ->orderBy('created_at', 'desc')
-                ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return $orders;
     }
 
     /**
      * Function to show booking events on a calendar
-     *
-     * @param  array  $filters
-     * @return array
      */
-    public function getBookingsForCalendar($filters)
+    public function getBookingsForCalendar(array $filters): array
     {
         $start_date = request()->start;
         $end_date = request()->end;
         $query = Booking::where('business_id', $filters['business_id'])
-                        ->whereBetween(DB::raw('date(booking_start)'), [$filters['start_date'], $filters['end_date']])
-                        ->with(['customer', 'table']);
+            ->whereBetween(DB::raw('date(booking_start)'), [$filters['start_date'], $filters['end_date']])
+            ->with(['customer', 'table']);
 
         if (! empty($filters['user_id'])) {
             $query->where('created_by', $filters['user_id']);

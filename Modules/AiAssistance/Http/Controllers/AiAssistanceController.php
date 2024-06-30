@@ -2,14 +2,15 @@
 
 namespace Modules\AiAssistance\Http\Controllers;
 
+use App\Utils\ModuleUtil;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use App\Utils\ModuleUtil;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\AiAssistance\Entities\AiAssistanceHistory;
 use OpenAI\Laravel\Facades\OpenAI;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\DB;
 
 class AiAssistanceController extends Controller
 {
@@ -29,7 +30,7 @@ class AiAssistanceController extends Controller
                 'icon' => 'fas fa-tags',
                 'description' => __('aiassistance::lang.brandproduct_descriptions'),
                 'prompt' => 'As a copywriter, craft a product description for details mentioned. keep it informative, engaging, and persuasive, while also reflecting the brands values and tone of voice. Brand/Product Name: {name} \n Description: {description}',
-                'max_token' => 1000
+                'max_token' => 1000,
             ],
 
             'product_review' => [
@@ -38,7 +39,7 @@ class AiAssistanceController extends Controller
                 'icon' => 'fas fa-star',
                 'description' => __('aiassistance::lang.product_review_desc'),
                 'prompt' => 'write a review for {name} by sharing your experience with the product. In your review, please provide some details about the product, such as its purpose, functionality, and design. Include features you liked about the product, such as its ease of use, durability, or any unique capabilities it offers. Your review should help others make an informed decision about whether or not to purchase the product. Description: {description} \n Features liked: {features_liked}',
-                'max_token' => 512
+                'max_token' => 512,
             ],
 
             'review_response' => [
@@ -47,7 +48,7 @@ class AiAssistanceController extends Controller
                 'icon' => 'fas fa-reply',
                 'description' => __('aiassistance::lang.review_response_desc'),
                 'prompt' => 'write a respond to customer review with professional and positive comments. Do not include personal opinions, but rather focus on the product features and benefits. Avoid writing negative or critical comments. Your replies should be concise and to the point. Customer Review: {customer_review}',
-                'max_token' => 512
+                'max_token' => 512,
             ],
 
             'social_post' => [
@@ -56,7 +57,7 @@ class AiAssistanceController extends Controller
                 'icon' => 'fas fa-share',
                 'description' => __('aiassistance::lang.social_post_desc'),
                 'prompt' => 'write a social media post on the topic, make it engaging and informative, include relevant hashtags, include line breaks & format it in a way easy to read. Topic: {description}',
-                'max_token' => 512
+                'max_token' => 512,
             ],
 
             'google-ads' => [
@@ -65,7 +66,7 @@ class AiAssistanceController extends Controller
                 'icon' => 'fab fa-google',
                 'description' => __('aiassistance::lang.google_ads_desc'),
                 'prompt' => 'write a google ads for the product using the relevant details provided. Start with short and catchy headlines that would grab the attention of potential customers and entice them to click. Brand/Product Name: {name} \n Description: {description}',
-                'max_token' => 512
+                'max_token' => 512,
             ],
 
             'fb-ads' => [
@@ -74,7 +75,7 @@ class AiAssistanceController extends Controller
                 'icon' => 'fab fa-facebook',
                 'description' => __('aiassistance::lang.fb_ads_desc'),
                 'prompt' => 'write a facebook ads for the product using the relevant details provided. Start with short and catchy headlines that would grab the attention of potential customers and entice them to click. Brand/Product Name: {name} \n Description: {description}',
-                'max_token' => 512
+                'max_token' => 512,
             ],
 
             'email' => [
@@ -82,8 +83,8 @@ class AiAssistanceController extends Controller
                 'label' => __('aiassistance::lang.email'),
                 'icon' => 'fas fa-envelope',
                 'description' => __('aiassistance::lang.email_desc'),
-                'prompt' => 'write an email that impresses & get replies based on the provided details using {tone} tone. Sender: {sender} \n Recipient: {recipient} \n Email About: {email_about}' ,
-                'max_token' => 512
+                'prompt' => 'write an email that impresses & get replies based on the provided details using {tone} tone. Sender: {sender} \n Recipient: {recipient} \n Email About: {email_about}',
+                'max_token' => 512,
             ],
 
             //https://venngage.com/blog/business-proposal/#3
@@ -92,8 +93,8 @@ class AiAssistanceController extends Controller
                 'label' => __('aiassistance::lang.proposal'),
                 'icon' => 'fas fa-file-alt',
                 'description' => __('aiassistance::lang.proposal_desc'),
-                'prompt' => 'write an business proposal having applicable sections from executive summary, statement of problem, approach & metholodogy, qualification, schedule & Benchnmark, cost/payment/legal and Benefits. Sender business details: {what_biz_does} \n What can do for customer: {what_do_for_client}' ,
-                'max_token' => 512
+                'prompt' => 'write an business proposal having applicable sections from executive summary, statement of problem, approach & metholodogy, qualification, schedule & Benchnmark, cost/payment/legal and Benefits. Sender business details: {what_biz_does} \n What can do for customer: {what_do_for_client}',
+                'max_token' => 512,
             ],
 
             'kb' => [
@@ -101,23 +102,21 @@ class AiAssistanceController extends Controller
                 'label' => __('aiassistance::lang.kb'),
                 'icon' => 'fas fa-book',
                 'description' => __('aiassistance::lang.kb_desc'),
-                'prompt' => 'write a step-by-step guide on the provided details. Knowledge base topic/details: {kb_details}' ,
-                'max_token' => 512
+                'prompt' => 'write a step-by-step guide on the provided details. Knowledge base topic/details: {kb_details}',
+                'max_token' => 512,
             ],
 
-            
         ];
     }
 
     /**
      * Display a listing of the resource.
-     * @return Renderable
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
-        if (!(auth()->user()->can('superadmin') || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'aiassistance_module')))) {
+        if (! (auth()->user()->can('superadmin') || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'aiassistance_module')))) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -125,10 +124,11 @@ class AiAssistanceController extends Controller
         $token_remaining_display = false;
         $token_details = $this->_tokenDetails($business_id);
         if ($token_details) {
-            $token_remaining_display = $token_details['remaining_tokens'] . '/' . $token_details['max_token'] . ' ' . __('aiassistance::lang.token_remaining');
+            $token_remaining_display = $token_details['remaining_tokens'].'/'.$token_details['max_token'].' '.__('aiassistance::lang.token_remaining');
         }
 
         $tools = $this->tools;
+
         return view('aiassistance::index')->with(compact('tools', 'token_remaining_display'));
     }
 
@@ -137,7 +137,7 @@ class AiAssistanceController extends Controller
         if ($this->moduleUtil->isSuperadminInstalled()) {
             $package = \Modules\Superadmin\Entities\Subscription::active_subscription($business_id);
 
-            if (!empty($package)) {
+            if (! empty($package)) {
                 $max_token = isset($package->package_details['aiassistance_max_token']) ? $package->package_details['aiassistance_max_token'] : 0;
 
                 $used_tokens = AiAssistanceHistory::whereBetween('created_at', [$package->start_date, $package->end_date])
@@ -157,13 +157,12 @@ class AiAssistanceController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * @return Renderable
      */
-    public function create($tool)
+    public function create($tool): View
     {
         $tools = $this->tools;
 
-        abort_if(!isset($tools[$tool]), 404);
+        abort_if(! isset($tools[$tool]), 404);
 
         $tool_details = $tools[$tool];
         $tones = [
@@ -171,7 +170,7 @@ class AiAssistanceController extends Controller
             'persuasive' => __('aiassistance::lang.persuasive'),
             'professional' => __('aiassistance::lang.professional'),
             'casual' => __('aiassistance::lang.casual'),
-            'witty' => __('aiassistance::lang.witty')
+            'witty' => __('aiassistance::lang.witty'),
         ];
 
         $config_languages = config('constants.langs');
@@ -187,22 +186,19 @@ class AiAssistanceController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param String $tool
-     * @param Request $request
-     * @return Renderable
      */
-    public function generate($tool, Request $request)
+    public function generate(string $tool, Request $request): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
         $user_id = request()->session()->get('user.id');
 
-        if (!(auth()->user()->can('superadmin') || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'aiassistance_module')))) {
+        if (! (auth()->user()->can('superadmin') || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'aiassistance_module')))) {
             abort(403, 'Unauthorized action.');
         }
 
         try {
             $tools = $this->tools;
-            abort_if(!isset($tools[$tool]), 404);
+            abort_if(! isset($tools[$tool]), 404);
 
             //Check for token
             $token_details = $this->_tokenDetails($business_id);
@@ -215,10 +211,10 @@ class AiAssistanceController extends Controller
             $input = $request->all();
             $prompt = $tools[$tool]['prompt'];
             $prompt .= '\n Add HTML line breaks & formatting to make it easy to read';
-            $prompt .= '\n Write in ' . $input['language'] . ' language';
+            $prompt .= '\n Write in '.$input['language'].' language';
 
             foreach ($input as $k => $v) {
-                $prompt = str_replace('{' . $k . '}', $v, $prompt);
+                $prompt = str_replace('{'.$k.'}', $v, $prompt);
             }
             $max_token = ($token_details != false) ? (min($token_details['remaining_tokens'], $tools[$tool]['max_token'])) : $tools[$tool]['max_token'];
 
@@ -228,9 +224,9 @@ class AiAssistanceController extends Controller
                 'messages' => [
                     ['role' => 'user', 'content' => $prompt],
                 ],
-                
+
                 'max_tokens' => $tools[$tool]['max_token'],
-                'temperature' => 0
+                'temperature' => 0,
             ]);
             $text = $result->choices[0]->message->content;
 
@@ -246,9 +242,10 @@ class AiAssistanceController extends Controller
 
             //$output = 'sdd';
             $html = view('aiassistance::generate', compact('text'))->render();
+
             return ['success' => true, 'html' => $html];
         } catch (\Exception $e) {
-            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
+            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
 
             $output = [
                 'success' => false,
@@ -261,13 +258,12 @@ class AiAssistanceController extends Controller
 
     /**
      * Show the entire history of previous generation
-     * @return Renderable
      */
-    public function history()
+    public function history(): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 
-        if (!(auth()->user()->can('superadmin') || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'aiassistance_module')))) {
+        if (! (auth()->user()->can('superadmin') || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'aiassistance_module')))) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -275,7 +271,7 @@ class AiAssistanceController extends Controller
             $query = AiAssistanceHistory::where('aiassistance_history.business_id', $business_id)
                 ->leftJoin('users as u', 'aiassistance_history.user_id', '=', 'u.id')
                 ->select(['aiassistance_history.*', DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) as added_by")]);
-            
+
             if (request()->input('tool_type') != '') {
                 $query->where('tool_type', request()->input('tool_type'));
             }
@@ -285,11 +281,12 @@ class AiAssistanceController extends Controller
 
                     $output = '';
                     foreach ($row->input_data as $k => $v) {
-                        if (!empty($output)) {
+                        if (! empty($output)) {
                             $output .= '<br/>';
                         }
-                        $output .= ucfirst($k) . ': ' . $v;
+                        $output .= ucfirst($k).': '.$v;
                     }
+
                     return $output;
                 })
                 ->editColumn('created_at', function ($row) {
@@ -301,7 +298,7 @@ class AiAssistanceController extends Controller
 
         $tools = $this->tools;
         $tools = collect($tools)->pluck('label', 'name');
-        
+
         return view('aiassistance::history')->with(compact('tools'));
     }
 }

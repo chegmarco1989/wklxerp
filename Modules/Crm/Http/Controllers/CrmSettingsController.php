@@ -4,9 +4,10 @@ namespace Modules\Crm\Http\Controllers;
 
 use App\Business;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Crm\Utils\CrmUtil;
 
 class CrmSettingsController extends Controller
@@ -31,10 +32,8 @@ class CrmSettingsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -47,15 +46,13 @@ class CrmSettingsController extends Controller
         $crm_settings = $this->crmUtil->getCrmSettings($business_id);
 
         return view('crm::settings.index')
-                ->with(compact('crm_settings'));
+            ->with(compact('crm_settings'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -73,7 +70,7 @@ class CrmSettingsController extends Controller
             }
 
             Business::where('id', $business_id)
-                        ->update(['crm_settings' => json_encode($input)]);
+                ->update(['crm_settings' => json_encode($input)]);
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.updated_success'),

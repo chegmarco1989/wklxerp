@@ -1,5 +1,6 @@
 <?php
-return 
+
+return
     [
         'hms' => 'HMS',
         'type' => 'Accomodation Type',
@@ -84,7 +85,7 @@ return
         'calendar' => 'Calendar',
         'new_booking' => 'New booking',
         'unavailable' => 'Unavailables',
-        'unavailable_type' => 'Unavailable type', 
+        'unavailable_type' => 'Unavailable type',
         'edit_unavailable' => 'Edit Unavailable',
         'add_unavailable' => 'Add Unavailable',
         'booking_Id' => 'Booking ID',
@@ -136,12 +137,12 @@ return
         'stay' => 'Stay',
         'hms_module' => 'Hms module',
         'manage_rooms' => 'Manage Rooms',
-        'manage_price' =>'Manage Price',
+        'manage_price' => 'Manage Price',
         'manage_unavailable' => ' Manage Unavailable',
         'manage_extra' => 'Manage extra',
         'manage_coupon' => 'Manage coupon',
         'add_booking' => 'Add booking',
-        'delete_booking' => 'Delete Booking', 
+        'delete_booking' => 'Delete Booking',
         'manage_amenities' => 'Manage Amenities',
         'rooms_booked_today' => 'Rooms Booked Today',
         'pending_rooms_today' => 'Pending Rooms Today',
@@ -196,4 +197,4 @@ return
         'confirm_check_in' => 'Confirm Check-In',
         'confirm_check_out' => 'Confirm check-out',
         'check_out_payment_help_text' => 'Payment status is not paid',
-    ]; 
+    ];

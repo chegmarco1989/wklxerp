@@ -3,6 +3,7 @@
 namespace Modules\Essentials\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EssentialsAttendance extends Model
 {
@@ -13,12 +14,12 @@ class EssentialsAttendance extends Model
      */
     protected $guarded = ['id'];
 
-    public function employee()
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'user_id');
     }
 
-    public function shift()
+    public function shift(): BelongsTo
     {
         return $this->belongsTo(\Modules\Essentials\Entities\Shift::class, 'essentials_shift_id');
     }

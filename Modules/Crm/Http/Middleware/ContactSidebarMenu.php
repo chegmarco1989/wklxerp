@@ -13,8 +13,6 @@ class ContactSidebarMenu
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -26,10 +24,10 @@ class ContactSidebarMenu
         Menu::create('contact-sidebar-menu', function ($menu) {
             //retrieve contact type
             $contact = Contact::where('business_id', auth()->user()->business_id)
-                            ->findOrFail(auth()->user()->crm_contact_id);
+                ->findOrFail(auth()->user()->crm_contact_id);
 
             $crm_settings = Business::where('id', auth()->user()->business_id)
-                                ->value('crm_settings');
+                ->value('crm_settings');
             $crm_settings = ! empty($crm_settings) ? json_decode($crm_settings, true) : [];
 
             $menu->url(action([\Modules\Crm\Http\Controllers\DashboardController::class, 'index']), __('home.home'), ['icon' => 'fa fas fa-tachometer-alt', 'active' => request()->segment(1) == 'contact' && request()->segment(2) == 'contact-dashboard'])->order(1);

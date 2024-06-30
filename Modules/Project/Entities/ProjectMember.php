@@ -25,10 +25,10 @@ class ProjectMember extends Model
     public static function projectMembersDropdown($project_id, $user_id = null)
     {
         $user_ids = ProjectMember::where('project_id', $project_id)
-                        ->pluck('user_id');
+            ->pluck('user_id');
 
         $project_members = User::whereIn('id', $user_ids)
-                    ->select('id', DB::raw("CONCAT(COALESCE(surname, ''),' ',COALESCE(first_name, ''),' ',COALESCE(last_name,'')) as full_name"));
+            ->select('id', DB::raw("CONCAT(COALESCE(surname, ''),' ',COALESCE(first_name, ''),' ',COALESCE(last_name,'')) as full_name"));
 
         //filter by assigned member
         if (! empty($user_id)) {

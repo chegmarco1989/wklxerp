@@ -13,6 +13,7 @@ use Modules\FieldForce\Entities\FieldForce;
 
 /**
  * @group Field Force
+ *
  * @authenticated
  *
  * APIs for managing field forces
@@ -415,6 +416,7 @@ class FieldForceController extends ApiController
      * Update Visit status
      *
      * @urlParam id required id of the visit to be updated Example: 17
+     *
      * @bodyParam status string Current status of the visit (assigned, finished, met_contact, did_not_meet_contact) Example: finished
      * @bodyParam reason_to_not_meet_contact string Reason if status is did_not_meet_contact
      * @bodyParam visited_on format:Y-m-d H:i:s Example: 2021-12-28 17:23:00

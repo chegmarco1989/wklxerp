@@ -2,7 +2,9 @@
 
 namespace Modules\Superadmin\Entities;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -24,11 +26,8 @@ class Subscription extends Model
 
     /**
      * Scope a query to only include approved subscriptions.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeApproved($query)
+    public function scopeApproved(Builder $query): Builder
     {
         return $query->where('status', 'approved');
     }
@@ -46,7 +45,7 @@ class Subscription extends Model
     /**
      * Get the package that belongs to the subscription.
      */
-    public function package()
+    public function package(): BelongsTo
     {
         return $this->belongsTo('\Modules\Superadmin\Entities\Package')
             ->withTrashed();
@@ -55,18 +54,17 @@ class Subscription extends Model
     /**
      * Returns the active subscription details for a business
      *
-     * @param $business_id int
-     * @return Response
+     * @param  $business_id  int
      */
-    public static function active_subscription($business_id)
+    public static function active_subscription($business_id): Response
     {
         $date_today = \Carbon::today()->toDateString();
 
         $subscription = Subscription::where('business_id', $business_id)
-                            ->whereDate('start_date', '<=', $date_today)
-                            ->whereDate('end_date', '>=', $date_today)
-                            ->approved()
-                            ->first();
+            ->whereDate('start_date', '<=', $date_today)
+            ->whereDate('end_date', '>=', $date_today)
+            ->approved()
+            ->first();
 
         return $subscription;
     }
@@ -74,17 +72,16 @@ class Subscription extends Model
     /**
      * Returns the upcoming subscription details for a business
      *
-     * @param $business_id int
-     * @return Response
+     * @param  $business_id  int
      */
-    public static function upcoming_subscriptions($business_id)
+    public static function upcoming_subscriptions($business_id): Response
     {
         $date_today = \Carbon::today();
 
         $subscription = Subscription::where('business_id', $business_id)
-                            ->whereDate('start_date', '>', $date_today)
-                            ->approved()
-                            ->get();
+            ->whereDate('start_date', '>', $date_today)
+            ->approved()
+            ->get();
 
         return $subscription;
     }
@@ -92,15 +89,14 @@ class Subscription extends Model
     /**
      * Returns the subscriptions waiting for approval for superadmin
      *
-     * @param $business_id int
-     * @return Response
+     * @param  $business_id  int
      */
-    public static function waiting_approval($business_id)
+    public static function waiting_approval($business_id): Response
     {
         $subscriptions = Subscription::where('business_id', $business_id)
-                            ->whereNull('start_date')
-                            ->waiting()
-                            ->get();
+            ->whereNull('start_date')
+            ->waiting()
+            ->get();
 
         return $subscriptions;
     }
@@ -110,9 +106,9 @@ class Subscription extends Model
         $date_today = \Carbon::today();
 
         $subscription = Subscription::where('business_id', $business_id)
-                            ->approved()
-                            ->select(DB::raw('MAX(end_date) as end_date'))
-                            ->first();
+            ->approved()
+            ->select(DB::raw('MAX(end_date) as end_date'))
+            ->first();
 
         if (empty($subscription->end_date)) {
             return $date_today;
@@ -128,10 +124,8 @@ class Subscription extends Model
 
     /**
      * Returns the list of packages status
-     *
-     * @return array
      */
-    public static function package_subscription_status()
+    public static function package_subscription_status(): array
     {
         return ['approved' => trans('superadmin::lang.approved'), 'declined' => trans('superadmin::lang.declined'), 'waiting' => trans('superadmin::lang.waiting')];
     }
@@ -139,7 +133,7 @@ class Subscription extends Model
     /**
      * Get the created_by.
      */
-    public function created_user()
+    public function created_user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_id');
     }
@@ -147,7 +141,7 @@ class Subscription extends Model
     /**
      * Get the subscription business relationship.
      */
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class, 'business_id');
     }

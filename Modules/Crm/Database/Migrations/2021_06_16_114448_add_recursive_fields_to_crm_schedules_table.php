@@ -5,14 +5,12 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AddRecursiveFieldsToCrmSchedulesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('ALTER TABLE crm_schedules MODIFY COLUMN start_datetime DATETIME NULL;');
         DB::statement('ALTER TABLE crm_schedules MODIFY COLUMN end_datetime DATETIME NULL;');
@@ -27,10 +25,8 @@ class AddRecursiveFieldsToCrmSchedulesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
-}
+};

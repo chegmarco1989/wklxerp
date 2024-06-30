@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'welcome' => 'Chào mừng bạn đến với Worklx ERP, :username',
+    'welcome' => 'Chào mừng bạn đến với Worklx ERP, :username',
     'greeting' => 'Xin chào :username',
     'line' => 'Tài khoản của bạn đã được tạo thành công trên Worklx ERP',
     'action' => 'Xem bảng điều khiển',

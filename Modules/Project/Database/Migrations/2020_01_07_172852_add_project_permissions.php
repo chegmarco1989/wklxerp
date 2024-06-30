@@ -3,14 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Permission;
 
-class AddProjectPermissions extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Permission::create(['name' => 'project.create_project']);
         Permission::create(['name' => 'project.edit_project']);
@@ -19,11 +17,9 @@ class AddProjectPermissions extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         //
     }
-}
+};

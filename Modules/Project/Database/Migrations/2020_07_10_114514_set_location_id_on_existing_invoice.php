@@ -4,18 +4,16 @@ use App\BusinessLocation;
 use Illuminate\Database\Migrations\Migration;
 use Modules\Project\Entities\ProjectTransaction;
 
-class SetLocationIdOnExistingInvoice extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $transactions = ProjectTransaction::where('transactions.type', 'sell')
-                        ->where('transactions.sub_type', 'project_invoice')
-                        ->get();
+            ->where('transactions.sub_type', 'project_invoice')
+            ->get();
 
         if (! empty($transactions)) {
             foreach ($transactions as $key => $transaction) {
@@ -25,8 +23,8 @@ class SetLocationIdOnExistingInvoice extends Migration
                 $location = $business_locations->pull(0);
                 if (! empty($location)) {
                     ProjectTransaction::where('business_id', $business_id)
-                            ->where('id', $transaction->id)
-                            ->update(['location_id' => $location->id]);
+                        ->where('id', $transaction->id)
+                        ->update(['location_id' => $location->id]);
                 }
             }
         }
@@ -34,11 +32,9 @@ class SetLocationIdOnExistingInvoice extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         //
     }
-}
+};

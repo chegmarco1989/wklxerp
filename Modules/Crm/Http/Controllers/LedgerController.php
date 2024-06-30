@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Utils\ModuleUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LedgerController extends Controller
 {
@@ -30,9 +31,8 @@ class LedgerController extends Controller
      * Shows ledger for contacts
      *
      * @param  \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -41,13 +41,13 @@ class LedgerController extends Controller
 
         $crm_contact_id = auth()->user()->crm_contact_id;
         $contact = Contact::where('business_id', $business_id)
-                    ->find($crm_contact_id);
+            ->find($crm_contact_id);
 
         return view('crm::ledger.index')
-               ->with(compact('contact'));
+            ->with(compact('contact'));
     }
 
-    public function getLedger()
+    public function getLedger(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -59,14 +59,14 @@ class LedgerController extends Controller
 
         $crm_contact_id = auth()->user()->crm_contact_id;
         $contact = Contact::where('business_id', $business_id)
-                    ->find($crm_contact_id);
+            ->find($crm_contact_id);
 
         $ledger_details = $this->transactionUtil->getLedgerDetails($crm_contact_id, $start_date, $end_date);
 
         if (request()->input('action') == 'pdf') {
             $for_pdf = true;
             $html = view('contact.ledger')
-                    ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
+                ->with(compact('ledger_details', 'contact', 'for_pdf'))->render();
             $mpdf = $this->getMpdf();
             $mpdf->WriteHTML($html);
             $mpdf->Output();

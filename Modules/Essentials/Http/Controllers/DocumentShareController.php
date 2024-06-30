@@ -7,6 +7,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\Document;
 use Modules\Essentials\Entities\DocumentShare;
 use Modules\Essentials\Notifications\DocumentShareNotification;
@@ -30,10 +31,8 @@ class DocumentShareController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -48,8 +47,8 @@ class DocumentShareController extends Controller
             $roles = $this->moduleUtil->getDropdownForRoles($business_id);
 
             $shared_documents = DocumentShare::where('document_id', $id)
-                                ->get()
-                                ->groupBy('value_type');
+                ->get()
+                ->groupBy('value_type');
 
             $shared_role = [];
             if (! empty($shared_documents['role'])) {
@@ -62,17 +61,14 @@ class DocumentShareController extends Controller
             }
 
             return view('essentials::document_share.edit')
-                    ->with(compact('users', 'id', 'roles', 'shared_user', 'shared_role', 'type'));
+                ->with(compact('users', 'id', 'roles', 'shared_user', 'shared_role', 'type'));
         }
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -106,9 +102,9 @@ class DocumentShareController extends Controller
 
             //deleting not existing users
             DocumentShare::where('document_id', $document['document_id'])
-                    ->where('value_type', 'user')
-                    ->whereNotIn('value', $existing_user_id)
-                    ->delete();
+                ->where('value_type', 'user')
+                ->whereNotIn('value', $existing_user_id)
+                ->delete();
 
             if (! empty($document['role'])) {
                 foreach ($document['role'] as $key => $role_id) {
@@ -125,9 +121,9 @@ class DocumentShareController extends Controller
 
             //deleting not existing roles
             DocumentShare::where('document_id', $document['document_id'])
-                       ->where('value_type', 'role')
-                       ->whereNotIn('value', $existing_role_id)
-                       ->delete();
+                ->where('value_type', 'role')
+                ->whereNotIn('value', $existing_role_id)
+                ->delete();
 
             $output = [
                 'success' => true,
@@ -140,10 +136,8 @@ class DocumentShareController extends Controller
 
     /**
      * Sends notification to the user.
-     *
-     * @return void
      */
-    private function notify($document, $user_id)
+    private function notify($document, $user_id): void
     {
         $user = User::find($user_id);
         $shared_by = auth()->user();

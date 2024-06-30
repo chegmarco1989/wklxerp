@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Modules\Superadmin\Entities\Package;
 use Modules\Superadmin\Entities\Subscription;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Routing\Controller;
 
 class SuperadminSubscriptionsController extends BaseController
 {
@@ -18,7 +17,6 @@ class SuperadminSubscriptionsController extends BaseController
     /**
      * Constructor
      *
-     * @param  BusinessUtil  $businessUtil
      * @return void
      */
     public function __construct(BusinessUtil $businessUtil)
@@ -28,52 +26,49 @@ class SuperadminSubscriptionsController extends BaseController
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
         }
 
-
         if (request()->ajax()) {
             $superadmin_subscription = Subscription::join('business', 'subscriptions.business_id', '=', 'business.id')
                 ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
                 ->select('business.name as business_name', 'packages.name as package_name', 'subscriptions.status',
-                 'subscriptions.created_at', 'subscriptions.start_date', 'subscriptions.trial_end_date', 'subscriptions.end_date', 'subscriptions.coupon_code','subscriptions.original_price', 'subscriptions.package_price', 'subscriptions.paid_via', 'subscriptions.payment_transaction_id', 'subscriptions.id');
+                    'subscriptions.created_at', 'subscriptions.start_date', 'subscriptions.trial_end_date', 'subscriptions.end_date', 'subscriptions.coupon_code', 'subscriptions.original_price', 'subscriptions.package_price', 'subscriptions.paid_via', 'subscriptions.payment_transaction_id', 'subscriptions.id');
 
-            if(!empty(request()->input('status'))) {
+            if (! empty(request()->input('status'))) {
                 $superadmin_subscription->where('subscriptions.status', request()->input('status'));
             }
-            if(!empty(request()->input('package_id'))) {
+            if (! empty(request()->input('package_id'))) {
                 $superadmin_subscription->where('packages.id', request()->input('package_id'));
             }
 
-            if (!empty(request()->start_date) && !empty(request()->end_date)) {
+            if (! empty(request()->start_date) && ! empty(request()->end_date)) {
                 $start = request()->start_date;
-                $end =  request()->end_date;
+                $end = request()->end_date;
                 $superadmin_subscription->whereDate('subscriptions.created_at', '>=', $start)
                     ->whereDate('subscriptions.created_at', '<=', $end);
             }
-            
+
             return DataTables::of($superadmin_subscription)
-                        ->addColumn(
-                            'action',
-                            '<button data-href ="{{action(\'\Modules\Superadmin\Http\Controllers\SuperadminSubscriptionsController@edit\',[$id])}}" class="btn btn-info btn-xs change_status" data-toggle="modal" data-target="#statusModal">
+                ->addColumn(
+                    'action',
+                    '<button data-href ="{{action(\'\Modules\Superadmin\Http\Controllers\SuperadminSubscriptionsController@edit\',[$id])}}" class="btn btn-info btn-xs change_status" data-toggle="modal" data-target="#statusModal">
                             @lang( "superadmin::lang.status")
                             </button> <button data-href ="{{action(\'\Modules\Superadmin\Http\Controllers\SuperadminSubscriptionsController@editSubscription\',["id" => $id])}}" class="btn btn-primary btn-xs btn-modal" data-container=".view_modal">
                             @lang( "messages.edit")
                             </button>'
-                        )
-                        ->editColumn('created_at', '{{@format_datetime($created_at)}}')
-                        ->editColumn('trial_end_date', '@if(!empty($trial_end_date)){{@format_date($trial_end_date)}} @endif')
-                        ->editColumn('start_date', '@if(!empty($start_date)){{@format_date($start_date)}}@endif')
-                        ->editColumn('end_date', '@if(!empty($end_date)){{@format_date($end_date)}}@endif')
-                        ->editColumn(
-                            'status',
-                            '@if($status == "approved")
+                )
+                ->editColumn('created_at', '{{@format_datetime($created_at)}}')
+                ->editColumn('trial_end_date', '@if(!empty($trial_end_date)){{@format_date($trial_end_date)}} @endif')
+                ->editColumn('start_date', '@if(!empty($start_date)){{@format_date($start_date)}}@endif')
+                ->editColumn('end_date', '@if(!empty($end_date)){{@format_date($end_date)}}@endif')
+                ->editColumn(
+                    'status',
+                    '@if($status == "approved")
                                 <span class="label bg-light-green">{{__(\'superadmin::lang.\'.$status)}}
                                 </span>
                             @elseif($status == "waiting")
@@ -83,22 +78,22 @@ class SuperadminSubscriptionsController extends BaseController
                                 <span class="label bg-red">{{__(\'superadmin::lang.\'.$status)}}
                                 </span>
                             @endif'
-                        )
-                        ->editColumn(
-                            'package_price',
-                            '<span class="display_currency" data-currency_symbol="true">
+                )
+                ->editColumn(
+                    'package_price',
+                    '<span class="display_currency" data-currency_symbol="true">
                                 {{$package_price}}
                             </span>'
-                        )
-                        ->editColumn(
-                            'original_price',
-                            '<span class="display_currency" data-currency_symbol="true">
+                )
+                ->editColumn(
+                    'original_price',
+                    '<span class="display_currency" data-currency_symbol="true">
                                 {{$original_price}}
                             </span>'
-                        )
-                        ->removeColumn('id')
-                        ->rawColumns([2, 8, 9, 12])
-                        ->make(false);
+                )
+                ->removeColumn('id')
+                ->rawColumns([2, 8, 9, 12])
+                ->make(false);
         }
 
         $packages = Package::listPackages()->pluck('name', 'id');
@@ -110,15 +105,13 @@ class SuperadminSubscriptionsController extends BaseController
         ];
 
         return view('superadmin::superadmin_subscription.index')
-                    ->with(compact('packages', 'subscription_statuses'));
+            ->with(compact('packages', 'subscription_statuses'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): Response
     {
         $business_id = request()->input('business_id');
         $packages = Package::active()->orderby('sort_order')->pluck('name', 'id');
@@ -126,16 +119,13 @@ class SuperadminSubscriptionsController extends BaseController
         $gateways = $this->_payment_gateways();
 
         return view('superadmin::superadmin_subscription.add_subscription')
-              ->with(compact('packages', 'business_id', 'gateways'));
+            ->with(compact('packages', 'business_id', 'gateways'));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         if (! auth()->user()->can('subscribe')) {
             abort(403, 'Unauthorized action.');
@@ -148,7 +138,7 @@ class SuperadminSubscriptionsController extends BaseController
             $package = Package::find($input['package_id']);
             $user_id = $request->session()->get('user.id');
 
-            $subscription = $this->_add_subscription(null,$package->price ,$input['business_id'], $package, $input['paid_via'], $input['payment_transaction_id'], $user_id, true);
+            $subscription = $this->_add_subscription(null, $package->price, $input['business_id'], $package, $input['paid_via'], $input['payment_transaction_id'], $user_id, true);
 
             DB::commit();
 
@@ -168,20 +158,16 @@ class SuperadminSubscriptionsController extends BaseController
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show()
+    public function show(): Response
     {
         return view('superadmin::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit($id)
+    public function edit($id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -192,17 +178,14 @@ class SuperadminSubscriptionsController extends BaseController
             $subscription = Subscription::find($id);
 
             return view('superadmin::superadmin_subscription.edit')
-                        ->with(compact('subscription', 'status'));
+                ->with(compact('subscription', 'status'));
         }
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -242,19 +225,15 @@ class SuperadminSubscriptionsController extends BaseController
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function editSubscription($id)
+    public function editSubscription($id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -264,17 +243,14 @@ class SuperadminSubscriptionsController extends BaseController
             $subscription = Subscription::find($id);
 
             return view('superadmin::superadmin_subscription.edit_date_modal')
-                        ->with(compact('subscription'));
+                ->with(compact('subscription'));
         }
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function updateSubscription(Request $request)
+    public function updateSubscription(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

@@ -2,18 +2,21 @@
 
 namespace Modules\Hms\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use App\Utils\NotificationUtil;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class CustomerNotification extends Notification
 {
     use Queueable;
+
     protected $notificationInfo;
+
     protected $cc;
+
     protected $bcc;
+
     /**
      * Create a new notification instance.
      *
@@ -31,10 +34,9 @@ class CustomerNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
-     * @return array
+     * @param  mixed  $notifiable
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -42,35 +44,34 @@ class CustomerNotification extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param  mixed  $notifiable
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $data = $this->notificationInfo;
 
         $mail = (new MailMessage)
-                    ->subject($data['subject'])
-                    ->view(
-                        'emails.plain_html',
-                        ['content' => $data['email_body']]
-                    );
+            ->subject($data['subject'])
+            ->view(
+                'emails.plain_html',
+                ['content' => $data['email_body']]
+            );
         if (! empty($this->cc)) {
             $mail->cc($this->cc);
         }
         if (! empty($this->bcc)) {
             $mail->bcc($this->bcc);
         }
+
         return $mail;
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
-     * @return array
+     * @param  mixed  $notifiable
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

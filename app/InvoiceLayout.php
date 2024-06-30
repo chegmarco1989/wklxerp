@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InvoiceLayout extends Model
 {
@@ -29,21 +30,18 @@ class InvoiceLayout extends Model
     /**
      * Get the location associated with the invoice layout.
      */
-    public function locations()
+    public function locations(): HasMany
     {
         return $this->hasMany(\App\BusinessLocation::class);
     }
 
     /**
      * Return list of invoice layouts for a business
-     *
-     * @param  int  $business_id
-     * @return array
      */
-    public static function forDropdown($business_id)
+    public static function forDropdown(int $business_id): array
     {
         $layouts = InvoiceLayout::where('business_id', $business_id)
-                    ->pluck('name', 'id');
+            ->pluck('name', 'id');
 
         return $layouts;
     }

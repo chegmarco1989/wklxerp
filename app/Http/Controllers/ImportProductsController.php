@@ -16,6 +16,7 @@ use App\VariationValueTemplate;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ImportProductsController extends Controller
 {
@@ -45,10 +46,8 @@ class ImportProductsController extends Controller
 
     /**
      * Display import product screen.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -72,7 +71,6 @@ class ImportProductsController extends Controller
     /**
      * Imports the uploaded file to database.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -214,10 +212,10 @@ class ImportProductsController extends Controller
                     $unit_name = trim($value[2]);
                     if (! empty($unit_name)) {
                         $unit = Unit::where('business_id', $business_id)
-                                    ->where(function ($query) use ($unit_name) {
-                                        $query->where('short_name', $unit_name)
-                                              ->orWhere('actual_name', $unit_name);
-                                    })->first();
+                            ->where(function ($query) use ($unit_name) {
+                                $query->where('short_name', $unit_name)
+                                    ->orWhere('actual_name', $unit_name);
+                            })->first();
                         if (! empty($unit)) {
                             $product_array['unit_id'] = $unit->id;
                         } else {
@@ -248,8 +246,8 @@ class ImportProductsController extends Controller
                     $tax_amount = 0;
                     if (! empty($tax_name)) {
                         $tax = TaxRate::where('business_id', $business_id)
-                                        ->where('name', $tax_name)
-                                        ->first();
+                            ->where('name', $tax_name)
+                            ->first();
                         if (! empty($tax)) {
                             $product_array['tax'] = $tax->id;
                             $tax_amount = $tax->amount;
@@ -313,8 +311,8 @@ class ImportProductsController extends Controller
                         $product_array['sku'] = $sku;
                         //Check if product with same SKU already exist
                         $is_exist = Product::where('sku', $product_array['sku'])
-                                        ->where('business_id', $business_id)
-                                        ->exists();
+                            ->where('business_id', $business_id)
+                            ->exists();
                         if ($is_exist) {
                             $is_valid = false;
                             $error_msg = "$sku SKU already exist in row no. $row_no";
@@ -398,8 +396,8 @@ class ImportProductsController extends Controller
                             if (! empty(trim($value[22]))) {
                                 $location_name = trim($value[22]);
                                 $location = BusinessLocation::where('name', $location_name)
-                                                            ->where('business_id', $business_id)
-                                                            ->first();
+                                    ->where('business_id', $business_id)
+                                    ->first();
                                 if (! empty($location)) {
                                     $product_array['opening_stock_details']['location_id'] = $location->id;
                                 } else {
@@ -457,7 +455,7 @@ class ImportProductsController extends Controller
                         $variation_skus = [];
                         if (! empty($variation_sku_string)) {
                             $variation_skus = array_map('trim', explode(
-                            '|',
+                                '|',
                                 $variation_sku_string
                             ));
                         }
@@ -493,7 +491,7 @@ class ImportProductsController extends Controller
                             $selling_price = array_map('trim', explode(
                                 '|',
                                 $selling_price_string
-                                ));
+                            ));
                         } else {
                             foreach ($variation_values as $k => $v) {
                                 $selling_price[$k] = 0;
@@ -506,7 +504,7 @@ class ImportProductsController extends Controller
                             $profit_margin = array_map('trim', explode(
                                 '|',
                                 $profit_margin_string
-                                ));
+                            ));
                         } else {
                             foreach ($variation_values as $k => $v) {
                                 $profit_margin[$k] = $default_profit_percent;
@@ -576,8 +574,8 @@ class ImportProductsController extends Controller
                             if (! empty(trim($value[22]))) {
                                 $location_name = trim($value[22]);
                                 $location = BusinessLocation::where('name', $location_name)
-                                                            ->where('business_id', $business_id)
-                                                            ->first();
+                                    ->where('business_id', $business_id)
+                                    ->first();
                                 if (empty($location)) {
                                     $is_valid = false;
                                     $error_msg = "No location with name '$location_name' found in row no. $row_no";
@@ -759,13 +757,8 @@ class ImportProductsController extends Controller
 
     /**
      * Adds opening stock of a single product
-     *
-     * @param  array  $opening_stock
-     * @param  obj  $product
-     * @param  int  $business_id
-     * @return void
      */
-    private function addOpeningStock($opening_stock, $product, $business_id)
+    private function addOpeningStock(array $opening_stock, obj $product, int $business_id): void
     {
         $user_id = request()->session()->get('user.id');
 
@@ -819,8 +812,8 @@ class ImportProductsController extends Controller
     private function __addProductLocation($product, $location_id)
     {
         $count = DB::table('product_locations')->where('product_id', $product->id)
-                                            ->where('location_id', $location_id)
-                                            ->count();
+            ->where('location_id', $location_id)
+            ->count();
         if ($count == 0) {
             DB::table('product_locations')->insert(['product_id' => $product->id,
                 'location_id' => $location_id, ]);
@@ -859,8 +852,8 @@ class ImportProductsController extends Controller
             foreach ($variations['variations'] as $variation_os) {
                 if (! empty($variation_os['opening_stock'])) {
                     $variation = Variation::where('product_id', $product->id)
-                                    ->where('name', $variation_os['value'])
-                                    ->first();
+                        ->where('name', $variation_os['value'])
+                        ->first();
                     if (! empty($variation)) {
                         $opening_stock = [
                             'quantity' => $variation_os['opening_stock'],

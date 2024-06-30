@@ -3,10 +3,12 @@
 namespace Modules\Superadmin\Http\Controllers;
 
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Modules\Superadmin\Entities\SuperadminFrontendPage;
 
 class PageController extends Controller
@@ -29,10 +31,8 @@ class PageController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -46,21 +46,16 @@ class PageController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('superadmin::pages.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -95,10 +90,8 @@ class PageController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function showPage($slug)
+    public function showPage($slug): View
     {
         $page = SuperadminFrontendPage::where('slug', $slug)->first();
 
@@ -111,10 +104,8 @@ class PageController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $page = SuperadminFrontendPage::findOrFail($id);
 
@@ -123,11 +114,8 @@ class PageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -141,8 +129,8 @@ class PageController extends Controller
 
             $input['menu_order'] = empty($input['menu_order']) ? 0 : $input['menu_order'];
             $is_slug_exists = SuperadminFrontendPage::where('id', '!=', $id)
-                                    ->where('slug', $input['slug'])
-                                    ->exists();
+                ->where('slug', $input['slug'])
+                ->exists();
 
             if (! $is_slug_exists) {
                 SuperadminFrontendPage::where('id', $id)->update($input);
@@ -165,10 +153,8 @@ class PageController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

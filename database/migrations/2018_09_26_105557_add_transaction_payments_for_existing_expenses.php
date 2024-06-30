@@ -8,13 +8,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $expenses = Transaction::where('type', 'expense')
-                                ->get();
+            ->get();
         $transaction_payments = [];
         //create transaction payment
         foreach ($expenses as $expense) {
@@ -37,10 +35,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
 };

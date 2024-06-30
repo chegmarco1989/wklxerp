@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TaxRate extends Model
@@ -24,9 +25,9 @@ class TaxRate extends Model
     /**
      * Return list of tax rate dropdown for a business
      *
-     * @param $business_id int
-     * @param $prepend_none = true (boolean)
-     * @param $include_attributes = false (boolean)
+     * @param  $business_id  int
+     * @param  $prepend_none  = true (boolean)
+     * @param  $include_attributes  = false (boolean)
      * @return array['tax_rates', 'attributes']
      */
     public static function forBusinessDropdown(
@@ -63,40 +64,34 @@ class TaxRate extends Model
 
     /**
      * Return list of tax rate for a business
-     *
-     * @return array
      */
-    public static function forBusiness($business_id)
+    public static function forBusiness($business_id): array
     {
         $tax_rates = TaxRate::where('business_id', $business_id)
-                        ->select(['id', 'name', 'amount'])
-                        ->get()
-                        ->toArray();
+            ->select(['id', 'name', 'amount'])
+            ->get()
+            ->toArray();
 
         return $tax_rates;
     }
 
     /**
      * Return list of tax rates associated with the group_tax
-     *
-     * @return object
      */
-    public function sub_taxes()
+    public function sub_taxes(): BelongsToMany
     {
         return $this->belongsToMany(\App\TaxRate::class, 'group_sub_taxes', 'group_tax_id', 'tax_id');
     }
 
     /**
      * Return list of group taxes for a business
-     *
-     * @return array
      */
-    public static function groupTaxes($business_id)
+    public static function groupTaxes($business_id): array
     {
         $tax_rates = TaxRate::where('business_id', $business_id)
-                        ->where('is_tax_group', 1)
-                        ->with(['sub_taxes'])
-                        ->get();
+            ->where('is_tax_group', 1)
+            ->with(['sub_taxes'])
+            ->get();
 
         return $tax_rates;
     }

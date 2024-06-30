@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VariationValueTemplate extends Model
 {
@@ -16,7 +17,7 @@ class VariationValueTemplate extends Model
     /**
      * Get the variation that owns the attribute.
      */
-    public function variationTemplate()
+    public function variationTemplate(): BelongsTo
     {
         return $this->belongsTo(\App\VariationTemplate::class);
     }

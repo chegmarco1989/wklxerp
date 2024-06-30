@@ -3,6 +3,7 @@
 namespace Modules\Manufacturing\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MfgRecipeIngredient extends Model
 {
@@ -16,7 +17,7 @@ class MfgRecipeIngredient extends Model
     /**
      * Get the variations associated with the ingredient.
      */
-    public function variation()
+    public function variation(): BelongsTo
     {
         return $this->belongsTo(\App\Variation::class, 'variation_id');
     }
@@ -24,7 +25,7 @@ class MfgRecipeIngredient extends Model
     /**
      * Get the unit associated with the ingredient.
      */
-    public function sub_unit()
+    public function sub_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'sub_unit_id');
     }
@@ -32,7 +33,7 @@ class MfgRecipeIngredient extends Model
     /**
      * Get the ingredient group associated with the ingredient.
      */
-    public function ingredient_group()
+    public function ingredient_group(): BelongsTo
     {
         return $this->belongsTo(\Modules\Manufacturing\Entities\MfgIngredientGroup::class, 'mfg_ingredient_group_id');
     }

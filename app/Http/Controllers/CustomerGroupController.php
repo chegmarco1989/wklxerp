@@ -6,6 +6,7 @@ use App\CustomerGroup;
 use App\SellingPriceGroup;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerGroupController extends Controller
@@ -13,7 +14,6 @@ class CustomerGroupController extends Controller
     /**
      * Constructor
      *
-     * @param  Util  $commonUtil
      * @return void
      */
     public function __construct(Util $commonUtil)
@@ -36,13 +36,13 @@ class CustomerGroupController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $customer_group = CustomerGroup::where('customer_groups.business_id', $business_id)
-                                    ->leftjoin('selling_price_groups as spg', 'spg.id', '=', 'customer_groups.selling_price_group_id')
-                                ->select(['customer_groups.name', 'customer_groups.amount', 'spg.name as selling_price_group', 'customer_groups.id', 'price_calculation_type']);
+                ->leftjoin('selling_price_groups as spg', 'spg.id', '=', 'customer_groups.selling_price_group_id')
+                ->select(['customer_groups.name', 'customer_groups.amount', 'spg.name as selling_price_group', 'customer_groups.id', 'price_calculation_type']);
 
             return Datatables::of($customer_group)
-                    ->addColumn(
-                        'action',
-                        '@can("customer.update")
+                ->addColumn(
+                    'action',
+                    '@can("customer.update")
                             <button data-href="{{action(\'App\Http\Controllers\CustomerGroupController@edit\', [$id])}}" class="btn btn-xs btn-primary edit_customer_group_button"><i class="glyphicon glyphicon-edit"></i> @lang("messages.edit")</button>
                         &nbsp;
                         @endcan
@@ -50,13 +50,13 @@ class CustomerGroupController extends Controller
                         @can("customer.delete")
                             <button data-href="{{action(\'App\Http\Controllers\CustomerGroupController@destroy\', [$id])}}" class="btn btn-xs btn-danger delete_customer_group_button"><i class="glyphicon glyphicon-trash"></i> @lang("messages.delete")</button>
                         @endcan'
-                    )
-                    ->editColumn('selling_price_group', '@if($price_calculation_type=="selling_price_group") {{$selling_price_group}} @else -- @endif ')
-                    ->editColumn('amount', '@if($price_calculation_type=="percentage") {{$amount}} @else -- @endif ')
-                    ->removeColumn('id')
-                    ->removeColumn('price_calculation_type')
-                    ->rawColumns([3])
-                    ->make(false);
+                )
+                ->editColumn('selling_price_group', '@if($price_calculation_type=="selling_price_group") {{$selling_price_group}} @else -- @endif ')
+                ->editColumn('amount', '@if($price_calculation_type=="percentage") {{$amount}} @else -- @endif ')
+                ->removeColumn('id')
+                ->removeColumn('price_calculation_type')
+                ->rawColumns([3])
+                ->make(false);
         }
 
         return view('customer_group.index');
@@ -64,10 +64,8 @@ class CustomerGroupController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('customer.create')) {
             abort(403, 'Unauthorized action.');
@@ -82,7 +80,6 @@ class CustomerGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -117,9 +114,8 @@ class CustomerGroupController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\CustomerGroup  $customerGroup
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('customer.update')) {
             abort(403, 'Unauthorized action.');
@@ -140,11 +136,9 @@ class CustomerGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('customer.update')) {
             abort(403, 'Unauthorized action.');
@@ -179,10 +173,9 @@ class CustomerGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('customer.delete')) {
             abort(403, 'Unauthorized action.');

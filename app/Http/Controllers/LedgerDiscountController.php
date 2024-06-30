@@ -6,6 +6,7 @@ use App\Contact;
 use App\Transaction;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LedgerDiscountController extends Controller
 {
@@ -14,7 +15,6 @@ class LedgerDiscountController extends Controller
     /**
      * Constructor
      *
-     * @param  Util  $commonUtil
      * @return void
      */
     public function __construct(
@@ -46,7 +46,6 @@ class LedgerDiscountController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -95,21 +94,17 @@ class LedgerDiscountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 
@@ -120,8 +115,8 @@ class LedgerDiscountController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $discount = Transaction::where('business_id', $business_id)
-                    ->where('type', 'ledger_discount')
-                    ->find($id);
+            ->where('type', 'ledger_discount')
+            ->find($id);
 
         $contact = Contact::find($discount->contact_id);
 
@@ -131,11 +126,9 @@ class LedgerDiscountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         try {
             $business_id = $request->session()->get('user.business_id');
@@ -153,9 +146,9 @@ class LedgerDiscountController extends Controller
             }
 
             Transaction::where('business_id', $business_id)
-                    ->where('type', 'ledger_discount')
-                    ->where('id', $id)
-                    ->update($transaction_data);
+                ->where('type', 'ledger_discount')
+                ->where('id', $id)
+                ->update($transaction_data);
 
             $output = ['success' => true, 'msg' => __('lang_v1.success')];
         } catch (\Exception $e) {
@@ -172,10 +165,9 @@ class LedgerDiscountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 
@@ -187,9 +179,9 @@ class LedgerDiscountController extends Controller
 
         try {
             Transaction::where('business_id', $business_id)
-                    ->where('type', 'ledger_discount')
-                    ->where('id', $id)
-                    ->delete();
+                ->where('type', 'ledger_discount')
+                ->where('id', $id)
+                ->delete();
 
             $output = ['success' => true, 'msg' => __('lang_v1.success')];
         } catch (\Exception $e) {

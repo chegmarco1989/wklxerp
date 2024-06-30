@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StockAdjustmentLine extends Model
 {
@@ -13,12 +14,12 @@ class StockAdjustmentLine extends Model
      */
     protected $guarded = ['id'];
 
-    public function variation()
+    public function variation(): BelongsTo
     {
         return $this->belongsTo(\App\Variation::class, 'variation_id');
     }
 
-    public function lot_details()
+    public function lot_details(): BelongsTo
     {
         return $this->belongsTo(\App\PurchaseLine::class, 'lot_no_line_id');
     }

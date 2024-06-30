@@ -8,6 +8,7 @@ use App\VariationTemplate;
 use App\VariationValueTemplate;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class VariationTemplateController extends Controller
@@ -23,8 +24,8 @@ class VariationTemplateController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $variations = VariationTemplate::where('business_id', $business_id)
-                        ->with(['values'])
-                        ->select('id', 'name', DB::raw('(SELECT COUNT(id) FROM product_variations WHERE product_variations.variation_template_id=variation_templates.id) as total_pv'));
+                ->with(['values'])
+                ->select('id', 'name', DB::raw('(SELECT COUNT(id) FROM product_variations WHERE product_variations.variation_template_id=variation_templates.id) as total_pv'));
 
             return Datatables::of($variations)
                 ->addColumn(
@@ -54,10 +55,8 @@ class VariationTemplateController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('variation.create');
     }
@@ -65,7 +64,6 @@ class VariationTemplateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -105,7 +103,6 @@ class VariationTemplateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\VariationTemplate  $variationTemplate
      * @return \Illuminate\Http\Response
      */
     public function show(VariationTemplate $variationTemplate)
@@ -115,16 +112,13 @@ class VariationTemplateController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
             $variation = VariationTemplate::where('business_id', $business_id)
-                            ->with(['values'])->find($id);
+                ->with(['values'])->find($id);
 
             return view('variation.edit')
                 ->with(compact('variation'));
@@ -134,11 +128,9 @@ class VariationTemplateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (request()->ajax()) {
             try {
@@ -152,7 +144,7 @@ class VariationTemplateController extends Controller
                     $variation->save();
 
                     ProductVariation::where('variation_template_id', $variation->id)
-                                ->update(['name' => $variation->name]);
+                        ->update(['name' => $variation->name]);
                 }
 
                 //update variation
@@ -201,10 +193,9 @@ class VariationTemplateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (request()->ajax()) {
             try {

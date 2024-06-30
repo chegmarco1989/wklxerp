@@ -6,6 +6,7 @@ use App\Product;
 use App\Unit;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class UnitController extends Controller
@@ -41,9 +42,9 @@ class UnitController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $unit = Unit::where('business_id', $business_id)
-                        ->with(['base_unit'])
-                        ->select(['actual_name', 'short_name', 'allow_decimal', 'id',
-                            'base_unit_id', 'base_unit_multiplier', ]);
+                ->with(['base_unit'])
+                ->select(['actual_name', 'short_name', 'allow_decimal', 'id',
+                    'base_unit_id', 'base_unit_multiplier', ]);
 
             return Datatables::of($unit)
                 ->addColumn(
@@ -65,10 +66,10 @@ class UnitController extends Controller
                 })
                 ->editColumn('actual_name', function ($row) {
                     if (! empty($row->base_unit_id)) {
-                        return  $row->actual_name.' ('.(float) $row->base_unit_multiplier.$row->base_unit->short_name.')';
+                        return $row->actual_name.' ('.(float) $row->base_unit_multiplier.$row->base_unit->short_name.')';
                     }
 
-                    return  $row->actual_name;
+                    return $row->actual_name;
                 })
                 ->removeColumn('id')
                 ->rawColumns(['action'])
@@ -80,10 +81,8 @@ class UnitController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('unit.create')) {
             abort(403, 'Unauthorized action.');
@@ -99,13 +98,12 @@ class UnitController extends Controller
         $units = Unit::forDropdown($business_id);
 
         return view('unit.create')
-                ->with(compact('quick_add', 'units'));
+            ->with(compact('quick_add', 'units'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -148,21 +146,17 @@ class UnitController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('unit.update')) {
             abort(403, 'Unauthorized action.');
@@ -182,11 +176,9 @@ class UnitController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('unit.update')) {
             abort(403, 'Unauthorized action.');
@@ -234,10 +226,9 @@ class UnitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('unit.delete')) {
             abort(403, 'Unauthorized action.');
@@ -251,7 +242,7 @@ class UnitController extends Controller
 
                 //check if any product associated with the unit
                 $exists = Product::where('unit_id', $unit->id)
-                                ->exists();
+                    ->exists();
                 if (! $exists) {
                     $unit->delete();
                     $output = ['success' => true,

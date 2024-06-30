@@ -8,9 +8,11 @@ use App\Utils\ModuleUtil;
 use App\Utils\NotificationUtil;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Crm\Entities\Campaign;
 use Modules\Crm\Entities\CrmContact;
 use Modules\Crm\Notifications\SendCampaignNotification;
@@ -26,7 +28,6 @@ class CampaignController extends Controller
     /**
      * Constructor
      *
-     * @param  NotificationUtil  $notificationUtil
      * @return void
      */
     public function __construct(NotificationUtil $notificationUtil, ModuleUtil $moduleUtil)
@@ -37,10 +38,8 @@ class CampaignController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -53,8 +52,8 @@ class CampaignController extends Controller
 
         if (request()->ajax()) {
             $campaigns = Campaign::with('createdBy')
-                        ->where('business_id', $business_id)
-                        ->select('*');
+                ->where('business_id', $business_id)
+                ->select('*');
 
             if (! $can_access_all_campaigns && $can_access_own_campaigns) {
                 $campaigns->where('created_by', auth()->user()->id);
@@ -65,60 +64,60 @@ class CampaignController extends Controller
             }
 
             return Datatables::of($campaigns)
-                    ->addColumn('action', function ($row) {
-                        $html = '<a data-href="'.action([\Modules\Crm\Http\Controllers\CampaignController::class, 'show'], ['campaign' => $row->id]).'" class="cursor-pointer view_a_campaign btn btn-xs btn-info m-2">
+                ->addColumn('action', function ($row) {
+                    $html = '<a data-href="'.action([\Modules\Crm\Http\Controllers\CampaignController::class, 'show'], ['campaign' => $row->id]).'" class="cursor-pointer view_a_campaign btn btn-xs btn-info m-2">
                             <i class="fa fa-eye"></i>
                             '.__('messages.view').'
                             </a>';
 
-                        if (empty($row->sent_on)) {
-                            $html .= '
+                    if (empty($row->sent_on)) {
+                        $html .= '
                             <a href="'.action([\Modules\Crm\Http\Controllers\CampaignController::class, 'edit'], ['campaign' => $row->id]).'"class="cursor-pointer btn btn-xs btn-primary m-2">
                                 <i class="fa fa-edit"></i>
                                 '.__('messages.edit').'
                             </a>';
-                        }
+                    }
 
-                        $html .= '<a data-href="'.action([\Modules\Crm\Http\Controllers\CampaignController::class, 'destroy'], ['campaign' => $row->id]).'" class="cursor-pointer delete_a_campaign btn btn-xs btn-danger m-2">
+                    $html .= '<a data-href="'.action([\Modules\Crm\Http\Controllers\CampaignController::class, 'destroy'], ['campaign' => $row->id]).'" class="cursor-pointer delete_a_campaign btn btn-xs btn-danger m-2">
                             <i class="fas fa-trash"></i>
                             '.__('messages.delete').'
                             </a>';
 
-                        if (empty($row->sent_on)) {
-                            $html .= '<a data-href="'.action([\Modules\Crm\Http\Controllers\CampaignController::class, 'sendNotification'], ['id' => $row->id]).'" class="cursor-pointer send_campaign_notification btn btn-xs btn-warning m-2">
+                    if (empty($row->sent_on)) {
+                        $html .= '<a data-href="'.action([\Modules\Crm\Http\Controllers\CampaignController::class, 'sendNotification'], ['id' => $row->id]).'" class="cursor-pointer send_campaign_notification btn btn-xs btn-warning m-2">
                                 <i class="fas fa-envelope-square"></i>
                                 '.__('crm::lang.send_notification').'
                             </a>';
-                        }
+                    }
 
-                        return $html;
-                    })
-                    ->editColumn('campaign_type', '
+                    return $html;
+                })
+                ->editColumn('campaign_type', '
                         @if($campaign_type == "sms")
                             {{__("crm::lang.sms")}}
                         @elseif($campaign_type == "email")
                             {{__("business.email")}}
                         @endif
                     ')
-                    ->editColumn('created_at', '
+                ->editColumn('created_at', '
                         {{@format_date($created_at)}}
                     ')
-                    ->editColumn('name', function ($row) {
-                        $is_notified = '';
-                        if (! empty($row->sent_on)) {
-                            $is_notified = '<br> <span class="label label-success">'.
-                                                __('crm::lang.sent').
-                                            '</span>';
-                        }
+                ->editColumn('name', function ($row) {
+                    $is_notified = '';
+                    if (! empty($row->sent_on)) {
+                        $is_notified = '<br> <span class="label label-success">'.
+                                            __('crm::lang.sent').
+                                        '</span>';
+                    }
 
-                        return $row->name.$is_notified;
-                    })
-                    ->editColumn('createdBy', function ($row) {
-                        return $row->createdBy?->user_full_name;
-                    })
-                    ->removeColumn('id')
-                    ->rawColumns(['action', 'name', 'campaign_type', 'createdBy', 'created_at'])
-                    ->make(true);
+                    return $row->name.$is_notified;
+                })
+                ->editColumn('createdBy', function ($row) {
+                    return $row->createdBy?->user_full_name;
+                })
+                ->removeColumn('id')
+                ->rawColumns(['action', 'name', 'campaign_type', 'createdBy', 'created_at'])
+                ->make(true);
         }
 
         return view('crm::campaign.index');
@@ -126,10 +125,8 @@ class CampaignController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_campaigns = auth()->user()->can('crm.access_all_campaigns');
@@ -159,11 +156,8 @@ class CampaignController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -219,11 +213,8 @@ class CampaignController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_campaigns = auth()->user()->can('crm.access_all_campaigns');
@@ -234,7 +225,7 @@ class CampaignController extends Controller
         }
 
         $query = Campaign::with('createdBy')
-                    ->where('business_id', $business_id);
+            ->where('business_id', $business_id);
 
         if (! $can_access_all_campaigns && $can_access_own_campaigns) {
             $query->where('created_by', auth()->user()->id);
@@ -250,11 +241,8 @@ class CampaignController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_campaigns = auth()->user()->can('crm.access_all_campaigns');
@@ -291,12 +279,8 @@ class CampaignController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_campaigns = auth()->user()->can('crm.access_all_campaigns');
@@ -361,11 +345,8 @@ class CampaignController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_campaigns = auth()->user()->can('crm.access_all_campaigns');
@@ -421,7 +402,7 @@ class CampaignController extends Controller
     {
         try {
             $campaign = Campaign::where('business_id', $business_id)
-                            ->findOrFail($campaign_id);
+                ->findOrFail($campaign_id);
 
             $business = Business::findOrFail($business_id);
 
@@ -431,7 +412,7 @@ class CampaignController extends Controller
             } elseif (! empty($campaign->additional_info['to']) && in_array($campaign->additional_info['to'], ['transaction_activity'])) {
                 $day = Carbon::now()->subDays($campaign->additional_info['in_days'])->toDateTimeString();
                 $query = Transaction::where('business_id', $business_id)
-                                ->select('contact_id', DB::raw('MAX(transaction_date) as last_shoped'));
+                    ->select('contact_id', DB::raw('MAX(transaction_date) as last_shoped'));
 
                 if ($campaign->additional_info['trans_activity'] == 'has_transactions') {
                     $query->having('last_shoped', '>=', $day);
@@ -440,8 +421,8 @@ class CampaignController extends Controller
                 }
 
                 $transactions = $query
-                                ->groupBy('contact_id')
-                                ->get();
+                    ->groupBy('contact_id')
+                    ->get();
 
                 $contact_ids = $transactions->pluck('contact_id')->toArray();
             }

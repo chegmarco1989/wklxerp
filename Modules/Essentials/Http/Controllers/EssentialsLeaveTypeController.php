@@ -6,6 +6,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsLeaveType;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -29,10 +30,8 @@ class EssentialsLeaveTypeController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -46,7 +45,7 @@ class EssentialsLeaveTypeController extends Controller
 
         if (request()->ajax()) {
             $leave_types = EssentialsLeaveType::where('business_id', $business_id)
-                        ->select(['leave_type', 'max_leave_count', 'id']);
+                ->select(['leave_type', 'max_leave_count', 'id']);
 
             return Datatables::of($leave_types)
                 ->addColumn(
@@ -63,10 +62,8 @@ class EssentialsLeaveTypeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('essentials.crud_leave_type')) {
             abort(403, 'Unauthorized action.');
@@ -77,11 +74,8 @@ class EssentialsLeaveTypeController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
 
@@ -115,20 +109,16 @@ class EssentialsLeaveTypeController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('essentials::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -141,18 +131,15 @@ class EssentialsLeaveTypeController extends Controller
         }
 
         $leave_type = EssentialsLeaveType::where('business_id', $business_id)
-                                        ->find($id);
+            ->find($id);
 
         return view('essentials::leave_type.edit')->with(compact('leave_type'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -170,8 +157,8 @@ class EssentialsLeaveTypeController extends Controller
             $input['business_id'] = $business_id;
 
             EssentialsLeaveType::where('business_id', $business_id)
-                            ->where('id', $id)
-                            ->update($input);
+                ->where('id', $id)
+                ->update($input);
 
             $output = ['success' => true,
                 'msg' => __('lang_v1.updated_success'),
@@ -189,10 +176,8 @@ class EssentialsLeaveTypeController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
     }
 }

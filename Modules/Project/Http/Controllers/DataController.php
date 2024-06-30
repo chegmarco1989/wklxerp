@@ -27,7 +27,7 @@ class DataController extends Controller
         if ($notification->type == 'Modules\Project\Notifications\NewProjectAssignedNotification') {
             $data = $notification->data;
             $project = Project::with('createdBy')
-                            ->find($data['project_id']);
+                ->find($data['project_id']);
 
             if (! empty($project)) {
                 $msg = __(
@@ -51,8 +51,8 @@ class DataController extends Controller
         } elseif ($notification->type == 'Modules\Project\Notifications\NewTaskAssignedNotification') {
             $data = $notification->data;
             $task = ProjectTask::with('createdBy')
-                        ->where('project_id', $data['project_id'])
-                        ->find($data['project_task_id']);
+                ->where('project_id', $data['project_id'])
+                ->find($data['project_task_id']);
 
             if (! empty($task)) {
                 $msg = __(
@@ -77,8 +77,8 @@ class DataController extends Controller
         } elseif ($notification->type == 'Modules\Project\Notifications\NewCommentOnTaskNotification') {
             $data = $notification->data;
             $task = ProjectTask::with('createdBy')
-                        ->where('project_id', $data['project_id'])
-                        ->find($data['project_task_id']);
+                ->where('project_id', $data['project_id'])
+                ->find($data['project_task_id']);
 
             if (! empty($task)) {
                 $user = User::find($data['commented_by']);
@@ -130,7 +130,7 @@ class DataController extends Controller
                         __('project::lang.project'),
                         ['icon' => 'fa fa-project-diagram', 'active' => request()->segment(1) == 'project' || request()->get('type') == 'project', 'style' => config('app.env') == 'demo' ? 'background-color: #e4186d !important;' : '']
                     )
-                    ->order(86);
+                        ->order(86);
                 }
             );
         }
@@ -140,11 +140,10 @@ class DataController extends Controller
      * get gross project from
      * project
      *
-     * @param $business_id, $start_date, $end_date,
-     *  $location_id
-     * @return decimal
+     * @param  $business_id,  $start_date, $end_date,
+     *                       $location_id
      */
-    public function grossProfit($params)
+    public function grossProfit($params): decimal
     {
         $transaction = ProjectTransaction::where('business_id', $params['business_id'])
             ->where('type', 'sell')
@@ -291,7 +290,7 @@ class DataController extends Controller
 
         if ($is_subscribed_project) {
             //for multiple tab just add another array of tab details and if js is in common file just include once in any array
-            return  [
+            return [
                 [
                     'tab_menu_path' => 'project::tax_report.tab_menu',
                     'tab_content_path' => 'project::tax_report.tab_content',
@@ -325,10 +324,10 @@ class DataController extends Controller
         $query = ProjectTransaction::with(['invoiceLines' => function ($q) {
             $q->whereNotNull('pjt_invoice_lines.tax_rate_id');
         }])
-                ->where('transactions.business_id', $business_id)
-                ->where('transactions.type', 'sell')
-                ->where('transactions.sub_type', 'project_invoice')
-                ->where('transactions.status', 'final');
+            ->where('transactions.business_id', $business_id)
+            ->where('transactions.type', 'sell')
+            ->where('transactions.sub_type', 'project_invoice')
+            ->where('transactions.status', 'final');
 
         if (! empty($start_date) && ! empty($end_date)) {
             $query->whereBetween(DB::raw('date(transaction_date)'), [$start_date, $end_date]);

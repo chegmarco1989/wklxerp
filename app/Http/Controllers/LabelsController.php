@@ -9,6 +9,7 @@ use App\Utils\ProductUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class LabelsController extends Controller
 {
@@ -33,10 +34,8 @@ class LabelsController extends Controller
 
     /**
      * Display labels
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Request $request): View
     {
         $business_id = $request->session()->get('user.business_id');
         $purchase_id = $request->get('purchase_id', false);
@@ -55,14 +54,14 @@ class LabelsController extends Controller
         $price_groups = [];
         if (! empty($purchase_id) || ! empty($product_id)) {
             $price_groups = SellingPriceGroup::where('business_id', $business_id)
-                                    ->active()
-                                    ->pluck('name', 'id');
+                ->active()
+                ->pluck('name', 'id');
         }
 
         $barcode_settings = Barcode::where('business_id', $business_id)
-                                ->orWhereNull('business_id')
-                                ->select(DB::raw('CONCAT(name, ", ", COALESCE(description, "")) as name, id, is_default'))
-                                ->get();
+            ->orWhereNull('business_id')
+            ->select(DB::raw('CONCAT(name, ", ", COALESCE(description, "")) as name, id, is_default'))
+            ->get();
         $default = $barcode_settings->where('is_default', 1)->first();
         $barcode_settings = $barcode_settings->pluck('name', 'id');
 
@@ -72,10 +71,8 @@ class LabelsController extends Controller
 
     /**
      * Returns the html for product row
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function addProductRow(Request $request)
+    public function addProductRow(Request $request): View
     {
         if ($request->ajax()) {
             $product_id = $request->input('product_id');
@@ -87,11 +84,11 @@ class LabelsController extends Controller
                 $products = $this->productUtil->getDetailsFromProduct($business_id, $product_id, $variation_id);
 
                 $price_groups = SellingPriceGroup::where('business_id', $business_id)
-                                            ->active()
-                                            ->pluck('name', 'id');
+                    ->active()
+                    ->pluck('name', 'id');
 
                 return view('labels.partials.show_table_rows')
-                        ->with(compact('products', 'index', 'price_groups'));
+                    ->with(compact('products', 'index', 'price_groups'));
             }
         }
     }
@@ -200,7 +197,7 @@ class LabelsController extends Controller
                 }
 
                 $output = view('labels.partials.preview_2')
-                            ->with(compact('print', 'page_products', 'business_name', 'barcode_details', 'margin_top', 'margin_left', 'paper_width', 'paper_height', 'is_first', 'is_last', 'factor'))->render();
+                    ->with(compact('print', 'page_products', 'business_name', 'barcode_details', 'margin_top', 'margin_left', 'paper_width', 'paper_height', 'is_first', 'is_last', 'factor'))->render();
                 print_r($output);
                 //$mpdf->WriteHTML($output);
 

@@ -42,10 +42,8 @@ class UpdateRewardPoints extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         try {
             ini_set('max_execution_time', 0);
@@ -67,16 +65,16 @@ class UpdateRewardPoints extends Command
                 }
 
                 $transactions = Transaction::where('business_id', $business->id)
-                                        ->where('type', 'sell')
-                                        ->where('status', 'final')
-                                        ->whereDate('transaction_date', '<=', $transaction_date_to_be_expired->format('Y-m-d'))
-                                        ->whereNotNull('rp_earned')
-                                        ->with(['contact'])
-                                        ->select(
-                                            DB::raw('SUM(COALESCE(rp_earned, 0)) as total_rp_expired'),
-                                            'contact_id'
-                                        )->groupBy('contact_id')
-                                        ->get();
+                    ->where('type', 'sell')
+                    ->where('status', 'final')
+                    ->whereDate('transaction_date', '<=', $transaction_date_to_be_expired->format('Y-m-d'))
+                    ->whereNotNull('rp_earned')
+                    ->with(['contact'])
+                    ->select(
+                        DB::raw('SUM(COALESCE(rp_earned, 0)) as total_rp_expired'),
+                        'contact_id'
+                    )->groupBy('contact_id')
+                    ->get();
 
                 foreach ($transactions as $transaction) {
                     if (! empty($transaction->total_rp_expired) && $transaction->contact->total_rp_used < $transaction->total_rp_expired) {

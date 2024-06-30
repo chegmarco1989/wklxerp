@@ -6,10 +6,12 @@ use App\Media;
 use App\User;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\AssetManagement\Entities\Asset;
 use Modules\AssetManagement\Entities\AssetMaintenance;
 use Modules\AssetManagement\Utils\AssetUtil;
@@ -42,10 +44,8 @@ class AssetMaitenanceController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -54,14 +54,14 @@ class AssetMaitenanceController extends Controller
 
         if (request()->ajax()) {
             $query = AssetMaintenance::with(['asset', 'asset.warranties'])
-                        ->where('asset_maintenances.business_id', $business_id)
-                        ->leftJoin('users as u', 'u.id', '=', 'asset_maintenances.assigned_to')
-                        ->leftJoin('users as u1', 'u1.id', '=', 'asset_maintenances.created_by');
+                ->where('asset_maintenances.business_id', $business_id)
+                ->leftJoin('users as u', 'u.id', '=', 'asset_maintenances.assigned_to')
+                ->leftJoin('users as u1', 'u1.id', '=', 'asset_maintenances.created_by');
 
             if (! auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) {
                 $query->where(function ($q) {
                     $q->where('asset_maintenances.created_by', auth()->user()->id)
-                    ->orWhere('asset_maintenances.assigned_to', auth()->user()->id);
+                        ->orWhere('asset_maintenances.assigned_to', auth()->user()->id);
                 });
             }
 
@@ -187,10 +187,8 @@ class AssetMaitenanceController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -201,8 +199,8 @@ class AssetMaitenanceController extends Controller
             $asset_id = request()->input('asset_id');
 
             $asset = Asset::with(['warranties'])
-                        ->where('business_id', $business_id)
-                        ->findOrfail($asset_id);
+                ->where('business_id', $business_id)
+                ->findOrfail($asset_id);
 
             $statuses = [];
             foreach ($this->maintenanceStatuses as $key => $value) {
@@ -215,17 +213,14 @@ class AssetMaitenanceController extends Controller
             }
 
             return view('assetmanagement::asset_maintenance.create')
-                    ->with(compact('asset', 'statuses', 'priorities'));
+                ->with(compact('asset', 'statuses', 'priorities'));
         }
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -276,22 +271,16 @@ class AssetMaitenanceController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('assetmanagement::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -300,8 +289,8 @@ class AssetMaitenanceController extends Controller
 
         if (request()->ajax()) {
             $maintenance = AssetMaintenance::where('business_id', $business_id)
-                        ->with(['media'])
-                        ->findOrfail($id);
+                ->with(['media'])
+                ->findOrfail($id);
 
             $statuses = [];
             foreach ($this->maintenanceStatuses as $key => $value) {
@@ -316,18 +305,14 @@ class AssetMaitenanceController extends Controller
             $users = User::forDropdown($business_id, false);
 
             return view('assetmanagement::asset_maintenance.edit')
-                    ->with(compact('maintenance', 'statuses', 'priorities', 'users'));
+                ->with(compact('maintenance', 'statuses', 'priorities', 'users'));
         }
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -379,11 +364,8 @@ class AssetMaitenanceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -393,7 +375,7 @@ class AssetMaitenanceController extends Controller
         if (request()->ajax()) {
             try {
                 $asset_maintenance = AssetMaintenance::where('business_id', $business_id)
-                            ->findOrfail($id);
+                    ->findOrfail($id);
 
                 $asset_maintenance->delete();
                 $asset_maintenance->media()->delete();

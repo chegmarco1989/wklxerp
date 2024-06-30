@@ -4,30 +4,27 @@ namespace App\Providers;
 
 use App\System;
 use App\Utils\ModuleUtil;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Filesystem;
-use Spatie\Dropbox\Client as DropboxClient;
-use Spatie\FlysystemDropbox\DropboxAdapter;
-
 use Laravel\Passport\Console\ClientCommand;
 use Laravel\Passport\Console\InstallCommand;
 use Laravel\Passport\Console\KeysCommand;
+use League\Flysystem\Filesystem;
+use Spatie\Dropbox\Client as DropboxClient;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         ini_set('memory_limit', '-1');
         set_time_limit(0);
@@ -62,14 +59,13 @@ class AppServiceProvider extends ServiceProvider
             $adapter = new DropboxAdapter(new DropboxClient(
                 $config['authorization_token']
             ));
- 
+
             return new FilesystemAdapter(
                 new Filesystem($adapter, $config),
                 $adapter,
                 $config
             );
         });
-
 
         $asset_v = config('constants.asset_version', 1);
         View::share('asset_v', $asset_v);
@@ -238,20 +234,16 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
      * Register commands.
-     *
-     * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         $this->commands([
             InstallCommand::class,

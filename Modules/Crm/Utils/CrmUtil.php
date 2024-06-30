@@ -153,9 +153,9 @@ class CrmUtil extends Util
     public function getLeadsListQuery($business_id)
     {
         $leads = CrmContact::with(['Source', 'lifeStage', 'leadUsers'])
-                ->where('contacts.business_id', $business_id)
-                ->where('contacts.type', 'lead')
-                ->select('contacts.contact_id', 'name', 'supplier_business_name', 'email',
+            ->where('contacts.business_id', $business_id)
+            ->where('contacts.type', 'lead')
+            ->select('contacts.contact_id', 'name', 'supplier_business_name', 'email',
                 'mobile', 'tax_number', 'contacts.created_at', 'custom_field1',
                 'custom_field2', 'custom_field3', 'custom_field4', 'custom_field5',
                 'custom_field6', 'alternate_number', 'landline', 'dob', 'contact_status',
@@ -164,10 +164,10 @@ class CrmUtil extends Util
                 'address_line_2', 'city', 'state', 'country', 'zip_code',
                 'contacts.prefix', 'contacts.first_name', 'contacts.middle_name', 'contacts.last_name',
                 DB::raw('(SELECT CS.id FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime < "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime DESC LIMIT 1) as last_follow_up_id'), DB::raw('(SELECT CS.id FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime > "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime ASC LIMIT 1) as upcoming_follow_up_id'),
-                    DB::raw('(SELECT CS.start_datetime FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime < "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime DESC LIMIT 1) as last_follow_up'),
-                    DB::raw('(SELECT CS.start_datetime FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime > "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime ASC LIMIT 1) as upcoming_follow_up'),
-                    DB::raw('(SELECT CS.followup_additional_info FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime < "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime DESC LIMIT 1) as last_follow_up_additional_info'),
-                    DB::raw('(SELECT CS.followup_additional_info FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime > "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime ASC LIMIT 1) as upcoming_follow_up_additional_info'));
+                DB::raw('(SELECT CS.start_datetime FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime < "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime DESC LIMIT 1) as last_follow_up'),
+                DB::raw('(SELECT CS.start_datetime FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime > "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime ASC LIMIT 1) as upcoming_follow_up'),
+                DB::raw('(SELECT CS.followup_additional_info FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime < "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime DESC LIMIT 1) as last_follow_up_additional_info'),
+                DB::raw('(SELECT CS.followup_additional_info FROM crm_schedules AS CS WHERE CS.contact_id=contacts.id AND CS.start_datetime > "'.Carbon::today()->toDateTimeString().'" ORDER BY CS.start_datetime ASC LIMIT 1) as upcoming_follow_up_additional_info'));
 
         return $leads;
     }
@@ -189,7 +189,7 @@ class CrmUtil extends Util
 
     public function getAdvFollowupsTags()
     {
-        return  [
+        return [
             'invoice' => [
                 '{invoice_numbers}', '{customer_business_name}', '{customer_name}',
             ],
@@ -206,7 +206,7 @@ class CrmUtil extends Util
     public function replaceAdvFollowUpTags($contact_id, $invoices, $input)
     {
         $contact = CrmContact::where('id', $contact_id)
-                        ->first();
+            ->first();
 
         $invoice_numbers = '';
         if (! empty($invoices)) {
@@ -243,7 +243,7 @@ class CrmUtil extends Util
     public function getCrmSettings($business_id)
     {
         $crm_settings = Business::where('id', $business_id)
-                                ->value('crm_settings');
+            ->value('crm_settings');
 
         $crm_settings = ! empty($crm_settings) ? json_decode($crm_settings, true) : [];
 

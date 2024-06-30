@@ -15,6 +15,7 @@ use Modules\Connector\Transformers\NewSellResource;
 
 /**
  * @group New end points
+ *
  * @authenticated
  *
  * APIs for sell list, product list and contact list
@@ -54,6 +55,7 @@ class ProductSellController extends ApiController
      * @queryParam sku Search term for product sku
      * @queryParam product_ids comma separated ids of products Example: 1,2
      * @queryParam per_page Total records per page. default: 10, Set -1 for no pagination Example:10
+     *
      * @response {
         "data": [
             {
@@ -336,10 +338,8 @@ class ProductSellController extends ApiController
 
     /**
      * Function to query product
-     *
-     * @return Response
      */
-    private function __getProducts($business_id, $filters = [], $search = [], $pagination = false, $order_by = null, $order_direction = null)
+    private function __getProducts($business_id, $filters = [], $search = [], $pagination = false, $order_by = null, $order_direction = null): Response
     {
         $query = Product::select('products.*')->where('products.business_id', $business_id);
 
@@ -644,12 +644,12 @@ class ProductSellController extends ApiController
 
         $with = ['sell_lines', 'payment_lines', 'sell_lines.product', 'sell_lines.product.category', 'sell_lines.product.sub_category', 'sell_lines.variations'];
         $query = Transaction::where('transactions.business_id', $business_id)
-                        ->where('transactions.type', 'sell')
-                        ->leftjoin('business_locations as bl', 'bl.id', '=', 'transactions.location_id')
-                        ->leftjoin('invoice_schemes as isc', 'isc.id', '=', 'bl.invoice_scheme_id')
-                        ->leftjoin('res_tables as tab', 'tab.id', '=', 'transactions.res_table_id')
-                        ->leftjoin('contacts as c', 'c.id', '=', 'transactions.contact_id')
-                        ->leftjoin('customer_groups as cg', 'c.customer_group_id', '=', 'cg.id');
+            ->where('transactions.type', 'sell')
+            ->leftjoin('business_locations as bl', 'bl.id', '=', 'transactions.location_id')
+            ->leftjoin('invoice_schemes as isc', 'isc.id', '=', 'bl.invoice_scheme_id')
+            ->leftjoin('res_tables as tab', 'tab.id', '=', 'transactions.res_table_id')
+            ->leftjoin('contacts as c', 'c.id', '=', 'transactions.contact_id')
+            ->leftjoin('customer_groups as cg', 'c.customer_group_id', '=', 'cg.id');
 
         if (! empty(request()->input('sell_ids'))) {
             $sell_ids = explode(',', request()->input('sell_ids'));
@@ -762,9 +762,9 @@ class ProductSellController extends ApiController
                 if (auth()->user()->can('view_overdue_sells_only')) {
                     $sells->where(function ($q) use ($payment_status_arr) {
                         $q->whereIn('transactions.payment_status', $payment_status_arr)
-                        ->orWhere(function ($qr) {
-                            $qr->OverDue();
-                        });
+                            ->orWhere(function ($qr) {
+                                $qr->OverDue();
+                            });
                     });
                 } else {
                     $sells->whereIn('transactions.payment_status', $payment_status_arr);
@@ -872,6 +872,7 @@ class ProductSellController extends ApiController
      * @queryParam order_by Column name to sort the result, Column: name, supplier_business_name
      * @queryParam direction Direction to sort the result, Direction: desc, asc
      * @queryParam per_page Total records per page. default: 10, Set -1 for no pagination Example:10
+     *
      * @response {
             "data": [
                 {

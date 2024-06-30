@@ -6,7 +6,7 @@ use App\DocumentAndNote;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\View;
+use Illuminate\View\View;
 use Modules\Project\Entities\Project;
 use Modules\Project\Entities\ProjectTask;
 use Modules\Project\Entities\ProjectTimeLog;
@@ -16,35 +16,33 @@ class ActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (request()->ajax()) {
             try {
                 $project_id = request()->get('project_id');
                 $project = Project::findOrFail($project_id);
                 $activities = Activity::forSubject($project)
-                                ->orWhere(function ($query) use ($project) {
-                                    $query->where('subject_type', (new ProjectTask())->getMorphClass())
-                                    ->whereIn('subject_id', $project->tasks()->pluck('id'));
-                                })
-                                ->orWhere(function ($query) use ($project) {
-                                    $query->where('subject_type', (new DocumentAndNote())->getMorphClass())
-                                    ->whereIn('subject_id', $project->documentsAndnote()->pluck('id'));
-                                })
-                                ->orWhere(function ($query) use ($project) {
-                                    $query->where('subject_type', (new ProjectTimeLog())->getMorphClass())
-                                    ->whereIn('subject_id', $project->timeLogs()->pluck('id'));
-                                })
-                                ->with(['causer', 'subject'])
-                                ->latest()
-                                ->simplePaginate(10);
+                    ->orWhere(function ($query) use ($project) {
+                        $query->where('subject_type', (new ProjectTask())->getMorphClass())
+                            ->whereIn('subject_id', $project->tasks()->pluck('id'));
+                    })
+                    ->orWhere(function ($query) use ($project) {
+                        $query->where('subject_type', (new DocumentAndNote())->getMorphClass())
+                            ->whereIn('subject_id', $project->documentsAndnote()->pluck('id'));
+                    })
+                    ->orWhere(function ($query) use ($project) {
+                        $query->where('subject_type', (new ProjectTimeLog())->getMorphClass())
+                            ->whereIn('subject_id', $project->timeLogs()->pluck('id'));
+                    })
+                    ->with(['causer', 'subject'])
+                    ->latest()
+                    ->simplePaginate(10);
 
                 $activities = view('project::activity.show')
-                                ->with(compact('activities'))
-                                ->render();
+                    ->with(compact('activities'))
+                    ->render();
 
                 $output = [
                     'success' => true,
@@ -66,60 +64,46 @@ class ActivityController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('project::create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
     }
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('project::show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         return view('project::edit');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
     }
 }

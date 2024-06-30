@@ -6,10 +6,12 @@ use App\Utils\BusinessUtil;
 use App\Utils\ModuleUtil;
 use App\Utils\TransactionUtil;
 use App\Variation;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Manufacturing\Entities\MfgIngredientGroup;
 use Modules\Manufacturing\Entities\MfgRecipe;
 use Modules\Manufacturing\Entities\MfgRecipeIngredient;
@@ -45,10 +47,8 @@ class RecipeController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -57,31 +57,31 @@ class RecipeController extends Controller
 
         if (request()->ajax()) {
             $recipes = MfgRecipe::join('variations as v', 'mfg_recipes.variation_id', '=', 'v.id')
-                                ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
-                                ->join('products as p', 'v.product_id', '=', 'p.id')
-                                ->leftjoin('categories as c', 'p.category_id', '=', 'c.id')
-                                ->leftjoin('categories as sc', 'p.sub_category_id', '=', 'sc.id')
-                                ->join('units as u', 'p.unit_id', '=', 'u.id')
-                                ->where('p.business_id', $business_id)
-                                ->with(['ingredients', 'ingredients.variation', 'ingredients.sub_unit', 'sub_unit'])
-                                ->select(
-                                    'mfg_recipes.id',
-                                    DB::raw('IF(
+                ->join('product_variations as pv', 'v.product_variation_id', '=', 'pv.id')
+                ->join('products as p', 'v.product_id', '=', 'p.id')
+                ->leftjoin('categories as c', 'p.category_id', '=', 'c.id')
+                ->leftjoin('categories as sc', 'p.sub_category_id', '=', 'sc.id')
+                ->join('units as u', 'p.unit_id', '=', 'u.id')
+                ->where('p.business_id', $business_id)
+                ->with(['ingredients', 'ingredients.variation', 'ingredients.sub_unit', 'sub_unit'])
+                ->select(
+                    'mfg_recipes.id',
+                    DB::raw('IF(
                                         p.type="variable", 
                                         CONCAT(p.name, " - ", pv.name, " - ", v.name, " (", v.sub_sku, ")"), 
                                         CONCAT(p.name, " (", v.sub_sku, ")") 
                                         ) as recipe_name'),
-                                    'mfg_recipes.extra_cost',
-                                    'mfg_recipes.final_price',
-                                    'mfg_recipes.variation_id',
-                                    'mfg_recipes.total_quantity',
-                                    'mfg_recipes.production_cost_type',
-                                    'mfg_recipes.waste_percent',
-                                    'mfg_recipes.sub_unit_id',
-                                    'u.short_name as unit_name',
-                                    'c.name as category',
-                                    'sc.name as sub_category'
-                                );
+                    'mfg_recipes.extra_cost',
+                    'mfg_recipes.final_price',
+                    'mfg_recipes.variation_id',
+                    'mfg_recipes.total_quantity',
+                    'mfg_recipes.production_cost_type',
+                    'mfg_recipes.waste_percent',
+                    'mfg_recipes.sub_unit_id',
+                    'u.short_name as unit_name',
+                    'c.name as category',
+                    'sc.name as sub_category'
+                );
 
             return Datatables::of($recipes)
                 ->addColumn('action', '<button data-href="{{action(\'\Modules\Manufacturing\Http\Controllers\RecipeController@show\', [$id])}}" class="btn btn-xs btn-info btn-modal" data-container=".view_modal"><i class="fa fa-eye"></i> @lang("messages.view")</button> &nbsp; @can("manufacturing.edit_recipe") <a href="{{action(\'\Modules\Manufacturing\Http\Controllers\RecipeController@addIngredients\')}}?variation_id={{$variation_id}}" class="btn btn-xs btn-primary" ><i class="fa fa-edit"></i> @lang("messages.edit")</a>
@@ -120,7 +120,7 @@ class RecipeController extends Controller
                     $query->whereRaw("CONCAT(p.name, ' - ', pv.name, ' - ', v.name, ' (', v.sub_sku, ')') like ?", ["%{$keyword}%"]);
                 })
                 ->addColumn('row_select', function ($row) {
-                    return  '<input type="checkbox" class="row-select" value="'.$row->id.'">';
+                    return '<input type="checkbox" class="row-select" value="'.$row->id.'">';
                 })
                 ->rawColumns(['action', 'recipe_total', 'total_quantity', 'unit_cost', 'row_select'])
                 ->make(true);
@@ -131,10 +131,8 @@ class RecipeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -148,11 +146,8 @@ class RecipeController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -190,7 +185,7 @@ class RecipeController extends Controller
 
                 foreach ($input['ingredients'] as $key => $value) {
                     $variation = Variation::with(['product'])
-                                        ->findOrFail($value['ingredient_id']);
+                        ->findOrFail($value['ingredient_id']);
 
                     if (! empty($value['ingredient_line_id'])) {
                         $ingredient = MfgRecipeIngredient::find($value['ingredient_line_id']);
@@ -223,7 +218,7 @@ class RecipeController extends Controller
                             );
                         } else {
                             $ingredient_group = MfgIngredientGroup::where('business_id', $business_id)
-                                                                ->find($value['mfg_ingredient_group_id']);
+                                ->find($value['mfg_ingredient_group_id']);
                             if ($ingredient_group->name != $ig_name || $ingredient_group->description != $ig_description) {
                                 $ingredient_group->name = $ig_name;
                                 $ingredient_group->description = $ig_description;
@@ -245,8 +240,8 @@ class RecipeController extends Controller
                 }
                 if (! empty($edited_ingredients)) {
                     MfgRecipeIngredient::where('mfg_recipe_id', $recipe->id)
-                                                ->whereNotIn('id', $edited_ingredients)
-                                                ->delete();
+                        ->whereNotIn('id', $edited_ingredients)
+                        ->delete();
                 }
 
                 $recipe->ingredients()->saveMany($ingredients);
@@ -267,10 +262,8 @@ class RecipeController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -278,7 +271,7 @@ class RecipeController extends Controller
         }
 
         $recipe = MfgRecipe::with(['variation', 'variation.product', 'variation.product_variation', 'variation.media', 'sub_unit', 'variation.product.unit'])
-                        ->findOrFail($id);
+            ->findOrFail($id);
 
         $ingredients = $this->mfgUtil->getIngredientDetails($recipe, $business_id);
 
@@ -287,10 +280,8 @@ class RecipeController extends Controller
 
     /**
      * Get ingredients row while adding recipe.
-     *
-     * @return Response
      */
-    public function getIngredientRow($variation_id)
+    public function getIngredientRow($variation_id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -298,7 +289,7 @@ class RecipeController extends Controller
         }
 
         $ingredient = Variation::with('product', 'product_variation', 'product.unit')
-                            ->findOrFail($variation_id);
+            ->findOrFail($variation_id);
 
         $sub_units = $this->moduleUtil->getSubUnits($business_id, $ingredient->product->unit->id);
 
@@ -316,10 +307,8 @@ class RecipeController extends Controller
 
     /**
      * Shows recipe form.
-     *
-     * @return Response
      */
-    public function addIngredients()
+    public function addIngredients(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -329,11 +318,11 @@ class RecipeController extends Controller
         $variation_id = request()->input('variation_id');
 
         $variation = Variation::join('products as p', 'p.id', '=', 'variations.product_id')
-                            ->join('product_variations as pv', 'pv.id', '=', 'variations.product_variation_id')
-                            ->join('units as u', 'u.id', '=', 'p.unit_id')
-                            ->where('p.business_id', request()->session()->get('user.business_id'))
-                            ->select('p.name as product_name', 'p.type as product_type', 'variations.*', 'pv.name as product_variation_name', 'p.unit_id as unit_id', 'u.short_name as unit_name')
-                            ->findOrFail($variation_id);
+            ->join('product_variations as pv', 'pv.id', '=', 'variations.product_variation_id')
+            ->join('units as u', 'u.id', '=', 'p.unit_id')
+            ->where('p.business_id', request()->session()->get('user.business_id'))
+            ->select('p.name as product_name', 'p.type as product_type', 'variations.*', 'pv.name as product_variation_name', 'p.unit_id as unit_id', 'u.short_name as unit_name')
+            ->findOrFail($variation_id);
         $currency_details = $this->transactionUtil->purchaseCurrencyDetails($business_id);
 
         $with = [
@@ -346,15 +335,15 @@ class RecipeController extends Controller
             'ingredients.sub_unit', 'ingredients.ingredient_group', ];
 
         $recipe = MfgRecipe::where('variation_id', $variation_id)
-                        ->with($with)
-                        ->first();
+            ->with($with)
+            ->first();
 
         $copy_recipe = null;
 
         //If new recipe and copy from recipe selected get copy recipe
         if (empty($recipe) && ! empty(request()->input('copy_recipe_id'))) {
             $copy_recipe = MfgRecipe::with($with)
-                        ->find(request()->input('copy_recipe_id'));
+                ->find(request()->input('copy_recipe_id'));
         }
 
         $ingredients = [];
@@ -406,10 +395,8 @@ class RecipeController extends Controller
 
     /**
      * Retrieves selected recipe details for production.
-     *
-     * @return Response
      */
-    public function getRecipeDetails()
+    public function getRecipeDetails(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -420,11 +407,11 @@ class RecipeController extends Controller
         $location_id = request()->input('location_id');
 
         $recipe = MfgRecipe::where('variation_id', $variation_id)
-                        ->with(['variation', 'variation.product', 'variation.product.unit', 'sub_unit',
-                            'ingredients' => function ($query) {
-                                $query->orderBy('sort_order', 'asc');
-                            }, ])
-                        ->first();
+            ->with(['variation', 'variation.product', 'variation.product.unit', 'sub_unit',
+                'ingredients' => function ($query) {
+                    $query->orderBy('sort_order', 'asc');
+                }, ])
+            ->first();
 
         $ingredients = [];
         if (! empty($recipe)) {
@@ -477,24 +464,19 @@ class RecipeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function getIngredientGroupForm()
+    public function getIngredientGroupForm(): View
     {
         $ig_index = request()->input('ig_index');
 
         return view('manufacturing::recipe.ingredient_group')
-                ->with(compact('ig_index'));
+            ->with(compact('ig_index'));
     }
 
     /**
      * Function to update variation prices from recipe unit price.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function updateRecipeProductPrices(Request $request)
+    public function updateRecipeProductPrices(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -507,8 +489,8 @@ class RecipeController extends Controller
 
             if (! empty($recipe_ids)) {
                 $recipes = MfgRecipe::with(['variation', 'sub_unit', 'variation.product', 'variation.product.product_tax'])
-                                ->whereIn('id', $recipe_ids)
-                                ->get();
+                    ->whereIn('id', $recipe_ids)
+                    ->get();
 
                 DB::beginTransaction();
                 foreach ($recipes as $recipe) {
@@ -557,10 +539,9 @@ class RecipeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -569,7 +550,7 @@ class RecipeController extends Controller
 
         try {
             $recipe = MfgRecipe::where('id', $id)
-                        ->delete();
+                ->delete();
 
             $output = ['success' => 1,
                 'msg' => __('lang_v1.deleted_success'),
@@ -587,13 +568,11 @@ class RecipeController extends Controller
 
     /**
      * Check if recipe exist.
-     *
-     * @param  int  $variation_id
      */
-    public function isRecipeExist($variation_id)
+    public function isRecipeExist(int $variation_id)
     {
         $exists = MfgRecipe::where('variation_id', $variation_id)
-                            ->exists();
+            ->exists();
 
         $output = $exists ? 1 : 0;
 

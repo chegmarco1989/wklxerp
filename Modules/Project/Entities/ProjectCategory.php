@@ -3,6 +3,7 @@
 namespace Modules\Project\Entities;
 
 use App\Category;
+use Illuminate\Database\Eloquent\Relations\MorphedByMany;
 
 class ProjectCategory extends Category
 {
@@ -16,7 +17,7 @@ class ProjectCategory extends Category
     /**
      * Get all of the category that are assigned to project.
      */
-    public function project()
+    public function project(): MorphedByMany
     {
         return $this->morphedByMany('Modules\Project\Entities\Project', 'categorizable');
     }

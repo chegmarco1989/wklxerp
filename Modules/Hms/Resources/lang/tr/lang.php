@@ -1,4 +1,5 @@
 <?php
+
 return [
     'hms' => 'HMS',
     'type' => 'Konaklama Türü',
