@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,12 +17,12 @@ class AccountTransaction extends Model
         'operation_date' => 'datetime',
     ];
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
 
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(\App\Transaction::class, 'transaction_id');
     }
@@ -116,12 +118,12 @@ class AccountTransaction extends Model
         }
     }
 
-    public function transfer_transaction()
+    public function transfer_transaction(): BelongsTo
     {
         return $this->belongsTo(\App\AccountTransaction::class, 'transfer_transaction_id');
     }
 
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(\App\Account::class, 'account_id');
     }

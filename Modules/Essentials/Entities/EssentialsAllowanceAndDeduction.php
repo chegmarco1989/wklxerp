@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Utils\Util;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,7 +22,7 @@ class EssentialsAllowanceAndDeduction extends Model
      */
     protected $table = 'essentials_allowances_and_deductions';
 
-    public function employees()
+    public function employees(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'essentials_user_allowance_and_deductions', 'allowance_deduction_id', 'user_id');
     }

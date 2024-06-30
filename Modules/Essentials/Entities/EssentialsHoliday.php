@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class EssentialsHoliday extends Model
@@ -13,7 +14,7 @@ class EssentialsHoliday extends Model
      */
     protected $guarded = ['id'];
 
-    public function location()
+    public function location(): BelongsTo
     {
         return $this->belongsTo(\App\BusinessLocation::class, 'location_id');
     }

@@ -40,7 +40,7 @@ class SubscriptionExpiryAlert extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $min_alert_days = System::where('key', 'package_expiry_alert_days')->value('value');
 

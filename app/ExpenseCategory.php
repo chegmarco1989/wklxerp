@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,7 +22,7 @@ class ExpenseCategory extends Model
      */
     protected $guarded = ['id'];
 
-    public function sub_categories()
+    public function sub_categories(): HasMany
     {
         return $this->hasMany(\App\ExpenseCategory::class, 'parent_id');
     }

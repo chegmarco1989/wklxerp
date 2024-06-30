@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,7 @@ class Subscription extends Model
     /**
      * Get the package that belongs to the subscription.
      */
-    public function package()
+    public function package(): BelongsTo
     {
         return $this->belongsTo('\Modules\Superadmin\Entities\Package')
             ->withTrashed();
@@ -139,7 +140,7 @@ class Subscription extends Model
     /**
      * Get the created_by.
      */
-    public function created_user()
+    public function created_user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_id');
     }
@@ -147,7 +148,7 @@ class Subscription extends Model
     /**
      * Get the subscription business relationship.
      */
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class, 'business_id');
     }

@@ -32,7 +32,7 @@ class SendSubscriptionExpiryAlert extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         $channels = ['mail', 'database'];
         if (isPusherEnabled()) {
@@ -48,7 +48,7 @@ class SendSubscriptionExpiryAlert extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $owner_name = $notifiable->user_full_name;
         $app_name = config('app.name');

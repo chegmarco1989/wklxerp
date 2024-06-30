@@ -2,6 +2,10 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -56,7 +60,7 @@ class Product extends Model
         return $image_path;
     }
 
-    public function product_variations()
+    public function product_variations(): HasMany
     {
         return $this->hasMany(\App\ProductVariation::class);
     }
@@ -64,7 +68,7 @@ class Product extends Model
     /**
      * Get the brand associated with the product.
      */
-    public function brand()
+    public function brand(): BelongsTo
     {
         return $this->belongsTo(\App\Brands::class);
     }
@@ -72,7 +76,7 @@ class Product extends Model
     /**
      * Get the unit associated with the product.
      */
-    public function unit()
+    public function unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class);
     }
@@ -80,7 +84,7 @@ class Product extends Model
     /**
      * Get the unit associated with the product.
      */
-    public function second_unit()
+    public function second_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'secondary_unit_id');
     }
@@ -88,7 +92,7 @@ class Product extends Model
     /**
      * Get category associated with the product.
      */
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(\App\Category::class);
     }
@@ -96,7 +100,7 @@ class Product extends Model
     /**
      * Get sub-category associated with the product.
      */
-    public function sub_category()
+    public function sub_category(): BelongsTo
     {
         return $this->belongsTo(\App\Category::class, 'sub_category_id', 'id');
     }
@@ -104,7 +108,7 @@ class Product extends Model
     /**
      * Get the tax associated with the product.
      */
-    public function product_tax()
+    public function product_tax(): BelongsTo
     {
         return $this->belongsTo(\App\TaxRate::class, 'tax', 'id');
     }
@@ -112,7 +116,7 @@ class Product extends Model
     /**
      * Get the variations associated with the product.
      */
-    public function variations()
+    public function variations(): HasMany
     {
         return $this->hasMany(\App\Variation::class);
     }
@@ -120,7 +124,7 @@ class Product extends Model
     /**
      * If product type is modifier get products associated with it.
      */
-    public function modifier_products()
+    public function modifier_products(): BelongsToMany
     {
         return $this->belongsToMany(\App\Product::class, 'res_product_modifier_sets', 'modifier_set_id', 'product_id');
     }
@@ -128,7 +132,7 @@ class Product extends Model
     /**
      * If product type is modifier get products associated with it.
      */
-    public function modifier_sets()
+    public function modifier_sets(): BelongsToMany
     {
         return $this->belongsToMany(\App\Product::class, 'res_product_modifier_sets', 'product_id', 'modifier_set_id');
     }
@@ -136,7 +140,7 @@ class Product extends Model
     /**
      * Get the purchases associated with the product.
      */
-    public function purchase_lines()
+    public function purchase_lines(): HasMany
     {
         return $this->hasMany(\App\PurchaseLine::class);
     }
@@ -185,7 +189,7 @@ class Product extends Model
         return $query->where('not_for_selling', 1);
     }
 
-    public function product_locations()
+    public function product_locations(): BelongsToMany
     {
         return $this->belongsToMany(\App\BusinessLocation::class, 'product_locations', 'product_id', 'location_id');
     }
@@ -208,17 +212,17 @@ class Product extends Model
     /**
      * Get warranty associated with the product.
      */
-    public function warranty()
+    public function warranty(): BelongsTo
     {
         return $this->belongsTo(\App\Warranty::class);
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
 
-    public function rack_details()
+    public function rack_details(): HasMany
     {
         return $this->hasMany(\App\ProductRack::class);
     }

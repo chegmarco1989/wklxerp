@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class TransactionSellLine extends Model
@@ -13,28 +16,28 @@ class TransactionSellLine extends Model
      */
     protected $guarded = ['id'];
 
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(\App\Transaction::class);
     }
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(\App\Product::class, 'product_id');
     }
 
-    public function variations()
+    public function variations(): BelongsTo
     {
         return $this->belongsTo(\App\Variation::class, 'variation_id');
     }
 
-    public function modifiers()
+    public function modifiers(): HasMany
     {
         return $this->hasMany(\App\TransactionSellLine::class, 'parent_sell_line_id')
             ->where('children_type', 'modifier');
     }
 
-    public function sell_line_purchase_lines()
+    public function sell_line_purchase_lines(): HasMany
     {
         return $this->hasMany(\App\TransactionSellLinesPurchaseLines::class, 'sell_line_id');
     }
@@ -50,7 +53,7 @@ class TransactionSellLine extends Model
         return (float) $value;
     }
 
-    public function lot_details()
+    public function lot_details(): BelongsTo
     {
         return $this->belongsTo(\App\PurchaseLine::class, 'lot_no_line_id');
     }
@@ -72,7 +75,7 @@ class TransactionSellLine extends Model
     /**
      * Get the unit associated with the purchase line.
      */
-    public function sub_unit()
+    public function sub_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'sub_unit_id');
     }
@@ -86,7 +89,7 @@ class TransactionSellLine extends Model
         ];
     }
 
-    public function service_staff()
+    public function service_staff(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'res_service_staff_id');
     }
@@ -94,17 +97,17 @@ class TransactionSellLine extends Model
     /**
      * The warranties that belong to the sell lines.
      */
-    public function warranties()
+    public function warranties(): BelongsToMany
     {
         return $this->belongsToMany(\App\Warranty::class, 'sell_line_warranties', 'sell_line_id', 'warranty_id');
     }
 
-    public function line_tax()
+    public function line_tax(): BelongsTo
     {
         return $this->belongsTo(\App\TaxRate::class, 'tax_id');
     }
 
-    public function so_line()
+    public function so_line(): BelongsTo
     {
         return $this->belongsTo(\App\TransactionSellLine::class, 'so_line_id');
     }

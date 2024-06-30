@@ -29,7 +29,7 @@ class NewTaskCommentNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         $channels = ['database'];
         if (isPusherEnabled()) {
@@ -45,7 +45,7 @@ class NewTaskCommentNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
             ->line('The introduction to the notification.')
@@ -59,7 +59,7 @@ class NewTaskCommentNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             'comment_id' => $this->comment->id,

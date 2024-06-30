@@ -2,6 +2,8 @@
 
 namespace Modules\AssetManagement\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class AssetTransaction extends Model
@@ -16,12 +18,12 @@ class AssetTransaction extends Model
     /**
      * get asset for transaction
      */
-    public function asset()
+    public function asset(): BelongsTo
     {
         return $this->belongsTo('Modules\AssetManagement\Entities\Asset', 'asset_id');
     }
 
-    public function revokeTransaction()
+    public function revokeTransaction(): HasMany
     {
         return $this->hasMany('Modules\AssetManagement\Entities\AssetTransaction', 'parent_id');
     }

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -45,12 +47,12 @@ class Unit extends Model
         return $dropdown;
     }
 
-    public function sub_units()
+    public function sub_units(): HasMany
     {
         return $this->hasMany(\App\Unit::class, 'base_unit_id');
     }
 
-    public function base_unit()
+    public function base_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'base_unit_id');
     }

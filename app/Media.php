@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +21,7 @@ class Media extends Model
     /**
      * Get all of the owning mediable models.
      */
-    public function mediable()
+    public function mediable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -182,7 +184,7 @@ class Media extends Model
         $media->delete();
     }
 
-    public function uploaded_by_user()
+    public function uploaded_by_user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'uploaded_by');
     }

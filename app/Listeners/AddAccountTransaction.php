@@ -30,7 +30,7 @@ class AddAccountTransaction
      * @param  object  $event
      * @return void
      */
-    public function handle(TransactionPaymentAdded $event)
+    public function handle(TransactionPaymentAdded $event): void
     {
         //echo "<pre>";print_r($event->transactionPayment->toArray());exit;
         if ($event->transactionPayment->method == 'advance') {

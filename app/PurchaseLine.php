@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class PurchaseLine extends Model
@@ -13,17 +14,17 @@ class PurchaseLine extends Model
      */
     protected $guarded = ['id'];
 
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(\App\Transaction::class);
     }
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(\App\Product::class, 'product_id');
     }
 
-    public function variations()
+    public function variations(): BelongsTo
     {
         return $this->belongsTo(\App\Variation::class, 'variation_id');
     }
@@ -42,7 +43,7 @@ class PurchaseLine extends Model
     /**
      * Get the unit associated with the purchase line.
      */
-    public function sub_unit()
+    public function sub_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'sub_unit_id');
     }
@@ -68,17 +69,17 @@ class PurchaseLine extends Model
         return (float) ($this->quantity_sold + $this->quantity_adjusted + $this->quantity_returned + $this->mfg_quantity_used);
     }
 
-    public function line_tax()
+    public function line_tax(): BelongsTo
     {
         return $this->belongsTo(\App\TaxRate::class, 'tax_id');
     }
 
-    public function purchase_order_line()
+    public function purchase_order_line(): BelongsTo
     {
         return $this->belongsTo(\App\PurchaseLine::class, 'purchase_order_line_id');
     }
 
-    public function purchase_requisition_line()
+    public function purchase_requisition_line(): BelongsTo
     {
         return $this->belongsTo(\App\PurchaseLine::class, 'purchase_requisition_line_id');
     }

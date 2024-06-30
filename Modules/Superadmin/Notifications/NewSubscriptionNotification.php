@@ -26,7 +26,7 @@ class NewSubscriptionNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -37,7 +37,7 @@ class NewSubscriptionNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $paid_via = ! empty($this->subscription->paid_via) ? $this->subscription->paid_via : 'Free';
 
@@ -56,7 +56,7 @@ class NewSubscriptionNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

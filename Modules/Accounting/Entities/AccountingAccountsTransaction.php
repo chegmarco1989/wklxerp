@@ -2,13 +2,14 @@
 
 namespace Modules\Accounting\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class AccountingAccountsTransaction extends Model
 {
     protected $guarded = [];
 
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo('Modules\Accounting\Entities\AccountingAccount', 'accounting_account_id');
     }

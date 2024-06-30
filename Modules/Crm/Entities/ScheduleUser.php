@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class ScheduleUser extends Model
@@ -23,7 +24,7 @@ class ScheduleUser extends Model
     /**
      * Get the schedule that owns the user.
      */
-    public function schedule()
+    public function schedule(): BelongsTo
     {
         return $this->belongsTo('Modules\Crm\Entities\Schedule');
     }

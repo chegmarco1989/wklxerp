@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
             $table->decimal('original_price', 22, 4)->after('package_price')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('', function (Blueprint $table) {
 

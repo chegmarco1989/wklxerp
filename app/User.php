@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Notifications\RegisterSuccessful;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -55,7 +58,7 @@ class User extends Authenticatable implements MessengerProvider
     /**
      * Get the business that owns the user.
      */
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class);
     }
@@ -70,7 +73,7 @@ class User extends Authenticatable implements MessengerProvider
      * Applied only when selected_contacts is true for a user in
      * users table
      */
-    public function contactAccess()
+    public function contactAccess(): BelongsToMany
     {
         return $this->belongsToMany(\App\Contact::class, 'user_contact_access');
     }
@@ -78,7 +81,7 @@ class User extends Authenticatable implements MessengerProvider
     /**
      * Get all of the users's notes & documents.
      */
-    public function documentsAndnote()
+    public function documentsAndnote(): MorphMany
     {
         return $this->morphMany(\App\DocumentAndNote::class, 'notable');
     }
@@ -322,7 +325,7 @@ class User extends Authenticatable implements MessengerProvider
     /**
      * Get the contact for the user.
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(\Modules\Crm\Entities\CrmContact::class, 'crm_contact_id');
     }

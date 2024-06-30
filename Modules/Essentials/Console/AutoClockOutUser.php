@@ -37,7 +37,7 @@ class AutoClockOutUser extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $attendances = EssentialsAttendance::join('essentials_shifts as es', 'essentials_attendances.essentials_shift_id', 'es.id')
             ->where('es.is_allowed_auto_clockout', 1)

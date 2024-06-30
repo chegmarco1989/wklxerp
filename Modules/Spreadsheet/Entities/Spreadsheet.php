@@ -2,6 +2,8 @@
 
 namespace Modules\Spreadsheet\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Spreadsheet extends Model
@@ -32,12 +34,12 @@ class Spreadsheet extends Model
     /**
      * user who created a sheet.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
 
-    public function shares()
+    public function shares(): HasMany
     {
         return $this->hasMany(\Modules\Spreadsheet\Entities\SpreadsheetShare::class, 'sheet_spreadsheet_id');
     }

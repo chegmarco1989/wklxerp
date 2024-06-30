@@ -2,6 +2,8 @@
 
 namespace Modules\AssetManagement\Entities;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class AssetMaintenance extends Model
@@ -13,7 +15,7 @@ class AssetMaintenance extends Model
      */
     protected $guarded = ['id'];
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
@@ -21,7 +23,7 @@ class AssetMaintenance extends Model
     /**
      * user added asset.
      */
-    public function asset()
+    public function asset(): BelongsTo
     {
         return $this->belongsTo(\Modules\AssetManagement\Entities\Asset::class, 'asset_id');
     }
@@ -29,7 +31,7 @@ class AssetMaintenance extends Model
     /**
      * user added asset maintence.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
@@ -37,7 +39,7 @@ class AssetMaintenance extends Model
     /**
      * user assigned asset maintence.
      */
-    public function assignedTo()
+    public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'assigned_to');
     }

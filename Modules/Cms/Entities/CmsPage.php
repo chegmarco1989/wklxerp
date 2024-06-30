@@ -2,6 +2,8 @@
 
 namespace Modules\Cms\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class CmsPage extends Model
@@ -33,7 +35,7 @@ class CmsPage extends Model
     /**
      * Get the business that owns the user.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by', 'id');
     }
@@ -73,7 +75,7 @@ class CmsPage extends Model
     /**
      * Get the meta for the page.
      */
-    public function pageMeta()
+    public function pageMeta(): HasMany
     {
         return $this->hasMany('Modules\Cms\Entities\CmsPageMeta', 'cms_page_id', 'id');
     }

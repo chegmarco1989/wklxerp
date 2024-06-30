@@ -2,6 +2,7 @@
 
 namespace Modules\AiAssistance\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +21,7 @@ class AiAssistanceHistory extends Model
         'input_data' => 'array',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

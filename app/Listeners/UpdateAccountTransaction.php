@@ -25,7 +25,7 @@ class UpdateAccountTransaction
      * @param  object  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         if (! $this->moduleUtil->isModuleEnabled('account')) {
             return true;

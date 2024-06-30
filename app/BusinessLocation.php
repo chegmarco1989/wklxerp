@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -90,7 +91,7 @@ class BusinessLocation extends Model
         }
     }
 
-    public function price_group()
+    public function price_group(): BelongsTo
     {
         return $this->belongsTo(\App\SellingPriceGroup::class, 'selling_price_group_id');
     }

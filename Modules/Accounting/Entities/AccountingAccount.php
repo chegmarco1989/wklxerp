@@ -2,6 +2,8 @@
 
 namespace Modules\Accounting\Entities;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class AccountingAccount extends Model
@@ -13,7 +15,7 @@ class AccountingAccount extends Model
      */
     protected $guarded = ['id'];
 
-    public function child_accounts()
+    public function child_accounts(): HasMany
     {
         return $this->hasMany(\Modules\Accounting\Entities\AccountingAccount::class, 'parent_account_id');
     }
@@ -23,12 +25,12 @@ class AccountingAccount extends Model
     //     return $this->belongsTo(\Modules\Accounting\Entities\AccountingAccountType::class, 'account_type_id');
     // }
 
-    public function account_sub_type()
+    public function account_sub_type(): BelongsTo
     {
         return $this->belongsTo(\Modules\Accounting\Entities\AccountingAccountType::class, 'account_sub_type_id');
     }
 
-    public function detail_type()
+    public function detail_type(): BelongsTo
     {
         return $this->belongsTo(\Modules\Accounting\Entities\AccountingAccountType::class, 'detail_type_id');
     }

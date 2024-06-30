@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Entities;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Shift extends Model
@@ -29,7 +30,7 @@ class Shift extends Model
         'holidays' => 'array',
     ];
 
-    public function user_shifts($value = '')
+    public function user_shifts($value = ''): HasMany
     {
         return $this->hasMany(\Modules\Essentials\Entities\EssentialsUserShift::class, 'essentials_shift_id');
     }

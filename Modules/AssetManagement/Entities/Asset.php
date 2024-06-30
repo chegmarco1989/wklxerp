@@ -2,6 +2,9 @@
 
 namespace Modules\AssetManagement\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +20,7 @@ class Asset extends Model
     /**
      * user added asset.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
@@ -25,12 +28,12 @@ class Asset extends Model
     /**
      * get business location for asset
      */
-    public function businessLocation()
+    public function businessLocation(): BelongsTo
     {
         return $this->belongsTo(\App\BusinessLocation::class, 'location_id');
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
@@ -82,12 +85,12 @@ class Asset extends Model
         return $output;
     }
 
-    public function warranties()
+    public function warranties(): HasMany
     {
         return $this->hasMany(\Modules\AssetManagement\Entities\AssetWarranty::class);
     }
 
-    public function maintenances()
+    public function maintenances(): HasMany
     {
         return $this->hasMany(\Modules\AssetManagement\Entities\AssetMaintenance::class);
     }

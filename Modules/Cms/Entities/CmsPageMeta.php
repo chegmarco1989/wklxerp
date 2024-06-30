@@ -2,6 +2,7 @@
 
 namespace Modules\Cms\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class CmsPageMeta extends Model
@@ -16,7 +17,7 @@ class CmsPageMeta extends Model
     /**
      * Get the page for the meta.
      */
-    public function page()
+    public function page(): BelongsTo
     {
         return $this->belongsTo('Modules\Cms\Entities\CmsPage', 'cms_page_id');
     }

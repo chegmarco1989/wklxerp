@@ -10,7 +10,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('ALTER TABLE essentials_to_dos MODIFY COLUMN `date` DATETIME');
         DB::statement('ALTER TABLE essentials_to_dos MODIFY COLUMN `end_date` DATETIME');
@@ -21,7 +21,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         //
     }

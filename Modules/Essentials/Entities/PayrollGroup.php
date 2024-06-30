@@ -2,6 +2,8 @@
 
 namespace Modules\Essentials\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class PayrollGroup extends Model
@@ -23,7 +25,7 @@ class PayrollGroup extends Model
     /**
      * Get the transactions for the payroll group.
      */
-    public function payrollGroupTransactions()
+    public function payrollGroupTransactions(): BelongsToMany
     {
         return $this->belongsToMany(\App\Transaction::class, 'essentials_payroll_group_transactions', 'payroll_group_id', 'transaction_id');
     }
@@ -31,7 +33,7 @@ class PayrollGroup extends Model
     /**
      * Get the location that owns the payroll group.
      */
-    public function businessLocation()
+    public function businessLocation(): BelongsTo
     {
         return $this->belongsTo(\App\BusinessLocation::class, 'location_id');
     }
@@ -39,7 +41,7 @@ class PayrollGroup extends Model
     /**
      * Get the business that owns the payroll group.
      */
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class, 'business_id');
     }

@@ -2,6 +2,7 @@
 
 namespace Modules\Accounting\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class AccountingAccountType extends Model
@@ -35,7 +36,7 @@ class AccountingAccountType extends Model
     /**
      * Get the parent of the type
      */
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo('Modules\Accounting\Entities\AccountingAccountType', 'parent_id', 'id');
     }

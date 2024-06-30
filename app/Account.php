@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Utils\Util;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -122,7 +123,7 @@ class Account extends Model
         ];
     }
 
-    public function account_type()
+    public function account_type(): BelongsTo
     {
         return $this->belongsTo(\App\AccountType::class, 'account_type_id');
     }

@@ -2,6 +2,9 @@
 
 namespace Modules\Hms\Entities;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,17 +15,17 @@ class HmsRoomType extends Model
 
     protected $guarded = ['id'];
 
-    public function Rooms()
+    public function Rooms(): HasMany
     {
         return $this->hasMany(HmsRoom::class);
     }
 
-    public function Pricings()
+    public function Pricings(): HasMany
     {
         return $this->hasMany(HmsRoomTypePricing::class);
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }
@@ -30,7 +33,7 @@ class HmsRoomType extends Model
     /**
      * Get the project categories.
      */
-    public function categories()
+    public function categories(): MorphToMany
     {
         return $this->morphToMany(\App\Category::class, 'categorizable');
     }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class InvoiceLayout extends Model
@@ -29,7 +30,7 @@ class InvoiceLayout extends Model
     /**
      * Get the location associated with the invoice layout.
      */
-    public function locations()
+    public function locations(): HasMany
     {
         return $this->hasMany(\App\BusinessLocation::class);
     }

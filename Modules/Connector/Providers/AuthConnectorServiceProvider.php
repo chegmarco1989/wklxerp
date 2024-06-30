@@ -19,7 +19,7 @@ class AuthConnectorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //Passport::routes();
     }
@@ -40,7 +40,7 @@ class AuthConnectorServiceProvider extends ServiceProvider
      * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      * @return void
      */
-    public function boot(GateContract $gate)
+    public function boot(GateContract $gate): void
     {
         Passport::routes();
     }

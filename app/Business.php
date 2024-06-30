@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
@@ -57,7 +60,7 @@ class Business extends Model
     /**
      * Get the owner details
      */
-    public function owner()
+    public function owner(): HasOne
     {
         return $this->hasOne(\App\User::class, 'id', 'owner_id');
     }
@@ -65,7 +68,7 @@ class Business extends Model
     /**
      * Get the Business currency.
      */
-    public function currency()
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(\App\Currency::class);
     }
@@ -73,7 +76,7 @@ class Business extends Model
     /**
      * Get the Business currency.
      */
-    public function locations()
+    public function locations(): HasMany
     {
         return $this->hasMany(\App\BusinessLocation::class);
     }
@@ -81,7 +84,7 @@ class Business extends Model
     /**
      * Get the Business printers.
      */
-    public function printers()
+    public function printers(): HasMany
     {
         return $this->hasMany(\App\Printer::class);
     }
@@ -89,7 +92,7 @@ class Business extends Model
     /**
      * Get the Business subscriptions.
      */
-    public function subscriptions()
+    public function subscriptions(): HasMany
     {
         return $this->hasMany('\Modules\Superadmin\Entities\Subscription');
     }

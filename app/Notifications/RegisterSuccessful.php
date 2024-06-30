@@ -35,7 +35,7 @@ class RegisterSuccessful extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail', 'database'];
     }
@@ -46,7 +46,7 @@ class RegisterSuccessful extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         // $url = url('/home');
         return (new MailMessage)
@@ -75,7 +75,7 @@ class RegisterSuccessful extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             'data' => 'Your account has been created successfully on Worklx ERP',

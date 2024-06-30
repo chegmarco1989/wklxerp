@@ -2,6 +2,9 @@
 
 namespace Modules\Project\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
@@ -39,7 +42,7 @@ class ProjectTask extends Model
     /**
      * The member that belong to the task.
      */
-    public function members()
+    public function members(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'pjt_project_task_members', 'project_task_id', 'user_id');
     }
@@ -47,7 +50,7 @@ class ProjectTask extends Model
     /**
      * Return the creator of task.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
@@ -55,7 +58,7 @@ class ProjectTask extends Model
     /**
      * Return the project for a task.
      */
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo('Modules\Project\Entities\Project', 'project_id');
     }
@@ -63,7 +66,7 @@ class ProjectTask extends Model
     /**
      * Get the comments for the task.
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany('Modules\Project\Entities\ProjectTaskComment');
     }
@@ -71,7 +74,7 @@ class ProjectTask extends Model
     /**
      * Get the time logs for the task.
      */
-    public function timeLogs()
+    public function timeLogs(): HasMany
     {
         return $this->hasMany('Modules\Project\Entities\ProjectTimeLog');
     }

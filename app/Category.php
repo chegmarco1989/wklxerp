@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -91,7 +92,7 @@ class Category extends Model
         return $dropdown;
     }
 
-    public function sub_categories()
+    public function sub_categories(): HasMany
     {
         return $this->hasMany(\App\Category::class, 'parent_id');
     }

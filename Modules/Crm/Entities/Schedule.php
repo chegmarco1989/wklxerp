@@ -2,6 +2,9 @@
 
 namespace Modules\Crm\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
@@ -33,7 +36,7 @@ class Schedule extends Model
     /**
      * The member that belongs to the schedule.
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'crm_schedule_users', 'schedule_id', 'user_id');
     }
@@ -41,7 +44,7 @@ class Schedule extends Model
     /**
      * Invoices assigned to the follow up.
      */
-    public function invoices()
+    public function invoices(): BelongsToMany
     {
         return $this->belongsToMany(\App\Transaction::class, 'crm_followup_invoices', 'follow_up_id', 'transaction_id');
     }
@@ -49,17 +52,17 @@ class Schedule extends Model
     /**
      * user who created a schedule.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
 
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(\App\Contact::class, 'contact_id');
     }
 
-    public function scheduleLog()
+    public function scheduleLog(): HasMany
     {
         return $this->hasMany(\Modules\Crm\Entities\ScheduleLog::class);
     }
@@ -110,7 +113,7 @@ class Schedule extends Model
     /**
      * Get category associated with the product.
      */
-    public function followupCategory()
+    public function followupCategory(): BelongsTo
     {
         return $this->belongsTo(\App\Category::class, 'followup_category_id');
     }

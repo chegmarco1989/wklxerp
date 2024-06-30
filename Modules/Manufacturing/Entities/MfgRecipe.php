@@ -2,6 +2,8 @@
 
 namespace Modules\Manufacturing\Entities;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +19,7 @@ class MfgRecipe extends Model
     /**
      * Get the variations associated with the product.
      */
-    public function variation()
+    public function variation(): BelongsTo
     {
         return $this->belongsTo(\App\Variation::class, 'variation_id');
     }
@@ -25,7 +27,7 @@ class MfgRecipe extends Model
     /**
      * Get all the ingredients for the recipe.
      */
-    public function ingredients()
+    public function ingredients(): HasMany
     {
         return $this->hasMany(\Modules\Manufacturing\Entities\MfgRecipeIngredient::class, 'mfg_recipe_id');
     }
@@ -55,7 +57,7 @@ class MfgRecipe extends Model
     /**
      * Get the unit associated with the recipe.
      */
-    public function sub_unit()
+    public function sub_unit(): BelongsTo
     {
         return $this->belongsTo(\App\Unit::class, 'sub_unit_id');
     }

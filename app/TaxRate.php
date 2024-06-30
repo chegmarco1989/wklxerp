@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -81,7 +82,7 @@ class TaxRate extends Model
      *
      * @return object
      */
-    public function sub_taxes()
+    public function sub_taxes(): BelongsToMany
     {
         return $this->belongsToMany(\App\TaxRate::class, 'group_sub_taxes', 'group_tax_id', 'tax_id');
     }

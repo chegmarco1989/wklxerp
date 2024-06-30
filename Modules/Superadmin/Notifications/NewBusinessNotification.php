@@ -26,7 +26,7 @@ class NewBusinessNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -37,7 +37,7 @@ class NewBusinessNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $details = 'Business: '.$this->business->name.', Business Owner: '.$this->business->owner->user_full_name.', Email: '.$this->business->owner->email.
         ', Business contact number: '.$this->business->locations->first()->mobile;
@@ -55,7 +55,7 @@ class NewBusinessNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

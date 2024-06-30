@@ -12,7 +12,7 @@ class ExpenseResource extends JsonResource
      * @param  \Illuminate\Http\Request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $all_data = parent::toArray($request);
 

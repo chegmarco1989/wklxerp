@@ -40,7 +40,7 @@ class CreateRecursiveFollowup extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $recursive_followups = Schedule::where('is_recursive', 1)
             ->with(['users', 'createdBy'])

@@ -16,7 +16,7 @@ class EssentialsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -96,7 +96,7 @@ class EssentialsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->registerCommands();
         $this->app->register(RouteServiceProvider::class);

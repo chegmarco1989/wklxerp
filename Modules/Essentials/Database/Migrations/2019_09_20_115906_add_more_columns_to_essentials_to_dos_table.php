@@ -14,7 +14,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('essentials_to_dos', function (Blueprint $table) {
             $table->date('end_date')->nullable()->after('date');
@@ -52,7 +52,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('essentials_todos_users');
     }

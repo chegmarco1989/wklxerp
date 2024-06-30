@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class ScheduleLog extends Model
@@ -23,7 +24,7 @@ class ScheduleLog extends Model
     /**
      * Get the post that owns the comment.
      */
-    public function schedule()
+    public function schedule(): BelongsTo
     {
         return $this->belongsTo('Modules\Crm\Entities\Schedule', 'schedule_id');
     }
@@ -31,7 +32,7 @@ class ScheduleLog extends Model
     /**
      * user who created a schedule log.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }

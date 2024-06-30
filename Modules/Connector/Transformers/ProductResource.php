@@ -14,7 +14,7 @@ class ProductResource extends JsonResource
      * @param  \Illuminate\Http\Request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $array = parent::toArray($request);
 

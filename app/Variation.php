@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -25,12 +28,12 @@ class Variation extends Model
         'combo_variations' => 'array',
     ];
 
-    public function product_variation()
+    public function product_variation(): BelongsTo
     {
         return $this->belongsTo(\App\ProductVariation::class);
     }
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(\App\Product::class, 'product_id');
     }
@@ -38,7 +41,7 @@ class Variation extends Model
     /**
      * Get the sell lines associated with the variation.
      */
-    public function sell_lines()
+    public function sell_lines(): HasMany
     {
         return $this->hasMany(\App\TransactionSellLine::class);
     }
@@ -46,7 +49,7 @@ class Variation extends Model
     /**
      * Get the location wise details of the the variation.
      */
-    public function variation_location_details()
+    public function variation_location_details(): HasMany
     {
         return $this->hasMany(\App\VariationLocationDetails::class);
     }
@@ -54,12 +57,12 @@ class Variation extends Model
     /**
      * Get Selling price group prices.
      */
-    public function group_prices()
+    public function group_prices(): HasMany
     {
         return $this->hasMany(\App\VariationGroupPrice::class, 'variation_id');
     }
 
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(\App\Media::class, 'model');
     }

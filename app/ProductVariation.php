@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductVariation extends Model
@@ -13,12 +15,12 @@ class ProductVariation extends Model
      */
     protected $guarded = ['id'];
 
-    public function variations()
+    public function variations(): HasMany
     {
         return $this->hasMany(\App\Variation::class);
     }
 
-    public function variation_template()
+    public function variation_template(): BelongsTo
     {
         return $this->belongsTo(\App\VariationTemplate::class);
     }

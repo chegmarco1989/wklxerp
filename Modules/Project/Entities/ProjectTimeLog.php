@@ -2,6 +2,7 @@
 
 namespace Modules\Project\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -38,7 +39,7 @@ class ProjectTimeLog extends Model
     /**
      * Get the task for time log.
      */
-    public function task()
+    public function task(): BelongsTo
     {
         return $this->belongsTo('Modules\Project\Entities\ProjectTask', 'project_task_id');
     }
@@ -46,7 +47,7 @@ class ProjectTimeLog extends Model
     /**
      * Get the user for time log.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'user_id');
     }
@@ -54,7 +55,7 @@ class ProjectTimeLog extends Model
     /**
      * Get the user who added time log.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
@@ -62,7 +63,7 @@ class ProjectTimeLog extends Model
     /**
      * Return the project for a time log.
      */
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo('Modules\Project\Entities\Project', 'project_id');
     }

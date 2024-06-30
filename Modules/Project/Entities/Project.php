@@ -2,6 +2,11 @@
 
 namespace Modules\Project\Entities;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -47,7 +52,7 @@ class Project extends Model
     /**
      * The member that belongs to the project.
      */
-    public function members()
+    public function members(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'pjt_project_members', 'project_id', 'user_id');
     }
@@ -55,7 +60,7 @@ class Project extends Model
     /**
      * user who created a project.
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
@@ -63,7 +68,7 @@ class Project extends Model
     /**
      * Return the project lead
      */
-    public function lead()
+    public function lead(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'lead_id');
     }
@@ -71,7 +76,7 @@ class Project extends Model
     /**
      * Return the customer for the project.
      */
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(\App\Contact::class, 'contact_id');
     }
@@ -79,7 +84,7 @@ class Project extends Model
     /**
      * Get the project task for the project.
      */
-    public function tasks()
+    public function tasks(): HasMany
     {
         return $this->hasMany('Modules\Project\Entities\ProjectTask');
     }
@@ -87,7 +92,7 @@ class Project extends Model
     /**
      * Get all of the projects's notes & documents.
      */
-    public function documentsAndnote()
+    public function documentsAndnote(): MorphMany
     {
         return $this->morphMany(\App\DocumentAndNote::class, 'notable');
     }
@@ -95,7 +100,7 @@ class Project extends Model
     /**
      * Get the project time logs.
      */
-    public function timeLogs()
+    public function timeLogs(): HasMany
     {
         return $this->hasMany('Modules\Project\Entities\ProjectTimeLog');
     }
@@ -103,7 +108,7 @@ class Project extends Model
     /**
      * Get the project categories.
      */
-    public function categories()
+    public function categories(): MorphToMany
     {
         return $this->morphToMany(\App\Category::class, 'categorizable');
     }

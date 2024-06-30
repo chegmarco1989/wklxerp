@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class TransactionSellLinesPurchaseLines extends Model
@@ -13,7 +14,7 @@ class TransactionSellLinesPurchaseLines extends Model
      */
     protected $guarded = ['id'];
 
-    public function purchase_line()
+    public function purchase_line(): BelongsTo
     {
         return $this->belongsTo(\App\PurchaseLine::class, 'purchase_line_id');
     }

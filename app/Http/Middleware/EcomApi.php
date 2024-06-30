@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request;
 use Closure;
 use Modules\Ecommerce\Entities\EcomApiSetting;
 
@@ -13,7 +15,7 @@ class EcomApi
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $token = $request->header('API-TOKEN');
         $is_api_settings_exists = EcomApiSetting::where('api_token', $token)

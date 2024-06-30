@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,7 +34,7 @@ class Contact extends Authenticatable
     /**
      * Get the business that owns the user.
      */
-    public function business()
+    public function business(): BelongsTo
     {
         return $this->belongsTo(\App\Business::class);
     }
@@ -106,7 +109,7 @@ class Contact extends Authenticatable
     /**
      * Get all of the contacts's notes & documents.
      */
-    public function documentsAndnote()
+    public function documentsAndnote(): MorphMany
     {
         return $this->morphMany(\App\DocumentAndNote::class, 'notable');
     }
@@ -384,7 +387,7 @@ class Contact extends Authenticatable
      * Applied only when selected_contacts is true for a user in
      * users table
      */
-    public function userHavingAccess()
+    public function userHavingAccess(): BelongsToMany
     {
         return $this->belongsToMany(\App\User::class, 'user_contact_access');
     }

@@ -31,7 +31,7 @@ class SendCampaignNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -42,7 +42,7 @@ class SendCampaignNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $subject = preg_replace(['/{contact_name}/', '/{campaign_name}/', '/{business_name}/'], [$notifiable->name, $this->campaign->name, $this->business->name], $this->campaign->subject);
 
@@ -62,7 +62,7 @@ class SendCampaignNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

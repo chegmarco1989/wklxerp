@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use App\Events\TransactionPaymentDeleted;
 use App\Events\TransactionPaymentUpdated;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +21,7 @@ class TransactionPayment extends Model
     /**
      * Get the phone record associated with the user.
      */
-    public function payment_account()
+    public function payment_account(): BelongsTo
     {
         return $this->belongsTo(\App\Account::class, 'account_id');
     }
@@ -26,7 +29,7 @@ class TransactionPayment extends Model
     /**
      * Get the transaction related to this payment.
      */
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(\App\Transaction::class, 'transaction_id');
     }
@@ -34,7 +37,7 @@ class TransactionPayment extends Model
     /**
      * Get the user.
      */
-    public function created_user()
+    public function created_user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class, 'created_by');
     }
@@ -42,7 +45,7 @@ class TransactionPayment extends Model
     /**
      * Get child payments
      */
-    public function child_payments()
+    public function child_payments(): HasMany
     {
         return $this->hasMany(\App\TransactionPayment::class, 'parent_id');
     }
@@ -110,7 +113,7 @@ class TransactionPayment extends Model
         event(new TransactionPaymentDeleted($payment));
     }
 
-    public function denominations()
+    public function denominations(): MorphMany
     {
         return $this->morphMany(\App\CashDenomination::class, 'model');
     }

@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('crm_marketplaces', function (Blueprint $table) {
             $table->integer('crm_source_id')->nullable()->after('assigned_users');
@@ -23,7 +23,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('crm_marketplaces', function (Blueprint $table) {
         });

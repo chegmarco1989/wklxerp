@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class CashRegister extends Model
@@ -25,7 +26,7 @@ class CashRegister extends Model
     /**
      * Get the Cash registers transactions.
      */
-    public function cash_register_transactions()
+    public function cash_register_transactions(): HasMany
     {
         return $this->hasMany(\App\CashRegisterTransaction::class);
     }

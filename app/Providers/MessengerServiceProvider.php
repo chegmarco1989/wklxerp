@@ -22,7 +22,7 @@ class MessengerServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // Register all provider models you wish to use in messenger.
         Messenger::registerProviders([

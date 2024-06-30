@@ -49,7 +49,7 @@ class SendScheduleNotification extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $schedules = Schedule::with('users', 'createdBy')
             ->where('allow_notification', 1)
