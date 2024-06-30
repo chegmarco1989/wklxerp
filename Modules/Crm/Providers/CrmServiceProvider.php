@@ -26,8 +26,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Boot the application events.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -52,8 +50,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Register the filters.
-     *
-     * @return void
      */
     public function registerMiddleware(Router $router): void
     {
@@ -68,8 +64,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -79,8 +73,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Register config.
-     *
-     * @return void
      */
     protected function registerConfig(): void
     {
@@ -95,8 +87,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Register views.
-     *
-     * @return void
      */
     public function registerViews(): void
     {
@@ -115,8 +105,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Register translations.
-     *
-     * @return void
      */
     public function registerTranslations(): void
     {
@@ -131,8 +119,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
     public function registerFactories(): void
     {
@@ -143,8 +129,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
     public function provides(): array
     {
@@ -153,8 +137,6 @@ class CrmServiceProvider extends ServiceProvider
 
     /**
      * Register commands.
-     *
-     * @return void
      */
     protected function registerCommands(): void
     {

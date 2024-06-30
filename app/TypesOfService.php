@@ -24,9 +24,6 @@ class TypesOfService extends Model
 
     /**
      * Return list of types of service for a business
-     *
-     * @param  int  $business_id
-     * @return array
      */
     public static function forDropdown(int $business_id): array
     {

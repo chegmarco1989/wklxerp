@@ -30,9 +30,6 @@ class ExpenseCategory extends Model
 
     /**
      * Scope a query to only include main categories.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOnlyParent(Builder $query): Builder
     {

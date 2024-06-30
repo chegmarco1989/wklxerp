@@ -25,9 +25,7 @@ class Brands extends Model
     /**
      * Return list of brands for a business
      *
-     * @param  int  $business_id
      * @param  bool  $show_none  = false
-     * @return array
      */
     public static function forDropdown(int $business_id, bool $show_none = false, $filter_use_for_repair = false): array
     {

@@ -437,9 +437,6 @@ class PurchaseController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -513,7 +510,6 @@ class PurchaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(int $id)
@@ -635,7 +631,6 @@ class PurchaseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -772,7 +767,6 @@ class PurchaseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -1021,8 +1015,6 @@ class PurchaseController extends Controller
 
     /**
      * Retrieves products list.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getPurchaseEntryRow(Request $request): View
     {

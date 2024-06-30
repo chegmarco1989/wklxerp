@@ -81,8 +81,6 @@ class ReportController extends Controller
 
     /**
      * Shows profit\loss of a business
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getProfitLoss(Request $request): View
     {
@@ -498,8 +496,6 @@ class ReportController extends Controller
 
     /**
      * Shows product stock details
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getStockDetails(Request $request): View
     {
@@ -835,8 +831,6 @@ class ReportController extends Controller
 
     /**
      * Shows trending products
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getTrendingProducts(Request $request): View
     {
@@ -886,8 +880,6 @@ class ReportController extends Controller
 
     /**
      * Shows expense report of a business
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getExpenseReport(Request $request): View
     {
@@ -1077,8 +1069,6 @@ class ReportController extends Controller
 
     /**
      * Shows sales representative report
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getSalesRepresentativeReport(Request $request): View
     {
@@ -1100,8 +1090,6 @@ class ReportController extends Controller
 
     /**
      * Shows sales representative total expense
-     *
-     * @return json
      */
     public function getSalesRepresentativeTotalExpense(Request $request): json
     {
@@ -1122,8 +1110,6 @@ class ReportController extends Controller
 
     /**
      * Shows sales representative total sales
-     *
-     * @return json
      */
     public function getSalesRepresentativeTotalSell(Request $request): json
     {
@@ -1169,8 +1155,6 @@ class ReportController extends Controller
 
     /**
      * Shows sales representative total commission
-     *
-     * @return json
      */
     public function getSalesRepresentativeTotalCommission(Request $request): json
     {
@@ -1404,8 +1388,6 @@ class ReportController extends Controller
 
     /**
      * Shows product stock expiry report
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getStockExpiryReportEditModal(Request $request, $purchase_line_id): View
     {
@@ -2477,8 +2459,6 @@ class ReportController extends Controller
 
     /**
      * Shows service staff report
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getServiceStaffReport(Request $request): View
     {
@@ -2741,8 +2721,6 @@ class ReportController extends Controller
 
     /**
      * Shows product stock details and allows to adjust mismatch
-     *
-     * @return \Illuminate\Http\Response
      */
     public function productStockDetails(): View
     {
@@ -2773,8 +2751,6 @@ class ReportController extends Controller
 
     /**
      * Adjusts stock availability mismatch if found
-     *
-     * @return \Illuminate\Http\Response
      */
     public function adjustProductStock(): RedirectResponse
     {
@@ -2798,8 +2774,6 @@ class ReportController extends Controller
 
     /**
      * Retrieves line orders/sales
-     *
-     * @return obj
      */
     public function serviceStaffLineOrders(): obj
     {
@@ -3427,8 +3401,6 @@ class ReportController extends Controller
 
     /**
      * Shows sale report
-     *
-     * @return \Illuminate\Http\Response
      */
     public function saleReport(): View
     {

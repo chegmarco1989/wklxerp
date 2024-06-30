@@ -31,8 +31,6 @@ class EssentialsMessageController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -66,8 +64,6 @@ class EssentialsMessageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -124,8 +120,6 @@ class EssentialsMessageController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {
@@ -164,8 +158,6 @@ class EssentialsMessageController extends Controller
 
     /**
      * Sends notification to the user.
-     *
-     * @return void
      */
     private function __notify($message, $database_notification = true): void
     {
@@ -188,8 +180,6 @@ class EssentialsMessageController extends Controller
 
     /**
      * Function to get recent messages
-     *
-     * @return void
      */
     public function getNewMessages(): View
     {

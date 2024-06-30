@@ -12,8 +12,6 @@ class CashRegisterUtil extends Util
     /**
      * Returns number of opened Cash Registers for the
      * current logged in user
-     *
-     * @return int
      */
     public function countOpenedRegister(): int
     {
@@ -27,10 +25,6 @@ class CashRegisterUtil extends Util
 
     /**
      * Adds sell payments to currently opened cash register
-     *
-     * @param object/int $transaction
-     * @param  array  $payments
-     * @return bool
      */
     public function addSellPayments(object $transaction, array $payments): bool
     {
@@ -66,10 +60,6 @@ class CashRegisterUtil extends Util
 
     /**
      * Adds sell payments to currently opened cash register
-     *
-     * @param object/int $transaction
-     * @param  array  $payments
-     * @return bool
      */
     public function updateSellPayments($status_before, object $transaction, array $payments): bool
     {
@@ -156,9 +146,6 @@ class CashRegisterUtil extends Util
 
     /**
      * Refunds all payments of a sell
-     *
-     * @param object/int $transaction
-     * @return bool
      */
     public function refundSell(object $transaction): bool
     {
@@ -220,7 +207,6 @@ class CashRegisterUtil extends Util
      * Retrieves details of given rigister id else currently opened register
      *
      * @param  $register_id  default null
-     * @return object
      */
     public function getRegisterDetails($register_id = null): object
     {
@@ -316,7 +302,6 @@ class CashRegisterUtil extends Util
      * @param  $user_id  int
      * @param  $open_time  datetime
      * @param  $close_time  datetime
-     * @return array
      */
     public function getRegisterTransactionDetails($user_id, $open_time, $close_time, $is_types_of_service_enabled = false): array
     {
@@ -402,7 +387,6 @@ class CashRegisterUtil extends Util
      * Retrieves the currently opened cash register for the user
      *
      * @param  $int  user_id
-     * @return obj
      */
     public function getCurrentCashRegister($user_id): obj
     {

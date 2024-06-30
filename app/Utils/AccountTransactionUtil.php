@@ -8,9 +8,6 @@ class AccountTransactionUtil extends Util
 {
     /**
      * Updates tax amount of a tax group
-     *
-     * @param  int  $group_tax_id
-     * @return void
      */
     public function updateGroupTaxAmount(int $group_tax_id): void
     {

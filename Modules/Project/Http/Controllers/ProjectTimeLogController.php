@@ -37,8 +37,6 @@ class ProjectTimeLogController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -133,8 +131,6 @@ class ProjectTimeLogController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): View
     {
@@ -162,8 +158,6 @@ class ProjectTimeLogController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -219,8 +213,6 @@ class ProjectTimeLogController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show(): View
     {
@@ -229,8 +221,6 @@ class ProjectTimeLogController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): View
     {
@@ -256,8 +246,6 @@ class ProjectTimeLogController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): Response
     {
@@ -307,8 +295,6 @@ class ProjectTimeLogController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {

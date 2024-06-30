@@ -43,8 +43,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -79,8 +77,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Show pay form for a new package.
-     *
-     * @return Response
      */
     public function pay(Request $request, $package_id, $form_register = null): Response
     {
@@ -244,8 +240,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Show pay form for a new package.
-     *
-     * @return Response
      */
     public function registerPay($package_id, Request $request): Response
     {
@@ -254,8 +248,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Save the payment details and add subscription details
-     *
-     * @return Response
      */
     public function confirm($package_id, Request $request): Response
     {
@@ -321,8 +313,6 @@ class SubscriptionController extends BaseController
      * when payment gateway is PesaPal payment gateway request package_id
      * is transaction_id & merchant_reference in session contains
      * the package_id.
-     *
-     * @return Response
      */
     protected function confirm_pesapal($transaction_id, $request): Response
     {
@@ -348,8 +338,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Stripe payment method
-     *
-     * @return Response
      */
     protected function pay_stripe($business_id, $business_name, $package, $request): Response
     {
@@ -382,8 +370,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Offline payment method
-     *
-     * @return Response
      */
     protected function pay_offline($business_id, $business_name, $package, $request): Response
     {
@@ -415,8 +401,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Paypal payment method - redirect to paypal url for payments
-     *
-     * @return Response
      */
     public function paypalExpressCheckout(Request $request): Response
     {
@@ -540,8 +524,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Razor pay payment method
-     *
-     * @return Response
      */
     protected function pay_razorpay($business_id, $business_name, $package, $request): Response
     {
@@ -560,8 +542,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Redirect the User to Paystack Payment Page
-     *
-     * @return Url
      */
     public function getRedirectToPaystack(): Url
     {
@@ -570,8 +550,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Obtain Paystack payment information
-     *
-     * @return void
      */
     public function postPaymentPaystackCallback(): void
     {
@@ -605,8 +583,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Obtain Flutterwave payment information
-     *
-     * @return response
      */
     public function postFlutterwavePaymentCallback(Request $request): response
     {
@@ -664,8 +640,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): Response
     {
@@ -699,8 +673,6 @@ class SubscriptionController extends BaseController
 
     /**
      * Retrieves list of all subscriptions for the current business
-     *
-     * @return \Illuminate\Http\Response
      */
     public function allSubscriptions(): Response
     {

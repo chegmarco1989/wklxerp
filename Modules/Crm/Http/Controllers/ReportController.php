@@ -26,8 +26,6 @@ class ReportController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -46,8 +44,6 @@ class ReportController extends Controller
 
     /**
      * Lists follow ups count assigned to users.
-     *
-     * @return Response
      */
     public function followUpsByUser(): Response
     {
@@ -142,8 +138,6 @@ class ReportController extends Controller
 
     /**
      * Lists follow ups count assigned to contacts
-     *
-     * @return Response
      */
     public function followUpsContact(): Response
     {
@@ -180,8 +174,6 @@ class ReportController extends Controller
 
     /**
      * Lists leads to customer conversion count
-     *
-     * @return Response
      */
     public function leadToCustomerConversion(): Response
     {
@@ -208,8 +200,6 @@ class ReportController extends Controller
 
     /**
      * Lists leads to customer conversion details by a users
-     *
-     * @return Response
      */
     public function showLeadToCustomerConversionDetails($user_id): View
     {

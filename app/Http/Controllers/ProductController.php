@@ -436,8 +436,6 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -586,7 +584,6 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
      */
     public function show($id): View
     {
@@ -602,9 +599,6 @@ class ProductController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id): View
     {
@@ -664,9 +658,6 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id): RedirectResponse
     {
@@ -1044,8 +1035,6 @@ class ProductController extends Controller
 
     /**
      * Get product form parts.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getProductVariationFormPart(Request $request): View
     {
@@ -1102,8 +1091,6 @@ class ProductController extends Controller
 
     /**
      * Get product form parts.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getVariationValueRow(Request $request): View
     {
@@ -1122,8 +1109,6 @@ class ProductController extends Controller
 
     /**
      * Get product form parts.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getProductVariationRow(Request $request): View
     {
@@ -1175,8 +1160,6 @@ class ProductController extends Controller
 
     /**
      * Return the view for combo product row
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getComboProductEntryRow(Request $request): View
     {
@@ -1211,7 +1194,6 @@ class ProductController extends Controller
      *
      * @param  string  $q
      * @param  bool  $check_qty
-     * @return JSON
      */
     public function getProducts(): JSON
     {
@@ -1241,7 +1223,6 @@ class ProductController extends Controller
      *
      * @param  string  $q
      * @param  bool  $check_qty
-     * @return JSON
      */
     public function getProductsWithoutVariations(): JSON
     {
@@ -1373,8 +1354,6 @@ class ProductController extends Controller
 
     /**
      * Loads quick add product modal.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function quickAdd(): View
     {
@@ -1533,7 +1512,6 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
      */
     public function view($id): View
     {
@@ -1586,8 +1564,6 @@ class ProductController extends Controller
 
     /**
      * Mass deletes products.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function massDestroy(Request $request): RedirectResponse
     {
@@ -1661,9 +1637,6 @@ class ProductController extends Controller
 
     /**
      * Shows form to add selling price group prices for a product.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function addSellingPrices(int $id): View
     {
@@ -1691,8 +1664,6 @@ class ProductController extends Controller
 
     /**
      * Saves selling price group prices for a product.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function saveSellingPrices(Request $request): RedirectResponse
     {
@@ -1868,9 +1839,6 @@ class ProductController extends Controller
 
     /**
      * Deletes a media file from storage and database.
-     *
-     * @param  int  $media_id
-     * @return json
      */
     public function deleteMedia(int $media_id): json
     {
@@ -1997,8 +1965,6 @@ class ProductController extends Controller
 
     /**
      * Shows form to edit multiple products at once.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function bulkEdit(Request $request): View
     {
@@ -2054,8 +2020,6 @@ class ProductController extends Controller
 
     /**
      * Updates multiple products at once.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function bulkUpdate(Request $request): RedirectResponse
     {
@@ -2130,9 +2094,6 @@ class ProductController extends Controller
 
     /**
      * Adds product row to edit in bulk edit product form
-     *
-     * @param  int  $product_id
-     * @return \Illuminate\Http\Response
      */
     public function getProductToEdit(int $product_id): View
     {

@@ -59,8 +59,6 @@ class PayrollController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -174,8 +172,6 @@ class PayrollController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): Response
     {
@@ -306,8 +302,6 @@ class PayrollController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -435,8 +429,6 @@ class PayrollController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): \Illuminate\View\View
     {
@@ -511,8 +503,6 @@ class PayrollController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): \Illuminate\View\View
     {
@@ -538,8 +528,6 @@ class PayrollController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): RedirectResponse
     {
@@ -598,8 +586,6 @@ class PayrollController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {
@@ -1084,8 +1070,6 @@ class PayrollController extends Controller
     /**
      * List payrolls & pay components
      * of an user
-     *
-     * @return Response
      */
     public function getMyPayrolls(Request $request): Response
     {

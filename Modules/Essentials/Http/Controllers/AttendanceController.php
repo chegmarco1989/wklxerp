@@ -39,8 +39,6 @@ class AttendanceController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -171,8 +169,6 @@ class AttendanceController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): View
     {
@@ -190,8 +186,6 @@ class AttendanceController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -247,8 +241,6 @@ class AttendanceController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): View
     {
@@ -268,8 +260,6 @@ class AttendanceController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): Response
     {
@@ -305,8 +295,6 @@ class AttendanceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {
@@ -338,8 +326,6 @@ class AttendanceController extends Controller
 
     /**
      * Clock in / Clock out the logged in user.
-     *
-     * @return Response
      */
     public function clockInClockOut(Request $request): Response
     {
@@ -401,8 +387,6 @@ class AttendanceController extends Controller
 
     /**
      * Function to get attendance summary of a user
-     *
-     * @return Response
      */
     public function getUserAttendanceSummary(): Response
     {
@@ -572,8 +556,6 @@ class AttendanceController extends Controller
 
     /**
      * Function to import attendance.
-     *
-     * @return Response
      */
     public function importAttendance(Request $request): Response
     {
@@ -687,9 +669,6 @@ class AttendanceController extends Controller
 
     /**
      * Adds attendance row for an employee on add latest attendance form
-     *
-     * @param  int  $user_id
-     * @return Response
      */
     public function getAttendanceRow(int $user_id): View
     {

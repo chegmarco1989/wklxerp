@@ -31,8 +31,6 @@ class DocumentShareController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): View
     {
@@ -69,8 +67,6 @@ class DocumentShareController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request): Response
     {
@@ -140,8 +136,6 @@ class DocumentShareController extends Controller
 
     /**
      * Sends notification to the user.
-     *
-     * @return void
      */
     private function notify($document, $user_id): void
     {

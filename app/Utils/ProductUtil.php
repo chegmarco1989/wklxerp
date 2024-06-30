@@ -30,7 +30,6 @@ class ProductUtil extends Util
      * @param (int or object) $product
      * @param  $dpp_inc_tax  (default purchase pric including tax)
      * @param  $combo_variations  = []
-     * @return bool
      */
     public function createSingleProductVariation($product, $sku, $purchase_price, $dpp_inc_tax, $profit_percent, $selling_price, $selling_price_inc_tax, $combo_variations = []): bool
     {
@@ -68,7 +67,6 @@ class ProductUtil extends Util
      * Create variable type product variation
      *
      * @param (int or object) $product
-     * @return bool
      */
     public function createVariableProductVariations($product, $input_variations, $business_id = null): bool
     {
@@ -179,8 +177,6 @@ class ProductUtil extends Util
 
     /**
      * Update variable type product variation
-     *
-     * @return bool
      */
     public function updateVariableProductVariations($product_id, $input_variations_edit): bool
     {
@@ -331,7 +327,6 @@ class ProductUtil extends Util
      * @param  $old_quantity  = 0
      * @param  $number_format  = null
      * @param  $uf_data  = true, if false it will accept numbers in database format
-     * @return bool
      */
     public function updateProductQuantity($location_id, $product_id, $variation_id, $new_quantity, $old_quantity = 0, $number_format = null, $uf_data = true): bool
     {
@@ -376,7 +371,6 @@ class ProductUtil extends Util
      * Checks if products has manage stock enabled then Decrease quantity for product and its variations
      *
      * @param  $old_quantity  = 0
-     * @return bool
      */
     public function decreaseProductQuantity($product_id, $variation_id, $location_id, $new_quantity, $old_quantity = 0): bool
     {
@@ -412,8 +406,6 @@ class ProductUtil extends Util
 
     /**
      * Decrease the product quantity of combo sub-products
-     *
-     * @return void
      */
     public function decreaseProductQuantityCombo($combo_details, $location_id): void
     {
@@ -432,11 +424,7 @@ class ProductUtil extends Util
     /**
      * Get all details for a product from its variation id
      *
-     * @param  int  $variation_id
-     * @param  int  $business_id
-     * @param  int  $location_id
      * @param  bool  $check_qty  (If false qty_available is not checked)
-     * @return array
      */
     public function getDetailsFromVariation(int $variation_id, int $business_id, int $location_id = null, bool $check_qty = true): array
     {
@@ -534,10 +522,6 @@ class ProductUtil extends Util
     /**
      * Calculates the quantity of combo products based on
      * the quantity of variation items used.
-     *
-     * @param  int  $location_id
-     * @param  array  $combo_variations
-     * @return int
      */
     public function calculateComboQuantity(int $location_id, array $combo_variations): int
     {
@@ -574,10 +558,6 @@ class ProductUtil extends Util
     /**
      * Calculates the quantity of combo products based on
      * the quantity of variation items used.
-     *
-     * @param  int  $location_id
-     * @param  array  $combo_variations
-     * @return int
      */
     public function calculateComboDetails(int $location_id, array $combo_variations): int
     {
@@ -607,8 +587,6 @@ class ProductUtil extends Util
     /**
      * Calculates the total amount of invoice
      *
-     * @param  array  $products
-     * @param  int  $tax_id
      * @param  array  $discount['discount_type',  'discount_amount']
      * @return mixed (false, array)
      */
@@ -668,7 +646,6 @@ class ProductUtil extends Util
     /**
      * Generates product sku
      *
-     * @param  string  $string
      * @return generated sku (string)
      */
     public function generateProductSku(string $string): generated
@@ -681,10 +658,6 @@ class ProductUtil extends Util
 
     /**
      * Gives list of trending products
-     *
-     * @param  int  $business_id
-     * @param  array  $filters
-     * @return Obj
      */
     public function getTrendingProducts(int $business_id, array $filters = []): Obj
     {
@@ -760,10 +733,7 @@ class ProductUtil extends Util
     /**
      * Gives list of products based on products id and variation id
      *
-     * @param  int  $business_id
-     * @param  int  $product_id
      * @param  int  $variation_id  = null
-     * @return Obj
      */
     public function getDetailsFromProduct(int $business_id, int $product_id, int $variation_id = null): Obj
     {
@@ -794,9 +764,6 @@ class ProductUtil extends Util
      * F => F (Newly added product drerease)
      *
      * @param  object  $transaction_before
-     * @param  object  $transaction
-     * @param  array  $input
-     * @return void
      */
     public function adjustProductStockForInvoice($status_before, object $transaction, array $input, $uf_data = true): void
     {
@@ -858,9 +825,6 @@ class ProductUtil extends Util
 
     /**
      * Updates variation from purchase screen
-     *
-     * @param  array  $variation_data
-     * @return void
      */
     public function updateProductFromPurchase(array $variation_data): void
     {
@@ -900,11 +864,6 @@ class ProductUtil extends Util
 
     /**
      * Generated SKU based on the barcode type.
-     *
-     * @param  string  $sku
-     * @param  string  $c
-     * @param  string  $barcode_type
-     * @return void
      */
     public function generateSubSku(string $sku, string $c, string $barcode_type): void
     {
@@ -919,12 +878,6 @@ class ProductUtil extends Util
 
     /**
      * Add rack details.
-     *
-     * @param  int  $business_id
-     * @param  int  $product_id
-     * @param  array  $product_racks
-     * @param  array  $product_racks
-     * @return void
      */
     public function addRackDetails(int $business_id, int $product_id, array $product_racks): void
     {
@@ -948,10 +901,6 @@ class ProductUtil extends Util
 
     /**
      * Get rack details.
-     *
-     * @param  int  $business_id
-     * @param  int  $product_id
-     * @return void
      */
     public function getRackDetails(int $business_id, int $product_id, $get_location = false): void
     {
@@ -978,11 +927,6 @@ class ProductUtil extends Util
 
     /**
      * Update rack details.
-     *
-     * @param  int  $business_id
-     * @param  int  $product_id
-     * @param  array  $product_racks
-     * @return void
      */
     public function updateRackDetails(int $business_id, int $product_id, array $product_racks): void
     {
@@ -1001,11 +945,6 @@ class ProductUtil extends Util
 
     /**
      * Retrieves selling price group price for a product variation.
-     *
-     * @param  int  $variation_id
-     * @param  int  $price_group_id
-     * @param  int  $tax_id
-     * @return decimal
      */
     public function getVariationGroupPrice(int $variation_id, int $price_group_id, int $tax_id): decimal
     {
@@ -1036,10 +975,6 @@ class ProductUtil extends Util
 
     /**
      * Creates new variation if not exists.
-     *
-     * @param  int  $business_id
-     * @param  string  $name
-     * @return obj
      */
     public function createOrNewVariation(int $business_id, string $name): obj
     {
@@ -1060,13 +995,6 @@ class ProductUtil extends Util
 
     /**
      * Adds opening stock to a single product.
-     *
-     * @param  int  $business_id
-     * @param  obj  $product
-     * @param  array  $input
-     * @param  obj  $transaction_date
-     * @param  int  $user_id
-     * @return void
      */
     public function addSingleProductOpeningStock(int $business_id, obj $product, array $input, obj $transaction_date, int $user_id): void
     {
@@ -1144,12 +1072,7 @@ class ProductUtil extends Util
     /**
      * Add/Edit transaction purchase lines
      *
-     * @param  object  $transaction
-     * @param  array  $input_data
-     * @param  array  $currency_details
-     * @param  bool  $enable_product_editing
      * @param  string  $before_status  = null
-     * @return array
      */
     public function createOrUpdatePurchaseLines(object $transaction, array $input_data, array $currency_details, bool $enable_product_editing, string $before_status = null): array
     {
@@ -1298,13 +1221,8 @@ class ProductUtil extends Util
     /**
      * Updates product stock after adding or updating purchase
      *
-     * @param  string  $status_before
-     * @param  obj  $transaction
-     * @param  int  $product_id
-     * @param  int  $variation_id
      * @param  decimal  $new_quantity  in database format
      * @param  decimal  $old_quantity  in database format
-     * @param  array  $currency_details
      */
     public function updateProductStock(string $status_before, obj $transaction, int $product_id, int $variation_id, decimal $new_quantity, decimal $old_quantity, array $currency_details)
     {
@@ -1329,10 +1247,6 @@ class ProductUtil extends Util
 
     /**
      * Recalculates purchase line data according to subunit data
-     *
-     * @param  int  $purchase_line
-     * @param  int  $business_id
-     * @return array
      */
     public function changePurchaseLineUnit(int $purchase_line, int $business_id): array
     {
@@ -1367,7 +1281,6 @@ class ProductUtil extends Util
      * Recalculates sell line data according to subunit data
      *
      * @param  int  $unit_id
-     * @return array
      */
     public function changeSellLineUnit($business_id, $sell_line): array
     {
@@ -1400,7 +1313,6 @@ class ProductUtil extends Util
      * Retrieves current stock of a variation for the given location
      *
      * @param  int  $variation_id,  int location_id
-     * @return float
      */
     public function getCurrentStock(int $variation_id, $location_id): float
     {
@@ -1418,9 +1330,6 @@ class ProductUtil extends Util
     /**
      * Adjusts stock over selling with purchases, opening stocks andstock transfers
      * Also maps with respective sells
-     *
-     * @param  obj  $transaction
-     * @return void
      */
     public function adjustStockOverSelling(obj $transaction): void
     {
@@ -1546,7 +1455,6 @@ class ProductUtil extends Util
      * Filters product as per the given inputs and return the details.
      *
      * @param  string  $search_type  (like or exact)
-     * @return object
      */
     public function filterProduct($business_id, $search_term, $location_id = null, $not_for_selling = null, $price_group_id = null, $product_types = [], $search_fields = [], $check_qty = false, string $search_type = 'like'): object
     {
@@ -1838,10 +1746,6 @@ class ProductUtil extends Util
 
     /**
      * Gives the details of combo product
-     *
-     * @param  array  $combo_variations
-     * @param  int  $business_id
-     * @return array
      */
     public function __getComboProductDetails(array $combo_variations, int $business_id): array
     {
@@ -2271,8 +2175,6 @@ class ProductUtil extends Util
 
     /**
      * Return the products less than alert quntity.
-     *
-     * @return array
      */
     public function getProductAlert($business_id, $permitted_locations = null): array
     {

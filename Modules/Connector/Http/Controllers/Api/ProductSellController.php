@@ -338,8 +338,6 @@ class ProductSellController extends ApiController
 
     /**
      * Function to query product
-     *
-     * @return Response
      */
     private function __getProducts($business_id, $filters = [], $search = [], $pagination = false, $order_by = null, $order_direction = null): Response
     {

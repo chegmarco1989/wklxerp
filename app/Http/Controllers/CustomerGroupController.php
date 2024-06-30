@@ -64,8 +64,6 @@ class CustomerGroupController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create(): View
     {
@@ -116,7 +114,6 @@ class CustomerGroupController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\CustomerGroup  $customerGroup
-     * @return \Illuminate\Http\Response
      */
     public function edit($id): View
     {
@@ -139,7 +136,6 @@ class CustomerGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -177,7 +173,6 @@ class CustomerGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)

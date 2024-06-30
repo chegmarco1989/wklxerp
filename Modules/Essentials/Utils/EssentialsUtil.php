@@ -16,9 +16,6 @@ class EssentialsUtil extends Util
     /**
      * Function to calculate total work duration of a user for a period of time
      *
-     * @param  string  $unit
-     * @param  int  $user_id
-     * @param  int  $business_id
      * @param  int  $start_date  = null
      * @param  int  $end_date  = null
      */
@@ -49,8 +46,6 @@ class EssentialsUtil extends Util
 
     /**
      * Parses month and year from date
-     *
-     * @param  string  $month_year
      */
     public function getDateFromMonthYear(string $month_year)
     {
@@ -66,8 +61,6 @@ class EssentialsUtil extends Util
     /**
      * Retrieves all allowances and deductions of an employeee
      *
-     * @param  int  $business_id
-     * @param  int  $user_id
      * @param  string  $start_date  = null
      * @param  string  $end_date  = null
      */
@@ -262,11 +255,6 @@ class EssentialsUtil extends Util
 
     /**
      * get total leaves of and employee for given date
-     *
-     * @param  int  $business_id
-     * @param  int  $employee_id
-     * @param  string  $start_date
-     * @param  string  $end_date
      */
     public function getTotalLeavesForGivenDateOfAnEmployee(int $business_id, int $employee_id, string $start_date, string $end_date)
     {

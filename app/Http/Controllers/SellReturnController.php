@@ -314,9 +314,6 @@ class SellReturnController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -387,7 +384,6 @@ class SellReturnController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -467,11 +463,7 @@ class SellReturnController extends Controller
     /**
      * Returns the content for the receipt
      *
-     * @param  int  $business_id
-     * @param  int  $location_id
-     * @param  int  $transaction_id
      * @param  string  $printer_type  = null
-     * @return array
      */
     private function receiptContent(
         int $business_id,

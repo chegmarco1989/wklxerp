@@ -38,8 +38,6 @@ class SuperadminSettingsController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit(): View
     {
@@ -116,8 +114,6 @@ class SuperadminSettingsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request): Response
     {

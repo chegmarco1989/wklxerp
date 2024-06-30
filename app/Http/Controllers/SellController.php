@@ -779,9 +779,6 @@ class SellController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -872,7 +869,6 @@ class SellController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(int $id)
@@ -1174,8 +1170,6 @@ class SellController extends Controller
 
     /**
      * Display a listing sell drafts.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getDrafts(): View
     {
@@ -1196,8 +1190,6 @@ class SellController extends Controller
 
     /**
      * Display a listing sell quotations.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getQuotations(): View
     {
@@ -1438,9 +1430,6 @@ class SellController extends Controller
 
     /**
      * Creates copy of the requested sale.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function duplicateSell(int $id): RedirectResponse
     {
@@ -1516,9 +1505,6 @@ class SellController extends Controller
 
     /**
      * Shows modal to edit shipping details.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function editShipping(int $id): View
     {
@@ -1596,8 +1582,6 @@ class SellController extends Controller
 
     /**
      * Display list of shipments.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function shipments(): View
     {

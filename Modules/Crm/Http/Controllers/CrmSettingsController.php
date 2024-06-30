@@ -33,8 +33,6 @@ class CrmSettingsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -54,8 +52,6 @@ class CrmSettingsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function updateSettings(Request $request): RedirectResponse
     {

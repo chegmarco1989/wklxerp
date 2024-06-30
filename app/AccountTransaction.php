@@ -31,7 +31,6 @@ class AccountTransaction extends Model
      * Gives account transaction type from payment transaction type
      *
      * @param  string  $payment_transaction_type
-     * @return string
      */
     public static function getAccountTransactionType($tansaction_type): string
     {
@@ -51,8 +50,6 @@ class AccountTransaction extends Model
 
     /**
      * Creates new account transaction
-     *
-     * @return obj
      */
     public static function createAccountTransaction($data): obj
     {
@@ -77,10 +74,7 @@ class AccountTransaction extends Model
     /**
      * Updates transaction payment from transaction payment
      *
-     * @param  obj  $transaction_payment
      * @param  array  $inputs
-     * @param  string  $transaction_type
-     * @return string
      */
     public static function updateAccountTransaction(obj $transaction_payment, string $transaction_type): string
     {

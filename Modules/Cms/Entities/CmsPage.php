@@ -24,8 +24,6 @@ class CmsPage extends Model
 
     /**
      * Get the slug for post.
-     *
-     * @return string
      */
     public function getSlugAttribute(): string
     {
@@ -42,8 +40,6 @@ class CmsPage extends Model
 
     /**
      * Get the feature image.
-     *
-     * @return string
      */
     public function getFeatureImageUrlAttribute(): string
     {
@@ -58,8 +54,6 @@ class CmsPage extends Model
 
     /**
      * Get the feature image path.
-     *
-     * @return string
      */
     public function getFeatureImagePathAttribute(): string
     {

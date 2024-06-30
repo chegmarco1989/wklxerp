@@ -163,9 +163,6 @@ class CombinedPurchaseReturnController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id): View
     {
@@ -363,8 +360,6 @@ class CombinedPurchaseReturnController extends Controller
 
     /**
      * Return product rows
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getProductRow(Request $request): View
     {

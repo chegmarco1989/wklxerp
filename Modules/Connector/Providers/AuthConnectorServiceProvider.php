@@ -16,8 +16,6 @@ class AuthConnectorServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -26,8 +24,6 @@ class AuthConnectorServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
     public function provides(): array
     {
@@ -36,9 +32,6 @@ class AuthConnectorServiceProvider extends ServiceProvider
 
     /**
      * Register any application authentication / authorization services.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
-     * @return void
      */
     public function boot(GateContract $gate): void
     {

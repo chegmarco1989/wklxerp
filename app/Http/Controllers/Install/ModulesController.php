@@ -136,7 +136,6 @@ class ModulesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(int $id)
@@ -147,7 +146,6 @@ class ModulesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(int $id)
@@ -197,7 +195,6 @@ class ModulesController extends Controller
     /**
      * Deletes the module.
      *
-     * @param  string  $module_name
      * @return \Illuminate\Http\Response
      */
     public function destroy(string $module_name)

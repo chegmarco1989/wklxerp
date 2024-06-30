@@ -31,8 +31,6 @@ class CmsSiteDetail extends Model
 
     /**
      * Get the feature image path.
-     *
-     * @return string
      */
     public function getLogoPathAttribute(): string
     {

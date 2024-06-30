@@ -606,8 +606,6 @@ class HomeController extends Controller
 
     /**
      * Function to count total number of unread notifications
-     *
-     * @return json
      */
     public function getTotalUnreadNotifications(): json
     {

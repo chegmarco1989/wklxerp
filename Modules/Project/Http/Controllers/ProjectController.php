@@ -47,8 +47,6 @@ class ProjectController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -273,8 +271,6 @@ class ProjectController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): \Illuminate\View\View
     {
@@ -295,8 +291,6 @@ class ProjectController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -382,8 +376,6 @@ class ProjectController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): \Illuminate\View\View
     {
@@ -471,8 +463,6 @@ class ProjectController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): \Illuminate\View\View
     {
@@ -496,8 +486,6 @@ class ProjectController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): Response
     {
@@ -571,8 +559,6 @@ class ProjectController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {
@@ -606,8 +592,6 @@ class ProjectController extends Controller
 
     /**
      * Update the project settings.
-     *
-     * @return Response
      */
     public function postSettings(Request $request): RedirectResponse
     {
@@ -661,8 +645,6 @@ class ProjectController extends Controller
 
     /**
      * update project status
-     *
-     * @return Response
      */
     public function postProjectStatus($id): Response
     {

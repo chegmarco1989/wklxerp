@@ -35,7 +35,6 @@ class Controller extends BaseController
     /**
      * Returns a Unauthorized response.
      *
-     * @param  string  $message
      * @return \Illuminate\Http\Response
      */
     public function respondUnauthorized(string $message = 'Unauthorized action.')
@@ -80,9 +79,6 @@ class Controller extends BaseController
 
     /**
      * Returns a 200 response.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Http\Response
      */
     public function respond(array $data): JsonResponse
     {

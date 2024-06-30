@@ -212,7 +212,6 @@ class BusinessLocationController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\StoreFront  $storeFront
-     * @return \Illuminate\Http\Response
      */
     public function edit($id): View
     {
@@ -335,9 +334,6 @@ class BusinessLocationController extends Controller
 
     /**
      * Function to activate or deactivate a location.
-     *
-     * @param  int  $location_id
-     * @return json
      */
     public function activateDeactivateLocation(int $location_id): json
     {

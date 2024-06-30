@@ -49,7 +49,6 @@ class System extends Model
      * Return the value of the multiple properties
      *
      * @param  $keys  array
-     * @return array
      */
     public static function getProperties($keys, $pluck = false): array
     {
@@ -67,7 +66,6 @@ class System extends Model
      * Return the system default currency details
      *
      * @param void
-     * @return object
      */
     public static function getCurrency(): object
     {
@@ -82,8 +80,6 @@ class System extends Model
 
     /**
      * Set the property
-     *
-     * @return void
      */
     public static function setProperty($key, $value): void
     {
@@ -93,8 +89,6 @@ class System extends Model
 
     /**
      * Remove the specified property
-     *
-     * @return void
      */
     public static function removeProperty($key): void
     {
@@ -104,8 +98,6 @@ class System extends Model
 
     /**
      * Add a new property, if exist update the value
-     *
-     * @return void
      */
     public static function addProperty($key, $value): void
     {

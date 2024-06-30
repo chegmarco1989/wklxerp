@@ -98,8 +98,6 @@ class ContactController extends Controller
 
     /**
      * Returns the database object for supplier
-     *
-     * @return \Illuminate\Http\Response
      */
     private function indexSupplier(): Response
     {
@@ -281,8 +279,6 @@ class ContactController extends Controller
 
     /**
      * Returns the database object for customer
-     *
-     * @return \Illuminate\Http\Response
      */
     private function indexCustomer(): Response
     {
@@ -652,9 +648,6 @@ class ContactController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -708,7 +701,6 @@ class ContactController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(int $id)
@@ -764,7 +756,6 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -837,7 +828,6 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -896,7 +886,6 @@ class ContactController extends Controller
      * Retrieves list of customers, if filter is passed then filter it accordingly.
      *
      * @param  string  $q
-     * @return JSON
      */
     public function getCustomers(): JSON
     {
@@ -992,7 +981,6 @@ class ContactController extends Controller
      * Shows import option for contacts
      *
      * @param  \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
      */
     public function getImportContacts(): View
     {
@@ -1261,7 +1249,6 @@ class ContactController extends Controller
      * Shows ledger for contacts
      *
      * @param  \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
      */
     public function getLedger(): View
     {

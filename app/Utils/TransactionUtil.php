@@ -32,12 +32,6 @@ class TransactionUtil extends Util
 {
     /**
      * Add Sell transaction
-     *
-     * @param  int  $business_id
-     * @param  array  $input
-     * @param  float  $invoice_total
-     * @param  int  $user_id
-     * @return object
      */
     public function createSellTransaction(int $business_id, array $input, float $invoice_total, int $user_id, $uf_data = true): object
     {
@@ -152,11 +146,6 @@ class TransactionUtil extends Util
      * Add Sell transaction
      *
      * @param  mixed  $transaction_id
-     * @param  int  $business_id
-     * @param  array  $input
-     * @param  float  $invoice_total
-     * @param  int  $user_id
-     * @return object
      */
     public function updateSellTransaction($transaction_id, int $business_id, array $input, float $invoice_total, int $user_id, $uf_data = true, $change_invoice_number = true): object
     {
@@ -275,9 +264,6 @@ class TransactionUtil extends Util
     /**
      * Add/Edit transaction sell lines
      *
-     * @param object/int $transaction
-     * @param  array  $products
-     * @param  array  $location_id
      * @param  bool  $return_deleted  = false
      * @param  array  $extra_line_parameters  = []
      *                                        Example: ['database_trasnaction_linekey' => 'products_line_key'];
@@ -502,10 +488,6 @@ class TransactionUtil extends Util
 
     /**
      * Returns the line for combo product
-     *
-     * @param  array  $combo_items
-     * @param  object  $parent_sell_line
-     * @return array
      */
     private function __makeLinesForComboProduct(array $combo_items, object $parent_sell_line): array
     {
@@ -547,10 +529,6 @@ class TransactionUtil extends Util
 
     /**
      * Edit transaction sell line
-     *
-     * @param  array  $product
-     * @param  int  $location_id
-     * @return bool
      */
     public function editSellLine(array $product, int $location_id, $status_before, $multiplier = 1, $uf_data = true): bool
     {
@@ -636,10 +614,6 @@ class TransactionUtil extends Util
 
     /**
      * Delete the products removed and increment product stock.
-     *
-     * @param  array  $transaction_line_ids
-     * @param  int  $location_id
-     * @return bool
      */
     public function deleteSellLines(array $transaction_line_ids, int $location_id, $adjust_qty = true): bool
     {
@@ -669,12 +643,6 @@ class TransactionUtil extends Util
 
     /**
      * Adjust the quantity of product and its variation
-     *
-     * @param  int  $location_id
-     * @param  int  $product_id
-     * @param  int  $variation_id
-     * @param  float  $increment_qty
-     * @return bool
      */
     private function adjustQuantity(int $location_id, int $product_id, int $variation_id, float $increment_qty): bool
     {
@@ -693,10 +661,6 @@ class TransactionUtil extends Util
 
     /**
      * Add line for payment
-     *
-     * @param object/int $transaction
-     * @param  array  $payments
-     * @return bool
      */
     public function createOrUpdatePaymentLines(object $transaction, array $payments, $business_id = null, $user_id = null, $uf_data = true): bool
     {
@@ -829,7 +793,6 @@ class TransactionUtil extends Util
      * Edit transaction payment line
      *
      * @param  array  $product
-     * @return bool
      */
     public function editPaymentLine($payment, $transaction = null, $uf_data = true): bool
     {
@@ -934,9 +897,6 @@ class TransactionUtil extends Util
 
     /**
      * Get payment line for a transaction
-     *
-     * @param  int  $transaction_id
-     * @return bool
      */
     public function getPaymentDetails(int $transaction_id): bool
     {
@@ -949,13 +909,7 @@ class TransactionUtil extends Util
     /**
      * Gives the receipt details in proper format.
      *
-     * @param  int  $transaction_id
-     * @param  int  $location_id
-     * @param  object  $invoice_layout
-     * @param  array  $business_details
      * @param  array  $receipt_details
-     * @param  string  $receipt_printer_type
-     * @return array
      */
     public function getReceiptDetails(int $transaction_id, int $location_id, object $invoice_layout, array $business_details, $location_details, string $receipt_printer_type): array
     {
@@ -1915,8 +1869,6 @@ class TransactionUtil extends Util
      * This QR code is used in saudi arabia, TLV format
      * https://github.com/SallaApp/ZATCA/blob/master/src/Tag.php
      * Need to validate the qr code from mobile app
-     *
-     * @return string
      */
     protected function _zatca_qr_text($seller, $tax_number, $invoice_date, $invoice_total_amount, $invoice_tax_amount): string
     {
@@ -1953,8 +1905,6 @@ class TransactionUtil extends Util
 
     /**
      * Returns each line details for sell invoice display
-     *
-     * @return array
      */
     protected function _receiptDetailsSellLines($lines, $il, $business_details): array
     {
@@ -2167,8 +2117,6 @@ class TransactionUtil extends Util
 
     /**
      * Returns each line details for sell return invoice display
-     *
-     * @return array
      */
     protected function _receiptDetailsSellReturnLines($lines, $il, $business_details): array
     {
@@ -2283,11 +2231,6 @@ class TransactionUtil extends Util
 
     /**
      * Gives the invoice number for a Final/Draft invoice
-     *
-     * @param  int  $business_id
-     * @param  string  $status
-     * @param  string  $location_id
-     * @return string
      */
     public function getInvoiceNumber(int $business_id, string $status, string $location_id, $invoice_scheme_id = null, $sale_type = null): string
     {
@@ -2359,10 +2302,6 @@ class TransactionUtil extends Util
 
     /**
      * Gives the list of products for a purchase transaction
-     *
-     * @param  int  $business_id
-     * @param  int  $transaction_id
-     * @return array
      */
     public function getPurchaseProducts(int $business_id, int $transaction_id): array
     {
@@ -2381,9 +2320,7 @@ class TransactionUtil extends Util
     /**
      * Gives the total purchase amount for a business within the date range passed
      *
-     * @param  int  $business_id
      * @param  int  $transaction_id
-     * @return array
      */
     public function getPurchaseTotals(int $business_id, $start_date = null, $end_date = null, $location_id = null, $user_id = null, $permitted_locations = null): array
     {
@@ -2513,9 +2450,7 @@ class TransactionUtil extends Util
     /**
      * Gives the total sell amount for a business within the date range passed
      *
-     * @param  int  $business_id
      * @param  int  $transaction_id
-     * @return array
      */
     public function getSellTotals(int $business_id, $start_date = null, $end_date = null, $location_id = null, $created_by = null, $permitted_locations = null): array
     {
@@ -2598,10 +2533,8 @@ class TransactionUtil extends Util
     /**
      * Gives the total input tax for a business within the date range passed
      *
-     * @param  int  $business_id
      * @param  string  $start_date  default null
      * @param  string  $end_date  default null
-     * @return float
      */
     public function getInputTax(int $business_id, string $start_date = null, string $end_date = null, $location_id = null, $contact_id = null): float
     {
@@ -2698,10 +2631,8 @@ class TransactionUtil extends Util
     /**
      * Gives the total output tax for a business within the date range passed
      *
-     * @param  int  $business_id
      * @param  string  $start_date  default null
      * @param  string  $end_date  default null
-     * @return float
      */
     public function getOutputTax(int $business_id, string $start_date = null, string $end_date = null, $location_id = null, $contact_id = null): float
     {
@@ -2800,10 +2731,8 @@ class TransactionUtil extends Util
     /**
      * Gives the total expense tax for a business within the date range passed
      *
-     * @param  int  $business_id
      * @param  string  $start_date  default null
      * @param  string  $end_date  default null
-     * @return float
      */
     public function getExpenseTax(int $business_id, string $start_date = null, string $end_date = null, $location_id = null, $contact_id = null): float
     {
@@ -2866,11 +2795,6 @@ class TransactionUtil extends Util
 
     /**
      * Gives total sells of current FY month-wise
-     *
-     * @param  int  $business_id
-     * @param  string  $start
-     * @param  string  $end
-     * @return Obj
      */
     public function getSellsCurrentFy(int $business_id, string $start, string $end): Obj
     {
@@ -2905,10 +2829,7 @@ class TransactionUtil extends Util
     /**
      * Retrives expense report
      *
-     * @param  int  $business_id
-     * @param  array  $filters
      * @param  string  $type  = by_category (by_category or total)
-     * @return Obj
      */
     public function getExpenseReport(
         int $business_id,
@@ -2963,9 +2884,6 @@ class TransactionUtil extends Util
 
     /**
      * Get total paid amount for a transaction
-     *
-     * @param  int  $transaction_id
-     * @return int
      */
     public function getTotalPaid(int $transaction_id): int
     {
@@ -2980,9 +2898,7 @@ class TransactionUtil extends Util
     /**
      * Calculates the payment status and returns back.
      *
-     * @param  int  $transaction_id
      * @param  float  $final_amount  = null
-     * @return string
      */
     public function calculatePaymentStatus(int $transaction_id, float $final_amount = null): string
     {
@@ -3005,9 +2921,6 @@ class TransactionUtil extends Util
     /**
      * Update the payment status for purchase or sell transactions. Returns
      * the status
-     *
-     * @param  int  $transaction_id
-     * @return string
      */
     public function updatePaymentStatus(int $transaction_id, $final_amount = null): string
     {
@@ -3026,9 +2939,6 @@ class TransactionUtil extends Util
 
     /**
      * Purchase currency details
-     *
-     * @param  int  $business_id
-     * @return object
      */
     public function purchaseCurrencyDetails(int $business_id): object
     {
@@ -3066,7 +2976,6 @@ class TransactionUtil extends Util
      * Pay contact due at once
      *
      * @param  obj  $parent_payment,  string $type
-     * @return void
      */
     public function payAtOnce(obj $parent_payment, $type): void
     {
@@ -3176,12 +3085,9 @@ class TransactionUtil extends Util
      * NOTE: Don't use request variable here, request variable don't exist while adding
      * dummybusiness via command line
      *
-     * @param  array  $business
-     * @param  array  $transaction_lines
      * @param  string  $mapping_type  = purchase (purchase or stock_adjustment)
      * @param  bool  $check_expiry  = true
      * @param  int  $purchase_line_id  (default: null)
-     * @return object
      */
     public function mapPurchaseSell(array $business, array $transaction_lines, string $mapping_type = 'purchase', bool $check_expiry = true, int $purchase_line_id = null): object
     {
@@ -3392,11 +3298,7 @@ class TransactionUtil extends Util
      * D => F (Call the mapPurchaseSell function)
      * F => F (Check for quantity of existing product, call mapPurchase for new products.)
      *
-     * @param  string  $status_before
-     * @param  object  $transaction
-     * @param  array  $business
      * @param  array  $deleted_line_ids  = [] //deleted sell lines ids.
-     * @return void
      */
     public function adjustMappingPurchaseSell(
         string $status_before,
@@ -3509,10 +3411,6 @@ class TransactionUtil extends Util
     /**
      * Decrease the purchase quantity from
      * transaction_sell_lines_purchase_lines and purchase_lines.quantity_sold
-     *
-     * @param  int  $sell_line_id
-     * @param  int  $decrement_qty
-     * @return void
      */
     private function mapDecrementPurchaseQuantity(int $sell_line_id, int $decrement_qty): void
     {
@@ -3545,9 +3443,6 @@ class TransactionUtil extends Util
      * Decrement quantity adjusted in product line according to
      * transaction_sell_lines_purchase_lines
      * Used in delete of stock adjustment
-     *
-     * @param  array  $line_ids
-     * @return bool
      */
     public function mapPurchaseQuantityForDeleteStockAdjustment(array $line_ids): bool
     {
@@ -3574,11 +3469,6 @@ class TransactionUtil extends Util
     /**
      * Adjust the existing mapping between purchase & sell on edit of
      * purchase
-     *
-     * @param  string  $before_status
-     * @param  object  $transaction
-     * @param  object  $delete_purchase_lines
-     * @return void
      */
     public function adjustMappingPurchaseSellAfterEditingPurchase(string $before_status, object $transaction, object $delete_purchase_lines): void
     {
@@ -3744,10 +3634,6 @@ class TransactionUtil extends Util
 
     /**
      * Check if transaction can be edited based on business     transaction_edit_days
-     *
-     * @param  int/object $transaction
-     * @param  int  $edit_duration
-     * @return bool
      */
     public function canBeEdited(int $transaction, int $edit_duration): bool
     {
@@ -3773,11 +3659,7 @@ class TransactionUtil extends Util
     /**
      * Calculates total stock on the given date
      *
-     * @param  int  $business_id
-     * @param  string  $date
-     * @param  int  $location_id
      * @param  bool  $is_opening  = false
-     * @return float
      */
     public function getOpeningClosingStock(int $business_id, string $date, int $location_id, bool $is_opening = false, $by_sale_price = false, $filters = [], $permitted_locations = null): float
     {
@@ -3859,13 +3741,6 @@ class TransactionUtil extends Util
 
     /**
      * Gives the total sell commission for a commission agent within the date range passed
-     *
-     * @param  int  $business_id
-     * @param  string  $start_date
-     * @param  string  $end_date
-     * @param  int  $location_id
-     * @param  int  $commission_agent
-     * @return array
      */
     public function getTotalSellCommission(int $business_id, string $start_date = null, string $end_date = null, int $location_id = null, int $commission_agent = null): array
     {
@@ -3939,12 +3814,6 @@ class TransactionUtil extends Util
 
     /**
      * Add Sell transaction
-     *
-     * @param  int  $business_id
-     * @param  array  $input
-     * @param  float  $invoice_total
-     * @param  int  $user_id
-     * @return bool
      */
     public function createSellReturnTransaction(int $business_id, array $input, float $invoice_total, int $user_id): bool
     {
@@ -4014,11 +3883,6 @@ class TransactionUtil extends Util
 
     /**
      * Retrieves all available lot numbers of a product from variation id
-     *
-     * @param  int  $variation_id
-     * @param  int  $business_id
-     * @param  int  $location_id
-     * @return bool
      */
     public function getLotNumbersFromVariation(int $variation_id, int $business_id, int $location_id, $exclude_empty_lot = false): bool
     {
@@ -4050,7 +3914,6 @@ class TransactionUtil extends Util
     /**
      * Checks if credit limit of a customer is exceeded
      *
-     * @param  array  $input
      * @param  int  $exclude_transaction_id  (For update sell)
      * @return mixed
      *               if exceeded returns credit_limit else false
@@ -4114,11 +3977,6 @@ class TransactionUtil extends Util
 
     /**
      * Creates a new opening balance transaction for a contact
-     *
-     * @param  int  $business_id
-     * @param  int  $contact_id
-     * @param  int  $amount
-     * @return void
      */
     public function createOpeningBalanceTransaction(int $business_id, int $contact_id, int $amount, $created_by, $uf_data = true): void
     {
@@ -4147,11 +4005,6 @@ class TransactionUtil extends Util
 
     /**
      * Updates quantity sold in purchase line for sell return
-     *
-     * @param  obj  $sell_line
-     * @param  decimal  $new_quantity
-     * @param  decimal  $old_quantity
-     * @return void
      */
     public function updateQuantitySoldFromSellLine(obj $sell_line, decimal $new_quantity, decimal $old_quantity, $uf_number = true): void
     {
@@ -4221,9 +4074,6 @@ class TransactionUtil extends Util
 
     /**
      * Check if return exist for a particular purchase or sell
-     *
-     * @param  id  $transacion_id
-     * @return bool
      */
     public function isReturnExist(id $transacion_id): bool
     {
@@ -4234,7 +4084,6 @@ class TransactionUtil extends Util
      * Recalculates sell line data according to subunit data
      *
      * @param  int  $unit_id
-     * @return array
      */
     public function recalculateSellLineTotals($business_id, $sell_line): array
     {
@@ -4271,9 +4120,6 @@ class TransactionUtil extends Util
 
     /**
      * Check if lot number is used in any sell
-     *
-     * @param  obj  $transaction
-     * @return bool
      */
     public function isLotUsed(obj $transaction): bool
     {
@@ -4365,8 +4211,6 @@ class TransactionUtil extends Util
 
     /**
      * Retrieves and sum total amount paid for a transaction
-     *
-     * @param  int  $transaction_id
      */
     public function getTotalAmountPaid(int $transaction_id)
     {
@@ -4381,7 +4225,6 @@ class TransactionUtil extends Util
     /**
      * Calculates transaction totals for the given transaction types
      *
-     * @param  int  $business_id
      * @param  array  $transaction_types
      *                                    available types = ['purchase_return', 'sell_return', 'expense',
      *                                    'stock_adjustment', 'sell_transfer', 'purchase', 'sell']
@@ -4389,7 +4232,6 @@ class TransactionUtil extends Util
      * @param  string  $end_date  = null
      * @param  int  $location_id  = null
      * @param  int  $created_by  = null
-     * @return array
      */
     public function getTransactionTotals(
         int $business_id,
@@ -4639,8 +4481,6 @@ class TransactionUtil extends Util
 
     /**
      * Calculates reward points to be earned from an order
-     *
-     * @return int
      */
     public function calculateRewardPoints($business_id, $total): int
     {
@@ -4670,8 +4510,6 @@ class TransactionUtil extends Util
 
     /**
      * Updates reward point of a customer
-     *
-     * @return void
      */
     public function updateCustomerRewardPoints(
         $customer_id,
@@ -4702,8 +4540,6 @@ class TransactionUtil extends Util
 
     /**
      * Calculates reward points to be redeemed from an order
-     *
-     * @return array
      */
     public function getRewardRedeemDetails($business_id, $customer_id): array
     {
@@ -4746,8 +4582,6 @@ class TransactionUtil extends Util
 
     /**
      * Checks whether a reward point date is expired
-     *
-     * @return bool
      */
     public function isRewardExpired($date, $business_id): bool
     {
@@ -4777,10 +4611,6 @@ class TransactionUtil extends Util
 
     /**
      * Function to delete sale
-     *
-     * @param  int  $business_id
-     * @param  int  $transaction_id
-     * @return array
      */
     public function deleteSale(int $business_id, int $transaction_id): array
     {
@@ -4867,9 +4697,6 @@ class TransactionUtil extends Util
     /**
      * common function to get
      * list purchase
-     *
-     * @param  int  $business_id
-     * @return object
      */
     public function getListPurchases(int $business_id): object
     {
@@ -4924,9 +4751,6 @@ class TransactionUtil extends Util
     /**
      * common function to get
      * list expenses
-     *
-     * @param  int  $business_id
-     * @return object
      */
     public function getListExpenses(int $business_id): object
     {
@@ -4983,9 +4807,6 @@ class TransactionUtil extends Util
     /**
      * common function to get
      * list sell
-     *
-     * @param  int  $business_id
-     * @return object
      */
     public function getListSells(int $business_id, $sale_type = 'sell'): object
     {
@@ -5669,7 +5490,6 @@ class TransactionUtil extends Util
     /**
      * Creates recurring expense from existing expense
      *
-     * @param  obj  $transaction
      * @return obj $recurring_invoice
      */
     public function createRecurringExpense(obj $transaction): obj
@@ -5847,8 +5667,6 @@ class TransactionUtil extends Util
     /**
      * Updates contact balance
      *
-     * @param  obj  $contact
-     * @param  float  $amount
      * @param  string  $type  [add, deduct]
      * @return obj $recurring_invoice
      */
@@ -6098,10 +5916,6 @@ class TransactionUtil extends Util
     /**
      * Get pdf content for given
      * transaction id
-     *
-     * @param  int  $business_id
-     * @param  int  $transaction_id
-     * @return array
      */
     public function getPdfContentsForGivenTransaction(int $business_id, int $transaction_id): array
     {
@@ -6141,11 +5955,6 @@ class TransactionUtil extends Util
     /**
      * Return mpdf object for
      * email attachment
-     *
-     * @param  int  $business_id
-     * @param  int  $transaction_id
-     * @param  bool  $is_email_attachment
-     * @return object
      */
     public function getEmailAttachmentForGivenTransaction(int $business_id, int $transaction_id, bool $is_email_attachment): object
     {
@@ -6300,8 +6109,6 @@ class TransactionUtil extends Util
 
     /**
      * Return the registerReport .
-     *
-     * @return array
      */
     public function registerReport($business_id, $permitted_locations, $start_date = null, $end_date = null): array
     {

@@ -38,8 +38,6 @@ class UserController extends Controller
 
     /**
      * Shows profile of logged in user
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getProfile(): View
     {

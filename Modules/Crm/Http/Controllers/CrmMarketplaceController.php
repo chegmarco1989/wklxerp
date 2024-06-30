@@ -32,8 +32,6 @@ class CrmMarketplaceController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -54,8 +52,6 @@ class CrmMarketplaceController extends Controller
 
     /**
      * Saves marketplace details
-     *
-     * @return Response
      */
     public function save(Request $request): RedirectResponse
     {
@@ -85,8 +81,6 @@ class CrmMarketplaceController extends Controller
 
     /**
      * Fetches leads from api and creates leads and followups
-     *
-     * @return Response
      */
     public function importLeads(Request $request): RedirectResponse
     {

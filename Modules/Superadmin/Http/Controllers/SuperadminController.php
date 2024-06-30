@@ -17,8 +17,6 @@ class SuperadminController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -57,8 +55,6 @@ class SuperadminController extends Controller
 
     /**
      * Returns the monthly sell data for chart
-     *
-     * @return array
      */
     protected function _monthly_sell_data(): array
     {
@@ -85,7 +81,6 @@ class SuperadminController extends Controller
      *
      * @param  $start  date
      * @param  $end  date
-     * @return json
      */
     public function stats(Request $request): json
     {

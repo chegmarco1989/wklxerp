@@ -34,8 +34,6 @@ class NotificationController extends Controller
 
     /**
      * Display a notification view.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getTemplate($id, $template_for): View
     {

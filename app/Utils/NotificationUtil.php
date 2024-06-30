@@ -18,12 +18,6 @@ class NotificationUtil extends Util
 {
     /**
      * Automatically send notification to customer/supplier if enabled in the template setting
-     *
-     * @param  int  $business_id
-     * @param  string  $notification_type
-     * @param  obj  $transaction
-     * @param  obj  $contact
-     * @return void
      */
     public function autoSendNotification(int $business_id, string $notification_type, obj $transaction, obj $contact): void
     {
@@ -101,8 +95,6 @@ class NotificationUtil extends Util
      * Replaces tags from notification body with original value
      *
      * @param  text  $body
-     * @param  int  $booking_id
-     * @return array
      */
     public function replaceBookingTags($business_id, $data, int $booking_id): array
     {

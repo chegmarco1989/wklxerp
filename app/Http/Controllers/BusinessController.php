@@ -269,8 +269,6 @@ class BusinessController extends Controller
 
     /**
      * Shows business settings form
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getBusinessSettings(): View
     {

@@ -89,8 +89,6 @@ class User extends Authenticatable implements MessengerProvider
 
     /**
      * Creates a new user based on the input provided.
-     *
-     * @return object
      */
     public static function create_user($details): object
     {
@@ -156,8 +154,6 @@ class User extends Authenticatable implements MessengerProvider
      * Returns if a user can access the input location
      *
      * @param: int $location_id
-     *
-     * @return bool
      */
     public static function can_access_this_location($location_id, $business_id = null): bool
     {
@@ -279,8 +275,6 @@ class User extends Authenticatable implements MessengerProvider
 
     /**
      * Get the user's full name.
-     *
-     * @return string
      */
     public function getUserFullNameAttribute(): string
     {
@@ -289,8 +283,6 @@ class User extends Authenticatable implements MessengerProvider
 
     /**
      * Return true/false based on selected_contact access
-     *
-     * @return bool
      */
     public static function isSelectedContacts($user_id): bool
     {
@@ -314,9 +306,6 @@ class User extends Authenticatable implements MessengerProvider
 
     /**
      * Find the user instance for the given username.
-     *
-     * @param  string  $username
-     * @return \App\User
      */
     public function findForPassport(string $username): User
     {
@@ -333,8 +322,6 @@ class User extends Authenticatable implements MessengerProvider
 
     /**
      * Get the products image.
-     *
-     * @return string
      */
     public function getImageUrlAttribute(): string
     {

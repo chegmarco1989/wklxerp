@@ -47,8 +47,6 @@ class RecipeController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -133,8 +131,6 @@ class RecipeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): View
     {
@@ -150,8 +146,6 @@ class RecipeController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -268,8 +262,6 @@ class RecipeController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): View
     {
@@ -288,8 +280,6 @@ class RecipeController extends Controller
 
     /**
      * Get ingredients row while adding recipe.
-     *
-     * @return Response
      */
     public function getIngredientRow($variation_id): View
     {
@@ -317,8 +307,6 @@ class RecipeController extends Controller
 
     /**
      * Shows recipe form.
-     *
-     * @return Response
      */
     public function addIngredients(): View
     {
@@ -407,8 +395,6 @@ class RecipeController extends Controller
 
     /**
      * Retrieves selected recipe details for production.
-     *
-     * @return Response
      */
     public function getRecipeDetails(): Response
     {
@@ -478,8 +464,6 @@ class RecipeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function getIngredientGroupForm(): View
     {
@@ -491,8 +475,6 @@ class RecipeController extends Controller
 
     /**
      * Function to update variation prices from recipe unit price.
-     *
-     * @return Response
      */
     public function updateRecipeProductPrices(Request $request): Response
     {
@@ -557,7 +539,6 @@ class RecipeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -587,8 +568,6 @@ class RecipeController extends Controller
 
     /**
      * Check if recipe exist.
-     *
-     * @param  int  $variation_id
      */
     public function isRecipeExist(int $variation_id)
     {

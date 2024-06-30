@@ -103,8 +103,6 @@ class DiscountController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create(): View
     {
@@ -185,7 +183,6 @@ class DiscountController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Discount  $discount
-     * @return \Illuminate\Http\Response
      */
     public function edit($id): View
     {
@@ -316,8 +313,6 @@ class DiscountController extends Controller
 
     /**
      * Mass deactivates discounts.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function massDeactivate(Request $request): RedirectResponse
     {
@@ -357,7 +352,6 @@ class DiscountController extends Controller
     /**
      * Activates the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function activate(int $id)

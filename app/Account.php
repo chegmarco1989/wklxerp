@@ -92,9 +92,6 @@ class Account extends Model
 
     /**
      * Scope a query to only include not closed accounts.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeNotClosed(Builder $query): Builder
     {
@@ -105,7 +102,6 @@ class Account extends Model
      * Scope a query to only include non capital accounts.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     // public function scopeNotCapital($query)
     // {

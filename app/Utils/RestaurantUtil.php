@@ -14,7 +14,6 @@ class RestaurantUtil extends Util
     /**
      * Retrieves all orders/sales
      *
-     * @param  int  $business_id
      * @param  array  $filter
      *                         *For new orders order_status is 'received'
      * @return obj $orders
@@ -131,7 +130,6 @@ class RestaurantUtil extends Util
     /**
      * Retrieves line orders/sales
      *
-     * @param  int  $business_id
      * @param  array  $filter
      *                         *For new orders order_status is 'received'
      * @return obj $orders
@@ -208,9 +206,6 @@ class RestaurantUtil extends Util
 
     /**
      * Function to show booking events on a calendar
-     *
-     * @param  array  $filters
-     * @return array
      */
     public function getBookingsForCalendar(array $filters): array
     {

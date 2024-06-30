@@ -37,8 +37,6 @@ class ProductCatalogueController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index($business_id, $location_id): View
     {
@@ -72,9 +70,6 @@ class ProductCatalogueController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($business_id, int $id): View
     {

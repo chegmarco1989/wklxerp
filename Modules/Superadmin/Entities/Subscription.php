@@ -26,9 +26,6 @@ class Subscription extends Model
 
     /**
      * Scope a query to only include approved subscriptions.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeApproved(Builder $query): Builder
     {
@@ -58,7 +55,6 @@ class Subscription extends Model
      * Returns the active subscription details for a business
      *
      * @param  $business_id  int
-     * @return Response
      */
     public static function active_subscription($business_id): Response
     {
@@ -77,7 +73,6 @@ class Subscription extends Model
      * Returns the upcoming subscription details for a business
      *
      * @param  $business_id  int
-     * @return Response
      */
     public static function upcoming_subscriptions($business_id): Response
     {
@@ -95,7 +90,6 @@ class Subscription extends Model
      * Returns the subscriptions waiting for approval for superadmin
      *
      * @param  $business_id  int
-     * @return Response
      */
     public static function waiting_approval($business_id): Response
     {
@@ -130,8 +124,6 @@ class Subscription extends Model
 
     /**
      * Returns the list of packages status
-     *
-     * @return array
      */
     public static function package_subscription_status(): array
     {

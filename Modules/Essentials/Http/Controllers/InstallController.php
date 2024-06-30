@@ -20,8 +20,6 @@ class InstallController extends Controller
 
     /**
      * Install
-     *
-     * @return Response
      */
     public function index(): RedirectResponse
     {
@@ -110,8 +108,6 @@ class InstallController extends Controller
 
     /**
      * Uninstall
-     *
-     * @return Response
      */
     public function uninstall(): RedirectResponse
     {

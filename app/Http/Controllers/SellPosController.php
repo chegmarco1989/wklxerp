@@ -114,8 +114,6 @@ class SellPosController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(): View
     {
@@ -699,11 +697,7 @@ class SellPosController extends Controller
     /**
      * Returns the content for the receipt
      *
-     * @param  int  $business_id
-     * @param  int  $location_id
-     * @param  int  $transaction_id
      * @param  string  $printer_type  = null
-     * @return array
      */
     private function receiptContent(
         int $business_id,
@@ -777,7 +771,6 @@ class SellPosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(int $id)
@@ -788,7 +781,6 @@ class SellPosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(int $id)
@@ -1090,7 +1082,6 @@ class SellPosController extends Controller
      * Update the specified resource in storage.
      * TODO: Add edit log.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -1528,7 +1519,6 @@ class SellPosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -1720,8 +1710,6 @@ class SellPosController extends Controller
     /**
      * Returns the HTML row for a product in POS
      *
-     * @param  int  $variation_id
-     * @param  int  $location_id
      * @return \Illuminate\Http\Response
      */
     public function getProductRow(int $variation_id, int $location_id)
@@ -1778,8 +1766,6 @@ class SellPosController extends Controller
 
     /**
      * Returns the HTML row for a payment in POS
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getPaymentRow(Request $request): View
     {
@@ -1804,8 +1790,6 @@ class SellPosController extends Controller
 
     /**
      * Returns recent transactions
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getRecentTransactions(Request $request): View
     {
@@ -1908,8 +1892,6 @@ class SellPosController extends Controller
 
     /**
      * Gives suggetion for product based on category
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getProductSuggestion(Request $request): View
     {
@@ -2022,9 +2004,6 @@ class SellPosController extends Controller
 
     /**
      * Shows invoice url.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function showInvoiceUrl(int $id): View
     {
@@ -2045,9 +2024,6 @@ class SellPosController extends Controller
 
     /**
      * Shows invoice to guest user.
-     *
-     * @param  string  $token
-     * @return \Illuminate\Http\Response
      */
     public function showInvoice(string $token): View
     {
@@ -2074,9 +2050,6 @@ class SellPosController extends Controller
 
     /**
      * Allows payment for the invoice by guest user.
-     *
-     * @param  string  $token
-     * @return \Illuminate\Http\Response
      */
     public function invoicePayment(string $token): View
     {
@@ -2364,7 +2337,6 @@ class SellPosController extends Controller
     /**
      * Starts or stops a recurring invoice.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function toggleRecurringInvoices(int $id)
@@ -2622,8 +2594,6 @@ class SellPosController extends Controller
 
     /**
      * Parse the weighing barcode.
-     *
-     * @return array
      */
     private function __parseWeighingBarcode($scale_barcode): array
     {

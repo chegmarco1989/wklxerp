@@ -120,8 +120,6 @@ class ManageUserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -158,9 +156,6 @@ class ManageUserController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -189,9 +184,6 @@ class ManageUserController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id): View
     {
@@ -230,7 +222,6 @@ class ManageUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -370,7 +361,6 @@ class ManageUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -415,7 +405,6 @@ class ManageUserController extends Controller
     /**
      * Retrives roles array (Hides admin role from non admin users)
      *
-     * @param  int  $business_id
      * @return array $roles
      */
     private function getRolesArray(int $business_id): array
@@ -437,8 +426,6 @@ class ManageUserController extends Controller
 
     /**
      * Signes in from user id
-     *
-     * @param  int  $id
      */
     public function signInAsUser(int $id): RedirectResponse
     {

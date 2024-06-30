@@ -43,8 +43,6 @@ class TaskController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -334,8 +332,6 @@ class TaskController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): \Illuminate\View\View
     {
@@ -350,8 +346,6 @@ class TaskController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -409,8 +403,6 @@ class TaskController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): \Illuminate\View\View
     {
@@ -441,8 +433,6 @@ class TaskController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): \Illuminate\View\View
     {
@@ -461,8 +451,6 @@ class TaskController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): Response
     {
@@ -520,8 +508,6 @@ class TaskController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {
@@ -551,8 +537,6 @@ class TaskController extends Controller
 
     /**
      * get task status for update.
-     *
-     * @return Response
      */
     public function getTaskStatus(): \Illuminate\View\View
     {
@@ -568,8 +552,6 @@ class TaskController extends Controller
 
     /**
      * update task status
-     *
-     * @return Response
      */
     public function postTaskStatus($id): Response
     {
@@ -600,8 +582,6 @@ class TaskController extends Controller
 
     /**
      * update task description
-     *
-     * @return Response
      */
     public function postTaskDescription($id): Response
     {

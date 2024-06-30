@@ -31,7 +31,6 @@ class LedgerController extends Controller
      * Shows ledger for contacts
      *
      * @param  \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $request): View
     {

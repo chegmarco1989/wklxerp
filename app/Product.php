@@ -31,8 +31,6 @@ class Product extends Model
 
     /**
      * Get the products image.
-     *
-     * @return string
      */
     public function getImageUrlAttribute(): string
     {
@@ -47,8 +45,6 @@ class Product extends Model
 
     /**
      * Get the products image path.
-     *
-     * @return string
      */
     public function getImagePathAttribute(): string
     {
@@ -148,9 +144,6 @@ class Product extends Model
 
     /**
      * Scope a query to only include active products.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -159,9 +152,6 @@ class Product extends Model
 
     /**
      * Scope a query to only include inactive products.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeInactive(Builder $query): Builder
     {
@@ -170,9 +160,6 @@ class Product extends Model
 
     /**
      * Scope a query to only include products for sales.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeProductForSales(Builder $query): Builder
     {
@@ -181,9 +168,6 @@ class Product extends Model
 
     /**
      * Scope a query to only include products not for sales.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeProductNotForSales(Builder $query): Builder
     {
@@ -197,9 +181,6 @@ class Product extends Model
 
     /**
      * Scope a query to only include products available for a location.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForLocation(Builder $query, $location_id): Builder
     {

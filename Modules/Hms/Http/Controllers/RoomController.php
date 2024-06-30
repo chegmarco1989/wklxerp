@@ -26,8 +26,6 @@ class RoomController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Renderable
      */
     public function index(): Renderable
     {
@@ -69,8 +67,6 @@ class RoomController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Renderable
      */
     public function create(): View
     {
@@ -93,8 +89,6 @@ class RoomController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Renderable
      */
     public function store(Request $request): Renderable
     {
@@ -163,9 +157,6 @@ class RoomController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Renderable
      */
     public function show(int $id): View
     {
@@ -174,9 +165,6 @@ class RoomController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Renderable
      */
     public function edit(int $id): Renderable
     {
@@ -206,9 +194,6 @@ class RoomController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Renderable
      */
     public function update(Request $request, int $id): Renderable
     {
@@ -406,9 +391,6 @@ class RoomController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Renderable
      */
     public function destroy(int $id): Renderable
     {

@@ -23,9 +23,6 @@ class SellingPriceGroup extends Model
 
     /**
      * Return list of selling price groups
-     *
-     * @param  int  $business_id
-     * @return array
      */
     public static function forDropdown(int $business_id, $with_default = true): array
     {
@@ -50,9 +47,6 @@ class SellingPriceGroup extends Model
 
     /**
      * Counts total number of selling price groups
-     *
-     * @param  int  $business_id
-     * @return array
      */
     public static function countSellingPriceGroups(int $business_id): array
     {

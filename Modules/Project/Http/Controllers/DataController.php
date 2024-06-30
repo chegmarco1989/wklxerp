@@ -142,7 +142,6 @@ class DataController extends Controller
      *
      * @param  $business_id,  $start_date, $end_date,
      *                       $location_id
-     * @return decimal
      */
     public function grossProfit($params): decimal
     {

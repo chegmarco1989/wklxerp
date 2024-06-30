@@ -283,7 +283,6 @@ class DataController extends Controller
      *
      * @param  $business_id,  $start_date, $end_date,
      *                       $location_id
-     * @return decimal
      */
     public function grossProfit($data): decimal
     {
@@ -312,7 +311,6 @@ class DataController extends Controller
     /**
      * Calculates final total of hms booking
      *
-     * @param  int  $business_id
      * @param  string  $start_date  = null
      * @param  string  $end_date  = null
      * @param  int  $location_id  = null

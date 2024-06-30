@@ -21,8 +21,6 @@ class InstallController extends Controller
 
     /**
      * Install
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -113,8 +111,6 @@ class InstallController extends Controller
 
     /**
      * Uninstall
-     *
-     * @return Response
      */
     public function uninstall(): RedirectResponse
     {
@@ -139,8 +135,6 @@ class InstallController extends Controller
 
     /**
      * update module
-     *
-     * @return Response
      */
     public function update(): RedirectResponse
     {

@@ -1355,9 +1355,6 @@ class SellController extends ApiController
 
     /**
      * Formats input form data to sell data
-     *
-     * @param  array  $data
-     * @return array
      */
     private function __formatSellData(array $data, $transaction = null): array
     {

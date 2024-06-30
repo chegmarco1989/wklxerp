@@ -30,8 +30,6 @@ class ReportController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(Request $request): View
     {
@@ -47,8 +45,6 @@ class ReportController extends Controller
     /**
      * Display the time log report
      * by employee
-     *
-     * @return Response
      */
     public function getEmployeeTimeLogReport(Request $request): Response
     {
@@ -142,8 +138,6 @@ class ReportController extends Controller
     /**
      * Display the time log report
      * by project
-     *
-     * @return Response
      */
     public function getProjectTimeLogReport(Request $request): Response
     {

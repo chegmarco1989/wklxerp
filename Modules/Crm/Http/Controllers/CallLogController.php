@@ -28,8 +28,6 @@ class CallLogController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -116,8 +114,6 @@ class CallLogController extends Controller
 
     /**
      * Mass deletes call logs.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function massDestroy(Request $request): RedirectResponse
     {

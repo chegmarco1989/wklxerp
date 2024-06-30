@@ -55,8 +55,6 @@ class ToDoController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -186,8 +184,6 @@ class ToDoController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): View
     {
@@ -213,8 +209,6 @@ class ToDoController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): View
     {
@@ -270,8 +264,6 @@ class ToDoController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): View
     {
@@ -308,8 +300,6 @@ class ToDoController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -384,8 +374,6 @@ class ToDoController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): Response
     {
@@ -460,8 +448,6 @@ class ToDoController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {
@@ -501,8 +487,6 @@ class ToDoController extends Controller
 
     /**
      * Add comment to the task
-     *
-     * @return Response
      */
     public function addComment(Request $request): Response
     {
@@ -565,8 +549,6 @@ class ToDoController extends Controller
 
     /**
      * Upload documents for a task
-     *
-     * @return Response
      */
     public function uploadDocument(Request $request): Response
     {
@@ -627,9 +609,6 @@ class ToDoController extends Controller
 
     /**
      * Delete comment of a task
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function deleteComment(int $id): Response
     {
@@ -660,9 +639,6 @@ class ToDoController extends Controller
 
     /**
      * Delete comment of a task
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function deleteDocument(int $id): Response
     {

@@ -16,7 +16,6 @@ class ProjectUtil extends Util
      * generate task id
      *
      * @param  $business_id,  $project_id
-     * @return string
      */
     public function generateTaskId($business_id, $project_id): string
     {
@@ -31,8 +30,6 @@ class ProjectUtil extends Util
 
     /**
      * check if the user is project lead.
-     *
-     * @return bool
      */
     public function isProjectLead($user_id, $project_id): bool
     {
@@ -44,8 +41,6 @@ class ProjectUtil extends Util
 
     /**
      * check if the user is project member.
-     *
-     * @return bool
      */
     public function isProjectMember($user_id, $project_id): bool
     {
@@ -60,8 +55,6 @@ class ProjectUtil extends Util
     /**
      * send notification about project.
      * to users
-     *
-     * @return \Illuminate\Http\Response
      */
     public function notifyUsersAboutAssignedProject($members, $project): Response
     {
@@ -74,8 +67,6 @@ class ProjectUtil extends Util
     /**
      * send notification about task.
      * to users
-     *
-     * @return \Illuminate\Http\Response
      */
     public function notifyUsersAboutAssignedTask($members, $task): Response
     {
@@ -88,8 +79,6 @@ class ProjectUtil extends Util
     /**
      * check if member can crud.
      * task
-     *
-     * @return bool
      */
     public function canMemberCrudTask($business_id, $user_id, $project_id): bool
     {
@@ -108,8 +97,6 @@ class ProjectUtil extends Util
     /**
      * check if member can crud.
      * docs & notes
-     *
-     * @return bool
      */
     public function canMemberCrudNotes($business_id, $user_id, $project_id): bool
     {
@@ -128,8 +115,6 @@ class ProjectUtil extends Util
     /**
      * check if member can crud.
      * rime log
-     *
-     * @return bool
      */
     public function canMemberCrudTimelog($business_id, $user_id, $project_id): bool
     {
@@ -147,8 +132,6 @@ class ProjectUtil extends Util
 
     /**
      * return project
-     *
-     * @return object
      */
     public function getProject($business_id, $project_id): object
     {

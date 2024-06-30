@@ -381,8 +381,6 @@ class DataController extends Controller
 
     /**
      * Function to generate view parts
-     *
-     * @param  array  $data
      */
     public function moduleViewPartials(array $data): View
     {
@@ -486,11 +484,9 @@ class DataController extends Controller
     /**
      * Calculates total payroll
      *
-     * @param  int  $business_id
      * @param  string  $start_date  = null
      * @param  string  $end_date  = null
      * @param  int  $location_id  = null
-     * @return array
      */
     private function __getTotalPayroll(
         int $business_id,
@@ -516,7 +512,6 @@ class DataController extends Controller
     /**
      * Fetches all calender events for the module
      *
-     * @param  array  $data
      * @return array
      */
     public function calendarEvents(array $data)

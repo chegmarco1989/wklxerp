@@ -190,8 +190,6 @@ class PurchaseReturnController extends Controller
 
     /**
      * Show the form for purchase return.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function add($id): View
     {
@@ -224,8 +222,6 @@ class PurchaseReturnController extends Controller
 
     /**
      * Saves Purchase returns in the database.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -336,7 +332,6 @@ class PurchaseReturnController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(int $id)
@@ -388,7 +383,6 @@ class PurchaseReturnController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)

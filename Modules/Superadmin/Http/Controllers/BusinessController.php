@@ -38,8 +38,6 @@ class BusinessController extends BaseController
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -216,8 +214,6 @@ class BusinessController extends BaseController
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): Response
     {
@@ -254,8 +250,6 @@ class BusinessController extends BaseController
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -343,8 +337,6 @@ class BusinessController extends BaseController
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($business_id): Response
     {
@@ -364,8 +356,6 @@ class BusinessController extends BaseController
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit(): Response
     {
@@ -374,8 +364,6 @@ class BusinessController extends BaseController
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request): Response
     {
@@ -383,8 +371,6 @@ class BusinessController extends BaseController
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {
@@ -439,8 +425,6 @@ class BusinessController extends BaseController
 
     /**
      * Changes the activation status of a business.
-     *
-     * @return Response
      */
     public function toggleActive(Request $request, $business_id, $is_active): Response
     {
@@ -465,8 +449,6 @@ class BusinessController extends BaseController
 
     /**
      * Shows user list for a particular business
-     *
-     * @return Response
      */
     public function usersList($business_id): Response
     {
@@ -513,8 +495,6 @@ class BusinessController extends BaseController
 
     /**
      * Updates user password from superadmin
-     *
-     * @return Response
      */
     public function updatePassword(Request $request): Response
     {

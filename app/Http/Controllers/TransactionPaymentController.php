@@ -55,8 +55,6 @@ class TransactionPaymentController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -159,9 +157,6 @@ class TransactionPaymentController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -192,9 +187,6 @@ class TransactionPaymentController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id): View
     {
@@ -224,9 +216,6 @@ class TransactionPaymentController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id): RedirectResponse
     {
@@ -313,7 +302,6 @@ class TransactionPaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -376,7 +364,6 @@ class TransactionPaymentController extends Controller
     /**
      * Adds new payment to the given transaction.
      *
-     * @param  int  $transaction_id
      * @return \Illuminate\Http\Response
      */
     public function addPayment(int $transaction_id)
@@ -428,9 +415,6 @@ class TransactionPaymentController extends Controller
 
     /**
      * Shows contact's payment due modal
-     *
-     * @param  int  $contact_id
-     * @return \Illuminate\Http\Response
      */
     public function getPayContactDue(int $contact_id): View
     {
@@ -530,8 +514,6 @@ class TransactionPaymentController extends Controller
 
     /**
      * Adds Payments for Contact due
-     *
-     * @return \Illuminate\Http\Response
      */
     public function postPayContactDue(Request $request): RedirectResponse
     {
@@ -587,7 +569,6 @@ class TransactionPaymentController extends Controller
      * payment.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function viewPayment($payment_id): View
     {
@@ -631,7 +612,6 @@ class TransactionPaymentController extends Controller
      * payment.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function showChildPayments($payment_id): View
     {
@@ -663,7 +643,6 @@ class TransactionPaymentController extends Controller
     /**
      * Retrieves list of all opening balance payments.
      *
-     * @param  int  $contact_id
      * @return \Illuminate\Http\Response
      */
     public function getOpeningBalancePayments(int $contact_id)

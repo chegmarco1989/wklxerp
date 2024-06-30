@@ -25,9 +25,6 @@ class DeleteAccountTransaction
 
     /**
      * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
      */
     public function handle(object $event): void
     {

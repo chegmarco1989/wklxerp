@@ -46,8 +46,6 @@ class ImportProductsController extends Controller
 
     /**
      * Display import product screen.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(): View
     {
@@ -759,11 +757,6 @@ class ImportProductsController extends Controller
 
     /**
      * Adds opening stock of a single product
-     *
-     * @param  array  $opening_stock
-     * @param  obj  $product
-     * @param  int  $business_id
-     * @return void
      */
     private function addOpeningStock(array $opening_stock, obj $product, int $business_id): void
     {

@@ -24,9 +24,6 @@ class Util
 {
     /**
      * This function unformats a number and returns them in plain eng format
-     *
-     * @param  int  $input_number
-     * @return float
      */
     public function num_uf(int $input_number, $currency_details = null): float
     {
@@ -50,11 +47,9 @@ class Util
     /**
      * This function formats a number and returns them in specified format
      *
-     * @param  int  $input_number
      * @param  bool  $add_symbol  = false
      * @param  array  $business_details  = null
      * @param  bool  $is_quantity  = false; If number represents quantity
-     * @return string
      */
     public function num_f(int $input_number, bool $add_symbol = false, array $business_details = null, bool $is_quantity = false): string
     {
@@ -86,10 +81,7 @@ class Util
     /**
      * Calculates percentage for a given number
      *
-     * @param  int  $number
-     * @param  int  $percent
      * @param  int  $addition  default = 0
-     * @return float
      */
     public function calc_percentage(int $number, int $percent, int $addition = 0): float
     {
@@ -98,10 +90,6 @@ class Util
 
     /**
      * Calculates base value on which percentage is calculated
-     *
-     * @param  int  $number
-     * @param  int  $percent
-     * @return float
      */
     public function calc_percentage_base(int $number, int $percent): float
     {
@@ -110,10 +98,6 @@ class Util
 
     /**
      * Calculates percentage
-     *
-     * @param  int  $base
-     * @param  int  $number
-     * @return float
      */
     public function get_percent(int $base, int $number): float
     {
@@ -134,8 +118,6 @@ class Util
 
     /**
      * Defines available Payment Types
-     *
-     * @return array
      */
     public function payment_types($location = null, $show_advance = false, $business_id = null): array
     {
@@ -189,8 +171,6 @@ class Util
 
     /**
      * Returns the list of modules enabled
-     *
-     * @return array
      */
     public function allModulesEnabled($business_id = null): array
     {
@@ -207,8 +187,6 @@ class Util
 
     /**
      * Returns the list of modules enabled
-     *
-     * @return array
      */
     public function isModuleEnabled($module, $business_id = null): array
     {
@@ -223,9 +201,7 @@ class Util
     /**
      * Converts date in business format to mysql format
      *
-     * @param  string  $date
      * @param  bool  $time  (default = false)
-     * @return strin
      */
     public function uf_date(string $date, bool $time = false): strin
     {
@@ -245,9 +221,6 @@ class Util
 
     /**
      * Converts time in business format to mysql format
-     *
-     * @param  string  $time
-     * @return strin
      */
     public function uf_time(string $time): strin
     {
@@ -261,9 +234,6 @@ class Util
 
     /**
      * Converts time in business format to mysql format
-     *
-     * @param  string  $time
-     * @return strin
      */
     public function format_time(string $time): strin
     {
@@ -278,9 +248,7 @@ class Util
     /**
      * Converts date in mysql format to business format
      *
-     * @param  string  $date
      * @param  bool  $time  (default = false)
-     * @return strin
      */
     public function format_date(string $date, $show_time = false, $business_details = null): strin
     {
@@ -300,10 +268,6 @@ class Util
     /**
      * Increments reference count for a given type and given business
      * and gives the updated reference count
-     *
-     * @param  string  $type
-     * @param  int  $business_id
-     * @return int
      */
     public function setAndGetReferenceCount(string $type, int $business_id = null): int
     {
@@ -332,10 +296,6 @@ class Util
 
     /**
      * Generates reference number
-     *
-     * @param  string  $type
-     * @param  int  $business_id
-     * @return int
      */
     public function generateReferenceNumber(string $type, $ref_count, int $business_id = null, $default_prefix = null): int
     {
@@ -368,10 +328,6 @@ class Util
 
     /**
      * Checks if the given user is admin
-     *
-     * @param  obj  $user
-     * @param  int  $business_id
-     * @return bool
      */
     public function is_admin(obj $user, int $business_id = null): bool
     {
@@ -442,9 +398,6 @@ class Util
 
     /**
      * Sends SMS notification.
-     *
-     * @param  array  $data
-     * @return void
      */
     public function sendSms(array $data): void
     {
@@ -530,9 +483,6 @@ class Util
 
     /**
      * Generates Whatsapp notification link
-     *
-     * @param  array  $data
-     * @return string
      */
     public function getWhatsappNotificationLink(array $data): string
     {
@@ -548,11 +498,8 @@ class Util
     /**
      * Retrieves sub units of a base unit
      *
-     * @param  int  $business_id
-     * @param  int  $unit_id
      * @param  bool  $return_main_unit_if_empty  = false
      * @param  int  $product_id  = null
-     * @return array
      */
     public function getSubUnits(int $business_id, int $unit_id, bool $return_main_unit_if_empty = false, int $product_id = null): array
     {
@@ -620,7 +567,6 @@ class Util
      * Generates unique token
      *
      * @param void
-     * @return string
      */
     public function generateToken(): string
     {
@@ -631,7 +577,6 @@ class Util
      * Generates invoice url for the transaction
      *
      * @param  int  $transaction_id,  int $business_id
-     * @return string
      */
     public function getInvoiceUrl(int $transaction_id, $business_id): string
     {
@@ -654,7 +599,6 @@ class Util
      * Generates payment link for the transaction
      *
      * @param  int  $transaction_id,  int $business_id
-     * @return string
      */
     public function getInvoicePaymentLink(int $transaction_id, $business_id): string
     {
@@ -677,7 +621,6 @@ class Util
      * Uploads document to the server if present in the request
      *
      * @param  obj  $request,  string $file_name, string dir_name
-     * @return string
      */
     public function uploadFile(obj $request, $file_name, $dir_name, $file_type = 'document'): string
     {
@@ -751,7 +694,6 @@ class Util
      *
      * @param  text  $body
      * @param  int  $transaction_id
-     * @return array
      */
     public function replaceTags($business_id, $data, $transaction, $contact = null): array
     {
@@ -1050,8 +992,6 @@ class Util
 
     /**
      * Checks whether mail is configured or not
-     *
-     * @return bool
      */
     public function IsMailConfigured(): bool
     {
@@ -1073,8 +1013,6 @@ class Util
 
     /**
      * Returns the list of barcode types
-     *
-     * @return array
      */
     public function barcode_types(): array
     {
@@ -1085,8 +1023,6 @@ class Util
 
     /**
      * Returns the default barcode.
-     *
-     * @return string
      */
     public function barcode_default(): string
     {
@@ -1095,8 +1031,6 @@ class Util
 
     /**
      * Retrieves user role name.
-     *
-     * @return string
      */
     public function getUserRoleName($user_id): string
     {
@@ -1116,9 +1050,6 @@ class Util
 
     /**
      * Retrieves all admins of a business
-     *
-     * @param  int  $business_id
-     * @return obj
      */
     public function get_admins(int $business_id): obj
     {
@@ -1129,8 +1060,6 @@ class Util
 
     /**
      * Retrieves IP address of the user
-     *
-     * @return string
      */
     public function getUserIpAddr(): string
     {
@@ -1150,10 +1079,7 @@ class Util
     /**
      * This function updates the stock of products present in combo product and also updates transaction sell line.
      *
-     * @param  array  $lines
-     * @param  int  $location_id
      * @param  bool  $adjust_stock  = true
-     * @return void
      */
     public function updateEditedSellLineCombo(array $lines, int $location_id, bool $adjust_stock = true): void
     {
@@ -1229,7 +1155,6 @@ class Util
     /**
      * Retrieves sum of due amount of a contact
      *
-     * @param  int  $contact_id
      * @return mixed
      */
     public function getContactDue(int $contact_id, $business_id = null)
@@ -1330,8 +1255,6 @@ class Util
     /**
      * Formats number to words
      * Requires php-intl extension
-     *
-     * @return string
      */
     public function numToWord($number, $lang = null, $format = 'international'): string
     {
@@ -1354,8 +1277,6 @@ class Util
 
     /**
      * Formats number to words in indian format
-     *
-     * @return string
      */
     public function numToIndianFormat(float $number): string
     {
@@ -1419,7 +1340,6 @@ class Util
      *                     update_note key to directly show message in note section,
      *                     from_api key to show api client if added from api
      * @param  $log_changes  boolean whether to log changes to modal properties
-     * @return string
      */
     public function activityLog($on, $action = null, $before = null, $properties = [], $log_changes = true, $business_id = null): string
     {
@@ -1476,7 +1396,6 @@ class Util
      *
      * @param  $lat  string latitude
      * @param  $long  string longitude
-     * @return string
      */
     public function getLocationFromCoordinates($lat, $long): string
     {

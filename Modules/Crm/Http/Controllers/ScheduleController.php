@@ -323,8 +323,6 @@ class ScheduleController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create(): \Illuminate\View\View
     {
@@ -445,9 +443,6 @@ class ScheduleController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id): \Illuminate\View\View
     {
@@ -496,7 +491,6 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -538,7 +532,6 @@ class ScheduleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -753,8 +746,6 @@ class ScheduleController extends Controller
     /**
      * Groups customers for follow-up based on payment status
      * or transaction activity
-     *
-     * @return html
      */
     public function getFollowUpGroups(): \Illuminate\View\View
     {

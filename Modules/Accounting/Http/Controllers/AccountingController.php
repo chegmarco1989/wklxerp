@@ -29,8 +29,6 @@ class AccountingController extends Controller
 
     /**
      * Display dashboard for accounting module.
-     *
-     * @return Response
      */
     public function dashboard(): View
     {

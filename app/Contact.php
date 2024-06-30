@@ -242,7 +242,6 @@ class Contact extends Authenticatable
      * Return list of contact type.
      *
      * @param  $prepend_all  = false (boolean)
-     * @return array
      */
     public static function typeDropdown($prepend_all = false): array
     {
@@ -261,8 +260,6 @@ class Contact extends Authenticatable
 
     /**
      * Return list of contact type by permissions.
-     *
-     * @return array
      */
     public static function getContactTypes(): array
     {

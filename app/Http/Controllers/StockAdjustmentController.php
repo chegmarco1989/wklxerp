@@ -252,9 +252,6 @@ class StockAdjustmentController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -305,7 +302,6 @@ class StockAdjustmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -364,8 +360,6 @@ class StockAdjustmentController extends Controller
 
     /**
      * Return product rows
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getProductRow(Request $request): View
     {
@@ -404,7 +398,6 @@ class StockAdjustmentController extends Controller
     /**
      * Sets expired purchase line as stock adjustmnet
      *
-     * @param  int  $purchase_line_id
      * @return json $output
      */
     public function removeExpiredStock(int $purchase_line_id): json

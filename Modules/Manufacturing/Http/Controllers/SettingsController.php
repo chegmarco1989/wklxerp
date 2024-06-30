@@ -35,8 +35,6 @@ class SettingsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -53,8 +51,6 @@ class SettingsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): RedirectResponse
     {

@@ -26,9 +26,6 @@ class AddAccountTransaction
 
     /**
      * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
      */
     public function handle(TransactionPaymentAdded $event): void
     {

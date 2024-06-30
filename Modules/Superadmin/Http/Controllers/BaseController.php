@@ -13,8 +13,6 @@ class BaseController extends Controller
 {
     /**
      * Returns the list of all configured payment gateway
-     *
-     * @return Response
      */
     public function _payment_gateways(): Response
     {
@@ -128,10 +126,6 @@ class BaseController extends Controller
 
     /**
      * The function returns the start/end/trial end date for a package.
-     *
-     * @param  int  $business_id
-     * @param  object  $package
-     * @return array
      */
     protected function _get_package_dates(int $business_id, object $package): array
     {

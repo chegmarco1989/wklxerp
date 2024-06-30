@@ -48,8 +48,6 @@ class SalesOrderController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(): View
     {
@@ -93,8 +91,6 @@ class SalesOrderController extends Controller
      * get required resources
      *
      * to edit sales order status
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getEditSalesOrderStatus(Request $request, $id): View
     {

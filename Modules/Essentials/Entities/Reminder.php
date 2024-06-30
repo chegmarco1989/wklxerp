@@ -22,9 +22,6 @@ class Reminder extends Model
 
     /**
      * Fetches all reminders for the calendar
-     *
-     * @param  array  $data
-     * @return array
      */
     public static function getReminders(array $data): array
     {

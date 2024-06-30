@@ -30,8 +30,6 @@ class DocumentController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -153,8 +151,6 @@ class DocumentController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -219,8 +215,6 @@ class DocumentController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): View
     {
@@ -240,8 +234,6 @@ class DocumentController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit(): View
     {
@@ -250,8 +242,6 @@ class DocumentController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request): Response
     {
@@ -259,8 +249,6 @@ class DocumentController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy(Request $request, $id): Response
     {
@@ -311,8 +299,6 @@ class DocumentController extends Controller
 
     /**
      * Download a document
-     *
-     * @return Response
      */
     public function download(Request $request, $id): Response
     {

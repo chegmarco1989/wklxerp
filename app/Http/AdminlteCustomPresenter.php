@@ -41,9 +41,6 @@ class AdminlteCustomPresenter extends Presenter
 
     /**
      * Get active state on child items.
-     *
-     * @param  string  $state
-     * @return null|string
      */
     public function getActiveStateOnChild($item, string $state = 'active'): ?string
     {
@@ -88,7 +85,6 @@ class AdminlteCustomPresenter extends Presenter
     /**
      * Get multilevel menu wrapper.
      *
-     * @param  \Nwidart\Menus\MenuItem  $item
      * @return string`
      */
     public function getMultiLevelDropdownWrapper(MenuItem $item)

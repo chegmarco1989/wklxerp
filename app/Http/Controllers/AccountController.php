@@ -36,8 +36,6 @@ class AccountController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -193,8 +191,6 @@ class AccountController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): View
     {
@@ -214,8 +210,6 @@ class AccountController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): Response
     {
@@ -266,8 +260,6 @@ class AccountController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function show($id): Response
     {
@@ -482,8 +474,6 @@ class AccountController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): View
     {
@@ -508,8 +498,6 @@ class AccountController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): Response
     {
@@ -548,8 +536,6 @@ class AccountController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroyAccountTransaction($id): Response
     {
@@ -589,8 +575,6 @@ class AccountController extends Controller
 
     /**
      * Closes the specified account.
-     *
-     * @return Response
      */
     public function close($id): Response
     {
@@ -624,9 +608,6 @@ class AccountController extends Controller
 
     /**
      * Shows form to transfer fund.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function getFundTransfer(int $id): View
     {
@@ -652,8 +633,6 @@ class AccountController extends Controller
 
     /**
      * Transfers fund from one account to another.
-     *
-     * @return Response
      */
     public function postFundTransfer(Request $request): RedirectResponse
     {
@@ -722,9 +701,6 @@ class AccountController extends Controller
 
     /**
      * Shows deposit form.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function getDeposit(int $id): View
     {
@@ -750,8 +726,6 @@ class AccountController extends Controller
 
     /**
      * Deposits amount.
-     *
-     * @return json
      */
     public function postDeposit(Request $request): json
     {
@@ -813,9 +787,6 @@ class AccountController extends Controller
 
     /**
      * Calculates account current balance.
-     *
-     * @param  int  $id
-     * @return json
      */
     public function getAccountBalance(int $id): json
     {
@@ -841,8 +812,6 @@ class AccountController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function cashFlow(): Response
     {
@@ -1188,8 +1157,6 @@ class AccountController extends Controller
 
     /**
      * activate the specified account.
-     *
-     * @return Response
      */
     public function activate($id): Response
     {
@@ -1224,8 +1191,6 @@ class AccountController extends Controller
 
     /**
      * Edit the specified resource from storage.
-     *
-     * @return Response
      */
     public function editAccountTransaction($id): View
     {

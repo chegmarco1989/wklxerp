@@ -28,10 +28,8 @@ class BusinessLocation extends Model
     /**
      * Return list of locations for a business
      *
-     * @param  int  $business_id
      * @param  bool  $show_all  = false
      * @param  array  $receipt_printer_type_attribute  =
-     * @return array
      */
     public static function forDropdown(int $business_id, bool $show_all = false, array $receipt_printer_type_attribute = false, $append_id = true, $check_permission = true): array
     {
@@ -99,9 +97,6 @@ class BusinessLocation extends Model
 
     /**
      * Scope a query to only include active location.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive(Builder $query): Builder
     {

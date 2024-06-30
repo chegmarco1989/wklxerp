@@ -14,8 +14,6 @@ class ManufacturingUtil extends Util
 {
     /**
      * Retrives ingredients details.
-     *
-     * @return array
      */
     public function getIngredientDetails($recipe, $business_id, $location_id = null): array
     {
@@ -97,8 +95,6 @@ class ManufacturingUtil extends Util
 
     /**
      * Retrives manufacturing settings.
-     *
-     * @return array
      */
     public function getSettings($business_id): array
     {
@@ -112,7 +108,6 @@ class ManufacturingUtil extends Util
     /**
      * Calculates production totals.
      *
-     * @param  int  $business_id
      * @param int location_id = null
      * @param  string  $start_date  = null
      * @param  string  $end_date  = null
@@ -180,7 +175,6 @@ class ManufacturingUtil extends Util
     /**
      * Calculates sum of total production sells.
      *
-     * @param  int  $business_id
      * @param int location_id = null
      * @param  string  $start_date  = null
      * @param  string  $end_date  = null
@@ -227,8 +221,6 @@ class ManufacturingUtil extends Util
     /**
      * Function to calculate recipe total dynamically for each row on
      * Recipe list
-     *
-     * @return decimal
      */
     public function getRecipeTotal($row): decimal
     {

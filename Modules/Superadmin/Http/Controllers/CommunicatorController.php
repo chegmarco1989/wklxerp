@@ -16,8 +16,6 @@ class CommunicatorController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -34,8 +32,6 @@ class CommunicatorController extends Controller
 
     /**
      * Sends notification to the required business owners.
-     *
-     * @return Response
      */
     public function send(Request $request): Response
     {

@@ -11,7 +11,6 @@ class ContactUtil extends Util
     /**
      * Returns Walk In Customer for a Business
      *
-     * @param  int  $business_id
      * @return array/false
      */
     public function getWalkInCustomer(int $business_id, $array = true)
@@ -39,10 +38,6 @@ class ContactUtil extends Util
 
     /**
      * Returns the customer group
-     *
-     * @param  int  $business_id
-     * @param  int  $customer_id
-     * @return array
      */
     public function getCustomerGroup(int $business_id, int $customer_id): array
     {
@@ -63,10 +58,6 @@ class ContactUtil extends Util
 
     /**
      * Returns the contact info
-     *
-     * @param  int  $business_id
-     * @param  int  $contact_id
-     * @return array
      */
     public function getContactInfo(int $business_id, int $contact_id): array
     {

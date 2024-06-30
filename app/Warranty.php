@@ -28,8 +28,6 @@ class Warranty extends Model
 
     /**
      * Get the display name.
-     *
-     * @return string
      */
     public function getDisplayNameAttribute(): string
     {

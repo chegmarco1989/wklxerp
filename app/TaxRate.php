@@ -64,8 +64,6 @@ class TaxRate extends Model
 
     /**
      * Return list of tax rate for a business
-     *
-     * @return array
      */
     public static function forBusiness($business_id): array
     {
@@ -79,8 +77,6 @@ class TaxRate extends Model
 
     /**
      * Return list of tax rates associated with the group_tax
-     *
-     * @return object
      */
     public function sub_taxes(): BelongsToMany
     {
@@ -89,8 +85,6 @@ class TaxRate extends Model
 
     /**
      * Return list of group taxes for a business
-     *
-     * @return array
      */
     public static function groupTaxes($business_id): array
     {

@@ -16,8 +16,6 @@ class AccountingAccountsTransaction extends Model
 
     /**
      * Creates new account transaction
-     *
-     * @return obj
      */
     public static function createTransaction($data): obj
     {
@@ -38,8 +36,6 @@ class AccountingAccountsTransaction extends Model
 
     /**
      * Creates/updates account transaction
-     *
-     * @return obj
      */
     public static function updateOrCreateMapTransaction($data): obj
     {

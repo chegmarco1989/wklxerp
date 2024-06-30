@@ -111,8 +111,6 @@ class AiAssistanceController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Renderable
      */
     public function index(): View
     {
@@ -159,8 +157,6 @@ class AiAssistanceController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Renderable
      */
     public function create($tool): View
     {
@@ -190,9 +186,6 @@ class AiAssistanceController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  string  $tool
-     * @return Renderable
      */
     public function generate(string $tool, Request $request): Renderable
     {
@@ -265,8 +258,6 @@ class AiAssistanceController extends Controller
 
     /**
      * Show the entire history of previous generation
-     *
-     * @return Renderable
      */
     public function history(): Renderable
     {

@@ -28,8 +28,6 @@ class SalesTargetController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -69,8 +67,6 @@ class SalesTargetController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function setSalesTarget($id): View
     {
@@ -90,8 +86,6 @@ class SalesTargetController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function saveSalesTarget(Request $request): Response
     {

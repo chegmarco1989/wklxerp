@@ -82,8 +82,6 @@ class InstallController extends Controller
 
     /**
      * Installation
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(): View
     {

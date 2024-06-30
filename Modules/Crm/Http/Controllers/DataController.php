@@ -18,9 +18,6 @@ class DataController extends Controller
 {
     /**
      * Calculates contact person's commission and saves to the database
-     *
-     * @param  array  $data
-     * @return obj
      */
     public function after_payment_status_updated(array $data): obj
     {
@@ -78,8 +75,6 @@ class DataController extends Controller
 
     /**
      * Deletes sales commissions for a sell
-     *
-     * @param  int  $transaction_id
      */
     public function deleteCommissionWithSale(int $transaction_id)
     {
@@ -377,7 +372,6 @@ class DataController extends Controller
     /**
      * Fetches all calender events for the module
      *
-     * @param  array  $data
      * @return array
      */
     public function calendarEvents(array $data)

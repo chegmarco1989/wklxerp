@@ -31,8 +31,6 @@ class PageController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -48,8 +46,6 @@ class PageController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create(): View
     {
@@ -58,8 +54,6 @@ class PageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -96,8 +90,6 @@ class PageController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @return Response
      */
     public function showPage($slug): View
     {
@@ -112,8 +104,6 @@ class PageController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return Response
      */
     public function edit($id): View
     {
@@ -124,8 +114,6 @@ class PageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Response
      */
     public function update(Request $request, $id): RedirectResponse
     {
@@ -165,8 +153,6 @@ class PageController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Response
      */
     public function destroy($id): Response
     {

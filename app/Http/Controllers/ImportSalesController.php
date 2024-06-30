@@ -53,8 +53,6 @@ class ImportSalesController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(): View
     {
@@ -159,8 +157,6 @@ class ImportSalesController extends Controller
 
     /**
      * Import sales to database
-     *
-     * @return \Illuminate\Http\Response
      */
     public function import(Request $request): RedirectResponse
     {
@@ -542,8 +538,6 @@ class ImportSalesController extends Controller
 
     /**
      * Deletes all sales from a batch
-     *
-     * @return \Illuminate\Http\Response
      */
     public function revertSaleImport($batch): RedirectResponse
     {

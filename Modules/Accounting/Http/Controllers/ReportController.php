@@ -33,8 +33,6 @@ class ReportController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): View
     {
@@ -60,8 +58,6 @@ class ReportController extends Controller
 
     /**
      * Trial Balance
-     *
-     * @return Response
      */
     public function trialBalance(): View
     {
@@ -101,8 +97,6 @@ class ReportController extends Controller
 
     /**
      * Trial Balance
-     *
-     * @return Response
      */
     public function balanceSheet(): View
     {

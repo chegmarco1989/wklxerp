@@ -31,8 +31,6 @@ class AccountReportsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function balanceSheet(): Response
     {
@@ -99,8 +97,6 @@ class AccountReportsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function trialBalance(): Response
     {
@@ -148,8 +144,6 @@ class AccountReportsController extends Controller
 
     /**
      * Retrives account balances.
-     *
-     * @return Obj
      */
     private function getAccountBalance($business_id, $end_date, $account_type = 'others', $location_id = null): Obj
     {
@@ -221,8 +215,6 @@ class AccountReportsController extends Controller
 
     /**
      * Displays payment account report.
-     *
-     * @return Response
      */
     public function paymentAccountReport(): Response
     {
@@ -362,8 +354,6 @@ class AccountReportsController extends Controller
 
     /**
      * Shows form to link account with a payment.
-     *
-     * @return Response
      */
     public function getLinkAccount($id): View
     {
@@ -383,8 +373,6 @@ class AccountReportsController extends Controller
 
     /**
      * Links account with a payment.
-     *
-     * @return Response
      */
     public function postLinkAccount(Request $request): Response
     {

@@ -37,9 +37,6 @@ class AccountingAccount extends Model
 
     /**
      * Accounts Dropdown
-     *
-     * @param  int  $business_id
-     * @return array
      */
     public static function forDropdown(int $business_id, $with_data = false, $q = ''): array
     {

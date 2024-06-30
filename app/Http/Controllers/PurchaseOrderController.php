@@ -241,8 +241,6 @@ class PurchaseOrderController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create(): View
     {
@@ -436,9 +434,6 @@ class PurchaseOrderController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show(int $id): View
     {
@@ -499,9 +494,6 @@ class PurchaseOrderController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id): View
     {
@@ -607,7 +599,6 @@ class PurchaseOrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -730,7 +721,6 @@ class PurchaseOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -859,8 +849,6 @@ class PurchaseOrderController extends Controller
      * get required resources
      *
      * to edit purchase order status
-     *
-     * @return \Illuminate\Http\Response
      */
     public function getEditPurchaseOrderStatus(Request $request, $id): View
     {
