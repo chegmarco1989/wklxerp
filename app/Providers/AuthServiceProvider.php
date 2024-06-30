@@ -23,8 +23,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
-
         Gate::before(function ($user, $ability) {
             if (in_array($ability, ['backup', 'superadmin',
                 'manage_modules', ])) {
