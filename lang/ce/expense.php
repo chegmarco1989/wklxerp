@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'expenses' => '开支',
+    'expense_categories' => '开支类别',
+    'manage_your_expense_categories' => '管理您的开支类别',
+    'all_your_expense_categories' => '所有您的开支类别',
+    'expense_category' => '开支类别',
+    'category_name' => '类别名称',
+    'category_code' => '类别代码',
+    'added_success' => '开支类别添加成功',
+    'updated_success' => '开支类别更新成功',
+    'deleted_success' => '开支类别删除成功',
+    'add_expense_category' => '添加开支类别',
+    'edit_expense_category' => '编辑开支类别',
+    'all_expenses' => '所有开支',
+    'expense_status' => '开支状态',
+    'add_expense' => '添加开支',
+    'edit_expense' => '编辑开支',
+    'expense_note' => '开支备注',
+    'expense_add_success' => '开支添加成功',
+    'expense_update_success' => '开支更新成功',
+    'expense_delete_success' => '开支删除成功',
+    'expense_for' => '开支用途',
+];
