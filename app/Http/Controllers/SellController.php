@@ -1378,12 +1378,12 @@ class SellController extends Controller
                                         __('lang_v1.copy_quotation').'</a>
                                     </li>
                                     <li>
-                                        <a href="#" data-href="'.action("\App\Http\Controllers\NotificationController@getTemplate", ['transaction_id' => $row->id, 'template_for' => 'new_quotation']).'" class="btn-modal" data-container=".view_modal"><i class="fa fa-envelope" aria-hidden="true"></i>'.__('lang_v1.new_quotation_notification').'
+                                        <a href="#" data-href="'.action([\App\Http\Controllers\NotificationController::class, 'getTemplate'], ['transaction_id' => $row->id, 'template_for' => 'new_quotation']).'" class="btn-modal" data-container=".view_modal"><i class="fa fa-envelope" aria-hidden="true"></i>'.__('lang_v1.new_quotation_notification').'
                                         </a>
                                     </li>';
 
                             $html .= '<li>
-                                        <a href="'.action("\App\Http\Controllers\SellPosController@showInvoiceUrl", [$row->id]).'" class="view_invoice_url"><i class="fas fa-eye"></i>'.__('lang_v1.view_quote_url').'</a>
+                                        <a href="'.action([\App\Http\Controllers\SellPosController::class, 'showInvoiceUrl'], [$row->id]).'" class="view_invoice_url"><i class="fas fa-eye"></i>'.__('lang_v1.view_quote_url').'</a>
                                     </li>';
                         }
 

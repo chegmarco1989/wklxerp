@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AiAssistanceController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +16,10 @@
 
 Route::middleware('web', 'SetSessionData', 'auth', 'language', 'timezone', 'AdminSidebarMenu')
     ->prefix('aiassistance')->group(function () {
-        Route::get('/dashboard', 'AiAssistanceController@index');
-        Route::get('/create/{tool}', 'AiAssistanceController@create');
-        Route::post('/generate/{tool}', 'AiAssistanceController@generate');
-        Route::get('/history', 'AiAssistanceController@history');
+        Route::get('/dashboard', [AiAssistanceController::class, 'index']);
+        Route::get('/create/{tool}', [AiAssistanceController::class, 'create']);
+        Route::post('/generate/{tool}', [AiAssistanceController::class, 'generate']);
+        Route::get('/history', [AiAssistanceController::class, 'history']);
 
         Route::get('install', [\Modules\AiAssistance\Http\Controllers\InstallController::class, 'index']);
         Route::post('install', [\Modules\AiAssistance\Http\Controllers\InstallController::class, 'install']);
