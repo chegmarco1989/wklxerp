@@ -2,14 +2,13 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\System;
 use Composer\Semver\Comparator;
-use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class InstallController extends Controller
 {

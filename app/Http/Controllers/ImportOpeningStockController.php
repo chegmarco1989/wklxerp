@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Business;
 use App\BusinessLocation;
 use App\Product;
@@ -12,6 +11,7 @@ use App\Variation;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ImportOpeningStockController extends Controller
 {

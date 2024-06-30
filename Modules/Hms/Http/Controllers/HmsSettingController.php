@@ -2,13 +2,13 @@
 
 namespace Modules\Hms\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Business;
 use App\NotificationTemplate;
 use App\Utils\ModuleUtil;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class HmsSettingController extends Controller
 {

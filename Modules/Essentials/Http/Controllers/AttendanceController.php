@@ -2,7 +2,6 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
-use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use DB;
@@ -10,6 +9,7 @@ use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsAttendance;
 use Modules\Essentials\Entities\Shift;
 use Modules\Essentials\Utils\EssentialsUtil;

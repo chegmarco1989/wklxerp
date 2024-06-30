@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Charts\CommonChart;
 use App\Currency;
@@ -19,6 +18,7 @@ use Datatables;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\View\View;
 use Modules\Accounting\Entities\AccountingAccount;										/* AJOUTE */
 use Modules\Accounting\Entities\AccountingAccountType;									/* AJOUTE */
 use Modules\Accounting\Utils\AccountingUtil;											/* AJOUTE */

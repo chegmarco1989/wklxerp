@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Charts\CommonChart;
 use App\Contact;
@@ -19,7 +18,8 @@ use App\VariationLocationDetails;
 use Datatables;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\DatabaseNotification;											/* AJOUTE */
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\View\View;											/* AJOUTE */
 
 class HomeController extends Controller
 {

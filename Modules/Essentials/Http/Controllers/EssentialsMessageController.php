@@ -2,13 +2,13 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\User;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsMessage;
 use Modules\Essentials\Notifications\NewMessageNotification;
 

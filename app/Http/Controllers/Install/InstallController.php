@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Install;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Utils\InstallUtil;
 use Composer\Semver\Comparator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Abort;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 //use Illuminate\Support\Facades\Storage;

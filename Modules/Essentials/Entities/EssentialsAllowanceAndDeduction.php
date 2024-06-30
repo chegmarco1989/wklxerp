@@ -2,9 +2,9 @@
 
 namespace Modules\Essentials\Entities;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Utils\Util;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EssentialsAllowanceAndDeduction extends Model
 {

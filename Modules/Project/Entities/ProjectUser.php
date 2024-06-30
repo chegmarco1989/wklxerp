@@ -2,8 +2,8 @@
 
 namespace Modules\Project\Entities;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\User;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProjectUser extends User
 {

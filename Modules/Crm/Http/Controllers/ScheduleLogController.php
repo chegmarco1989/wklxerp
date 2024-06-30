@@ -2,13 +2,13 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Modules\Crm\Entities\CrmCallLog;
 use Modules\Crm\Entities\Schedule;
 use Modules\Crm\Entities\ScheduleLog;

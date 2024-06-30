@@ -2,8 +2,6 @@
 
 namespace Modules\Project\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\BusinessLocation;
 use App\Contact;
 use App\InvoiceScheme;
@@ -11,10 +9,12 @@ use App\TaxRate;
 use App\Utils\ModuleUtil;
 use App\Utils\TransactionUtil;
 use App\Utils\Util;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Project\Entities\InvoiceLine;
 use Modules\Project\Entities\Project;
 use Modules\Project\Entities\ProjectTransaction;

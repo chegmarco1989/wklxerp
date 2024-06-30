@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Contact;
 use App\Transaction;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LedgerDiscountController extends Controller
 {

@@ -2,10 +2,9 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Utils\ModuleUtil;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Superadmin\Entities\Package;
 
 class PricingController extends Controller

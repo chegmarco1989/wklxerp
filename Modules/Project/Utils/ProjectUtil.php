@@ -2,9 +2,9 @@
 
 namespace Modules\Project\Utils;
 
-use Illuminate\Http\Response;
 use App\User;
 use App\Utils\Util;
+use Illuminate\Http\Response;
 use Modules\Project\Entities\Project;
 use Modules\Project\Notifications\NewProjectAssignedNotification;
 use Modules\Project\Notifications\NewTaskAssignedNotification;

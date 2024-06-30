@@ -2,8 +2,8 @@
 
 namespace Modules\Crm\Entities;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ProposalTemplate extends Model
 {

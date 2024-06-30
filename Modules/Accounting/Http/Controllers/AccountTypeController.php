@@ -2,11 +2,11 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Accounting\Entities\AccountingAccountType;
 use Yajra\DataTables\Facades\DataTables;
 

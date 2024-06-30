@@ -2,12 +2,12 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Business;
 use App\Utils\Util;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Superadmin\Entities\Package;
 use Modules\Superadmin\Entities\SuperadminCoupon;
 use Yajra\DataTables\Facades\DataTables;

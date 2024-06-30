@@ -2,8 +2,8 @@
 
 namespace Modules\Cms\Entities;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CmsPageMeta extends Model
 {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Events\StockTransferCreatedOrModified;
 use App\PurchaseLine;
@@ -14,6 +13,7 @@ use App\Utils\TransactionUtil;
 use Datatables;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Spatie\Activitylog\Models\Activity;
 
 class StockTransferController extends Controller

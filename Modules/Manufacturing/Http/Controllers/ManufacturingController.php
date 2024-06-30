@@ -2,10 +2,10 @@
 
 namespace Modules\Manufacturing\Http\Controllers;
 
-use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class ManufacturingController extends Controller
 {

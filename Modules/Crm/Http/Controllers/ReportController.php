@@ -2,13 +2,13 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Contact;
 use App\User;
 use App\Utils\Util;
 use DB;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Crm\Entities\Schedule;
 use Yajra\DataTables\Facades\DataTables;
 

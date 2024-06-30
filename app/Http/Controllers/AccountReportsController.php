@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Account;
 use App\AccountTransaction;
 use App\BusinessLocation;
@@ -10,6 +9,7 @@ use App\TransactionPayment;
 use App\Utils\TransactionUtil;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class AccountReportsController extends Controller

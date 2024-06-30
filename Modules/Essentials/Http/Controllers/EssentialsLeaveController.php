@@ -2,13 +2,13 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
-use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\EssentialsLeave;
 use Modules\Essentials\Entities\EssentialsLeaveType;
 use Modules\Essentials\Notifications\LeaveStatusNotification;

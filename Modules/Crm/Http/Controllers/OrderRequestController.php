@@ -2,8 +2,6 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\TaxRate;
@@ -13,10 +11,12 @@ use App\Utils\ContactUtil;
 use App\Utils\ProductUtil;
 use App\Utils\TransactionUtil;
 use App\Utils\Util;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Crm\Utils\CrmUtil;
 use Yajra\DataTables\Facades\DataTables;
 

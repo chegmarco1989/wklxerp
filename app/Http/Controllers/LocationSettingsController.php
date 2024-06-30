@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\InvoiceLayout;
 use App\InvoiceScheme;
 use App\Printer;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LocationSettingsController extends Controller
 {

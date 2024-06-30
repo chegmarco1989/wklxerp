@@ -2,12 +2,12 @@
 
 namespace Modules\Hms\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Hms\Entities\HmsRoom;
 use Modules\Hms\Entities\HmsRoomUnavailable;
 use Yajra\DataTables\Facades\DataTables;

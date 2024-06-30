@@ -2,12 +2,12 @@
 
 namespace Modules\Project\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Contact;
 use App\User;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;

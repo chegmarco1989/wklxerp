@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-use Illuminate\Http\Response;
 use App\Account;
 use App\BusinessLocation;
 use App\Product;
@@ -10,6 +9,7 @@ use App\System;
 use App\Transaction;
 use App\User;
 use Composer\Semver\Comparator;
+use Illuminate\Http\Response;
 use Module;
 
 class ModuleUtil extends Util
@@ -120,7 +120,7 @@ class ModuleUtil extends Util
      *
      * @param  string  $callback_function  = null
      */
-    public function hasThePermissionInSubscription(int $business_id, string $permission, string $callback_function = null): bool
+    public function hasThePermissionInSubscription(int $business_id, string $permission, ?string $callback_function = null): bool
     {
         if ($this->isSuperadminInstalled()) {
             if (auth()->user()->can('superadmin')) {
@@ -332,7 +332,7 @@ class ModuleUtil extends Util
      *
      * @param  string  $redirect_url  = null
      */
-    public function quotaExpiredResponse(string $type, int $business_id, string $redirect_url = null): Response
+    public function quotaExpiredResponse(string $type, int $business_id, ?string $redirect_url = null): Response
     {
         if ($type == 'locations') {
             if (request()->ajax()) {

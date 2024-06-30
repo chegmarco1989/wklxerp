@@ -2,8 +2,8 @@
 
 namespace Modules\Project\Entities;
 
-use Illuminate\Database\Eloquent\Relations\MorphedByMany;
 use App\Category;
+use Illuminate\Database\Eloquent\Relations\MorphedByMany;
 
 class ProjectCategory extends Category
 {

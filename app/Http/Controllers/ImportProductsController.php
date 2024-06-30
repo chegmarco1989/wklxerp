@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Brands;
 use App\BusinessLocation;
 use App\Category;
@@ -17,6 +16,7 @@ use App\VariationValueTemplate;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ImportProductsController extends Controller
 {

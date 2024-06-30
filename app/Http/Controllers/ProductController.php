@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Brands;
 use App\Business;
 use App\BusinessLocation;
@@ -25,9 +23,11 @@ use App\VariationLocationDetails;
 use App\VariationTemplate;
 use App\Warranty;
 use Excel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller

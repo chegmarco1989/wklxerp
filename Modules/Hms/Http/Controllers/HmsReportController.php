@@ -2,7 +2,6 @@
 
 namespace Modules\Hms\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Transaction;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
@@ -11,6 +10,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Hms\Entities\HmsRoomType;
 use Modules\Hms\Entities\HmsTransactionClass;
 

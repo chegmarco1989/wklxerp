@@ -2,11 +2,11 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Utils\ContactUtil;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {

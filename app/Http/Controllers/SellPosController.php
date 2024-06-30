@@ -27,8 +27,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Account;
 use App\Brands;
 use App\Business;
@@ -57,10 +55,12 @@ use App\Utils\ProductUtil;
 use App\Utils\TransactionUtil;
 use App\Variation;
 use App\Warranty;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Razorpay\Api\Api;
 use Stripe\Charge;
 use Stripe\Stripe;
@@ -703,7 +703,7 @@ class SellPosController extends Controller
         int $business_id,
         int $location_id,
         int $transaction_id,
-        string $printer_type = null,
+        ?string $printer_type = null,
         $is_package_slip = false,
         $from_pos_screen = true,
         $invoice_layout_id = null,

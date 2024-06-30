@@ -2,12 +2,12 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
-use Illuminate\View\View;
 use App\System;
 use App\Utils\BusinessUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class SuperadminSettingsController extends Controller
 {

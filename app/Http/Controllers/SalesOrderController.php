@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\Transaction;
@@ -10,6 +9,7 @@ use App\Utils\BusinessUtil;
 use App\Utils\TransactionUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SalesOrderController extends Controller
 {

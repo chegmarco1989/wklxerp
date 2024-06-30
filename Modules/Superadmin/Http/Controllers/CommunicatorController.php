@@ -2,12 +2,12 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Business;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Superadmin\Entities\SuperadminCommunicatorLog;
 use Modules\Superadmin\Notifications\SuperadminCommunicator;
 use Yajra\DataTables\Facades\DataTables;

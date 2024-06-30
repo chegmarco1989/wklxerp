@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Contact;
 use App\Notifications\CustomerNotification;
 use App\Notifications\SupplierNotification;
@@ -12,6 +11,7 @@ use App\Transaction;
 use App\Utils\NotificationUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Notification;
 
 class NotificationController extends Controller

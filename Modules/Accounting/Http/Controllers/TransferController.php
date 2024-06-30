@@ -2,13 +2,13 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Accounting\Entities\AccountingAccountsTransaction;
 use Modules\Accounting\Entities\AccountingAccTransMapping;
 use Modules\Accounting\Utils\AccountingUtil;
@@ -64,15 +64,15 @@ class TransferController extends Controller
                     'to_transaction.accounting_account_id', 'to_account.id')
                 ->where('accounting_acc_trans_mappings.type', 'transfer')
                 ->select(['accounting_acc_trans_mappings.id',
-                        'accounting_acc_trans_mappings.ref_no',
-                        'accounting_acc_trans_mappings.operation_date',
-                        'accounting_acc_trans_mappings.note',
-                        DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) 
+                    'accounting_acc_trans_mappings.ref_no',
+                    'accounting_acc_trans_mappings.operation_date',
+                    'accounting_acc_trans_mappings.note',
+                    DB::raw("CONCAT(COALESCE(u.surname, ''),' ',COALESCE(u.first_name, ''),' ',COALESCE(u.last_name,'')) 
                             as added_by"),
-                        'from_transaction.amount',
-                        'from_account.name as from_account_name',
-                        'to_account.name as to_account_name',
-                    ]);
+                    'from_transaction.amount',
+                    'from_account.name as from_account_name',
+                    'to_account.name as to_account_name',
+                ]);
 
             if (! empty(request()->start_date) && ! empty(request()->end_date)) {
                 $start = request()->start_date;

@@ -51,7 +51,7 @@ class Util
      * @param  array  $business_details  = null
      * @param  bool  $is_quantity  = false; If number represents quantity
      */
-    public function num_f(int $input_number, bool $add_symbol = false, array $business_details = null, bool $is_quantity = false): string
+    public function num_f(int $input_number, bool $add_symbol = false, ?array $business_details = null, bool $is_quantity = false): string
     {
         $thousand_separator = ! empty($business_details) ? $business_details->thousand_separator : session('currency')['thousand_separator'];
         $decimal_separator = ! empty($business_details) ? $business_details->decimal_separator : session('currency')['decimal_separator'];
@@ -269,7 +269,7 @@ class Util
      * Increments reference count for a given type and given business
      * and gives the updated reference count
      */
-    public function setAndGetReferenceCount(string $type, int $business_id = null): int
+    public function setAndGetReferenceCount(string $type, ?int $business_id = null): int
     {
         if (empty($business_id)) {
             $business_id = request()->session()->get('user.business_id');
@@ -297,7 +297,7 @@ class Util
     /**
      * Generates reference number
      */
-    public function generateReferenceNumber(string $type, $ref_count, int $business_id = null, $default_prefix = null): int
+    public function generateReferenceNumber(string $type, $ref_count, ?int $business_id = null, $default_prefix = null): int
     {
         $prefix = '';
 
@@ -329,7 +329,7 @@ class Util
     /**
      * Checks if the given user is admin
      */
-    public function is_admin(obj $user, int $business_id = null): bool
+    public function is_admin(obj $user, ?int $business_id = null): bool
     {
         $business_id = empty($business_id) ? $user->business_id : $business_id;
 
@@ -501,7 +501,7 @@ class Util
      * @param  bool  $return_main_unit_if_empty  = false
      * @param  int  $product_id  = null
      */
-    public function getSubUnits(int $business_id, int $unit_id, bool $return_main_unit_if_empty = false, int $product_id = null): array
+    public function getSubUnits(int $business_id, int $unit_id, bool $return_main_unit_if_empty = false, ?int $product_id = null): array
     {
         $unit = Unit::where('business_id', $business_id)
             ->with(['sub_units'])

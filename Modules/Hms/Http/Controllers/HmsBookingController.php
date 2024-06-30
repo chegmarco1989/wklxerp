@@ -2,7 +2,6 @@
 
 namespace Modules\Hms\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Account;
 use App\Business;
 use App\Contact;
@@ -21,6 +20,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Hms\Entities\HmsBookingExtra;
 use Modules\Hms\Entities\HmsBookingLine;
 use Modules\Hms\Entities\HmsExtra;

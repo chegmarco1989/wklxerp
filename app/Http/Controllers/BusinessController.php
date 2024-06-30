@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Business;
 use App\Currency;
 use App\Notifications\TestEmailNotification;
@@ -18,6 +17,7 @@ use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 
 class BusinessController extends Controller

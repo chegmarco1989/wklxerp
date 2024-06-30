@@ -2,11 +2,11 @@
 
 namespace Modules\Project\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Project\Entities\Project;
 use Modules\Project\Entities\ProjectUser;
 

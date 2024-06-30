@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\Events\TransactionPaymentDeleted;
@@ -16,6 +15,7 @@ use App\Utils\ProductUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Spatie\Activitylog\Models\Activity;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -469,7 +469,7 @@ class SellReturnController extends Controller
         int $business_id,
         int $location_id,
         int $transaction_id,
-        string $printer_type = null
+        ?string $printer_type = null
     ): array {
         $output = ['is_enabled' => false,
             'print_type' => 'browser',

@@ -2,14 +2,14 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Media;
 use App\Utils\ModuleUtil;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Crm\Entities\CrmContact;
 use Modules\Crm\Entities\Proposal;
 use Modules\Crm\Entities\ProposalTemplate;

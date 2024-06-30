@@ -2,12 +2,12 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Utils\ModuleUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LedgerController extends Controller
 {

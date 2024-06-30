@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\SellingPriceGroup;
 use App\Utils\Util;
 use App\Variation;
@@ -10,6 +9,7 @@ use App\VariationGroupPrice;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 

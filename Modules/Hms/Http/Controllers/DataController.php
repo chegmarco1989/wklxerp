@@ -316,7 +316,7 @@ class DataController extends Controller
      * @param  int  $location_id  = null
      * @return array
      */
-    public function get_hms_total(int $business_id, string $start_date = null, string $end_date = null, int $location_id = null, $user_id = null)
+    public function get_hms_total(int $business_id, ?string $start_date = null, ?string $end_date = null, ?int $location_id = null, $user_id = null)
     {
 
         $transaction = Transaction::where('business_id', $business_id)

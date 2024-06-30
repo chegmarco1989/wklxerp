@@ -2,7 +2,6 @@
 
 namespace Modules\ProductCatalogue\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Business;
 use App\BusinessLocation;
 use App\Category;
@@ -11,8 +10,8 @@ use App\Product;
 use App\SellingPriceGroup;
 use App\Utils\ModuleUtil;
 use App\Utils\ProductUtil;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class ProductCatalogueController extends Controller
 {

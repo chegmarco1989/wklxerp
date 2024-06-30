@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\Request;
 use App\Utils\ModuleUtil;
 use Closure;
+use Illuminate\Http\Request;
 use Menu;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminSidebarMenu
 {

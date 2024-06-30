@@ -266,7 +266,7 @@ class BusinessUtil extends Util
      * @param  int  $invoice_layout_id  default null
      * @return location object
      */
-    public function addLocation(int $business_id, array $location_details, $invoice_scheme_id = null, int $invoice_layout_id = null): location
+    public function addLocation(int $business_id, array $location_details, $invoice_scheme_id = null, ?int $invoice_layout_id = null): location
     {
         if (empty($invoice_scheme_id)) {
             $layout = InvoiceLayout::where('is_default', 1)
@@ -322,7 +322,7 @@ class BusinessUtil extends Util
      * @param  array  $layout_id  = null
      * @return location object
      */
-    public function invoiceLayout(int $business_id, array $layout_id = null): location
+    public function invoiceLayout(int $business_id, ?array $layout_id = null): location
     {
         $layout = null;
         if (! empty($layout_id)) {

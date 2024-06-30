@@ -2,10 +2,10 @@
 
 namespace Modules\Cms\Http\Controllers;
 
-use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Cms\Entities\CmsPage;
 use Modules\Cms\Entities\CmsSiteDetail;
 use Modules\Cms\Notifications\NewLeadGeneratedNotification;

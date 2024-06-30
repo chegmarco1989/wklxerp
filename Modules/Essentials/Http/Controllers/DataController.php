@@ -2,7 +2,6 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Category;
 use App\User;
@@ -10,6 +9,7 @@ use App\Utils\ModuleUtil;
 use App\Utils\TransactionUtil;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Menu;
 use Modules\Essentials\Entities\DocumentShare;
 use Modules\Essentials\Entities\EssentialsAllowanceAndDeduction;
@@ -490,9 +490,9 @@ class DataController extends Controller
      */
     private function __getTotalPayroll(
         int $business_id,
-        string $start_date = null,
-        string $end_date = null,
-        int $location_id = null,
+        ?string $start_date = null,
+        ?string $end_date = null,
+        ?int $location_id = null,
         $user_id = null
     ): array {
         $transactionUtil = new TransactionUtil();

@@ -2,7 +2,6 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -10,6 +9,7 @@ use App\Utils\ModuleUtil;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 use Modules\Crm\Entities\CrmContact;
 use Modules\Crm\Entities\CrmContactPersonCommission;
 use Modules\Crm\Utils\CrmUtil;

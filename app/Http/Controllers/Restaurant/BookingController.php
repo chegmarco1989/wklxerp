@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Restaurant;
 
-use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\CustomerGroup;
@@ -12,6 +11,7 @@ use App\Utils\RestaurantUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class BookingController extends Controller

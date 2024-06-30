@@ -2,12 +2,12 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
-use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Essentials\Entities\Document;
 use Modules\Essentials\Entities\DocumentShare;
 use Modules\Essentials\Notifications\DocumentShareNotification;

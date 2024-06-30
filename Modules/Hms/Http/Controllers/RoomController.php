@@ -2,7 +2,6 @@
 
 namespace Modules\Hms\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Category;
 use App\Media;
 use App\Utils\ModuleUtil;
@@ -10,6 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Hms\Entities\HmsRoom;
 use Modules\Hms\Entities\HmsRoomType;
 use Modules\Hms\Entities\HmsRoomTypePricing;

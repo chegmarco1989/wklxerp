@@ -426,7 +426,7 @@ class ProductUtil extends Util
      *
      * @param  bool  $check_qty  (If false qty_available is not checked)
      */
-    public function getDetailsFromVariation(int $variation_id, int $business_id, int $location_id = null, bool $check_qty = true): array
+    public function getDetailsFromVariation(int $variation_id, int $business_id, ?int $location_id = null, bool $check_qty = true): array
     {
         $query = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
             ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
@@ -590,7 +590,7 @@ class ProductUtil extends Util
      * @param  array  $discount['discount_type',  'discount_amount']
      * @return mixed (false, array)
      */
-    public function calculateInvoiceTotal(array $products, int $tax_id, array $discount = null, $uf_number = true)
+    public function calculateInvoiceTotal(array $products, int $tax_id, ?array $discount = null, $uf_number = true)
     {
         if (empty($products)) {
             return false;
@@ -735,7 +735,7 @@ class ProductUtil extends Util
      *
      * @param  int  $variation_id  = null
      */
-    public function getDetailsFromProduct(int $business_id, int $product_id, int $variation_id = null): Obj
+    public function getDetailsFromProduct(int $business_id, int $product_id, ?int $variation_id = null): Obj
     {
         $product = Product::leftjoin('variations as v', 'products.id', '=', 'v.product_id')
             ->whereNull('v.deleted_at')
@@ -1074,7 +1074,7 @@ class ProductUtil extends Util
      *
      * @param  string  $before_status  = null
      */
-    public function createOrUpdatePurchaseLines(object $transaction, array $input_data, array $currency_details, bool $enable_product_editing, string $before_status = null): array
+    public function createOrUpdatePurchaseLines(object $transaction, array $input_data, array $currency_details, bool $enable_product_editing, ?string $before_status = null): array
     {
         $updated_purchase_lines = [];
         $updated_purchase_line_ids = [0];

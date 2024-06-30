@@ -2,12 +2,12 @@
 
 namespace Modules\Cms\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\Cms\Entities\CmsSiteDetail;
 
 class SettingsController extends Controller

@@ -2,7 +2,6 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\AccountTransaction;
 use App\BusinessLocation;
 use App\Category;
@@ -15,6 +14,7 @@ use App\Utils\ModuleUtil;
 use App\Utils\TransactionUtil;
 use App\Utils\Util;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;

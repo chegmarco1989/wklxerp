@@ -2,12 +2,12 @@
 
 namespace Modules\AiAssistance\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Modules\AiAssistance\Entities\AiAssistanceHistory;
 use OpenAI\Laravel\Facades\OpenAI;
 use Yajra\DataTables\Facades\DataTables;

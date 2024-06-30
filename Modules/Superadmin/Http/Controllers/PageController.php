@@ -2,13 +2,13 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Utils\ModuleUtil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Modules\Superadmin\Entities\SuperadminFrontendPage;
 
 class PageController extends Controller

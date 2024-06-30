@@ -115,8 +115,8 @@ class ManufacturingUtil extends Util
     public function getProductionTotals(
         int $business_id,
         $location_id = null,
-        string $start_date = null,
-        string $end_date = null,
+        ?string $start_date = null,
+        ?string $end_date = null,
         $user_id = null
     ) {
         $query = Transaction::where('business_id', $business_id)
@@ -182,8 +182,8 @@ class ManufacturingUtil extends Util
     public function getTotalSold(
         int $business_id,
         $location_id = null,
-        string $start_date = null,
-        string $end_date = null
+        ?string $start_date = null,
+        ?string $end_date = null
     ) {
         $query = TransactionSellLinesPurchaseLines::join('purchase_lines as pl', 'pl.id', '=', 'transaction_sell_lines_purchase_lines.purchase_line_id')
             ->join('transaction_sell_lines as tsl', 'tsl.id', '=', 'transaction_sell_lines_purchase_lines.sell_line_id')

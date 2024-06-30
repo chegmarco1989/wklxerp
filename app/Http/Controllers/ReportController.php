@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Brands;
 use App\BusinessLocation;
 use App\Category;
@@ -29,7 +27,9 @@ use App\Utils\TransactionUtil;
 use App\Variation;
 use Datatables;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Spatie\Activitylog\Models\Activity;
 
 class ReportController extends Controller

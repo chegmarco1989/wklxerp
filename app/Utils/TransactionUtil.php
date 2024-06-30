@@ -2536,7 +2536,7 @@ class TransactionUtil extends Util
      * @param  string  $start_date  default null
      * @param  string  $end_date  default null
      */
-    public function getInputTax(int $business_id, string $start_date = null, string $end_date = null, $location_id = null, $contact_id = null): float
+    public function getInputTax(int $business_id, ?string $start_date = null, ?string $end_date = null, $location_id = null, $contact_id = null): float
     {
         //Calculate purchase taxes
         $query1 = Transaction::where('transactions.business_id', $business_id)
@@ -2634,7 +2634,7 @@ class TransactionUtil extends Util
      * @param  string  $start_date  default null
      * @param  string  $end_date  default null
      */
-    public function getOutputTax(int $business_id, string $start_date = null, string $end_date = null, $location_id = null, $contact_id = null): float
+    public function getOutputTax(int $business_id, ?string $start_date = null, ?string $end_date = null, $location_id = null, $contact_id = null): float
     {
         //Calculate sell taxes
         $query1 = Transaction::where('transactions.business_id', $business_id)
@@ -2734,7 +2734,7 @@ class TransactionUtil extends Util
      * @param  string  $start_date  default null
      * @param  string  $end_date  default null
      */
-    public function getExpenseTax(int $business_id, string $start_date = null, string $end_date = null, $location_id = null, $contact_id = null): float
+    public function getExpenseTax(int $business_id, ?string $start_date = null, ?string $end_date = null, $location_id = null, $contact_id = null): float
     {
         //Calculate expense taxes
         $query = Transaction::where('transactions.business_id', $business_id)
@@ -2900,7 +2900,7 @@ class TransactionUtil extends Util
      *
      * @param  float  $final_amount  = null
      */
-    public function calculatePaymentStatus(int $transaction_id, float $final_amount = null): string
+    public function calculatePaymentStatus(int $transaction_id, ?float $final_amount = null): string
     {
         $total_paid = $this->getTotalPaid($transaction_id);
 
@@ -3089,7 +3089,7 @@ class TransactionUtil extends Util
      * @param  bool  $check_expiry  = true
      * @param  int  $purchase_line_id  (default: null)
      */
-    public function mapPurchaseSell(array $business, array $transaction_lines, string $mapping_type = 'purchase', bool $check_expiry = true, int $purchase_line_id = null): object
+    public function mapPurchaseSell(array $business, array $transaction_lines, string $mapping_type = 'purchase', bool $check_expiry = true, ?int $purchase_line_id = null): object
     {
         if (empty($transaction_lines)) {
             return false;
@@ -3742,7 +3742,7 @@ class TransactionUtil extends Util
     /**
      * Gives the total sell commission for a commission agent within the date range passed
      */
-    public function getTotalSellCommission(int $business_id, string $start_date = null, string $end_date = null, int $location_id = null, int $commission_agent = null): array
+    public function getTotalSellCommission(int $business_id, ?string $start_date = null, ?string $end_date = null, ?int $location_id = null, ?int $commission_agent = null): array
     {
         //Query to sum total sell without line tax and order tax
         $query = TransactionSellLine::leftjoin('transactions as t', 'transaction_sell_lines.transaction_id', '=', 't.id')
@@ -3920,7 +3920,7 @@ class TransactionUtil extends Util
      */
     public function isCustomerCreditLimitExeeded(
         array $input,
-        int $exclude_transaction_id = null,
+        ?int $exclude_transaction_id = null,
         $uf_number = true
     ) {
         //If draft ignore credit limit check
@@ -4236,10 +4236,10 @@ class TransactionUtil extends Util
     public function getTransactionTotals(
         int $business_id,
         array $transaction_types,
-        string $start_date = null,
-        string $end_date = null,
-        int $location_id = null,
-        int $created_by = null,
+        ?string $start_date = null,
+        ?string $end_date = null,
+        ?int $location_id = null,
+        ?int $created_by = null,
         $permitted_locations = null
     ): array {
         $query = Transaction::where('transactions.business_id', $business_id);

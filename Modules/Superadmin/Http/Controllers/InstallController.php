@@ -2,10 +2,9 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\System;
 use Composer\Semver\Comparator;
-use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;

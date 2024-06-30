@@ -2,8 +2,8 @@
 
 namespace Modules\Accounting\Entities;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccountingAccountType extends Model
 {

@@ -2,7 +2,6 @@
 
 namespace Modules\Crm\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Category;
 use App\Contact;
 use App\User;
@@ -11,6 +10,7 @@ use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Crm\Entities\CrmContact;
 use Modules\Crm\Utils\CrmUtil;
 use Yajra\DataTables\Facades\DataTables;

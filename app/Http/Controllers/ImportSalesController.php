@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\BusinessLocation;
 use App\Contact;
 use App\Product;
@@ -18,7 +16,9 @@ use App\Utils\TransactionUtil;
 use App\Variation;
 use DB;
 use Excel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ImportSalesController extends Controller
 {

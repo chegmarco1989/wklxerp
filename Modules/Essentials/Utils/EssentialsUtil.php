@@ -23,8 +23,8 @@ class EssentialsUtil extends Util
         string $unit,
         int $user_id,
         int $business_id,
-        int $start_date = null,
-        int $end_date = null
+        ?int $start_date = null,
+        ?int $end_date = null
     ) {
         $total_work_duration = 0;
         if ($unit == 'hour') {
@@ -64,7 +64,7 @@ class EssentialsUtil extends Util
      * @param  string  $start_date  = null
      * @param  string  $end_date  = null
      */
-    public function getEmployeeAllowancesAndDeductions(int $business_id, int $user_id, string $start_date = null, string $end_date = null)
+    public function getEmployeeAllowancesAndDeductions(int $business_id, int $user_id, ?string $start_date = null, ?string $end_date = null)
     {
         $query = EssentialsAllowanceAndDeduction::join('essentials_user_allowance_and_deductions as euad', 'euad.allowance_deduction_id', '=', 'essentials_allowances_and_deductions.id')
             ->where('business_id', $business_id)

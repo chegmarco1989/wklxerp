@@ -2,8 +2,8 @@
 
 namespace Modules\Hms\Entities;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Transaction;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class HmsTransactionClass extends Transaction
 {
