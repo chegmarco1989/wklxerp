@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Media;
 use App\User;
@@ -32,7 +34,7 @@ class ManageProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProfile()
+    public function getProfile(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -55,7 +57,7 @@ class ManageProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -95,7 +97,7 @@ class ManageProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {

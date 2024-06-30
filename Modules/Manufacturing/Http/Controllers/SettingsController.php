@@ -2,6 +2,8 @@
 
 namespace Modules\Manufacturing\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Business;
 use App\System;
 use App\Utils\ModuleUtil;
@@ -36,7 +38,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module'))) {
@@ -54,7 +56,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module'))) {

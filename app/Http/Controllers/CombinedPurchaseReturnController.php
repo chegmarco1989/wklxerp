@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\PurchaseLine;
 use App\TaxRate;
@@ -166,7 +167,7 @@ class CombinedPurchaseReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('purchase.update')) {
             abort(403, 'Unauthorized action.');
@@ -365,7 +366,7 @@ class CombinedPurchaseReturnController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProductRow(Request $request)
+    public function getProductRow(Request $request): View
     {
         if (request()->ajax()) {
             $row_index = $request->input('row_index');

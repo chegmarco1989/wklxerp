@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -109,7 +110,7 @@ class ContactLoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! auth()->user()->can('crm.access_contact_login')) {
@@ -175,7 +176,7 @@ class ContactLoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -186,7 +187,7 @@ class ContactLoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! auth()->user()->can('crm.access_contact_login')) {
@@ -217,7 +218,7 @@ class ContactLoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! auth()->user()->can('crm.access_contact_login')) {
@@ -263,7 +264,7 @@ class ContactLoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! auth()->user()->can('crm.access_contact_login')) {
@@ -297,7 +298,7 @@ class ContactLoginController extends Controller
         }
     }
 
-    public function allContactsLoginList()
+    public function allContactsLoginList(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module')) || ! auth()->user()->can('crm.access_contact_login')) {

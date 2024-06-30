@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Business;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
@@ -34,7 +36,7 @@ class CrmSettingsController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -55,7 +57,7 @@ class CrmSettingsController extends Controller
      *
      * @return Response
      */
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 

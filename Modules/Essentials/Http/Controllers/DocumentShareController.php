@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class DocumentShareController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -71,7 +72,7 @@ class DocumentShareController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -142,7 +143,7 @@ class DocumentShareController extends Controller
      *
      * @return void
      */
-    private function notify($document, $user_id)
+    private function notify($document, $user_id): void
     {
         $user = User::find($user_id);
         $shared_by = auth()->user();

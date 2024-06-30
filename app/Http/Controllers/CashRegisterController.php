@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\BusinessLocation;
 use App\CashRegister;
 use App\Utils\CashRegisterUtil;
@@ -33,7 +35,7 @@ class CashRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         return view('cash_register.index');
     }
@@ -63,7 +65,7 @@ class CashRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         //like:repair
         $sub_type = request()->get('sub_type');
@@ -104,7 +106,7 @@ class CashRegisterController extends Controller
      * @param  \App\CashRegister  $cashRegister
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): View
     {
         if (! auth()->user()->can('view_cash_register')) {
             abort(403, 'Unauthorized action.');
@@ -130,7 +132,7 @@ class CashRegisterController extends Controller
      * @param  void
      * @return \Illuminate\Http\Response
      */
-    public function getRegisterDetails()
+    public function getRegisterDetails(): View
     {
         if (! auth()->user()->can('view_cash_register')) {
             abort(403, 'Unauthorized action.');
@@ -160,7 +162,7 @@ class CashRegisterController extends Controller
      * @param  void
      * @return \Illuminate\Http\Response
      */
-    public function getCloseRegister($id = null)
+    public function getCloseRegister($id = null): View
     {
         if (! auth()->user()->can('close_cash_register')) {
             abort(403, 'Unauthorized action.');
@@ -190,7 +192,7 @@ class CashRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function postCloseRegister(Request $request)
+    public function postCloseRegister(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('close_cash_register')) {
             abort(403, 'Unauthorized action.');

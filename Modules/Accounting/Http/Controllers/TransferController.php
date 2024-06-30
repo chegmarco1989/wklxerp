@@ -2,6 +2,7 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class TransferController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -143,7 +144,7 @@ class TransferController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -163,7 +164,7 @@ class TransferController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -244,7 +245,7 @@ class TransferController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('accounting::show');
     }
@@ -255,7 +256,7 @@ class TransferController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -287,7 +288,7 @@ class TransferController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -359,7 +360,7 @@ class TransferController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 

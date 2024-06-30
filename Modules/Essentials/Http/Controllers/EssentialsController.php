@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -13,7 +14,7 @@ class EssentialsController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         return view('essentials::index');
     }
@@ -23,7 +24,7 @@ class EssentialsController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('essentials::create');
     }
@@ -33,7 +34,7 @@ class EssentialsController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
     }
 
@@ -42,7 +43,7 @@ class EssentialsController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('essentials::show');
     }
@@ -52,7 +53,7 @@ class EssentialsController extends Controller
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         return view('essentials::edit');
     }
@@ -62,7 +63,7 @@ class EssentialsController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
@@ -71,7 +72,7 @@ class EssentialsController extends Controller
      *
      * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
     }
 }

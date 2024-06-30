@@ -2,6 +2,7 @@
 
 namespace Modules\Hms\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use Illuminate\Contracts\Support\Renderable;
@@ -32,7 +33,7 @@ class UnavailableController extends Controller
      *
      * @return Renderable
      */
-    public function index()
+    public function index(): Renderable
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -83,7 +84,7 @@ class UnavailableController extends Controller
      *
      * @return Renderable
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -114,7 +115,7 @@ class UnavailableController extends Controller
      *
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -164,7 +165,7 @@ class UnavailableController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('hms::show');
     }
@@ -175,7 +176,7 @@ class UnavailableController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -208,7 +209,7 @@ class UnavailableController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -256,7 +257,7 @@ class UnavailableController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 

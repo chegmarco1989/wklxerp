@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Contact;
 use App\Transaction;
 use App\Utils\Util;
@@ -96,7 +97,7 @@ class LedgerDiscountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -107,7 +108,7 @@ class LedgerDiscountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 
@@ -132,7 +133,7 @@ class LedgerDiscountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         try {
             $business_id = $request->session()->get('user.business_id');
@@ -172,7 +173,7 @@ class LedgerDiscountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 

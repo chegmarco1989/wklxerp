@@ -29,7 +29,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -115,7 +115,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function create()
+    public function create(): Response
     {
         $business_id = request()->input('business_id');
         $packages = Package::active()->orderby('sort_order')->pluck('name', 'id');
@@ -131,7 +131,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         if (! auth()->user()->can('subscribe')) {
             abort(403, 'Unauthorized action.');
@@ -167,7 +167,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function show()
+    public function show(): Response
     {
         return view('superadmin::show');
     }
@@ -177,7 +177,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -197,7 +197,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -240,7 +240,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
     }
 
@@ -249,7 +249,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function editSubscription($id)
+    public function editSubscription($id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -268,7 +268,7 @@ class SuperadminSubscriptionsController extends BaseController
      *
      * @return Response
      */
-    public function updateSubscription(Request $request)
+    public function updateSubscription(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

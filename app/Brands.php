@@ -29,7 +29,7 @@ class Brands extends Model
      * @param  bool  $show_none  = false
      * @return array
      */
-    public static function forDropdown($business_id, $show_none = false, $filter_use_for_repair = false)
+    public static function forDropdown(int $business_id, bool $show_none = false, $filter_use_for_repair = false): array
     {
         $query = Brands::where('business_id', $business_id);
 

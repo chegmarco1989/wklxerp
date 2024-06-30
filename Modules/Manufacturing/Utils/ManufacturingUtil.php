@@ -17,7 +17,7 @@ class ManufacturingUtil extends Util
      *
      * @return array
      */
-    public function getIngredientDetails($recipe, $business_id, $location_id = null)
+    public function getIngredientDetails($recipe, $business_id, $location_id = null): array
     {
         $ingredients_array = [];
         $with = ['variation', 'variation.product', 'variation.product_variation', 'variation.product.unit'];
@@ -100,7 +100,7 @@ class ManufacturingUtil extends Util
      *
      * @return array
      */
-    public function getSettings($business_id)
+    public function getSettings($business_id): array
     {
         $business = Business::findOrFail($business_id);
 
@@ -118,10 +118,10 @@ class ManufacturingUtil extends Util
      * @param  string  $end_date  = null
      */
     public function getProductionTotals(
-        $business_id,
+        int $business_id,
         $location_id = null,
-        $start_date = null,
-        $end_date = null,
+        string $start_date = null,
+        string $end_date = null,
         $user_id = null
     ) {
         $query = Transaction::where('business_id', $business_id)
@@ -186,10 +186,10 @@ class ManufacturingUtil extends Util
      * @param  string  $end_date  = null
      */
     public function getTotalSold(
-        $business_id,
+        int $business_id,
         $location_id = null,
-        $start_date = null,
-        $end_date = null
+        string $start_date = null,
+        string $end_date = null
     ) {
         $query = TransactionSellLinesPurchaseLines::join('purchase_lines as pl', 'pl.id', '=', 'transaction_sell_lines_purchase_lines.purchase_line_id')
             ->join('transaction_sell_lines as tsl', 'tsl.id', '=', 'transaction_sell_lines_purchase_lines.sell_line_id')
@@ -230,7 +230,7 @@ class ManufacturingUtil extends Util
      *
      * @return decimal
      */
-    public function getRecipeTotal($row)
+    public function getRecipeTotal($row): decimal
     {
         $price = 0;
         foreach ($row->ingredients as $ingredient) {

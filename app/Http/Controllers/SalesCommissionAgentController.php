@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\User;
 use App\Utils\Util;
 use DataTables;
@@ -67,7 +68,7 @@ class SalesCommissionAgentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('user.create')) {
             abort(403, 'Unauthorized action.');
@@ -117,7 +118,7 @@ class SalesCommissionAgentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('user.update')) {
             abort(403, 'Unauthorized action.');
@@ -135,7 +136,7 @@ class SalesCommissionAgentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('user.update')) {
             abort(403, 'Unauthorized action.');
@@ -174,7 +175,7 @@ class SalesCommissionAgentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('user.delete')) {
             abort(403, 'Unauthorized action.');

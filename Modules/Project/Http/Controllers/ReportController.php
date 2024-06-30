@@ -2,6 +2,7 @@
 
 namespace Modules\Project\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +33,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -49,7 +50,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function getEmployeeTimeLogReport(Request $request)
+    public function getEmployeeTimeLogReport(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -144,7 +145,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function getProjectTimeLogReport(Request $request)
+    public function getProjectTimeLogReport(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 

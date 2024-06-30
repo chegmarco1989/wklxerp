@@ -2,6 +2,7 @@
 
 namespace Modules\Project\Utils;
 
+use Illuminate\Http\Response;
 use App\User;
 use App\Utils\Util;
 use Modules\Project\Entities\Project;
@@ -17,7 +18,7 @@ class ProjectUtil extends Util
      * @param  $business_id,  $project_id
      * @return string
      */
-    public function generateTaskId($business_id, $project_id)
+    public function generateTaskId($business_id, $project_id): string
     {
         $project = Project::withCount('tasks')
             ->where('business_id', $business_id)
@@ -33,7 +34,7 @@ class ProjectUtil extends Util
      *
      * @return bool
      */
-    public function isProjectLead($user_id, $project_id)
+    public function isProjectLead($user_id, $project_id): bool
     {
         $project = Project::where('lead_id', $user_id)
             ->find($project_id);
@@ -46,7 +47,7 @@ class ProjectUtil extends Util
      *
      * @return bool
      */
-    public function isProjectMember($user_id, $project_id)
+    public function isProjectMember($user_id, $project_id): bool
     {
         $project = Project::with(['members' => function ($query) use ($user_id) {
             $query->where('user_id', $user_id);
@@ -62,7 +63,7 @@ class ProjectUtil extends Util
      *
      * @return \Illuminate\Http\Response
      */
-    public function notifyUsersAboutAssignedProject($members, $project)
+    public function notifyUsersAboutAssignedProject($members, $project): Response
     {
         if (! empty($members)) {
             $notifiable_users = User::find($members);
@@ -76,7 +77,7 @@ class ProjectUtil extends Util
      *
      * @return \Illuminate\Http\Response
      */
-    public function notifyUsersAboutAssignedTask($members, $task)
+    public function notifyUsersAboutAssignedTask($members, $task): Response
     {
         if (! empty($members)) {
             $notifiable_users = User::find($members);
@@ -90,7 +91,7 @@ class ProjectUtil extends Util
      *
      * @return bool
      */
-    public function canMemberCrudTask($business_id, $user_id, $project_id)
+    public function canMemberCrudTask($business_id, $user_id, $project_id): bool
     {
         $project = $this->getProject($business_id, $project_id);
 
@@ -110,7 +111,7 @@ class ProjectUtil extends Util
      *
      * @return bool
      */
-    public function canMemberCrudNotes($business_id, $user_id, $project_id)
+    public function canMemberCrudNotes($business_id, $user_id, $project_id): bool
     {
         $project = $this->getProject($business_id, $project_id);
 
@@ -130,7 +131,7 @@ class ProjectUtil extends Util
      *
      * @return bool
      */
-    public function canMemberCrudTimelog($business_id, $user_id, $project_id)
+    public function canMemberCrudTimelog($business_id, $user_id, $project_id): bool
     {
         $project = $this->getProject($business_id, $project_id);
 
@@ -149,7 +150,7 @@ class ProjectUtil extends Util
      *
      * @return object
      */
-    public function getProject($business_id, $project_id)
+    public function getProject($business_id, $project_id): object
     {
         $project = Project::where('business_id', $business_id)
             ->find($project_id);

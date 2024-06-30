@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\View\View;
 use App\System;
 use App\Utils\BusinessUtil;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class SuperadminSettingsController extends Controller
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -118,7 +119,7 @@ class SuperadminSettingsController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

@@ -48,7 +48,7 @@ class CrmContact extends Contact
      * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function leadsDropdown($business_id, $prepend_none = true, $append_id = true)
+    public static function leadsDropdown($business_id, $prepend_none = true, $append_id = true): array
     {
         $all_contacts = CrmContact::where('business_id', $business_id)
             ->where('type', 'lead')

@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Entities;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,7 +22,7 @@ class Package extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', 1);
     }
@@ -31,7 +32,7 @@ class Package extends Model
      *
      * @return object
      */
-    public static function listPackages($exlude_private = false)
+    public static function listPackages($exlude_private = false): object
     {
         $packages = Package::active()
             ->orderby('sort_order');
@@ -49,7 +50,7 @@ class Package extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNotPrivate($query)
+    public function scopeNotPrivate(Builder $query): Builder
     {
         return $query->where('is_private', 0);
     }

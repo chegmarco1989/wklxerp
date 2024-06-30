@@ -41,7 +41,7 @@ class AccountingAccount extends Model
      * @param  int  $business_id
      * @return array
      */
-    public static function forDropdown($business_id, $with_data = false, $q = '')
+    public static function forDropdown(int $business_id, $with_data = false, $q = ''): array
     {
         $query = AccountingAccount::where('accounting_accounts.business_id', $business_id)
             ->where('status', 'active');

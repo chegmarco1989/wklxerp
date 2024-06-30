@@ -20,7 +20,7 @@ class TaskCommentController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         return view('project::index');
     }
@@ -30,7 +30,7 @@ class TaskCommentController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         return view('project::create');
     }
@@ -40,7 +40,7 @@ class TaskCommentController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             $project_task_id = $request->get('project_task_id');
@@ -115,7 +115,7 @@ class TaskCommentController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): \Illuminate\View\View
     {
         return view('project::show');
     }
@@ -125,7 +125,7 @@ class TaskCommentController extends Controller
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): \Illuminate\View\View
     {
         return view('project::edit');
     }
@@ -135,7 +135,7 @@ class TaskCommentController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
         //
     }
@@ -145,7 +145,7 @@ class TaskCommentController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         if (request()->ajax()) {
             try {

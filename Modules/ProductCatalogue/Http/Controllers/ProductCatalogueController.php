@@ -2,6 +2,7 @@
 
 namespace Modules\ProductCatalogue\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Business;
 use App\BusinessLocation;
 use App\Category;
@@ -39,7 +40,7 @@ class ProductCatalogueController extends Controller
      *
      * @return Response
      */
-    public function index($business_id, $location_id)
+    public function index($business_id, $location_id): View
     {
         $products = Product::where('business_id', $business_id)
             ->whereHas('product_locations', function ($q) use ($location_id) {
@@ -75,7 +76,7 @@ class ProductCatalogueController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($business_id, $id)
+    public function show($business_id, int $id): View
     {
         $product = Product::with(['brand', 'unit', 'category', 'sub_category', 'product_tax', 'variations', 'variations.product_variation', 'variations.group_prices', 'variations.media', 'product_locations', 'warranty'])->where('business_id', $business_id)
             ->findOrFail($id);
@@ -111,7 +112,7 @@ class ProductCatalogueController extends Controller
         ));
     }
 
-    public function generateQr()
+    public function generateQr(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'productcatalogue_module'))) {

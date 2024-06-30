@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -91,7 +92,7 @@ class User extends Authenticatable implements MessengerProvider
      *
      * @return object
      */
-    public static function create_user($details)
+    public static function create_user($details): object
     {
         $user = User::create([
             'surname' => $details['surname'],
@@ -124,7 +125,7 @@ class User extends Authenticatable implements MessengerProvider
      *
      * @return string or array
      */
-    public function permitted_locations($business_id = null)
+    public function permitted_locations($business_id = null): string
     {
         $user = $this;
 
@@ -158,7 +159,7 @@ class User extends Authenticatable implements MessengerProvider
      *
      * @return bool
      */
-    public static function can_access_this_location($location_id, $business_id = null)
+    public static function can_access_this_location($location_id, $business_id = null): bool
     {
         $permitted_locations = auth()->user()->permitted_locations($business_id);
 
@@ -196,7 +197,7 @@ class User extends Authenticatable implements MessengerProvider
      * @param  $include_commission_agents  = false (boolean)
      * @return array users
      */
-    public static function forDropdown($business_id, $prepend_none = true, $include_commission_agents = false, $prepend_all = false, $check_location_permission = false)
+    public static function forDropdown($business_id, $prepend_none = true, $include_commission_agents = false, $prepend_all = false, $check_location_permission = false): array
     {
         $query = User::where('business_id', $business_id)
             ->user();
@@ -232,7 +233,7 @@ class User extends Authenticatable implements MessengerProvider
      * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function saleCommissionAgentsDropdown($business_id, $prepend_none = true)
+    public static function saleCommissionAgentsDropdown($business_id, $prepend_none = true): array
     {
         $all_cmmsn_agnts = User::where('business_id', $business_id)
             ->where('is_cmmsn_agnt', 1)
@@ -256,7 +257,7 @@ class User extends Authenticatable implements MessengerProvider
      * @param  $prepend_all  = false (boolean)
      * @return array users
      */
-    public static function allUsersDropdown($business_id, $prepend_none = true, $prepend_all = false)
+    public static function allUsersDropdown($business_id, $prepend_none = true, $prepend_all = false): array
     {
         $all_users = User::where('business_id', $business_id)
             ->select('id', DB::raw("CONCAT(COALESCE(surname, ''),' ',COALESCE(first_name, ''),' ',COALESCE(last_name,'')) as full_name"));
@@ -281,7 +282,7 @@ class User extends Authenticatable implements MessengerProvider
      *
      * @return string
      */
-    public function getUserFullNameAttribute()
+    public function getUserFullNameAttribute(): string
     {
         return "{$this->surname} {$this->first_name} {$this->last_name}";
     }
@@ -291,7 +292,7 @@ class User extends Authenticatable implements MessengerProvider
      *
      * @return bool
      */
-    public static function isSelectedContacts($user_id)
+    public static function isSelectedContacts($user_id): bool
     {
         $user = User::findOrFail($user_id);
 
@@ -317,7 +318,7 @@ class User extends Authenticatable implements MessengerProvider
      * @param  string  $username
      * @return \App\User
      */
-    public function findForPassport($username)
+    public function findForPassport(string $username): User
     {
         return $this->where('username', $username)->first();
     }
@@ -335,7 +336,7 @@ class User extends Authenticatable implements MessengerProvider
      *
      * @return string
      */
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute(): string
     {
         if (isset($this->media->display_url)) {
             $img_src = $this->media->display_url;

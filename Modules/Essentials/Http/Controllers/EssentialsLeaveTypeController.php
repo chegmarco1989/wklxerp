@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +33,7 @@ class EssentialsLeaveTypeController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -66,7 +67,7 @@ class EssentialsLeaveTypeController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('essentials.crud_leave_type')) {
             abort(403, 'Unauthorized action.');
@@ -80,7 +81,7 @@ class EssentialsLeaveTypeController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
 
@@ -117,7 +118,7 @@ class EssentialsLeaveTypeController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('essentials::show');
     }
@@ -127,7 +128,7 @@ class EssentialsLeaveTypeController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -150,7 +151,7 @@ class EssentialsLeaveTypeController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -190,7 +191,7 @@ class EssentialsLeaveTypeController extends Controller
      *
      * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
     }
 }

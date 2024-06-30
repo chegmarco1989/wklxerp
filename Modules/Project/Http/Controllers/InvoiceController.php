@@ -2,6 +2,8 @@
 
 namespace Modules\Project\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\BusinessLocation;
 use App\Contact;
 use App\InvoiceScheme;
@@ -47,7 +49,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
@@ -152,7 +154,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -184,7 +186,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -259,7 +261,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
@@ -280,7 +282,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -313,7 +315,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -417,7 +419,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         try {
             if (request()->ajax()) {
@@ -453,7 +455,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function getProjectInvoiceTaxReport(Request $request)
+    public function getProjectInvoiceTaxReport(Request $request): Response
     {
         if (! auth()->user()->can('tax_report.view')) {
             abort(403, 'Unauthorized action.');

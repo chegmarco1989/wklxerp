@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Brands;
 use App\BusinessLocation;
 use App\Category;
@@ -172,7 +174,7 @@ class PurchaseRequisitionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('purchase_requisition.create')) {
             abort(403, 'Unauthorized action.');
@@ -194,7 +196,7 @@ class PurchaseRequisitionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('purchase_requisition.create')) {
             abort(403, 'Unauthorized action.');
@@ -267,7 +269,7 @@ class PurchaseRequisitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (! auth()->user()->can('purchase_requisition.view_all') && ! auth()->user()->can('purchase_requisition.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -301,7 +303,7 @@ class PurchaseRequisitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         //
     }
@@ -312,7 +314,7 @@ class PurchaseRequisitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         //
     }
@@ -323,7 +325,7 @@ class PurchaseRequisitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('purchase_requisition.delete')) {
             abort(403, 'Unauthorized action.');
@@ -360,7 +362,7 @@ class PurchaseRequisitionController extends Controller
         return $output;
     }
 
-    public function getRequisitionProducts()
+    public function getRequisitionProducts(): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');

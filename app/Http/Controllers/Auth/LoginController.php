@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Utils\BusinessUtil;
@@ -50,7 +52,7 @@ class LoginController extends Controller
         $this->moduleUtil = $moduleUtil;
     }
 
-    public function showLoginForm()
+    public function showLoginForm(): View
     {
         return view('auth.login');
     }
@@ -65,7 +67,7 @@ class LoginController extends Controller
         return 'username';
     }
 
-    public function logout()
+    public function logout(): RedirectResponse
     {
         $this->businessUtil->activityLog(auth()->user(), 'logout');
 

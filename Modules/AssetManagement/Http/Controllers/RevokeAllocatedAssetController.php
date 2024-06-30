@@ -2,6 +2,8 @@
 
 namespace Modules\AssetManagement\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use DB;
@@ -38,7 +40,7 @@ class RevokeAllocatedAssetController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -113,7 +115,7 @@ class RevokeAllocatedAssetController extends Controller
      *
      * @return Response
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -138,7 +140,7 @@ class RevokeAllocatedAssetController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -196,7 +198,7 @@ class RevokeAllocatedAssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('assetmanagement::show');
     }
@@ -207,7 +209,7 @@ class RevokeAllocatedAssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('assetmanagement::edit');
     }
@@ -218,7 +220,7 @@ class RevokeAllocatedAssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -229,7 +231,7 @@ class RevokeAllocatedAssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -267,7 +269,7 @@ class RevokeAllocatedAssetController extends Controller
      *
      * @return int
      */
-    protected function _getRevokedQtyOfAllocatedAsset($allocated_asset)
+    protected function _getRevokedQtyOfAllocatedAsset($allocated_asset): int
     {
         $asset_transaction = AssetTransaction::where('business_id', $allocated_asset->business_id)
             ->where('parent_id', $allocated_asset->id)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -24,7 +25,7 @@ class Controller extends BaseController
         return $this;
     }
 
-    public function respondWithError($message = null)
+    public function respondWithError($message = null): JsonResponse
     {
         return response()->json(
             ['success' => false, 'msg' => $message]
@@ -37,7 +38,7 @@ class Controller extends BaseController
      * @param  string  $message
      * @return \Illuminate\Http\Response
      */
-    public function respondUnauthorized($message = 'Unauthorized action.')
+    public function respondUnauthorized(string $message = 'Unauthorized action.')
     {
         return $this->setStatusCode(403)
             ->respondWithError($message);
@@ -49,7 +50,7 @@ class Controller extends BaseController
      * @param  object  $exception  = null
      * @return \Illuminate\Http\Response
      */
-    public function respondWentWrong($exception = null)
+    public function respondWentWrong(object $exception = null)
     {
         //If debug is enabled then send exception message
         $message = (config('app.debug') && is_object($exception)) ? 'File:'.$exception->getFile().'Line:'.$exception->getLine().'Message:'.$exception->getMessage() : __('messages.something_went_wrong');
@@ -65,7 +66,7 @@ class Controller extends BaseController
      * @param  object  $message  = null
      * @return \Illuminate\Http\Response
      */
-    public function respondSuccess($message = null, $additional_data = [])
+    public function respondSuccess(object $message = null, $additional_data = [])
     {
         $message = is_null($message) ? __('lang_v.success') : $message;
         $data = ['success' => true, 'msg' => $message];
@@ -83,7 +84,7 @@ class Controller extends BaseController
      * @param  array  $data
      * @return \Illuminate\Http\Response
      */
-    public function respond($data)
+    public function respond(array $data): JsonResponse
     {
         return response()->json($data);
     }

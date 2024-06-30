@@ -69,7 +69,7 @@ class NewLeaveNotification extends Notification
      * @param  mixed  $notifiable
      * @return BroadcastMessage
      */
-    public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
             'title' => __('essentials::lang.leave_added_successfully'),

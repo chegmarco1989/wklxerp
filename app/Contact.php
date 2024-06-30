@@ -122,7 +122,7 @@ class Contact extends Authenticatable
      * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function contactDropdown($business_id, $exclude_default = false, $prepend_none = true, $append_id = true)
+    public static function contactDropdown($business_id, $exclude_default = false, $prepend_none = true, $append_id = true): array
     {
         $query = Contact::where('business_id', $business_id)
             ->where('type', '!=', 'lead')
@@ -170,7 +170,7 @@ class Contact extends Authenticatable
      * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function suppliersDropdown($business_id, $prepend_none = true, $append_id = true)
+    public static function suppliersDropdown($business_id, $prepend_none = true, $append_id = true): array
     {
         $all_contacts = Contact::where('contacts.business_id', $business_id)
             ->whereIn('contacts.type', ['supplier', 'both'])
@@ -209,7 +209,7 @@ class Contact extends Authenticatable
      * @param  $prepend_none  = true (boolean)
      * @return array users
      */
-    public static function customersDropdown($business_id, $prepend_none = true, $append_id = true)
+    public static function customersDropdown($business_id, $prepend_none = true, $append_id = true): array
     {
         $all_contacts = Contact::where('contacts.business_id', $business_id)
             ->whereIn('contacts.type', ['customer', 'both'])
@@ -244,7 +244,7 @@ class Contact extends Authenticatable
      * @param  $prepend_all  = false (boolean)
      * @return array
      */
-    public static function typeDropdown($prepend_all = false)
+    public static function typeDropdown($prepend_all = false): array
     {
         $types = [];
 
@@ -264,7 +264,7 @@ class Contact extends Authenticatable
      *
      * @return array
      */
-    public static function getContactTypes()
+    public static function getContactTypes(): array
     {
         $types = [];
         if (auth()->check() && auth()->user()->can('supplier.create')) {

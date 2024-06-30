@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Restaurant;
 
+use Illuminate\View\View;
 use App\TransactionSellLine;
 use App\Utils\RestaurantUtil;
 use App\Utils\Util;
@@ -34,7 +35,7 @@ class KitchenController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         // if (!auth()->user()->can('sell.view')) {
         //     abort(403, 'Unauthorized action.');
@@ -52,7 +53,7 @@ class KitchenController extends Controller
      *
      * @return json $output
      */
-    public function markAsCooked($id)
+    public function markAsCooked($id): json
     {
         // if (!auth()->user()->can('sell.update')) {
         //     abort(403, 'Unauthorized action.');
@@ -87,7 +88,7 @@ class KitchenController extends Controller
      *
      * @return Json $output
      */
-    public function refreshOrdersList(Request $request)
+    public function refreshOrdersList(Request $request): View
     {
 
         // if (!auth()->user()->can('sell.view')) {
@@ -119,7 +120,7 @@ class KitchenController extends Controller
      *
      * @return Json $output
      */
-    public function refreshLineOrdersList(Request $request)
+    public function refreshLineOrdersList(Request $request): View
     {
 
         // if (!auth()->user()->can('sell.view')) {

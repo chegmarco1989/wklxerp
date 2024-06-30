@@ -32,7 +32,7 @@ class ProductUtil extends Util
      * @param  $combo_variations  = []
      * @return bool
      */
-    public function createSingleProductVariation($product, $sku, $purchase_price, $dpp_inc_tax, $profit_percent, $selling_price, $selling_price_inc_tax, $combo_variations = [])
+    public function createSingleProductVariation($product, $sku, $purchase_price, $dpp_inc_tax, $profit_percent, $selling_price, $selling_price_inc_tax, $combo_variations = []): bool
     {
         if (! is_object($product)) {
             $product = Product::find($product);
@@ -70,7 +70,7 @@ class ProductUtil extends Util
      * @param (int or object) $product
      * @return bool
      */
-    public function createVariableProductVariations($product, $input_variations, $business_id = null)
+    public function createVariableProductVariations($product, $input_variations, $business_id = null): bool
     {
         if (! is_object($product)) {
             $product = Product::find($product);
@@ -182,7 +182,7 @@ class ProductUtil extends Util
      *
      * @return bool
      */
-    public function updateVariableProductVariations($product_id, $input_variations_edit)
+    public function updateVariableProductVariations($product_id, $input_variations_edit): bool
     {
         $product = Product::find($product_id);
 
@@ -333,7 +333,7 @@ class ProductUtil extends Util
      * @param  $uf_data  = true, if false it will accept numbers in database format
      * @return bool
      */
-    public function updateProductQuantity($location_id, $product_id, $variation_id, $new_quantity, $old_quantity = 0, $number_format = null, $uf_data = true)
+    public function updateProductQuantity($location_id, $product_id, $variation_id, $new_quantity, $old_quantity = 0, $number_format = null, $uf_data = true): bool
     {
         if ($uf_data) {
             $qty_difference = $this->num_uf($new_quantity, $number_format) - $this->num_uf($old_quantity, $number_format);
@@ -378,7 +378,7 @@ class ProductUtil extends Util
      * @param  $old_quantity  = 0
      * @return bool
      */
-    public function decreaseProductQuantity($product_id, $variation_id, $location_id, $new_quantity, $old_quantity = 0)
+    public function decreaseProductQuantity($product_id, $variation_id, $location_id, $new_quantity, $old_quantity = 0): bool
     {
         $qty_difference = $new_quantity - $old_quantity;
 
@@ -415,7 +415,7 @@ class ProductUtil extends Util
      *
      * @return void
      */
-    public function decreaseProductQuantityCombo($combo_details, $location_id)
+    public function decreaseProductQuantityCombo($combo_details, $location_id): void
     {
         //product_id = child product id
         //variation id is child product variation id
@@ -438,7 +438,7 @@ class ProductUtil extends Util
      * @param  bool  $check_qty  (If false qty_available is not checked)
      * @return array
      */
-    public function getDetailsFromVariation($variation_id, $business_id, $location_id = null, $check_qty = true)
+    public function getDetailsFromVariation(int $variation_id, int $business_id, int $location_id = null, bool $check_qty = true): array
     {
         $query = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
             ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
@@ -539,7 +539,7 @@ class ProductUtil extends Util
      * @param  array  $combo_variations
      * @return int
      */
-    public function calculateComboQuantity($location_id, $combo_variations)
+    public function calculateComboQuantity(int $location_id, array $combo_variations): int
     {
         //get stock of the items and calcuate accordingly.
         $combo_qty = 0;
@@ -579,7 +579,7 @@ class ProductUtil extends Util
      * @param  array  $combo_variations
      * @return int
      */
-    public function calculateComboDetails($location_id, $combo_variations)
+    public function calculateComboDetails(int $location_id, array $combo_variations): int
     {
         $details = [];
 
@@ -612,7 +612,7 @@ class ProductUtil extends Util
      * @param  array  $discount['discount_type',  'discount_amount']
      * @return mixed (false, array)
      */
-    public function calculateInvoiceTotal($products, $tax_id, $discount = null, $uf_number = true)
+    public function calculateInvoiceTotal(array $products, int $tax_id, array $discount = null, $uf_number = true)
     {
         if (empty($products)) {
             return false;
@@ -671,7 +671,7 @@ class ProductUtil extends Util
      * @param  string  $string
      * @return generated sku (string)
      */
-    public function generateProductSku($string)
+    public function generateProductSku(string $string): generated
     {
         $business_id = request()->session()->get('user.business_id');
         $sku_prefix = Business::where('id', $business_id)->value('sku_prefix');
@@ -686,7 +686,7 @@ class ProductUtil extends Util
      * @param  array  $filters
      * @return Obj
      */
-    public function getTrendingProducts($business_id, $filters = [])
+    public function getTrendingProducts(int $business_id, array $filters = []): Obj
     {
         $query = Transaction::join(
             'transaction_sell_lines as tsl',
@@ -765,7 +765,7 @@ class ProductUtil extends Util
      * @param  int  $variation_id  = null
      * @return Obj
      */
-    public function getDetailsFromProduct($business_id, $product_id, $variation_id = null)
+    public function getDetailsFromProduct(int $business_id, int $product_id, int $variation_id = null): Obj
     {
         $product = Product::leftjoin('variations as v', 'products.id', '=', 'v.product_id')
             ->whereNull('v.deleted_at')
@@ -798,7 +798,7 @@ class ProductUtil extends Util
      * @param  array  $input
      * @return void
      */
-    public function adjustProductStockForInvoice($status_before, $transaction, $input, $uf_data = true)
+    public function adjustProductStockForInvoice($status_before, object $transaction, array $input, $uf_data = true): void
     {
         if ($status_before == 'final' && $transaction->status == 'draft') {
             foreach ($input['products'] as $product) {
@@ -862,7 +862,7 @@ class ProductUtil extends Util
      * @param  array  $variation_data
      * @return void
      */
-    public function updateProductFromPurchase($variation_data)
+    public function updateProductFromPurchase(array $variation_data): void
     {
         $variation_details = Variation::where('id', $variation_data['variation_id'])
             ->with(['product', 'product.product_tax'])
@@ -906,7 +906,7 @@ class ProductUtil extends Util
      * @param  string  $barcode_type
      * @return void
      */
-    public function generateSubSku($sku, $c, $barcode_type)
+    public function generateSubSku(string $sku, string $c, string $barcode_type): void
     {
         $sub_sku = $sku.$c;
 
@@ -926,7 +926,7 @@ class ProductUtil extends Util
      * @param  array  $product_racks
      * @return void
      */
-    public function addRackDetails($business_id, $product_id, $product_racks)
+    public function addRackDetails(int $business_id, int $product_id, array $product_racks): void
     {
         if (! empty($product_racks)) {
             $data = [];
@@ -953,7 +953,7 @@ class ProductUtil extends Util
      * @param  int  $product_id
      * @return void
      */
-    public function getRackDetails($business_id, $product_id, $get_location = false)
+    public function getRackDetails(int $business_id, int $product_id, $get_location = false): void
     {
         $query = ProductRack::where('product_racks.business_id', $business_id)
             ->where('product_id', $product_id);
@@ -984,7 +984,7 @@ class ProductUtil extends Util
      * @param  array  $product_racks
      * @return void
      */
-    public function updateRackDetails($business_id, $product_id, $product_racks)
+    public function updateRackDetails(int $business_id, int $product_id, array $product_racks): void
     {
         if (! empty($product_racks)) {
             foreach ($product_racks as $location_id => $details) {
@@ -1007,7 +1007,7 @@ class ProductUtil extends Util
      * @param  int  $tax_id
      * @return decimal
      */
-    public function getVariationGroupPrice($variation_id, $price_group_id, $tax_id)
+    public function getVariationGroupPrice(int $variation_id, int $price_group_id, int $tax_id): decimal
     {
         $price_group = VariationGroupPrice::where('variation_id', $variation_id)
             ->where('price_group_id', $price_group_id)
@@ -1041,7 +1041,7 @@ class ProductUtil extends Util
      * @param  string  $name
      * @return obj
      */
-    public function createOrNewVariation($business_id, $name)
+    public function createOrNewVariation(int $business_id, string $name): obj
     {
         $variation = VariationTemplate::where('business_id', $business_id)
             ->where('name', 'like', $name)
@@ -1068,7 +1068,7 @@ class ProductUtil extends Util
      * @param  int  $user_id
      * @return void
      */
-    public function addSingleProductOpeningStock($business_id, $product, $input, $transaction_date, $user_id)
+    public function addSingleProductOpeningStock(int $business_id, obj $product, array $input, obj $transaction_date, int $user_id): void
     {
         $locations = BusinessLocation::forDropdown($business_id)->toArray();
 
@@ -1151,7 +1151,7 @@ class ProductUtil extends Util
      * @param  string  $before_status  = null
      * @return array
      */
-    public function createOrUpdatePurchaseLines($transaction, $input_data, $currency_details, $enable_product_editing, $before_status = null)
+    public function createOrUpdatePurchaseLines(object $transaction, array $input_data, array $currency_details, bool $enable_product_editing, string $before_status = null): array
     {
         $updated_purchase_lines = [];
         $updated_purchase_line_ids = [0];
@@ -1306,7 +1306,7 @@ class ProductUtil extends Util
      * @param  decimal  $old_quantity  in database format
      * @param  array  $currency_details
      */
-    public function updateProductStock($status_before, $transaction, $product_id, $variation_id, $new_quantity, $old_quantity, $currency_details)
+    public function updateProductStock(string $status_before, obj $transaction, int $product_id, int $variation_id, decimal $new_quantity, decimal $old_quantity, array $currency_details)
     {
         $new_quantity_f = $this->num_f($new_quantity);
         $old_qty = $this->num_f($old_quantity);
@@ -1334,7 +1334,7 @@ class ProductUtil extends Util
      * @param  int  $business_id
      * @return array
      */
-    public function changePurchaseLineUnit($purchase_line, $business_id)
+    public function changePurchaseLineUnit(int $purchase_line, int $business_id): array
     {
         $base_unit = $purchase_line->product->unit;
         $sub_units = $base_unit->sub_units;
@@ -1369,7 +1369,7 @@ class ProductUtil extends Util
      * @param  int  $unit_id
      * @return array
      */
-    public function changeSellLineUnit($business_id, $sell_line)
+    public function changeSellLineUnit($business_id, $sell_line): array
     {
         $unit_details = $this->getSubUnits($business_id, $sell_line->unit_id, false, $sell_line->product_id);
 
@@ -1402,7 +1402,7 @@ class ProductUtil extends Util
      * @param  int  $variation_id,  int location_id
      * @return float
      */
-    public function getCurrentStock($variation_id, $location_id)
+    public function getCurrentStock(int $variation_id, $location_id): float
     {
         $current_stock = VariationLocationDetails::where('variation_id', $variation_id)
             ->where('location_id', $location_id)
@@ -1422,7 +1422,7 @@ class ProductUtil extends Util
      * @param  obj  $transaction
      * @return void
      */
-    public function adjustStockOverSelling($transaction)
+    public function adjustStockOverSelling(obj $transaction): void
     {
         if ($transaction->status != 'received') {
             return false;
@@ -1488,7 +1488,7 @@ class ProductUtil extends Util
      *                         bool $is_spg
      * @return obj discount
      */
-    public function getProductDiscount($product, $business_id, $location_id, $is_cg = false, $price_group = null, $variation_id = null)
+    public function getProductDiscount(obj $product, $business_id, $location_id, $is_cg = false, $price_group = null, $variation_id = null): obj
     {
         $now = \Carbon::now()->toDateTimeString();
 
@@ -1548,7 +1548,7 @@ class ProductUtil extends Util
      * @param  string  $search_type  (like or exact)
      * @return object
      */
-    public function filterProduct($business_id, $search_term, $location_id = null, $not_for_selling = null, $price_group_id = null, $product_types = [], $search_fields = [], $check_qty = false, $search_type = 'like')
+    public function filterProduct($business_id, $search_term, $location_id = null, $not_for_selling = null, $price_group_id = null, $product_types = [], $search_fields = [], $check_qty = false, string $search_type = 'like'): object
     {
         $query = Product::join('variations', 'products.id', '=', 'variations.product_id')
             ->active()
@@ -1843,7 +1843,7 @@ class ProductUtil extends Util
      * @param  int  $business_id
      * @return array
      */
-    public function __getComboProductDetails($combo_variations, $business_id)
+    public function __getComboProductDetails(array $combo_variations, int $business_id): array
     {
         foreach ($combo_variations as $key => $value) {
             $combo_variations[$key]['variation'] =
@@ -2274,7 +2274,7 @@ class ProductUtil extends Util
      *
      * @return array
      */
-    public function getProductAlert($business_id, $permitted_locations = null)
+    public function getProductAlert($business_id, $permitted_locations = null): array
     {
         $query = VariationLocationDetails::join(
             'product_variations as pv',

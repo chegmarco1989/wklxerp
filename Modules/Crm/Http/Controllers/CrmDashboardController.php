@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Category;
 use App\Charts\CommonChart;
 use App\Contact;
@@ -35,7 +36,7 @@ class CrmDashboardController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -277,7 +278,7 @@ class CrmDashboardController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('crm::create');
     }
@@ -287,7 +288,7 @@ class CrmDashboardController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
@@ -298,7 +299,7 @@ class CrmDashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('crm::show');
     }
@@ -309,7 +310,7 @@ class CrmDashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('crm::edit');
     }
@@ -320,7 +321,7 @@ class CrmDashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -331,7 +332,7 @@ class CrmDashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

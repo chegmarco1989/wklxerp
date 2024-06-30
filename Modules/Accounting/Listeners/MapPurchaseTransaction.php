@@ -23,7 +23,7 @@ class MapPurchaseTransaction
      * @param  object  $event
      * @return void
      */
-    public function handle(PurchaseCreatedOrModified $event)
+    public function handle(PurchaseCreatedOrModified $event): void
     {
         //get location setting and check if default is set or not, if set the proceed.
         $business_location = BusinessLocation::find($event->transaction->location_id);

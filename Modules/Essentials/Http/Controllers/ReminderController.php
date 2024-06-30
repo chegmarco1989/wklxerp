@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class ReminderController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -60,7 +61,7 @@ class ReminderController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -108,7 +109,7 @@ class ReminderController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -141,7 +142,7 @@ class ReminderController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -178,7 +179,7 @@ class ReminderController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {

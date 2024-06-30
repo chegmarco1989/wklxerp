@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\File;
@@ -32,7 +33,7 @@ class DocumentController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -155,7 +156,7 @@ class DocumentController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -221,7 +222,7 @@ class DocumentController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -242,7 +243,7 @@ class DocumentController extends Controller
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         return view('essentials::edit');
     }
@@ -252,7 +253,7 @@ class DocumentController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
@@ -261,7 +262,7 @@ class DocumentController extends Controller
      *
      * @return Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -313,7 +314,7 @@ class DocumentController extends Controller
      *
      * @return Response
      */
-    public function download(Request $request, $id)
+    public function download(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {

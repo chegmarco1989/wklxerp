@@ -44,7 +44,7 @@ class AiAssistanceServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower.'.php'),
@@ -59,7 +59,7 @@ class AiAssistanceServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/'.$this->moduleNameLower);
 
@@ -77,7 +77,7 @@ class AiAssistanceServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/'.$this->moduleNameLower);
 
@@ -95,7 +95,7 @@ class AiAssistanceServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }

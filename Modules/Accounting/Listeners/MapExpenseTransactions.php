@@ -22,7 +22,7 @@ class MapExpenseTransactions
      * @param  object  $event
      * @return void
      */
-    public function handle($event)
+    public function handle(object $event): void
     {
         $business_location = BusinessLocation::find($event->expense->location_id);
         $accounting_default_map = json_decode($business_location->accounting_default_map, true);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Media;
 use App\User;
 use App\Utils\ModuleUtil;
@@ -40,7 +41,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProfile()
+    public function getProfile(): View
     {
         $user_id = request()->session()->get('user.id');
         $user = User::where('id', $user_id)->with(['media'])->first();

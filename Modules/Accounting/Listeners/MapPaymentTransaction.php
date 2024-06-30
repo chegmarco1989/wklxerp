@@ -23,7 +23,7 @@ class MapPaymentTransaction
      * @param  object  $event
      * @return void
      */
-    public function handle($event)
+    public function handle(object $event): void
     {
         $payment = $event->transactionPayment;
 

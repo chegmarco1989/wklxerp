@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Warranty;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -42,7 +43,7 @@ class WarrantyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('warranties.create');
     }
@@ -92,7 +93,7 @@ class WarrantyController extends Controller
      * @param  \App\Warranty  $warranty
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
 

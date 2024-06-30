@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\AccountTransaction;
 use App\BusinessLocation;
 use App\PurchaseLine;
@@ -191,7 +193,7 @@ class PurchaseReturnController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function add($id)
+    public function add($id): View
     {
         if (! auth()->user()->can('purchase.update')) {
             abort(403, 'Unauthorized action.');
@@ -225,7 +227,7 @@ class PurchaseReturnController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('purchase.update')) {
             abort(403, 'Unauthorized action.');
@@ -337,7 +339,7 @@ class PurchaseReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         if (! auth()->user()->can('purchase.view')) {
             abort(403, 'Unauthorized action.');
@@ -389,7 +391,7 @@ class PurchaseReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('purchase.delete')) {
             abort(403, 'Unauthorized action.');

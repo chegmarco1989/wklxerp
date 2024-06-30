@@ -2,6 +2,8 @@
 
 namespace Modules\AssetManagement\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Business;
 use App\NotificationTemplate;
 use App\User;
@@ -34,7 +36,7 @@ class AssetSettingsController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -91,7 +93,7 @@ class AssetSettingsController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('assetmanagement::create');
     }
@@ -101,7 +103,7 @@ class AssetSettingsController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $is_admin = $this->moduleUtil->is_admin(auth()->user());
         $business_id = request()->session()->get('user.business_id');
@@ -168,7 +170,7 @@ class AssetSettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('assetmanagement::show');
     }
@@ -179,7 +181,7 @@ class AssetSettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('assetmanagement::edit');
     }
@@ -190,7 +192,7 @@ class AssetSettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -201,7 +203,7 @@ class AssetSettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

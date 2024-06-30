@@ -2,6 +2,8 @@
 
 namespace Modules\Manufacturing\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\BusinessLocation;
 use App\Media;
 use App\Transaction;
@@ -54,7 +56,7 @@ class ProductionController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_production')) {
@@ -152,7 +154,7 @@ class ProductionController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_production')) {
@@ -172,7 +174,7 @@ class ProductionController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_production')) {
@@ -375,7 +377,7 @@ class ProductionController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_production')) {
@@ -499,7 +501,7 @@ class ProductionController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_production')) {
@@ -633,7 +635,7 @@ class ProductionController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_production')) {
@@ -836,7 +838,7 @@ class ProductionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_production')) {
@@ -870,7 +872,7 @@ class ProductionController extends Controller
      *
      * @return Response
      */
-    public function getManufacturingReport()
+    public function getManufacturingReport(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 

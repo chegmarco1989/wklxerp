@@ -2,6 +2,7 @@
 
 namespace Modules\Cms\Http\Controllers;
 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -34,7 +35,7 @@ class CmsController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $testimonials = $this->cmsUtil->getPageByType('testimonial');
         $page = $this->cmsUtil->getPageByLayout('home');
@@ -50,7 +51,7 @@ class CmsController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('cms::create');
     }
@@ -60,7 +61,7 @@ class CmsController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
@@ -71,7 +72,7 @@ class CmsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('cms::show');
     }
@@ -82,7 +83,7 @@ class CmsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('cms::edit');
     }
@@ -93,7 +94,7 @@ class CmsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -104,12 +105,12 @@ class CmsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }
 
-    public function getBlogList()
+    public function getBlogList(): View
     {
         $blogs = CmsPage::where('type', 'blog')
             ->orderBy('priority', 'asc')
@@ -120,7 +121,7 @@ class CmsController extends Controller
             ->with(compact('blogs'));
     }
 
-    public function viewBlog(Request $request)
+    public function viewBlog(Request $request): View
     {
         $id = $this->cmsUtil->findIdFromGivenUrl($request->url());
 
@@ -132,7 +133,7 @@ class CmsController extends Controller
             ->with(compact('blog'));
     }
 
-    public function contactUs(Request $request)
+    public function contactUs(Request $request): View
     {
         $page = $this->cmsUtil->getPageByLayout('contact');
 

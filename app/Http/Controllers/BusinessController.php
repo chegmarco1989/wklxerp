@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Business;
 use App\Currency;
 use App\Notifications\TestEmailNotification;
@@ -271,7 +272,7 @@ class BusinessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getBusinessSettings()
+    public function getBusinessSettings(): View
     {
         if (! auth()->user()->can('business_settings.access')) {
             abort(403, 'Unauthorized action.');

@@ -26,7 +26,7 @@ class Reminder extends Model
      * @param  array  $data
      * @return array
      */
-    public static function getReminders($data)
+    public static function getReminders(array $data): array
     {
         $reminders = Reminder::where('business_id', $data['business_id'])
             ->where('user_id', $data['user_id'])

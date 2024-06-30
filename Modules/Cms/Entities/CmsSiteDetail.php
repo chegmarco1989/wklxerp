@@ -34,7 +34,7 @@ class CmsSiteDetail extends Model
      *
      * @return string
      */
-    public function getLogoPathAttribute()
+    public function getLogoPathAttribute(): string
     {
         $logo_path = null;
         $logo = CmsSiteDetail::getValue('logo');

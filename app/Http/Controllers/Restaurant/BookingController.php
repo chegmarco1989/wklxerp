@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Restaurant;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\CustomerGroup;
@@ -161,7 +162,7 @@ class BookingController extends Controller
      * @param  \int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');

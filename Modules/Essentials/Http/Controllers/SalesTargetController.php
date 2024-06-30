@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use DB;
@@ -30,7 +31,7 @@ class SalesTargetController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module')) && ! auth()->user()->can('essentials.access_sales_target')) {
@@ -71,7 +72,7 @@ class SalesTargetController extends Controller
      *
      * @return Response
      */
-    public function setSalesTarget($id)
+    public function setSalesTarget($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module')) && ! auth()->user()->can('essentials.access_sales_target')) {
@@ -92,7 +93,7 @@ class SalesTargetController extends Controller
      *
      * @return Response
      */
-    public function saveSalesTarget(Request $request)
+    public function saveSalesTarget(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module')) && ! auth()->user()->can('essentials.access_sales_target')) {

@@ -139,7 +139,7 @@ class ModulesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -150,7 +150,7 @@ class ModulesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         //
     }
@@ -200,7 +200,7 @@ class ModulesController extends Controller
      * @param  string  $module_name
      * @return \Illuminate\Http\Response
      */
-    public function destroy($module_name)
+    public function destroy(string $module_name)
     {
         if (! auth()->user()->can('manage_modules')) {
             abort(403, 'Unauthorized action.');

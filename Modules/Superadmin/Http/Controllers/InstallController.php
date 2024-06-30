@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\System;
 use Composer\Semver\Comparator;
 use Illuminate\Http\Response;
@@ -22,7 +23,7 @@ class InstallController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -60,7 +61,7 @@ class InstallController extends Controller
     }
 
     //Updating
-    public function update()
+    public function update(): RedirectResponse
     {
         //Check if superadmin_version is same as appVersion then 404
         //If appVersion > superadmin_version - run update script.
@@ -111,7 +112,7 @@ class InstallController extends Controller
      *
      * @return Response
      */
-    public function uninstall()
+    public function uninstall(): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

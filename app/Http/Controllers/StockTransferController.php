@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Events\StockTransferCreatedOrModified;
 use App\PurchaseLine;
@@ -364,7 +365,7 @@ class StockTransferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (! auth()->user()->can('purchase.view')) {
             abort(403, 'Unauthorized action.');
@@ -427,7 +428,7 @@ class StockTransferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('purchase.delete')) {
             abort(403, 'Unauthorized action.');
@@ -596,7 +597,7 @@ class StockTransferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -652,7 +653,7 @@ class StockTransferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('purchase.create')) {
             abort(403, 'Unauthorized action.');
@@ -864,7 +865,7 @@ class StockTransferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, int $id)
     {
         if (! auth()->user()->can('purchase.update')) {
             abort(403, 'Unauthorized action.');

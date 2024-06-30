@@ -2,6 +2,7 @@
 
 namespace Modules\Hms\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class ExtraController extends Controller
      *
      * @return Renderable
      */
-    public function index()
+    public function index(): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -65,7 +66,7 @@ class ExtraController extends Controller
      *
      * @return Renderable
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -88,7 +89,7 @@ class ExtraController extends Controller
      *
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): Renderable
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -133,7 +134,7 @@ class ExtraController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('hms::show');
     }
@@ -144,7 +145,7 @@ class ExtraController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
 
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
@@ -173,7 +174,7 @@ class ExtraController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Renderable
     {
 
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
@@ -215,7 +216,7 @@ class ExtraController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id): Renderable
     {
 
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {

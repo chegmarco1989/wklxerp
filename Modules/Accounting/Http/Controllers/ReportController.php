@@ -2,6 +2,7 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Utils\BusinessUtil;
 use App\Utils\ModuleUtil;
@@ -35,7 +36,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -62,7 +63,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function trialBalance()
+    public function trialBalance(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -103,7 +104,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function balanceSheet()
+    public function balanceSheet(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -164,7 +165,7 @@ class ReportController extends Controller
             ->with(compact('assets', 'liabilities', 'equities', 'start_date', 'end_date'));
     }
 
-    public function accountReceivableAgeingReport()
+    public function accountReceivableAgeingReport(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -184,7 +185,7 @@ class ReportController extends Controller
             ->with(compact('report_details', 'business_locations'));
     }
 
-    public function accountPayableAgeingReport()
+    public function accountPayableAgeingReport(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -203,7 +204,7 @@ class ReportController extends Controller
             ->with(compact('report_details', 'business_locations'));
     }
 
-    public function accountReceivableAgeingDetails()
+    public function accountReceivableAgeingDetails(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -224,7 +225,7 @@ class ReportController extends Controller
             ->with(compact('business_locations', 'report_details'));
     }
 
-    public function accountPayableAgeingDetails()
+    public function accountPayableAgeingDetails(): View
     {
         $business_id = request()->session()->get('user.business_id');
 

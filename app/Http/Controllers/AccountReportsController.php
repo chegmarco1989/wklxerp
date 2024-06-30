@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Account;
 use App\AccountTransaction;
 use App\BusinessLocation;
@@ -33,7 +34,7 @@ class AccountReportsController extends Controller
      *
      * @return Response
      */
-    public function balanceSheet()
+    public function balanceSheet(): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -101,7 +102,7 @@ class AccountReportsController extends Controller
      *
      * @return Response
      */
-    public function trialBalance()
+    public function trialBalance(): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -150,7 +151,7 @@ class AccountReportsController extends Controller
      *
      * @return Obj
      */
-    private function getAccountBalance($business_id, $end_date, $account_type = 'others', $location_id = null)
+    private function getAccountBalance($business_id, $end_date, $account_type = 'others', $location_id = null): Obj
     {
         $query = Account::leftjoin(
             'account_transactions as AT',
@@ -223,7 +224,7 @@ class AccountReportsController extends Controller
      *
      * @return Response
      */
-    public function paymentAccountReport()
+    public function paymentAccountReport(): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -364,7 +365,7 @@ class AccountReportsController extends Controller
      *
      * @return Response
      */
-    public function getLinkAccount($id)
+    public function getLinkAccount($id): View
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -385,7 +386,7 @@ class AccountReportsController extends Controller
      *
      * @return Response
      */
-    public function postLinkAccount(Request $request)
+    public function postLinkAccount(Request $request): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');

@@ -29,7 +29,7 @@ class DeleteAccountTransaction
      * @param  object  $event
      * @return void
      */
-    public function handle($event): void
+    public function handle(object $event): void
     {
         //Add contact advance if exists
         if ($event->transactionPayment->method == 'advance') {

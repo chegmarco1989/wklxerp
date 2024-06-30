@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Account;
 use App\BusinessLocation;
 use App\InvoiceLayout;
@@ -213,7 +214,7 @@ class BusinessLocationController extends Controller
      * @param  \App\StoreFront  $storeFront
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('business_settings.access')) {
             abort(403, 'Unauthorized action.');
@@ -338,7 +339,7 @@ class BusinessLocationController extends Controller
      * @param  int  $location_id
      * @return json
      */
-    public function activateDeactivateLocation($location_id)
+    public function activateDeactivateLocation(int $location_id): json
     {
         if (! auth()->user()->can('business_settings.access')) {
             abort(403, 'Unauthorized action.');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\BusinessLocation;
 use App\Contact;
 use App\Product;
@@ -54,7 +56,7 @@ class ImportSalesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('sell.create')) {
             abort(403, 'Unauthorized action.');
@@ -160,7 +162,7 @@ class ImportSalesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function import(Request $request)
+    public function import(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('sell.create')) {
             abort(403, 'Unauthorized action.');
@@ -543,7 +545,7 @@ class ImportSalesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function revertSaleImport($batch)
+    public function revertSaleImport($batch): RedirectResponse
     {
         if (! auth()->user()->can('sell.delete')) {
             abort(403, 'Unauthorized action.');

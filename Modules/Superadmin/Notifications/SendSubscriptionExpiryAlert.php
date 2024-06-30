@@ -69,7 +69,7 @@ class SendSubscriptionExpiryAlert extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase($notifiable): array
     {
         return [
             'days_left' => $this->days_left,
@@ -82,7 +82,7 @@ class SendSubscriptionExpiryAlert extends Notification
      * @param  mixed  $notifiable
      * @return BroadcastMessage
      */
-    public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
             'title' => '',

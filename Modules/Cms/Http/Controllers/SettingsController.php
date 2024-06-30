@@ -2,6 +2,7 @@
 
 namespace Modules\Cms\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,7 +30,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $details = CmsSiteDetail::getSiteDetails();
@@ -44,7 +45,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('cms::create');
     }
@@ -54,7 +55,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //check if app is in demo & disable action
         $notAllowedInDemo = $this->commonUtil->notAllowedInDemo();
@@ -138,7 +139,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('cms::show');
     }
@@ -149,7 +150,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('cms::edit');
     }
@@ -160,7 +161,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -171,7 +172,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -33,7 +34,7 @@ class Product extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute(): string
     {
         if (! empty($this->image)) {
             $image_url = asset('/uploads/img/'.rawurlencode($this->image));
@@ -49,7 +50,7 @@ class Product extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
+    public function getImagePathAttribute(): string
     {
         if (! empty($this->image)) {
             $image_path = public_path('uploads').'/'.config('constants.product_img_path').'/'.$this->image;
@@ -151,7 +152,7 @@ class Product extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('products.is_inactive', 0);
     }
@@ -162,7 +163,7 @@ class Product extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeInactive($query)
+    public function scopeInactive(Builder $query): Builder
     {
         return $query->where('products.is_inactive', 1);
     }
@@ -173,7 +174,7 @@ class Product extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeProductForSales($query)
+    public function scopeProductForSales(Builder $query): Builder
     {
         return $query->where('not_for_selling', 0);
     }
@@ -184,7 +185,7 @@ class Product extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeProductNotForSales($query)
+    public function scopeProductNotForSales(Builder $query): Builder
     {
         return $query->where('not_for_selling', 1);
     }
@@ -200,7 +201,7 @@ class Product extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForLocation($query, $location_id)
+    public function scopeForLocation(Builder $query, $location_id): Builder
     {
         return $query->where(function ($q) use ($location_id) {
             $q->whereHas('product_locations', function ($query) use ($location_id) {

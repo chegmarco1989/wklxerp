@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Category;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
@@ -92,7 +93,7 @@ class TaxonomyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $category_type = request()->get('type');
         if ($category_type == 'product' && ! auth()->user()->can('category.create')) {
@@ -173,7 +174,7 @@ class TaxonomyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $category_type = request()->get('type');
         if ($category_type == 'product' && ! auth()->user()->can('category.update')) {
@@ -211,7 +212,7 @@ class TaxonomyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (request()->ajax()) {
             try {
@@ -256,7 +257,7 @@ class TaxonomyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (request()->ajax()) {
             try {
@@ -308,7 +309,7 @@ class TaxonomyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getTaxonomyIndexPage(Request $request)
+    public function getTaxonomyIndexPage(Request $request): View
     {
         if (request()->ajax()) {
             $category_type = $request->get('category_type');

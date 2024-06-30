@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\BusinessLocation;
 use App\Events\UserCreatedOrModified;
 use App\User;
@@ -121,7 +123,7 @@ class ManageUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('user.create')) {
             abort(403, 'Unauthorized action.');
@@ -160,7 +162,7 @@ class ManageUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (! auth()->user()->can('user.view')) {
             abort(403, 'Unauthorized action.');
@@ -191,7 +193,7 @@ class ManageUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('user.update')) {
             abort(403, 'Unauthorized action.');
@@ -231,7 +233,7 @@ class ManageUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         //Disable in demo
         $notAllowed = $this->moduleUtil->notAllowedInDemo();
@@ -371,7 +373,7 @@ class ManageUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         //Disable in demo
         $notAllowed = $this->moduleUtil->notAllowedInDemo();
@@ -416,7 +418,7 @@ class ManageUserController extends Controller
      * @param  int  $business_id
      * @return array $roles
      */
-    private function getRolesArray($business_id)
+    private function getRolesArray(int $business_id): array
     {
         $roles_array = Role::where('business_id', $business_id)->get()->pluck('name', 'id');
         $roles = [];
@@ -438,7 +440,7 @@ class ManageUserController extends Controller
      *
      * @param  int  $id
      */
-    public function signInAsUser($id)
+    public function signInAsUser(int $id): RedirectResponse
     {
         if (! auth()->user()->can('superadmin') && empty(session('previous_user_id'))) {
             abort(403, 'Unauthorized action.');

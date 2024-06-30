@@ -285,7 +285,7 @@ class DataController extends Controller
      *                       $location_id
      * @return decimal
      */
-    public function grossProfit($data)
+    public function grossProfit($data): decimal
     {
         $business_id = $data['business_id'];
         $location_id = ! empty($data['location_id']) ? $data['location_id'] : null;
@@ -318,7 +318,7 @@ class DataController extends Controller
      * @param  int  $location_id  = null
      * @return array
      */
-    public function get_hms_total($business_id, $start_date = null, $end_date = null, $location_id = null, $user_id = null)
+    public function get_hms_total(int $business_id, string $start_date = null, string $end_date = null, int $location_id = null, $user_id = null)
     {
 
         $transaction = Transaction::where('business_id', $business_id)

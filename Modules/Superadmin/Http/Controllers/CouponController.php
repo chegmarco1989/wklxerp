@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Business;
 use App\Utils\Util;
 use Illuminate\Contracts\Support\Renderable;
@@ -27,7 +28,7 @@ class CouponController extends Controller
      *
      * @return Renderable
      */
-    public function index()
+    public function index(): Renderable
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -72,7 +73,7 @@ class CouponController extends Controller
      *
      * @return Renderable
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -93,7 +94,7 @@ class CouponController extends Controller
      *
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): Renderable
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -135,7 +136,7 @@ class CouponController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('superadmin::show');
     }
@@ -146,7 +147,7 @@ class CouponController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -169,7 +170,7 @@ class CouponController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Renderable
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -213,7 +214,7 @@ class CouponController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id): Renderable
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

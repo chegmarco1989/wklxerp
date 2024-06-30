@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Category;
 use App\User;
 use App\Utils\Util;
@@ -33,7 +35,7 @@ class CrmMarketplaceController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->commonUtil->is_admin(auth()->user());
@@ -55,7 +57,7 @@ class CrmMarketplaceController extends Controller
      *
      * @return Response
      */
-    public function save(Request $request)
+    public function save(Request $request): RedirectResponse
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 
@@ -86,7 +88,7 @@ class CrmMarketplaceController extends Controller
      *
      * @return Response
      */
-    public function importLeads(Request $request)
+    public function importLeads(Request $request): RedirectResponse
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 

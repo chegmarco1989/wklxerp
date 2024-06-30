@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Category;
 use App\User;
@@ -383,7 +384,7 @@ class DataController extends Controller
      *
      * @param  array  $data
      */
-    public function moduleViewPartials($data)
+    public function moduleViewPartials(array $data): View
     {
         if ($data['view'] == 'manage_user.create' || $data['view'] == 'manage_user.edit') {
             $business_id = session()->get('business.id');
@@ -420,7 +421,7 @@ class DataController extends Controller
      *
      * @param  array  $data['event'  => 'Event name', 'model_instance' => 'Model instance']
      */
-    public function afterModelSaved($data)
+    public function afterModelSaved(array $data)
     {
         if ($data['event'] = 'user_saved') {
             $user = $data['model_instance'];
@@ -492,12 +493,12 @@ class DataController extends Controller
      * @return array
      */
     private function __getTotalPayroll(
-        $business_id,
-        $start_date = null,
-        $end_date = null,
-        $location_id = null,
+        int $business_id,
+        string $start_date = null,
+        string $end_date = null,
+        int $location_id = null,
         $user_id = null
-    ) {
+    ): array {
         $transactionUtil = new TransactionUtil();
 
         $transaction_totals = $transactionUtil->getTransactionTotals(
@@ -518,7 +519,7 @@ class DataController extends Controller
      * @param  array  $data
      * @return array
      */
-    public function calendarEvents($data)
+    public function calendarEvents(array $data)
     {
         $events = [];
         if (in_array('todo', $data['events'])) {

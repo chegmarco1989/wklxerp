@@ -2,6 +2,7 @@
 
 namespace Modules\Hms\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Account;
 use App\Business;
 use App\Contact;
@@ -68,7 +69,7 @@ class HmsBookingController extends Controller
      *
      * @return Renderable
      */
-    public function index(Request $request)
+    public function index(Request $request): Renderable
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -206,7 +207,7 @@ class HmsBookingController extends Controller
      *
      * @return Renderable
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -264,7 +265,7 @@ class HmsBookingController extends Controller
      *
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): Renderable
     {
 
         // return $request;
@@ -423,7 +424,7 @@ class HmsBookingController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -461,7 +462,7 @@ class HmsBookingController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -542,7 +543,7 @@ class HmsBookingController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -665,13 +666,13 @@ class HmsBookingController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id): Renderable
     {
         //
     }
 
     // this function return modal for add room during booking
-    public function booking_room_add()
+    public function booking_room_add(): View
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -682,7 +683,7 @@ class HmsBookingController extends Controller
     }
 
     // this function return modal for edit singal room during booking
-    public function booking_room_edit(Request $request)
+    public function booking_room_edit(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -711,7 +712,7 @@ class HmsBookingController extends Controller
     }
 
     // this function return room according to type
-    public function get_room_type_by(Request $request)
+    public function get_room_type_by(Request $request): View
     {
         $type_id = $request->input('type_id');
 
@@ -732,7 +733,7 @@ class HmsBookingController extends Controller
     }
 
     // this function view after select room during booking with calculation
-    public function get_room_detail(Request $request)
+    public function get_room_detail(Request $request): View
     {
         $currentIndex = $request->input('current_index');
         $type = HmsRoomType::find($request->input('type_id'));
@@ -1004,7 +1005,7 @@ class HmsBookingController extends Controller
         $mpdf->Output('booking.pdf', 'I');
     }
 
-    public function get_check_in_out($id)
+    public function get_check_in_out($id): View
     {
 
         $business_id = request()->session()->get('user.business_id');

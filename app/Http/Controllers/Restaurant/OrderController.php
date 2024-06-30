@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Restaurant;
 
+use Illuminate\View\View;
 use App\TransactionSellLine;
 use App\User;
 use App\Utils\RestaurantUtil;
@@ -35,7 +36,7 @@ class OrderController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         // if (!auth()->user()->can('sell.view')) {
         //     abort(403, 'Unauthorized action.');
@@ -70,7 +71,7 @@ class OrderController extends Controller
      *
      * @return json $output
      */
-    public function markAsServed($id)
+    public function markAsServed($id): json
     {
         // if (!auth()->user()->can('sell.update')) {
         //     abort(403, 'Unauthorized action.');
@@ -108,7 +109,7 @@ class OrderController extends Controller
      *
      * @return json $output
      */
-    public function markLineOrderAsServed($id)
+    public function markLineOrderAsServed($id): json
     {
         try {
             $business_id = request()->session()->get('user.business_id');

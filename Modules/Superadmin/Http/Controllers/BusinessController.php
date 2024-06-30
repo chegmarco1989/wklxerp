@@ -41,7 +41,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -219,7 +219,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function create()
+    public function create(): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -257,7 +257,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -346,7 +346,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function show($business_id)
+    public function show($business_id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -367,7 +367,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): Response
     {
         return view('superadmin::edit');
     }
@@ -377,7 +377,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
@@ -386,7 +386,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -442,7 +442,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function toggleActive(Request $request, $business_id, $is_active)
+    public function toggleActive(Request $request, $business_id, $is_active): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -468,7 +468,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function usersList($business_id)
+    public function usersList($business_id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -516,7 +516,7 @@ class BusinessController extends BaseController
      *
      * @return Response
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

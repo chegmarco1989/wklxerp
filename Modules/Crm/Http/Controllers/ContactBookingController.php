@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Restaurant\Booking;
 use App\Utils\Util;
@@ -45,7 +46,7 @@ class ContactBookingController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $user_id = request()->session()->get('user.id');
@@ -89,7 +90,7 @@ class ContactBookingController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('crm::create');
     }
@@ -99,7 +100,7 @@ class ContactBookingController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             if ($request->ajax()) {
@@ -162,7 +163,7 @@ class ContactBookingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('crm::show');
     }
@@ -173,7 +174,7 @@ class ContactBookingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('crm::edit');
     }
@@ -184,7 +185,7 @@ class ContactBookingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -195,7 +196,7 @@ class ContactBookingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

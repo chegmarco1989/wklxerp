@@ -19,7 +19,7 @@ class RestaurantUtil extends Util
      *                         *For new orders order_status is 'received'
      * @return obj $orders
      */
-    public function getAllOrders($business_id, $filter = [])
+    public function getAllOrders(int $business_id, array $filter = []): obj
     {
         $query = Transaction::leftJoin('contacts', 'transactions.contact_id', '=', 'contacts.id')
             ->leftjoin(
@@ -136,7 +136,7 @@ class RestaurantUtil extends Util
      *                         *For new orders order_status is 'received'
      * @return obj $orders
      */
-    public function getLineOrders($business_id, $filter = [])
+    public function getLineOrders(int $business_id, array $filter = []): obj
     {
         $query = TransactionSellLine::with(['modifiers', 'modifiers.product', 'modifiers.variations'])
             ->leftJoin('transactions as t', 't.id', '=', 'transaction_sell_lines.transaction_id')
@@ -212,7 +212,7 @@ class RestaurantUtil extends Util
      * @param  array  $filters
      * @return array
      */
-    public function getBookingsForCalendar($filters)
+    public function getBookingsForCalendar(array $filters): array
     {
         $start_date = request()->start;
         $end_date = request()->end;

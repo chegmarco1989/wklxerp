@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +33,7 @@ class BusinessLocation extends Model
      * @param  array  $receipt_printer_type_attribute  =
      * @return array
      */
-    public static function forDropdown($business_id, $show_all = false, $receipt_printer_type_attribute = false, $append_id = true, $check_permission = true)
+    public static function forDropdown(int $business_id, bool $show_all = false, array $receipt_printer_type_attribute = false, $append_id = true, $check_permission = true): array
     {
         $query = BusinessLocation::where('business_id', $business_id)->Active();
 
@@ -102,7 +103,7 @@ class BusinessLocation extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', 1);
     }

@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Entities;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,7 +30,7 @@ class Subscription extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeApproved($query)
+    public function scopeApproved(Builder $query): Builder
     {
         return $query->where('status', 'approved');
     }
@@ -59,7 +60,7 @@ class Subscription extends Model
      * @param  $business_id  int
      * @return Response
      */
-    public static function active_subscription($business_id)
+    public static function active_subscription($business_id): Response
     {
         $date_today = \Carbon::today()->toDateString();
 
@@ -78,7 +79,7 @@ class Subscription extends Model
      * @param  $business_id  int
      * @return Response
      */
-    public static function upcoming_subscriptions($business_id)
+    public static function upcoming_subscriptions($business_id): Response
     {
         $date_today = \Carbon::today();
 
@@ -96,7 +97,7 @@ class Subscription extends Model
      * @param  $business_id  int
      * @return Response
      */
-    public static function waiting_approval($business_id)
+    public static function waiting_approval($business_id): Response
     {
         $subscriptions = Subscription::where('business_id', $business_id)
             ->whereNull('start_date')
@@ -132,7 +133,7 @@ class Subscription extends Model
      *
      * @return array
      */
-    public static function package_subscription_status()
+    public static function package_subscription_status(): array
     {
         return ['approved' => trans('superadmin::lang.approved'), 'declined' => trans('superadmin::lang.declined'), 'waiting' => trans('superadmin::lang.waiting')];
     }

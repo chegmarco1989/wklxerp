@@ -2,6 +2,7 @@
 
 namespace Modules\Project\Http\Controllers;
 
+use Illuminate\View\View;
 use App\DocumentAndNote;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,7 +19,7 @@ class ActivityController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (request()->ajax()) {
             try {
@@ -68,7 +69,7 @@ class ActivityController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('project::create');
     }
@@ -78,7 +79,7 @@ class ActivityController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
     }
 
@@ -87,7 +88,7 @@ class ActivityController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('project::show');
     }
@@ -97,7 +98,7 @@ class ActivityController extends Controller
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         return view('project::edit');
     }
@@ -107,7 +108,7 @@ class ActivityController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
@@ -116,7 +117,7 @@ class ActivityController extends Controller
      *
      * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
     }
 }

@@ -27,6 +27,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Account;
 use App\Brands;
 use App\Business;
@@ -115,7 +117,7 @@ class SellPosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('sell.view') && ! auth()->user()->can('sell.create')) {
             abort(403, 'Unauthorized action.');
@@ -704,15 +706,15 @@ class SellPosController extends Controller
      * @return array
      */
     private function receiptContent(
-        $business_id,
-        $location_id,
-        $transaction_id,
-        $printer_type = null,
+        int $business_id,
+        int $location_id,
+        int $transaction_id,
+        string $printer_type = null,
         $is_package_slip = false,
         $from_pos_screen = true,
         $invoice_layout_id = null,
         $is_delivery_note = false
-    ) {
+    ): array {
         $output = ['is_enabled' => false,
             'print_type' => 'browser',
             'html_content' => null,
@@ -778,7 +780,7 @@ class SellPosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -789,7 +791,7 @@ class SellPosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -1091,7 +1093,7 @@ class SellPosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('sell.update') && ! auth()->user()->can('direct_sell.access') &&
         ! auth()->user()->can('so.update') && ! auth()->user()->can('edit_pos_payment')) {
@@ -1529,7 +1531,7 @@ class SellPosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('sell.delete') && ! auth()->user()->can('direct_sell.delete') && ! auth()->user()->can('so.delete')) {
             abort(403, 'Unauthorized action.');
@@ -1722,7 +1724,7 @@ class SellPosController extends Controller
      * @param  int  $location_id
      * @return \Illuminate\Http\Response
      */
-    public function getProductRow($variation_id, $location_id)
+    public function getProductRow(int $variation_id, int $location_id)
     {
         $output = [];
 
@@ -1779,7 +1781,7 @@ class SellPosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getPaymentRow(Request $request)
+    public function getPaymentRow(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -1805,7 +1807,7 @@ class SellPosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecentTransactions(Request $request)
+    public function getRecentTransactions(Request $request): View
     {
         $business_id = $request->session()->get('user.business_id');
         $user_id = $request->session()->get('user.id');
@@ -1909,7 +1911,7 @@ class SellPosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProductSuggestion(Request $request)
+    public function getProductSuggestion(Request $request): View
     {
         if ($request->ajax()) {
             $category_id = $request->get('category_id');
@@ -2024,7 +2026,7 @@ class SellPosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showInvoiceUrl($id)
+    public function showInvoiceUrl(int $id): View
     {
         // if (!auth()->user()->can('sell.update')) {
         //     abort(403, 'Unauthorized action.');
@@ -2047,7 +2049,7 @@ class SellPosController extends Controller
      * @param  string  $token
      * @return \Illuminate\Http\Response
      */
-    public function showInvoice($token)
+    public function showInvoice(string $token): View
     {
         $transaction = Transaction::where('invoice_token', $token)->with(['business', 'location'])->first();
 
@@ -2076,7 +2078,7 @@ class SellPosController extends Controller
      * @param  string  $token
      * @return \Illuminate\Http\Response
      */
-    public function invoicePayment($token)
+    public function invoicePayment(string $token): View
     {
         $transaction = Transaction::where('invoice_token', $token)->with(['business', 'contact', 'location'])->first();
         $business = $transaction->business;
@@ -2138,7 +2140,7 @@ class SellPosController extends Controller
         return $charge->id;
     }
 
-    public function confirmPayment($id, Request $request)
+    public function confirmPayment($id, Request $request): RedirectResponse
     {
         try {
             $transaction = Transaction::with(['business'])->find($id);
@@ -2365,7 +2367,7 @@ class SellPosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function toggleRecurringInvoices($id)
+    public function toggleRecurringInvoices(int $id)
     {
         if (! auth()->user()->can('sell.create')) {
             abort(403, 'Unauthorized action.');
@@ -2623,7 +2625,7 @@ class SellPosController extends Controller
      *
      * @return array
      */
-    private function __parseWeighingBarcode($scale_barcode)
+    private function __parseWeighingBarcode($scale_barcode): array
     {
         $business_id = session()->get('user.business_id');
 
@@ -2682,7 +2684,7 @@ class SellPosController extends Controller
     /**
      * Converts drafts and quotations to invoice
      */
-    public function convertToInvoice($id)
+    public function convertToInvoice($id): RedirectResponse
     {
         if (! auth()->user()->can('sell.create') && ! auth()->user()->can('direct_sell.access')) {
             abort(403, 'Unauthorized action.');
@@ -2876,7 +2878,7 @@ class SellPosController extends Controller
     /**
      * Copy quotation
      */
-    public function copyQuotation($id)
+    public function copyQuotation($id): RedirectResponse
     {
         if (! auth()->user()->can('quotation.update')) {
             abort(403, 'Unauthorized action.');
@@ -3048,7 +3050,7 @@ class SellPosController extends Controller
         $mpdf->Output('PACKINGSLIP-'.$receipt_details->invoice_no.'.pdf', 'I');
     }
 
-    public function showServiceStaffAvailibility()
+    public function showServiceStaffAvailibility(): View
     {
         $location_id = request()->input('location_id');
         $business_id = request()->session()->get('user.business_id');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Brands;
 use App\BusinessLocation;
 use App\Category;
@@ -104,7 +106,7 @@ class DiscountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');
@@ -185,7 +187,7 @@ class DiscountController extends Controller
      * @param  \App\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');
@@ -317,7 +319,7 @@ class DiscountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function massDeactivate(Request $request)
+    public function massDeactivate(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');
@@ -358,7 +360,7 @@ class DiscountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function activate($id)
+    public function activate(int $id)
     {
         if (! auth()->user()->can('discount.access')) {
             abort(403, 'Unauthorized action.');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Account;
 use App\Business;
 use App\BusinessLocation;
@@ -781,7 +783,7 @@ class SellController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         // if (!auth()->user()->can('sell.view') && !auth()->user()->can('direct_sell.access') && !auth()->user()->can('view_own_sell_only')) {
         //     abort(403, 'Unauthorized action.');
@@ -873,7 +875,7 @@ class SellController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if (! auth()->user()->can('direct_sell.update') && ! auth()->user()->can('so.update')) {
             abort(403, 'Unauthorized action.');
@@ -1175,7 +1177,7 @@ class SellController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getDrafts()
+    public function getDrafts(): View
     {
         if (! auth()->user()->can('draft.view_all') && ! auth()->user()->can('draft.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -1197,7 +1199,7 @@ class SellController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getQuotations()
+    public function getQuotations(): View
     {
         if (! auth()->user()->can('quotation.view_all') && ! auth()->user()->can('quotation.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -1440,7 +1442,7 @@ class SellController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function duplicateSell($id)
+    public function duplicateSell(int $id): RedirectResponse
     {
         if (! auth()->user()->can('sell.create')) {
             abort(403, 'Unauthorized action.');
@@ -1518,7 +1520,7 @@ class SellController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editShipping($id)
+    public function editShipping(int $id): View
     {
         $is_admin = $this->businessUtil->is_admin(auth()->user());
 
@@ -1597,7 +1599,7 @@ class SellController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function shipments()
+    public function shipments(): View
     {
         $is_admin = $this->businessUtil->is_admin(auth()->user());
 
@@ -1628,7 +1630,7 @@ class SellController extends Controller
             ->with(compact('business_locations', 'customers', 'sales_representative', 'is_service_staff_enabled', 'service_staffs', 'delevery_person'));
     }
 
-    public function viewMedia($model_id)
+    public function viewMedia($model_id): View
     {
         if (request()->ajax()) {
             $model_type = request()->input('model_type');

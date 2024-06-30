@@ -2,6 +2,8 @@
 
 namespace Modules\AssetManagement\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Category;
 use App\Media;
@@ -52,7 +54,7 @@ class AssetController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -250,7 +252,7 @@ class AssetController extends Controller
      *
      * @return Response
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         if (! auth()->user()->can('asset.create')) {
             abort(403, 'Unauthorized action.');
@@ -278,7 +280,7 @@ class AssetController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('asset.create')) {
             abort(403, 'Unauthorized action.');
@@ -380,7 +382,7 @@ class AssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('assetmanagement::show');
     }
@@ -391,7 +393,7 @@ class AssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('asset.update')) {
             abort(403, 'Unauthorized action.');
@@ -424,7 +426,7 @@ class AssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         if (! auth()->user()->can('asset.update')) {
             abort(403, 'Unauthorized action.');
@@ -540,7 +542,7 @@ class AssetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         if (! auth()->user()->can('asset.delete')) {
             abort(403, 'Unauthorized action.');
@@ -577,7 +579,7 @@ class AssetController extends Controller
         }
     }
 
-    public function dashboard()
+    public function dashboard(): View
     {
         $business_id = request()->session()->get('user.business_id');
 

@@ -27,7 +27,7 @@ class SellingPriceGroup extends Model
      * @param  int  $business_id
      * @return array
      */
-    public static function forDropdown($business_id, $with_default = true)
+    public static function forDropdown(int $business_id, $with_default = true): array
     {
         $price_groups = SellingPriceGroup::where('business_id', $business_id)
             ->active()
@@ -54,7 +54,7 @@ class SellingPriceGroup extends Model
      * @param  int  $business_id
      * @return array
      */
-    public static function countSellingPriceGroups($business_id)
+    public static function countSellingPriceGroups(int $business_id): array
     {
         $count = SellingPriceGroup::where('business_id', $business_id)
             ->active()

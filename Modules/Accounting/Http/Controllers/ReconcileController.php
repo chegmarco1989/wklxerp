@@ -2,6 +2,7 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -13,7 +14,7 @@ class ReconcileController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         return view('accounting::index');
     }
@@ -23,7 +24,7 @@ class ReconcileController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('accounting::create');
     }
@@ -33,7 +34,7 @@ class ReconcileController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
@@ -44,7 +45,7 @@ class ReconcileController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('accounting::show');
     }
@@ -55,7 +56,7 @@ class ReconcileController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('accounting::edit');
     }
@@ -66,7 +67,7 @@ class ReconcileController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -77,7 +78,7 @@ class ReconcileController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

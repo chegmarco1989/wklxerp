@@ -49,7 +49,7 @@ class RecurringInvoiceNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase($notifiable): array
     {
         return [
             'transaction_id' => $this->invoice->id,

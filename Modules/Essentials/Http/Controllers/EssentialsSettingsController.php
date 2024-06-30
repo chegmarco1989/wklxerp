@@ -2,6 +2,8 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Business;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ class EssentialsSettingsController extends Controller
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -53,7 +55,7 @@ class EssentialsSettingsController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);

@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Media;
 use App\Utils\ModuleUtil;
 use DB;
@@ -37,7 +39,7 @@ class ProposalController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -91,7 +93,7 @@ class ProposalController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('crm::create');
     }
@@ -101,7 +103,7 @@ class ProposalController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -176,7 +178,7 @@ class ProposalController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -203,7 +205,7 @@ class ProposalController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('crm::edit');
     }
@@ -214,7 +216,7 @@ class ProposalController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -225,7 +227,7 @@ class ProposalController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

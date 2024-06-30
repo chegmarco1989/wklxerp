@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\DocumentAndNote;
 use App\Media;
 use App\User;
@@ -151,7 +152,7 @@ class DocumentAndNoteController extends Controller
      *
      * @return array of permissions
      */
-    private function __getPermission($business_id, $notable_id, $notable_type)
+    private function __getPermission($business_id, $notable_id, $notable_type): array
     {
         $permissions = [];
 
@@ -189,7 +190,7 @@ class DocumentAndNoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         //model id like project_id, user_id
         $notable_id = request()->get('notable_id');
@@ -262,7 +263,7 @@ class DocumentAndNoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         //model id like project_id, user_id
         $notable_id = request()->get('notable_id');
@@ -286,7 +287,7 @@ class DocumentAndNoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         //model id like project_id, user_id
         $notable_id = request()->get('notable_id');
@@ -309,7 +310,7 @@ class DocumentAndNoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         try {
 
@@ -371,7 +372,7 @@ class DocumentAndNoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         try {
             $business_id = request()->session()->get('user.business_id');
@@ -445,7 +446,7 @@ class DocumentAndNoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getDocAndNoteIndexPage(Request $request)
+    public function getDocAndNoteIndexPage(Request $request): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');

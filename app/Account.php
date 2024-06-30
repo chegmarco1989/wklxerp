@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Utils\Util;
 use DB;
@@ -95,7 +96,7 @@ class Account extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNotClosed($query)
+    public function scopeNotClosed(Builder $query): Builder
     {
         return $query->where('is_closed', 0);
     }
@@ -114,7 +115,7 @@ class Account extends Model
     //     });
     // }
 
-    public static function accountTypes()
+    public static function accountTypes(): Builder
     {
         return [
             '' => __('account.not_applicable'),

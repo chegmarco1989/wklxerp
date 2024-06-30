@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\SellingPriceGroup;
 use App\TypesOfService;
@@ -73,7 +74,7 @@ class TypesOfServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('access_types_of_service')) {
             abort(403, 'Unauthorized action.');
@@ -139,7 +140,7 @@ class TypesOfServiceController extends Controller
      * @param  \App\TypesOfService  $typesOfService
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('access_types_of_service')) {
             abort(403, 'Unauthorized action.');

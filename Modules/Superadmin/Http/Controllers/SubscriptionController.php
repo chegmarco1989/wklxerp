@@ -46,7 +46,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (! auth()->user()->can('superadmin.access_package_subscriptions')) {
             abort(403, 'Unauthorized action.');
@@ -82,7 +82,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    public function pay(Request $request, $package_id, $form_register = null)
+    public function pay(Request $request, $package_id, $form_register = null): Response
     {
         if (! auth()->user()->can('superadmin.access_package_subscriptions')) {
             abort(403, 'Unauthorized action.');
@@ -247,7 +247,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    public function registerPay($package_id, Request $request)
+    public function registerPay($package_id, Request $request): Response
     {
         return $this->pay($request, $package_id, 1);
     }
@@ -257,7 +257,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    public function confirm($package_id, Request $request)
+    public function confirm($package_id, Request $request): Response
     {
         if (! auth()->user()->can('superadmin.access_package_subscriptions')) {
             abort(403, 'Unauthorized action.');
@@ -324,7 +324,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    protected function confirm_pesapal($transaction_id, $request)
+    protected function confirm_pesapal($transaction_id, $request): Response
     {
         $merchant_reference = $request->merchant_reference;
         $pesapal_session = $request->session()->pull('pesapal');
@@ -351,7 +351,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    protected function pay_stripe($business_id, $business_name, $package, $request)
+    protected function pay_stripe($business_id, $business_name, $package, $request): Response
     {
         Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -385,7 +385,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    protected function pay_offline($business_id, $business_name, $package, $request)
+    protected function pay_offline($business_id, $business_name, $package, $request): Response
     {
 
         //Disable in demo
@@ -418,7 +418,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    public function paypalExpressCheckout(Request $request)
+    public function paypalExpressCheckout(Request $request): Response
     {
         $price = $request->input('price');
         $package_name = $request->input('package_name');
@@ -543,7 +543,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    protected function pay_razorpay($business_id, $business_name, $package, $request)
+    protected function pay_razorpay($business_id, $business_name, $package, $request): Response
     {
         $razorpay_payment_id = $request->razorpay_payment_id;
         $razorpay_api = new Api(env('RAZORPAY_KEY_ID'), env('RAZORPAY_KEY_SECRET'));
@@ -563,7 +563,7 @@ class SubscriptionController extends BaseController
      *
      * @return Url
      */
-    public function getRedirectToPaystack()
+    public function getRedirectToPaystack(): Url
     {
         return Paystack::getAuthorizationUrl()->redirectNow();
     }
@@ -573,7 +573,7 @@ class SubscriptionController extends BaseController
      *
      * @return void
      */
-    public function postPaymentPaystackCallback()
+    public function postPaymentPaystackCallback(): void
     {
         $payment = Paystack::getPaymentData();
         $business_id = $payment['data']['metadata']['business_id'];
@@ -608,7 +608,7 @@ class SubscriptionController extends BaseController
      *
      * @return response
      */
-    public function postFlutterwavePaymentCallback(Request $request)
+    public function postFlutterwavePaymentCallback(Request $request): response
     {
         $url = 'https://api.flutterwave.com/v3/transactions/'.$request->get('transaction_id').'/verify';
         $header = [
@@ -667,7 +667,7 @@ class SubscriptionController extends BaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
         if (! auth()->user()->can('superadmin.access_package_subscriptions')) {
             abort(403, 'Unauthorized action.');
@@ -702,7 +702,7 @@ class SubscriptionController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function allSubscriptions()
+    public function allSubscriptions(): Response
     {
         if (! auth()->user()->can('superadmin.access_package_subscriptions')) {
             abort(403, 'Unauthorized action.');

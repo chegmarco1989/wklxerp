@@ -2,6 +2,7 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\Transaction;
@@ -46,7 +47,7 @@ class TransactionController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (request()->ajax()) {
             if (request()->input('datatable') == 'payment') {
@@ -490,7 +491,7 @@ class TransactionController extends Controller
             ->make(true);
     }
 
-    public function map(Request $request)
+    public function map(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -648,7 +649,7 @@ class TransactionController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('accounting::create');
     }
@@ -658,7 +659,7 @@ class TransactionController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
@@ -669,7 +670,7 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('accounting::show');
     }
@@ -680,7 +681,7 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('accounting::edit');
     }
@@ -691,7 +692,7 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -702,7 +703,7 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

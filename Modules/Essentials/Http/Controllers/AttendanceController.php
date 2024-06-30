@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use DB;
@@ -41,7 +42,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -173,7 +174,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -192,7 +193,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -249,7 +250,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -270,7 +271,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -307,7 +308,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -340,7 +341,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function clockInClockOut(Request $request)
+    public function clockInClockOut(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
 
@@ -403,7 +404,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function getUserAttendanceSummary()
+    public function getUserAttendanceSummary(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -479,7 +480,7 @@ class AttendanceController extends Controller
     /**
      * Get attendance summary by shift
      */
-    public function getAttendanceByShift()
+    public function getAttendanceByShift(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -529,7 +530,7 @@ class AttendanceController extends Controller
     /**
      * Get attendance summary by date
      */
-    public function getAttendanceByDate()
+    public function getAttendanceByDate(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -574,7 +575,7 @@ class AttendanceController extends Controller
      *
      * @return Response
      */
-    public function importAttendance(Request $request)
+    public function importAttendance(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -690,7 +691,7 @@ class AttendanceController extends Controller
      * @param  int  $user_id
      * @return Response
      */
-    public function getAttendanceRow($user_id)
+    public function getAttendanceRow(int $user_id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);

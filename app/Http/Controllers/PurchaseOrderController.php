@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Business;
 use App\BusinessLocation;
 use App\Contact;
@@ -243,7 +244,7 @@ class PurchaseOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('purchase_order.create')) {
             abort(403, 'Unauthorized action.');
@@ -439,7 +440,7 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (! auth()->user()->can('purchase_order.view_all') && ! auth()->user()->can('purchase_order.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -502,7 +503,7 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('purchase_order.update')) {
             abort(403, 'Unauthorized action.');
@@ -609,7 +610,7 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('purchase_order.update')) {
             abort(403, 'Unauthorized action.');
@@ -732,7 +733,7 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('purchase_order.delete')) {
             abort(403, 'Unauthorized action.');
@@ -861,7 +862,7 @@ class PurchaseOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getEditPurchaseOrderStatus(Request $request, $id)
+    public function getEditPurchaseOrderStatus(Request $request, $id): View
     {
         $is_admin = $this->businessUtil->is_admin(auth()->user());
         if (! $is_admin) {

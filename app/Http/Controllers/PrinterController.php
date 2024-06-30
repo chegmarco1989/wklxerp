@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Printer;
 use Datatables;
 use Illuminate\Http\Request;
@@ -56,7 +58,7 @@ class PrinterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('access_printers')) {
             abort(403, 'Unauthorized action.');
@@ -74,7 +76,7 @@ class PrinterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('access_printers')) {
             abort(403, 'Unauthorized action.');
@@ -117,7 +119,7 @@ class PrinterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -128,7 +130,7 @@ class PrinterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('access_printers')) {
             abort(403, 'Unauthorized action.');
@@ -150,7 +152,7 @@ class PrinterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         if (! auth()->user()->can('access_printers')) {
             abort(403, 'Unauthorized action.');
@@ -191,7 +193,7 @@ class PrinterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('access_printers')) {
             abort(403, 'Unauthorized action.');

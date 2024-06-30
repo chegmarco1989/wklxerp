@@ -46,7 +46,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->commonUtil->is_admin(auth()->user(), $business_id);
@@ -337,7 +337,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $project_id = request()->get('project_id');
         $project_members = ProjectMember::projectMembersDropdown($project_id);
@@ -353,7 +353,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             $input = $request->only('subject', 'project_id', 'description', 'priority', 'custom_field_1', 'custom_field_2', 'custom_field_3', 'custom_field_4', 'status');
@@ -412,7 +412,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): \Illuminate\View\View
     {
         $project_id = request()->get('project_id');
 
@@ -444,7 +444,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): \Illuminate\View\View
     {
         $project_id = request()->get('project_id');
         $project_task = ProjectTask::with('members')
@@ -464,7 +464,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         try {
             $input = $request->only('subject', 'description', 'priority', 'custom_field_1', 'custom_field_2', 'custom_field_3', 'custom_field_4', 'status');
@@ -523,7 +523,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         try {
             $project_id = request()->get('project_id');
@@ -554,7 +554,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function getTaskStatus()
+    public function getTaskStatus(): \Illuminate\View\View
     {
         $task_id = request()->get('id');
         $project_id = request()->get('project_id');
@@ -571,7 +571,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function postTaskStatus($id)
+    public function postTaskStatus($id): Response
     {
         try {
             $project_id = request()->get('project_id');
@@ -603,7 +603,7 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function postTaskDescription($id)
+    public function postTaskDescription($id): Response
     {
         try {
             $project_id = request()->get('project_id');

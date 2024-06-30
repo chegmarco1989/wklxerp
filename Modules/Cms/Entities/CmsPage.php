@@ -27,7 +27,7 @@ class CmsPage extends Model
      *
      * @return string
      */
-    public function getSlugAttribute()
+    public function getSlugAttribute(): string
     {
         return strtolower(str_replace(' ', '-', $this->title));
     }
@@ -45,7 +45,7 @@ class CmsPage extends Model
      *
      * @return string
      */
-    public function getFeatureImageUrlAttribute()
+    public function getFeatureImageUrlAttribute(): string
     {
         $image_url = null;
 
@@ -61,7 +61,7 @@ class CmsPage extends Model
      *
      * @return string
      */
-    public function getFeatureImagePathAttribute()
+    public function getFeatureImagePathAttribute(): string
     {
         $image_path = null;
 

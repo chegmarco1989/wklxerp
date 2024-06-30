@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\AccountTransaction;
 use App\BusinessLocation;
 use App\Category;
@@ -61,7 +62,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $can_view_all_payroll = auth()->user()->can('essentials.view_all_payroll');
@@ -176,7 +177,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -308,7 +309,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -437,7 +438,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -513,7 +514,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -540,7 +541,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -600,7 +601,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -759,7 +760,7 @@ class PayrollController extends Controller
         }
     }
 
-    public function viewPayrollGroup($id)
+    public function viewPayrollGroup($id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -797,7 +798,7 @@ class PayrollController extends Controller
             ->with(compact('payroll_group', 'month_name', 'year', 'payrolls'));
     }
 
-    public function getEditPayrollGroup($id)
+    public function getEditPayrollGroup($id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || auth()->user()->can('essentials.update_payroll') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -870,7 +871,7 @@ class PayrollController extends Controller
             ->with(compact('month_name', 'transaction_date', 'year', 'payrolls', 'payroll_group', 'action', 'location'));
     }
 
-    public function getUpdatePayrollGroup(Request $request)
+    public function getUpdatePayrollGroup(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || auth()->user()->can('essentials.update_payroll') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -934,7 +935,7 @@ class PayrollController extends Controller
         return redirect()->action([\Modules\Essentials\Http\Controllers\PayrollController::class, 'index'])->with('status', $output);
     }
 
-    public function addPayment($id)
+    public function addPayment($id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -977,7 +978,7 @@ class PayrollController extends Controller
             ->with(compact('payroll_group', 'month_name', 'year', 'payrolls', 'payment_types', 'accounts'));
     }
 
-    public function postAddPayment(Request $request)
+    public function postAddPayment(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -1086,7 +1087,7 @@ class PayrollController extends Controller
      *
      * @return Response
      */
-    public function getMyPayrolls(Request $request)
+    public function getMyPayrolls(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module')) {

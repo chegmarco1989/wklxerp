@@ -249,7 +249,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         $this->commands([
             InstallCommand::class,

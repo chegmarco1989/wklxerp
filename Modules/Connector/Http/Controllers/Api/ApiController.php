@@ -2,6 +2,7 @@
 
 namespace Modules\Connector\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
 class ApiController extends Controller
@@ -32,7 +33,7 @@ class ApiController extends Controller
         return $this->setStatusCode(403)->respondWithError($message);
     }
 
-    public function respond($data)
+    public function respond($data): JsonResponse
     {
         return response()->json($data);
     }

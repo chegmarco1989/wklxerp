@@ -14,7 +14,7 @@ class ContactUtil extends Util
      * @param  int  $business_id
      * @return array/false
      */
-    public function getWalkInCustomer($business_id, $array = true)
+    public function getWalkInCustomer(int $business_id, $array = true)
     {
         $contact = Contact::whereIn('type', ['customer', 'both'])
             ->where('contacts.business_id', $business_id)
@@ -44,7 +44,7 @@ class ContactUtil extends Util
      * @param  int  $customer_id
      * @return array
      */
-    public function getCustomerGroup($business_id, $customer_id)
+    public function getCustomerGroup(int $business_id, int $customer_id): array
     {
         $cg = [];
 
@@ -68,7 +68,7 @@ class ContactUtil extends Util
      * @param  int  $contact_id
      * @return array
      */
-    public function getContactInfo($business_id, $contact_id)
+    public function getContactInfo(int $business_id, int $contact_id): array
     {
         $contact = Contact::where('contacts.id', $contact_id)
             ->where('contacts.business_id', $business_id)

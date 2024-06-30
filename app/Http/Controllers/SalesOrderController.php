@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\Transaction;
@@ -50,7 +51,7 @@ class SalesOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('so.view_own') && ! auth()->user()->can('so.view_all') && ! auth()->user()->can('so.create')) {
             abort(403, 'Unauthorized action.');
@@ -95,7 +96,7 @@ class SalesOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getEditSalesOrderStatus(Request $request, $id)
+    public function getEditSalesOrderStatus(Request $request, $id): View
     {
         $is_admin = $this->businessUtil->is_admin(auth()->user());
         if (! $is_admin) {

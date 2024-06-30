@@ -59,7 +59,7 @@ class DocumentShareNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase($notifiable): array
     {
         return $this->notificationData();
     }
@@ -70,7 +70,7 @@ class DocumentShareNotification extends Notification
      * @param  mixed  $notifiable
      * @return BroadcastMessage
      */
-    public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable): BroadcastMessage
     {
         $notifiction_data = DocumentShare::documentShareNotificationData($this->notificationData());
 

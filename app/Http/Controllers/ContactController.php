@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Business;
 use App\BusinessLocation;
 use App\Contact;
@@ -99,7 +101,7 @@ class ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private function indexSupplier()
+    private function indexSupplier(): Response
     {
         if (! auth()->user()->can('supplier.view') && ! auth()->user()->can('supplier.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -282,7 +284,7 @@ class ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private function indexCustomer()
+    private function indexCustomer(): Response
     {
         if (! auth()->user()->can('customer.view') && ! auth()->user()->can('customer.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -654,7 +656,7 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (! auth()->user()->can('supplier.view') && ! auth()->user()->can('customer.view') && ! auth()->user()->can('customer.view_own') && ! auth()->user()->can('supplier.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -709,7 +711,7 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if (! auth()->user()->can('supplier.update') && ! auth()->user()->can('customer.update') && ! auth()->user()->can('customer.view_own') && ! auth()->user()->can('supplier.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -765,7 +767,7 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (! auth()->user()->can('supplier.update') && ! auth()->user()->can('customer.update') && ! auth()->user()->can('customer.view_own') && ! auth()->user()->can('supplier.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -838,7 +840,7 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('supplier.delete') && ! auth()->user()->can('customer.delete') && ! auth()->user()->can('customer.view_own') && ! auth()->user()->can('supplier.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -896,7 +898,7 @@ class ContactController extends Controller
      * @param  string  $q
      * @return JSON
      */
-    public function getCustomers()
+    public function getCustomers(): JSON
     {
         if (request()->ajax()) {
             $term = request()->input('q', '');
@@ -992,7 +994,7 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function getImportContacts()
+    public function getImportContacts(): View
     {
         if (! auth()->user()->can('supplier.create') && ! auth()->user()->can('customer.create')) {
             abort(403, 'Unauthorized action.');
@@ -1261,7 +1263,7 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function getLedger()
+    public function getLedger(): View
     {
         if (! auth()->user()->can('supplier.view') && ! auth()->user()->can('customer.view') && ! auth()->user()->can('supplier.view_own') && ! auth()->user()->can('customer.view_own')) {
             abort(403, 'Unauthorized action.');
@@ -1569,7 +1571,7 @@ class ContactController extends Controller
     /**
      * Display contact locations on map
      */
-    public function contactMap()
+    public function contactMap(): View
     {
         if (! auth()->user()->can('supplier.view') && ! auth()->user()->can('customer.view')) {
             abort(403, 'Unauthorized action.');
@@ -1594,7 +1596,7 @@ class ContactController extends Controller
             ->with(compact('contacts', 'all_contacts'));
     }
 
-    public function getContactPayments($contact_id)
+    public function getContactPayments($contact_id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (request()->ajax()) {

@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Utils\ModuleUtil;
@@ -32,7 +33,7 @@ class LedgerController extends Controller
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -47,7 +48,7 @@ class LedgerController extends Controller
             ->with(compact('contact'));
     }
 
-    public function getLedger()
+    public function getLedger(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {

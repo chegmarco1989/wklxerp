@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Product;
 use App\PurchaseLine;
@@ -38,7 +39,7 @@ class OpeningStockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function add($product_id)
+    public function add($product_id): View
     {
         if (! auth()->user()->can('product.opening_stock')) {
             abort(403, 'Unauthorized action.');

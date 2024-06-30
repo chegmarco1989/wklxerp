@@ -19,7 +19,7 @@ class AccountingAccountsTransaction extends Model
      *
      * @return obj
      */
-    public static function createTransaction($data)
+    public static function createTransaction($data): obj
     {
         $transaction = new AccountingAccountsTransaction();
 
@@ -41,7 +41,7 @@ class AccountingAccountsTransaction extends Model
      *
      * @return obj
      */
-    public static function updateOrCreateMapTransaction($data)
+    public static function updateOrCreateMapTransaction($data): obj
     {
         $transaction = AccountingAccountsTransaction::updateOrCreate(
             ['transaction_id' => $data['transaction_id'],

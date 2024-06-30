@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Business;
 use App\Charts\CommonChart;
 use App\System;
@@ -19,7 +20,7 @@ class SuperadminController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -59,7 +60,7 @@ class SuperadminController extends Controller
      *
      * @return array
      */
-    protected function _monthly_sell_data()
+    protected function _monthly_sell_data(): array
     {
         $start = Carbon::today()->subYear();
         $end = Carbon::today();
@@ -86,7 +87,7 @@ class SuperadminController extends Controller
      * @param  $end  date
      * @return json
      */
-    public function stats(Request $request)
+    public function stats(Request $request): json
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Nwidart\Menus\MenuItem;
 use Nwidart\Menus\Presenters\Presenter;
 
 class AdminlteCustomPresenter extends Presenter
@@ -44,7 +45,7 @@ class AdminlteCustomPresenter extends Presenter
      * @param  string  $state
      * @return null|string
      */
-    public function getActiveStateOnChild($item, $state = 'active')
+    public function getActiveStateOnChild($item, string $state = 'active'): ?string
     {
         return $item->hasActiveOnChild() ? $state : null;
     }
@@ -90,7 +91,7 @@ class AdminlteCustomPresenter extends Presenter
      * @param  \Nwidart\Menus\MenuItem  $item
      * @return string`
      */
-    public function getMultiLevelDropdownWrapper($item)
+    public function getMultiLevelDropdownWrapper(MenuItem $item)
     {
         return '<li class="treeview'.$this->getActiveStateOnChild($item, ' active').'">
 		          <a href="#">

@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Category;
 use App\User;
 use App\Utils\ModuleUtil;
@@ -47,7 +48,7 @@ class DashboardController extends Controller
      *
      * @return Response
      */
-    public function hrmDashboard()
+    public function hrmDashboard(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -216,7 +217,7 @@ class DashboardController extends Controller
      *
      * @return Response
      */
-    public function essentialsDashboard()
+    public function essentialsDashboard(): View
     {
         return view('essentials::dashboard.essentials_dashboard');
     }
@@ -226,7 +227,7 @@ class DashboardController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('essentials::create');
     }
@@ -236,7 +237,7 @@ class DashboardController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
@@ -247,7 +248,7 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('essentials::show');
     }
@@ -258,7 +259,7 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('essentials::edit');
     }
@@ -269,7 +270,7 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -280,7 +281,7 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

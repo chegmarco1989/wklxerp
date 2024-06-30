@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Account;
 use App\AccountTransaction;
 use App\AccountType;
@@ -37,7 +39,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -194,7 +196,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -215,7 +217,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -267,7 +269,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -483,7 +485,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -509,7 +511,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -549,7 +551,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function destroyAccountTransaction($id)
+    public function destroyAccountTransaction($id): Response
     {
         if (! auth()->user()->can('delete_account_transaction')) {
             abort(403, 'Unauthorized action.');
@@ -590,7 +592,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function close($id)
+    public function close($id): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -626,7 +628,7 @@ class AccountController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function getFundTransfer($id)
+    public function getFundTransfer(int $id): View
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -653,7 +655,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function postFundTransfer(Request $request)
+    public function postFundTransfer(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -724,7 +726,7 @@ class AccountController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function getDeposit($id)
+    public function getDeposit(int $id): View
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -751,7 +753,7 @@ class AccountController extends Controller
      *
      * @return json
      */
-    public function postDeposit(Request $request)
+    public function postDeposit(Request $request): json
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -815,7 +817,7 @@ class AccountController extends Controller
      * @param  int  $id
      * @return json
      */
-    public function getAccountBalance($id)
+    public function getAccountBalance(int $id): json
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -842,7 +844,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function cashFlow()
+    public function cashFlow(): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -1189,7 +1191,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function activate($id)
+    public function activate($id): Response
     {
         if (! auth()->user()->can('account.access')) {
             abort(403, 'Unauthorized action.');
@@ -1225,7 +1227,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function editAccountTransaction($id)
+    public function editAccountTransaction($id): View
     {
         if (! auth()->user()->can('edit_account_transaction')) {
             abort(403, 'Unauthorized action.');

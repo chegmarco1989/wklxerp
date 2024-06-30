@@ -33,7 +33,7 @@ class AccountTransaction extends Model
      * @param  string  $payment_transaction_type
      * @return string
      */
-    public static function getAccountTransactionType($tansaction_type)
+    public static function getAccountTransactionType($tansaction_type): string
     {
         $account_transaction_types = [
             'sell' => 'credit',
@@ -54,7 +54,7 @@ class AccountTransaction extends Model
      *
      * @return obj
      */
-    public static function createAccountTransaction($data)
+    public static function createAccountTransaction($data): obj
     {
         $transaction_data = [
             'amount' => $data['amount'],
@@ -82,7 +82,7 @@ class AccountTransaction extends Model
      * @param  string  $transaction_type
      * @return string
      */
-    public static function updateAccountTransaction($transaction_payment, $transaction_type)
+    public static function updateAccountTransaction(obj $transaction_payment, string $transaction_type): string
     {
         if (! empty($transaction_payment->account_id)) {
             $account_transaction = AccountTransaction::where(

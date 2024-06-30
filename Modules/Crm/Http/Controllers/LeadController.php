@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Category;
 use App\Contact;
 use App\User;
@@ -39,7 +40,7 @@ class LeadController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_leads = auth()->user()->can('crm.access_all_leads');
@@ -294,7 +295,7 @@ class LeadController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -319,7 +320,7 @@ class LeadController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -376,7 +377,7 @@ class LeadController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_leads = auth()->user()->can('crm.access_all_leads');
@@ -408,7 +409,7 @@ class LeadController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_leads = auth()->user()->can('crm.access_all_leads');
@@ -443,7 +444,7 @@ class LeadController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_leads = auth()->user()->can('crm.access_all_leads');
@@ -493,7 +494,7 @@ class LeadController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_leads = auth()->user()->can('crm.access_all_leads');

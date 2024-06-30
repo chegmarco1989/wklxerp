@@ -2,6 +2,8 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Utils\ModuleUtil;
 use DB;
 use Illuminate\Http\Request;
@@ -33,7 +35,7 @@ class CoaController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -102,7 +104,7 @@ class CoaController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') ||
@@ -123,7 +125,7 @@ class CoaController extends Controller
      *
      * @return Response
      */
-    public function createDefaultAccounts()
+    public function createDefaultAccounts(): RedirectResponse
     {
         //check no accounts
         $business_id = request()->session()->get('user.business_id');
@@ -1198,7 +1200,7 @@ class CoaController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') ||
@@ -1256,7 +1258,7 @@ class CoaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): Response
     {
     }
 
@@ -1266,7 +1268,7 @@ class CoaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -1313,7 +1315,7 @@ class CoaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') ||
@@ -1350,7 +1352,7 @@ class CoaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }
@@ -1387,7 +1389,7 @@ class CoaController extends Controller
      * @param  int  $account_id
      * @return Response
      */
-    public function ledger($account_id)
+    public function ledger(int $account_id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 

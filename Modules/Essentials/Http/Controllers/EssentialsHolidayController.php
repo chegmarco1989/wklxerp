@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class EssentialsHolidayController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -115,7 +116,7 @@ class EssentialsHolidayController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -134,7 +135,7 @@ class EssentialsHolidayController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -170,7 +171,7 @@ class EssentialsHolidayController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('essentials::show');
     }
@@ -180,7 +181,7 @@ class EssentialsHolidayController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -202,7 +203,7 @@ class EssentialsHolidayController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);
@@ -240,7 +241,7 @@ class EssentialsHolidayController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->moduleUtil->is_admin(auth()->user(), $business_id);

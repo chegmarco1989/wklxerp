@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use Illuminate\Http\Response;
 use App\Account;
 use App\BusinessLocation;
 use App\Product;
@@ -19,7 +20,7 @@ class ModuleUtil extends Util
      * @param  string  $module_name  (Exact module name, with first letter capital)
      * @return bool
      */
-    public function isModuleInstalled($module_name)
+    public function isModuleInstalled(string $module_name): bool
     {
         $is_available = Module::has($module_name);
 
@@ -41,7 +42,7 @@ class ModuleUtil extends Util
      *
      * @return bool
      */
-    public function isSuperadminInstalled()
+    public function isSuperadminInstalled(): bool
     {
         return $this->isModuleInstalled('Superadmin');
     }
@@ -53,7 +54,7 @@ class ModuleUtil extends Util
      * @param  string  $function_name
      * @return array
      */
-    public function getModuleData($function_name, $arguments = null)
+    public function getModuleData(string $function_name, $arguments = null): array
     {
         $modules = Module::toCollection()->toArray();
 
@@ -91,7 +92,7 @@ class ModuleUtil extends Util
      * @param  string  $module_name
      * @return bool
      */
-    public function isModuleDefined($module_name)
+    public function isModuleDefined(string $module_name): bool
     {
         $is_installed = $this->isModuleInstalled($module_name);
 
@@ -113,7 +114,7 @@ class ModuleUtil extends Util
      * @param  int  $business_id
      * @return bool
      */
-    public function isSubscribed($business_id)
+    public function isSubscribed(int $business_id): bool
     {
         if ($this->isSuperadminInstalled()) {
             $package = \Modules\Superadmin\Entities\Subscription::active_subscription($business_id);
@@ -134,7 +135,7 @@ class ModuleUtil extends Util
      * @param  string  $callback_function  = null
      * @return bool
      */
-    public function hasThePermissionInSubscription($business_id, $permission, $callback_function = null)
+    public function hasThePermissionInSubscription(int $business_id, string $permission, string $callback_function = null): bool
     {
         if ($this->isSuperadminInstalled()) {
             if (auth()->user()->can('superadmin')) {
@@ -178,7 +179,7 @@ class ModuleUtil extends Util
      *
      * @return string
      */
-    public static function expiredResponse($redirect_url = null)
+    public static function expiredResponse($redirect_url = null): string
     {
         $response_array = ['success' => 0,
             'msg' => __(
@@ -280,7 +281,7 @@ class ModuleUtil extends Util
      * @param  int  $total_rows  default 0
      * @return bool
      */
-    public function isQuotaAvailable($type, $business_id, $total_rows = 0)
+    public function isQuotaAvailable(string $type, int $business_id, int $total_rows = 0): bool
     {
         $is_available = $this->isSuperadminInstalled();
 
@@ -354,7 +355,7 @@ class ModuleUtil extends Util
      * @param  string  $redirect_url  = null
      * @return \Illuminate\Http\Response
      */
-    public function quotaExpiredResponse($type, $business_id, $redirect_url = null)
+    public function quotaExpiredResponse(string $type, int $business_id, string $redirect_url = null): Response
     {
         if ($type == 'locations') {
             if (request()->ajax()) {
@@ -415,7 +416,7 @@ class ModuleUtil extends Util
      * @param  string  $function_name  function name to be called to get data from
      * @return array
      */
-    public function getModuleFormField($function_name)
+    public function getModuleFormField(string $function_name): array
     {
         $form_fields = [];
         $module_form_fields = $this->getModuleData($function_name);
@@ -445,7 +446,7 @@ class ModuleUtil extends Util
      * @param  string  $module_name  (Exact module name, with first letter capital)
      * @return array
      */
-    public function getModuleVersionInfo($module_name)
+    public function getModuleVersionInfo(string $module_name): array
     {
         $output = ['installed_version' => null,
             'available_version' => null,
@@ -505,7 +506,7 @@ class ModuleUtil extends Util
      * @param  string  $category_type
      * @return array
      */
-    public function getTaxonomyData($category_type)
+    public function getTaxonomyData(string $category_type): array
     {
         $category_types = ['product'];
 

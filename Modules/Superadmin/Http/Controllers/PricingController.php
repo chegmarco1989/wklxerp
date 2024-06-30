@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -29,7 +30,7 @@ class PricingController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $packages = Package::listPackages(true);
 

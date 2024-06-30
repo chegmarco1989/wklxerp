@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\TaxRate;
@@ -67,7 +69,7 @@ class OrderRequestController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         // if (!auth()->user()->can('so.view_own') && !auth()->user()->can('so.view_all') && !auth()->user()->can('so.create')) {
         //     abort(403, 'Unauthorized action.');
@@ -156,7 +158,7 @@ class OrderRequestController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $contact = Contact::where('business_id', auth()->user()->business_id)
             ->findOrFail(auth()->user()->crm_contact_id);
@@ -193,7 +195,7 @@ class OrderRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $is_direct_sale = true;
 
@@ -340,7 +342,7 @@ class OrderRequestController extends Controller
         return $output;
     }
 
-    public function listOrderRequests()
+    public function listOrderRequests(): View
     {
         $business_id = request()->session()->get('user.business_id');
         $crm_settings = $this->crmUtil->getCrmSettings($business_id);

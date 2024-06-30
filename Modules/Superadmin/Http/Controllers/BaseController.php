@@ -16,7 +16,7 @@ class BaseController extends Controller
      *
      * @return Response
      */
-    public function _payment_gateways()
+    public function _payment_gateways(): Response
     {
         $gateways = [];
 
@@ -133,7 +133,7 @@ class BaseController extends Controller
      * @param  object  $package
      * @return array
      */
-    protected function _get_package_dates($business_id, $package)
+    protected function _get_package_dates(int $business_id, object $package): array
     {
         $output = ['start' => '', 'end' => '', 'trial' => ''];
 

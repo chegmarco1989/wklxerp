@@ -31,7 +31,7 @@ class Warranty extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
+    public function getDisplayNameAttribute(): string
     {
         $name = $this->name.' ('.$this->duration.' '.__('lang_v1.'.$this->duration_type).')';
 

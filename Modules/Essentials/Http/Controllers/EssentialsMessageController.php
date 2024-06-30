@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\User;
 use App\Utils\ModuleUtil;
@@ -33,7 +34,7 @@ class EssentialsMessageController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -68,7 +69,7 @@ class EssentialsMessageController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -126,7 +127,7 @@ class EssentialsMessageController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->user()->business_id;
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -166,7 +167,7 @@ class EssentialsMessageController extends Controller
      *
      * @return void
      */
-    private function __notify($message, $database_notification = true)
+    private function __notify($message, $database_notification = true): void
     {
         $business_id = request()->session()->get('user.business_id');
         $query = User::where('id', '!=', $message->user_id)
@@ -190,7 +191,7 @@ class EssentialsMessageController extends Controller
      *
      * @return void
      */
-    public function getNewMessages()
+    public function getNewMessages(): View
     {
         $last_chat_time = request()->input('last_chat_time');
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Brands;
 use App\BusinessLocation;
 use App\Category;
@@ -48,7 +49,7 @@ class ImportProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -764,7 +765,7 @@ class ImportProductsController extends Controller
      * @param  int  $business_id
      * @return void
      */
-    private function addOpeningStock($opening_stock, $product, $business_id)
+    private function addOpeningStock(array $opening_stock, obj $product, int $business_id): void
     {
         $user_id = request()->session()->get('user.id');
 

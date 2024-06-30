@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Restaurant;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Restaurant\ResTable;
 use Datatables;
@@ -16,7 +17,7 @@ class TableController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (! auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
@@ -54,7 +55,7 @@ class TableController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
@@ -72,7 +73,7 @@ class TableController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         if (! auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
@@ -105,7 +106,7 @@ class TableController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         if (! auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
@@ -119,7 +120,7 @@ class TableController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
@@ -139,7 +140,7 @@ class TableController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         if (! auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
@@ -175,7 +176,7 @@ class TableController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         if (! auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');

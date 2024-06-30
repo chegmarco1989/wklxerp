@@ -55,7 +55,7 @@ class SuperadminCommunicator extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase($notifiable): array
     {
         return [
             'msg' => $this->input['message'],

@@ -2,6 +2,7 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,7 +29,7 @@ class AccountTypeController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -95,7 +96,7 @@ class AccountTypeController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('accounting::create');
     }
@@ -105,7 +106,7 @@ class AccountTypeController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -146,7 +147,7 @@ class AccountTypeController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('accounting::show');
     }
@@ -157,7 +158,7 @@ class AccountTypeController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -183,7 +184,7 @@ class AccountTypeController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -222,7 +223,7 @@ class AccountTypeController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 

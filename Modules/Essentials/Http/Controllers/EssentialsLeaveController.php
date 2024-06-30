@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\User;
 use App\Utils\ModuleUtil;
 use DB;
@@ -54,7 +55,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -165,7 +166,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -189,7 +190,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -262,7 +263,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('essentials::show');
     }
@@ -272,7 +273,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function edit()
+    public function edit(): View
     {
         return view('essentials::edit');
     }
@@ -282,7 +283,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
     }
 
@@ -291,7 +292,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -365,7 +366,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function activity($id)
+    public function activity($id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -389,7 +390,7 @@ class EssentialsLeaveController extends Controller
      *
      * @return Response
      */
-    public function getUserLeaveSummary()
+    public function getUserLeaveSummary(): Response
     {
         $business_id = request()->session()->get('user.business_id');
 

@@ -25,7 +25,7 @@ class BusinessUtil extends Util
      * @param  int  $user_id
      * @return bool
      */
-    public function newBusinessDefaultResources($business_id, $user_id)
+    public function newBusinessDefaultResources(int $business_id, int $user_id): bool
     {
         $user = User::find($user_id);
 
@@ -140,7 +140,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function allCurrencies()
+    public function allCurrencies(): array
     {
         $currencies = Currency::select('id', DB::raw("concat(country, ' - ',currency, '(', code, ') ') as info"))
             ->orderBy('country')
@@ -154,7 +154,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function allTimeZones()
+    public function allTimeZones(): array
     {
         $datetime = new \DateTimeZone('EDT');
 
@@ -172,7 +172,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function allAccountingMethods()
+    public function allAccountingMethods(): array
     {
         return [
             'fifo' => __('business.fifo'),
@@ -185,7 +185,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function createNewBusiness($business_details)
+    public function createNewBusiness($business_details): array
     {
         $business_details['sell_price_tax'] = 'includes';
 
@@ -220,7 +220,7 @@ class BusinessUtil extends Util
      *
      * @return object
      */
-    public function getDetails($business_id)
+    public function getDetails($business_id): object
     {
         $details = Business::leftjoin('tax_rates AS TR', 'business.default_sales_tax', 'TR.id')
             ->leftjoin('currencies AS cur', 'business.currency_id', 'cur.id')
@@ -244,7 +244,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function getCurrentFinancialYear($business_id)
+    public function getCurrentFinancialYear($business_id): array
     {
         $business = Business::where('id', $business_id)->first();
         $start_month = $business->fy_start_month;
@@ -284,7 +284,7 @@ class BusinessUtil extends Util
      * @param  int  $invoice_layout_id  default null
      * @return location object
      */
-    public function addLocation($business_id, $location_details, $invoice_scheme_id = null, $invoice_layout_id = null)
+    public function addLocation(int $business_id, array $location_details, $invoice_scheme_id = null, int $invoice_layout_id = null): location
     {
         if (empty($invoice_scheme_id)) {
             $layout = InvoiceLayout::where('is_default', 1)
@@ -341,7 +341,7 @@ class BusinessUtil extends Util
      * @param  array  $layout_id  = null
      * @return location object
      */
-    public function invoiceLayout($business_id, $layout_id = null)
+    public function invoiceLayout(int $business_id, array $layout_id = null): location
     {
         $layout = null;
         if (! empty($layout_id)) {
@@ -366,7 +366,7 @@ class BusinessUtil extends Util
      * @param  int  $printer_id
      * @return array
      */
-    public function printerConfig($business_id, $printer_id)
+    public function printerConfig(int $business_id, int $printer_id): array
     {
         $printer = Printer::where('business_id', $business_id)
             ->find($printer_id);
@@ -393,7 +393,7 @@ class BusinessUtil extends Util
      * @param  char  $edit_transaction_period
      * @return array
      */
-    public function editTransactionDateRange($business_id, $edit_transaction_period)
+    public function editTransactionDateRange(int $business_id, char $edit_transaction_period): array
     {
         if (is_numeric($edit_transaction_period)) {
             return ['start' => \Carbon::today()
@@ -413,7 +413,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function defaultPosSettings()
+    public function defaultPosSettings(): array
     {
         return ['disable_pay_checkout' => 0, 'disable_draft' => 0, 'disable_express_checkout' => 0, 'hide_product_suggestion' => 0, 'hide_recent_trans' => 0, 'disable_discount' => 0, 'disable_order_tax' => 0, 'is_pos_subtotal_editable' => 0];
     }
@@ -423,7 +423,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function defaultEmailSettings()
+    public function defaultEmailSettings(): array
     {
         return ['mail_host' => '', 'mail_port' => '', 'mail_username' => '', 'mail_password' => '', 'mail_encryption' => '', 'mail_from_address' => '', 'mail_from_name' => ''];
     }
@@ -433,7 +433,7 @@ class BusinessUtil extends Util
      *
      * @return array
      */
-    public function defaultSmsSettings()
+    public function defaultSmsSettings(): array
     {
         return ['url' => '', 'send_to_param_name' => 'to', 'msg_param_name' => 'text', 'request_method' => 'post', 'param_1' => '', 'param_val_1' => '', 'param_2' => '', 'param_val_2' => '', 'param_3' => '', 'param_val_3' => '', 'param_4' => '', 'param_val_4' => '', 'param_5' => '', 'param_val_5' => ''];
     }

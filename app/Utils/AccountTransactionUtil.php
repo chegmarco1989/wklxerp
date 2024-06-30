@@ -12,7 +12,7 @@ class AccountTransactionUtil extends Util
      * @param  int  $group_tax_id
      * @return void
      */
-    public function updateGroupTaxAmount($group_tax_id)
+    public function updateGroupTaxAmount(int $group_tax_id): void
     {
         $amount = 0;
         $tax_rate = TaxRate::where('id', $group_tax_id)->with(['sub_taxes'])->first();

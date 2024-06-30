@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Barcode;
 use App\Product;
 use App\SellingPriceGroup;
@@ -36,7 +37,7 @@ class LabelsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Request $request): View
     {
         $business_id = $request->session()->get('user.business_id');
         $purchase_id = $request->get('purchase_id', false);
@@ -75,7 +76,7 @@ class LabelsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function addProductRow(Request $request)
+    public function addProductRow(Request $request): View
     {
         if ($request->ajax()) {
             $product_id = $request->input('product_id');

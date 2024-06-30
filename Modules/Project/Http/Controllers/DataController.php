@@ -144,7 +144,7 @@ class DataController extends Controller
      *                       $location_id
      * @return decimal
      */
-    public function grossProfit($params)
+    public function grossProfit($params): decimal
     {
         $transaction = ProjectTransaction::where('business_id', $params['business_id'])
             ->where('type', 'sell')

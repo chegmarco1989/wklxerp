@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Media;
 use App\Utils\ModuleUtil;
 use DB;
@@ -34,7 +36,7 @@ class ProposalTemplateController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -52,7 +54,7 @@ class ProposalTemplateController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('crm.add_proposal_template'))) {
@@ -75,7 +77,7 @@ class ProposalTemplateController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('crm.add_proposal_template'))) {
@@ -131,7 +133,7 @@ class ProposalTemplateController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('crm::show');
     }
@@ -142,7 +144,7 @@ class ProposalTemplateController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('crm::edit');
     }
@@ -153,7 +155,7 @@ class ProposalTemplateController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -164,7 +166,7 @@ class ProposalTemplateController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }
@@ -199,7 +201,7 @@ class ProposalTemplateController extends Controller
             ->with(compact('proposal_template'));
     }
 
-    public function postEdit(Request $request)
+    public function postEdit(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('crm.add_proposal_template'))) {

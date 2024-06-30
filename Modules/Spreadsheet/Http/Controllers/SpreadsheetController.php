@@ -2,6 +2,8 @@
 
 namespace Modules\Spreadsheet\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Category;
 use App\User;
 use App\Utils\ModuleUtil;
@@ -38,7 +40,7 @@ class SpreadsheetController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -125,7 +127,7 @@ class SpreadsheetController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -142,7 +144,7 @@ class SpreadsheetController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -187,7 +189,7 @@ class SpreadsheetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -241,7 +243,7 @@ class SpreadsheetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('spreadsheet::edit');
     }
@@ -252,7 +254,7 @@ class SpreadsheetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -331,7 +333,7 @@ class SpreadsheetController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -368,7 +370,7 @@ class SpreadsheetController extends Controller
         return $output;
     }
 
-    public function getShareSpreadsheet(Request $request, $id)
+    public function getShareSpreadsheet(Request $request, $id): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -509,7 +511,7 @@ class SpreadsheetController extends Controller
         Notification::send($users, new SpreadsheetShared($sheet_id));
     }
 
-    public function addFolder(Request $request)
+    public function addFolder(Request $request): RedirectResponse
     {
         try {
             $input = $request->only(['name']);
@@ -543,7 +545,7 @@ class SpreadsheetController extends Controller
             ->with('status', $output);
     }
 
-    public function moveToFolder(Request $request)
+    public function moveToFolder(Request $request): RedirectResponse
     {
         if (! empty($request->input('move_to_folder'))) {
             $business_id = $request->session()->get('user.business_id');

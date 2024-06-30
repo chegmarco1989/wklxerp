@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Brands;
 use App\BusinessLocation;
 use App\Category;
@@ -82,7 +84,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProfitLoss(Request $request)
+    public function getProfitLoss(Request $request): View
     {
         if (! auth()->user()->can('profit_loss_report.view')) {
             abort(403, 'Unauthorized action.');
@@ -499,7 +501,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getStockDetails(Request $request)
+    public function getStockDetails(Request $request): View
     {
         //Return the details in ajax call
         if ($request->ajax()) {
@@ -836,7 +838,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getTrendingProducts(Request $request)
+    public function getTrendingProducts(Request $request): View
     {
         if (! auth()->user()->can('trending_product_report.view')) {
             abort(403, 'Unauthorized action.');
@@ -887,7 +889,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getExpenseReport(Request $request)
+    public function getExpenseReport(Request $request): View
     {
         if (! auth()->user()->can('expense_report.view')) {
             abort(403, 'Unauthorized action.');
@@ -1078,7 +1080,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getSalesRepresentativeReport(Request $request)
+    public function getSalesRepresentativeReport(Request $request): View
     {
         if (! auth()->user()->can('sales_representative.view')) {
             abort(403, 'Unauthorized action.');
@@ -1101,7 +1103,7 @@ class ReportController extends Controller
      *
      * @return json
      */
-    public function getSalesRepresentativeTotalExpense(Request $request)
+    public function getSalesRepresentativeTotalExpense(Request $request): json
     {
         if (! auth()->user()->can('sales_representative.view')) {
             abort(403, 'Unauthorized action.');
@@ -1123,7 +1125,7 @@ class ReportController extends Controller
      *
      * @return json
      */
-    public function getSalesRepresentativeTotalSell(Request $request)
+    public function getSalesRepresentativeTotalSell(Request $request): json
     {
         if (! auth()->user()->can('sales_representative.view')) {
             abort(403, 'Unauthorized action.');
@@ -1170,7 +1172,7 @@ class ReportController extends Controller
      *
      * @return json
      */
-    public function getSalesRepresentativeTotalCommission(Request $request)
+    public function getSalesRepresentativeTotalCommission(Request $request): json
     {
         if (! auth()->user()->can('sales_representative.view')) {
             abort(403, 'Unauthorized action.');
@@ -1405,7 +1407,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getStockExpiryReportEditModal(Request $request, $purchase_line_id)
+    public function getStockExpiryReportEditModal(Request $request, $purchase_line_id): View
     {
         if (! auth()->user()->can('stock_report.view')) {
             abort(403, 'Unauthorized action.');
@@ -2478,7 +2480,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getServiceStaffReport(Request $request)
+    public function getServiceStaffReport(Request $request): View
     {
         if (! auth()->user()->can('sales_representative.view')) {
             abort(403, 'Unauthorized action.');
@@ -2742,7 +2744,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function productStockDetails()
+    public function productStockDetails(): View
     {
         if (! auth()->user()->can('report.stock_details')) {
             abort(403, 'Unauthorized action.');
@@ -2774,7 +2776,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adjustProductStock()
+    public function adjustProductStock(): RedirectResponse
     {
         if (! auth()->user()->can('report.stock_details')) {
             abort(403, 'Unauthorized action.');
@@ -2799,7 +2801,7 @@ class ReportController extends Controller
      *
      * @return obj
      */
-    public function serviceStaffLineOrders()
+    public function serviceStaffLineOrders(): obj
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -3428,7 +3430,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function saleReport()
+    public function saleReport(): View
     {
         if ((! auth()->user()->can('sell.view') && ! auth()->user()->can('sell.create') && ! auth()->user()->can('direct_sell.access') && ! auth()->user()->can('view_own_sell_only')) || empty(config('constants.show_report_607'))) {
             abort(403, 'Unauthorized action.');

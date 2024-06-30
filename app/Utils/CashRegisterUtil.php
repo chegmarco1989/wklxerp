@@ -15,7 +15,7 @@ class CashRegisterUtil extends Util
      *
      * @return int
      */
-    public function countOpenedRegister()
+    public function countOpenedRegister(): int
     {
         $user_id = auth()->user()->id;
         $count = CashRegister::where('user_id', $user_id)
@@ -32,7 +32,7 @@ class CashRegisterUtil extends Util
      * @param  array  $payments
      * @return bool
      */
-    public function addSellPayments($transaction, $payments)
+    public function addSellPayments(object $transaction, array $payments): bool
     {
         $user_id = auth()->user()->id;
         $register = CashRegister::where('user_id', $user_id)
@@ -71,7 +71,7 @@ class CashRegisterUtil extends Util
      * @param  array  $payments
      * @return bool
      */
-    public function updateSellPayments($status_before, $transaction, $payments)
+    public function updateSellPayments($status_before, object $transaction, array $payments): bool
     {
         $user_id = auth()->user()->id;
         $register = CashRegister::where('user_id', $user_id)
@@ -160,7 +160,7 @@ class CashRegisterUtil extends Util
      * @param object/int $transaction
      * @return bool
      */
-    public function refundSell($transaction)
+    public function refundSell(object $transaction): bool
     {
         $user_id = auth()->user()->id;
         $register = CashRegister::where('user_id', $user_id)
@@ -222,7 +222,7 @@ class CashRegisterUtil extends Util
      * @param  $register_id  default null
      * @return object
      */
-    public function getRegisterDetails($register_id = null)
+    public function getRegisterDetails($register_id = null): object
     {
         $query = CashRegister::leftjoin(
             'cash_register_transactions as ct',
@@ -318,7 +318,7 @@ class CashRegisterUtil extends Util
      * @param  $close_time  datetime
      * @return array
      */
-    public function getRegisterTransactionDetails($user_id, $open_time, $close_time, $is_types_of_service_enabled = false)
+    public function getRegisterTransactionDetails($user_id, $open_time, $close_time, $is_types_of_service_enabled = false): array
     {
         $product_details_by_brand = Transaction::where('transactions.created_by', $user_id)
             ->whereBetween('transactions.created_at', [$open_time, $close_time])
@@ -404,7 +404,7 @@ class CashRegisterUtil extends Util
      * @param  $int  user_id
      * @return obj
      */
-    public function getCurrentCashRegister($user_id)
+    public function getCurrentCashRegister($user_id): obj
     {
         $register = CashRegister::where('user_id', $user_id)
             ->where('status', 'open')

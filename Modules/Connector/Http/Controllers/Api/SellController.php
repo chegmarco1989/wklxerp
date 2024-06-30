@@ -1359,7 +1359,7 @@ class SellController extends ApiController
      * @param  array  $data
      * @return array
      */
-    private function __formatSellData($data, $transaction = null)
+    private function __formatSellData(array $data, $transaction = null): array
     {
         $business_id = $data['business_id'];
         $location = BusinessLocation::where('business_id', $business_id)

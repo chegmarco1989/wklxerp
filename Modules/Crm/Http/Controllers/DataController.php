@@ -22,7 +22,7 @@ class DataController extends Controller
      * @param  array  $data
      * @return obj
      */
-    public function after_payment_status_updated($data)
+    public function after_payment_status_updated(array $data): obj
     {
         $transaction = $data['transaction'];
 
@@ -81,7 +81,7 @@ class DataController extends Controller
      *
      * @param  int  $transaction_id
      */
-    public function deleteCommissionWithSale($transaction_id)
+    public function deleteCommissionWithSale(int $transaction_id)
     {
         CrmContactPersonCommission::where('transaction_id', $transaction_id)
             ->delete();
@@ -380,7 +380,7 @@ class DataController extends Controller
      * @param  array  $data
      * @return array
      */
-    public function calendarEvents($data)
+    public function calendarEvents(array $data)
     {
         if (! in_array('schedule', $data['events'])) {
             return [];

@@ -31,7 +31,7 @@ class Unit extends Model
      * @param  bool  $show_none  = true
      * @return array
      */
-    public static function forDropdown($business_id, $show_none = false, $only_base = true)
+    public static function forDropdown(int $business_id, bool $show_none = false, $only_base = true): array
     {
         $query = Unit::where('business_id', $business_id);
         if ($only_base) {

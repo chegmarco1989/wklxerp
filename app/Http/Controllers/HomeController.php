@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Charts\CommonChart;
 use App\Currency;
@@ -595,7 +596,7 @@ class HomeController extends Controller
         }
     }
 
-    public function loadMoreNotifications()
+    public function loadMoreNotifications(): View
     {
         $notifications = auth()->user()->notifications()->orderBy('created_at', 'DESC')->paginate(10);
 
@@ -612,7 +613,7 @@ class HomeController extends Controller
      *
      * @return json
      */
-    public function getTotalUnreadNotifications()
+    public function getTotalUnreadNotifications(): json
     {
         $unread_notifications = auth()->user()->unreadNotifications;
         $total_unread = $unread_notifications->count();
@@ -740,7 +741,7 @@ class HomeController extends Controller
         return view('home.calendar')->with(compact('all_locations', 'users', 'event_types'));
     }
 
-    public function showNotification($id)
+    public function showNotification($id): View
     {
         $notification = DatabaseNotification::find($id);
 

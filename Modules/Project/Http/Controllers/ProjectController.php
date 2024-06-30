@@ -2,6 +2,7 @@
 
 namespace Modules\Project\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Contact;
 use App\User;
 use App\Utils\ModuleUtil;
@@ -49,7 +50,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         $is_admin = $this->commonUtil->is_admin(auth()->user(), $business_id);
@@ -275,7 +276,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -297,7 +298,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -384,7 +385,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -473,7 +474,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -498,7 +499,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -573,7 +574,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -608,7 +609,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function postSettings(Request $request)
+    public function postSettings(Request $request): RedirectResponse
     {
         try {
             $input = $request->only('task_view');
@@ -663,7 +664,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function postProjectStatus($id)
+    public function postProjectStatus($id): Response
     {
         try {
             $business_id = request()->session()->get('user.business_id');

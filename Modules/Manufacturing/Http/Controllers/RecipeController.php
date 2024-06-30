@@ -2,6 +2,8 @@
 
 namespace Modules\Manufacturing\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Utils\BusinessUtil;
 use App\Utils\ModuleUtil;
 use App\Utils\TransactionUtil;
@@ -48,7 +50,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -134,7 +136,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -151,7 +153,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -269,7 +271,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -289,7 +291,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function getIngredientRow($variation_id)
+    public function getIngredientRow($variation_id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -318,7 +320,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function addIngredients()
+    public function addIngredients(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -408,7 +410,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function getRecipeDetails()
+    public function getRecipeDetails(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.access_recipe')) {
@@ -479,7 +481,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function getIngredientGroupForm()
+    public function getIngredientGroupForm(): View
     {
         $ig_index = request()->input('ig_index');
 
@@ -492,7 +494,7 @@ class RecipeController extends Controller
      *
      * @return Response
      */
-    public function updateRecipeProductPrices(Request $request)
+    public function updateRecipeProductPrices(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -558,7 +560,7 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'manufacturing_module')) || ! auth()->user()->can('manufacturing.add_recipe')) {
@@ -588,7 +590,7 @@ class RecipeController extends Controller
      *
      * @param  int  $variation_id
      */
-    public function isRecipeExist($variation_id)
+    public function isRecipeExist(int $variation_id)
     {
         $exists = MfgRecipe::where('variation_id', $variation_id)
             ->exists();

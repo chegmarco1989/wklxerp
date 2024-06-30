@@ -2,6 +2,8 @@
 
 namespace Modules\Manufacturing\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\System;
 use Composer\Semver\Comparator;
 use Illuminate\Http\Response;
@@ -22,7 +24,7 @@ class InstallController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -95,7 +97,7 @@ class InstallController extends Controller
     }
 
     //Updating
-    public function update()
+    public function update(): RedirectResponse
     {
         //Check if manufacturing_version is same as appVersion then 404
         //If appVersion > manufacturing_version - run update script.
@@ -143,7 +145,7 @@ class InstallController extends Controller
      *
      * @return Response
      */
-    public function uninstall()
+    public function uninstall(): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

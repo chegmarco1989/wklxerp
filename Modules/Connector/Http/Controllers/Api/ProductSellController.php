@@ -341,7 +341,7 @@ class ProductSellController extends ApiController
      *
      * @return Response
      */
-    private function __getProducts($business_id, $filters = [], $search = [], $pagination = false, $order_by = null, $order_direction = null)
+    private function __getProducts($business_id, $filters = [], $search = [], $pagination = false, $order_by = null, $order_direction = null): Response
     {
         $query = Product::select('products.*')->where('products.business_id', $business_id);
 

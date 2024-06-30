@@ -2,6 +2,7 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Charts\CommonChart;
 use App\Utils\ModuleUtil;
 use DB;
@@ -31,7 +32,7 @@ class AccountingController extends Controller
      *
      * @return Response
      */
-    public function dashboard()
+    public function dashboard(): View
     {
         $business_id = request()->session()->get('user.business_id');
 

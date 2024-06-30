@@ -2,6 +2,7 @@
 
 namespace Modules\Project\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -39,7 +40,7 @@ class ProjectTimeLogController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
@@ -135,7 +136,7 @@ class ProjectTimeLogController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $project_id = request()->get('project_id');
         $task_id = request()->get('task_id', null);
@@ -164,7 +165,7 @@ class ProjectTimeLogController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             $input = $request->only('project_id', 'project_task_id', 'note');
@@ -221,7 +222,7 @@ class ProjectTimeLogController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('project::show');
     }
@@ -231,7 +232,7 @@ class ProjectTimeLogController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $project_id = request()->get('project_id');
 
@@ -258,7 +259,7 @@ class ProjectTimeLogController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         try {
             $input = $request->only('note', 'project_task_id');
@@ -309,7 +310,7 @@ class ProjectTimeLogController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         try {
             $project_task_time_log = ProjectTimeLog::findOrFail($id);

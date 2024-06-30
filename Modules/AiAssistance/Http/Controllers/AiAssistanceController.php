@@ -2,6 +2,7 @@
 
 namespace Modules\AiAssistance\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\ModuleUtil;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -113,7 +114,7 @@ class AiAssistanceController extends Controller
      *
      * @return Renderable
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -161,7 +162,7 @@ class AiAssistanceController extends Controller
      *
      * @return Renderable
      */
-    public function create($tool)
+    public function create($tool): View
     {
         $tools = $this->tools;
 
@@ -193,7 +194,7 @@ class AiAssistanceController extends Controller
      * @param  string  $tool
      * @return Renderable
      */
-    public function generate($tool, Request $request)
+    public function generate(string $tool, Request $request): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
         $user_id = request()->session()->get('user.id');
@@ -267,7 +268,7 @@ class AiAssistanceController extends Controller
      *
      * @return Renderable
      */
-    public function history()
+    public function history(): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 

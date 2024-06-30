@@ -2,6 +2,8 @@
 
 namespace Modules\AssetManagement\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Media;
 use App\User;
 use App\Utils\ModuleUtil;
@@ -45,7 +47,7 @@ class AssetMaitenanceController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -190,7 +192,7 @@ class AssetMaitenanceController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -224,7 +226,7 @@ class AssetMaitenanceController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -279,7 +281,7 @@ class AssetMaitenanceController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('assetmanagement::show');
     }
@@ -290,7 +292,7 @@ class AssetMaitenanceController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -325,7 +327,7 @@ class AssetMaitenanceController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {
@@ -381,7 +383,7 @@ class AssetMaitenanceController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! ((auth()->user()->can('asset.view_all_maintenance') && auth()->user()->can('asset.view_own_maintenance')) || ($this->moduleUtil->hasThePermissionInSubscription($business_id, 'assetmanagement_module')))) {

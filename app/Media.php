@@ -80,7 +80,7 @@ class Media extends Model
      *
      * @param  int  $business_id,  obj $model, $obj $request, string $file_name
      */
-    public static function uploadMedia($business_id, $model, $request, $file_name, $is_single = false, $model_media_type = null)
+    public static function uploadMedia(int $business_id, $model, $request, $file_name, $is_single = false, $model_media_type = null)
     {
         //If app environment is demo return null
         if (config('app.env') == 'demo') {

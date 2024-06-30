@@ -2,6 +2,7 @@
 
 namespace Modules\Cms\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,7 +30,7 @@ class CmsPageController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $post_type = $request->get('type', 'page');
 
@@ -46,7 +47,7 @@ class CmsPageController extends Controller
      *
      * @return Response
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         $post_type = $request->get('type', 'page');
 
@@ -59,7 +60,7 @@ class CmsPageController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //check if app is in demo & disable action
         $notAllowedInDemo = $this->commonUtil->notAllowedInDemo();
@@ -102,7 +103,7 @@ class CmsPageController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function showPage($page_title)
+    public function showPage($page_title): View
     {
         $title = str_replace('-', ' ', $page_title);
 
@@ -123,7 +124,7 @@ class CmsPageController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $post_type = request()->get('type', 'page');
 
@@ -144,7 +145,7 @@ class CmsPageController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //check if app is in demo & disable action
         $notAllowedInDemo = $this->commonUtil->notAllowedInDemo();
@@ -197,7 +198,7 @@ class CmsPageController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //check if app is in demo & disable action
         $notAllowedInDemo = $this->commonUtil->notAllowedInDemo();

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,7 @@ class Category extends Model
      * @param  int  $business_id
      * @return array
      */
-    public static function catAndSubCategories($business_id)
+    public static function catAndSubCategories(int $business_id): array
     {
         $all_categories = Category::where('business_id', $business_id)
             ->where('category_type', 'product')
@@ -78,7 +79,7 @@ class Category extends Model
      * @param  string  $type  category type
      * @return array
      */
-    public static function forDropdown($business_id, $type)
+    public static function forDropdown(int $business_id, string $type): array
     {
         $categories = Category::where('business_id', $business_id)
             ->where('parent_id', 0)
@@ -103,7 +104,7 @@ class Category extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOnlyParent($query)
+    public function scopeOnlyParent(Builder $query): Builder
     {
         return $query->where('parent_id', 0);
     }

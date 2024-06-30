@@ -50,7 +50,7 @@ class ConnectorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerMiddleware(Router $router)
+    public function registerMiddleware(Router $router): void
     {
         foreach ($this->middleware as $module => $middlewares) {
             foreach ($middlewares as $name => $middleware) {
@@ -76,7 +76,7 @@ class ConnectorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('connector.php'),
@@ -91,7 +91,7 @@ class ConnectorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/connector');
 
@@ -111,7 +111,7 @@ class ConnectorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/connector');
 
@@ -127,7 +127,7 @@ class ConnectorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -139,7 +139,7 @@ class ConnectorServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }

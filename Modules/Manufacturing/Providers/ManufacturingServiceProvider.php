@@ -53,7 +53,7 @@ class ManufacturingServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('manufacturing.php'),
@@ -68,7 +68,7 @@ class ManufacturingServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/manufacturing');
 
@@ -88,7 +88,7 @@ class ManufacturingServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/manufacturing');
 
@@ -104,7 +104,7 @@ class ManufacturingServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -116,7 +116,7 @@ class ManufacturingServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }
@@ -126,7 +126,7 @@ class ManufacturingServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
 
     }

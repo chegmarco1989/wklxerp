@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\SellingPriceGroup;
 use App\Utils\Util;
 use App\Variation;
@@ -70,7 +71,7 @@ class SellingPriceGroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -131,7 +132,7 @@ class SellingPriceGroupController extends Controller
      * @param  \App\SellingPriceGroup  $sellingPriceGroup
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -222,7 +223,7 @@ class SellingPriceGroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateProductPrice()
+    public function updateProductPrice(): View
     {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');

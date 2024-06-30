@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Brands;
 use App\Business;
 use App\BusinessLocation;
@@ -437,7 +439,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -586,7 +588,7 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): View
     {
         if (! auth()->user()->can('product.view')) {
             abort(403, 'Unauthorized action.');
@@ -604,7 +606,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');
@@ -666,7 +668,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');
@@ -1045,7 +1047,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProductVariationFormPart(Request $request)
+    public function getProductVariationFormPart(Request $request): View
     {
         $business_id = $request->session()->get('user.business_id');
         $business = Business::findorfail($business_id);
@@ -1103,7 +1105,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getVariationValueRow(Request $request)
+    public function getVariationValueRow(Request $request): View
     {
         $business_id = $request->session()->get('user.business_id');
         $business = Business::findorfail($business_id);
@@ -1123,7 +1125,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProductVariationRow(Request $request)
+    public function getProductVariationRow(Request $request): View
     {
         $business_id = $request->session()->get('user.business_id');
         $business = Business::findorfail($business_id);
@@ -1176,7 +1178,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getComboProductEntryRow(Request $request)
+    public function getComboProductEntryRow(Request $request): View
     {
         if (request()->ajax()) {
             $product_id = $request->input('product_id');
@@ -1211,7 +1213,7 @@ class ProductController extends Controller
      * @param  bool  $check_qty
      * @return JSON
      */
-    public function getProducts()
+    public function getProducts(): JSON
     {
         if (request()->ajax()) {
             $search_term = request()->input('term', '');
@@ -1241,7 +1243,7 @@ class ProductController extends Controller
      * @param  bool  $check_qty
      * @return JSON
      */
-    public function getProductsWithoutVariations()
+    public function getProductsWithoutVariations(): JSON
     {
         if (request()->ajax()) {
             $term = request()->input('term', '');
@@ -1374,7 +1376,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function quickAdd()
+    public function quickAdd(): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -1533,7 +1535,7 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function view($id)
+    public function view($id): View
     {
         if (! auth()->user()->can('product.view')) {
             abort(403, 'Unauthorized action.');
@@ -1587,7 +1589,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function massDestroy(Request $request)
+    public function massDestroy(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('product.delete')) {
             abort(403, 'Unauthorized action.');
@@ -1663,7 +1665,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function addSellingPrices($id)
+    public function addSellingPrices(int $id): View
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -1692,7 +1694,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function saveSellingPrices(Request $request)
+    public function saveSellingPrices(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
@@ -1757,7 +1759,7 @@ class ProductController extends Controller
         return redirect('products')->with('status', $output);
     }
 
-    public function viewGroupPrice($id)
+    public function viewGroupPrice($id): View
     {
         if (! auth()->user()->can('product.view')) {
             abort(403, 'Unauthorized action.');
@@ -1870,7 +1872,7 @@ class ProductController extends Controller
      * @param  int  $media_id
      * @return json
      */
-    public function deleteMedia($media_id)
+    public function deleteMedia(int $media_id): json
     {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');
@@ -1998,7 +2000,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bulkEdit(Request $request)
+    public function bulkEdit(Request $request): View
     {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');
@@ -2055,7 +2057,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bulkUpdate(Request $request)
+    public function bulkUpdate(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');
@@ -2132,7 +2134,7 @@ class ProductController extends Controller
      * @param  int  $product_id
      * @return \Illuminate\Http\Response
      */
-    public function getProductToEdit($product_id)
+    public function getProductToEdit(int $product_id): View
     {
         if (! auth()->user()->can('product.update')) {
             abort(403, 'Unauthorized action.');
@@ -2251,7 +2253,7 @@ class ProductController extends Controller
         return $output;
     }
 
-    public function productStockHistory($id)
+    public function productStockHistory($id): View
     {
         if (! auth()->user()->can('product.view')) {
             abort(403, 'Unauthorized action.');

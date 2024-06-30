@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Contact;
 use App\User;
 use App\Utils\Util;
@@ -30,7 +31,7 @@ class CallLogController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         if ((! auth()->user()->can('crm.view_all_call_log') && ! auth()->user()->can('crm.view_own_call_log')) || ! config('constants.enable_crm_call_log')) {
             abort(403, 'Unauthorized action.');
@@ -118,7 +119,7 @@ class CallLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function massDestroy(Request $request)
+    public function massDestroy(Request $request): RedirectResponse
     {
         $is_admin = $this->commonUtil->is_admin(auth()->user());
 

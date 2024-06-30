@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\NotificationTemplate;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
@@ -29,7 +31,7 @@ class NotificationTemplateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('send_notification')) {
             abort(403, 'Unauthorized action.');
@@ -93,7 +95,7 @@ class NotificationTemplateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('send_notification')) {
             abort(403, 'Unauthorized action.');

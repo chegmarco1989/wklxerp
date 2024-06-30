@@ -2,6 +2,8 @@
 
 namespace Modules\Accounting\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Business;
 use App\BusinessLocation;
 use App\ExpenseCategory;
@@ -36,7 +38,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -100,7 +102,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('accounting::create');
     }
@@ -110,7 +112,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function saveSettings(Request $request)
+    public function saveSettings(Request $request): RedirectResponse
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -152,7 +154,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('accounting::show');
     }
@@ -163,7 +165,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('accounting::edit');
     }
@@ -174,7 +176,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
         //
     }
@@ -185,7 +187,7 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         //
     }

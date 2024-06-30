@@ -2,6 +2,7 @@
 
 namespace Modules\Hms\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Category;
 use App\Media;
 use App\Utils\ModuleUtil;
@@ -28,7 +29,7 @@ class RoomController extends Controller
      *
      * @return Renderable
      */
-    public function index()
+    public function index(): Renderable
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -71,7 +72,7 @@ class RoomController extends Controller
      *
      * @return Renderable
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -95,7 +96,7 @@ class RoomController extends Controller
      *
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): Renderable
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -166,7 +167,7 @@ class RoomController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('hms::show');
     }
@@ -177,7 +178,7 @@ class RoomController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(int $id): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -209,7 +210,7 @@ class RoomController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -284,7 +285,7 @@ class RoomController extends Controller
     }
 
     // pricing index page retune
-    public function pricing(Request $request)
+    public function pricing(Request $request): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'hms_module'))) {
@@ -315,7 +316,7 @@ class RoomController extends Controller
     }
 
     // get htlm for pricing add more pricing
-    public function get_spacial_pricing_html(Request $request)
+    public function get_spacial_pricing_html(Request $request): View
     {
         $currentIndex = $request->input('currentIndex');
         $id = $request->input('id');
@@ -409,7 +410,7 @@ class RoomController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id): Renderable
     {
         $business_id = request()->session()->get('user.business_id');
 

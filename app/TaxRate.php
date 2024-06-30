@@ -67,7 +67,7 @@ class TaxRate extends Model
      *
      * @return array
      */
-    public static function forBusiness($business_id)
+    public static function forBusiness($business_id): array
     {
         $tax_rates = TaxRate::where('business_id', $business_id)
             ->select(['id', 'name', 'amount'])
@@ -92,7 +92,7 @@ class TaxRate extends Model
      *
      * @return array
      */
-    public static function groupTaxes($business_id)
+    public static function groupTaxes($business_id): array
     {
         $tax_rates = TaxRate::where('business_id', $business_id)
             ->where('is_tax_group', 1)

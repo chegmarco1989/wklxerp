@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Contact;
 use App\Notifications\CustomerNotification;
 use App\Notifications\SupplierNotification;
@@ -36,7 +37,7 @@ class NotificationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getTemplate($id, $template_for)
+    public function getTemplate($id, $template_for): View
     {
         $business_id = request()->session()->get('user.business_id');
 

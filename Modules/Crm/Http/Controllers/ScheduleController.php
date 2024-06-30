@@ -326,7 +326,7 @@ class ScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'crm_module'))) {
@@ -449,7 +449,7 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_schedule = auth()->user()->can('crm.access_all_schedule');
@@ -499,7 +499,7 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_schedule = auth()->user()->can('crm.access_all_schedule');
@@ -541,7 +541,7 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $business_id = request()->session()->get('user.business_id');
         $can_access_all_schedule = auth()->user()->can('crm.access_all_schedule');
@@ -756,7 +756,7 @@ class ScheduleController extends Controller
      *
      * @return html
      */
-    public function getFollowUpGroups()
+    public function getFollowUpGroups(): \Illuminate\View\View
     {
         $business_id = request()->session()->get('user.business_id');
         $users = User::forDropdown($business_id, false);

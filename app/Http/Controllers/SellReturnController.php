@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\BusinessLocation;
 use App\Contact;
 use App\Events\TransactionPaymentDeleted;
@@ -317,7 +318,7 @@ class SellReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         if (! auth()->user()->can('access_sell_return') && ! auth()->user()->can('access_own_sell_return')) {
             abort(403, 'Unauthorized action.');
@@ -389,7 +390,7 @@ class SellReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! auth()->user()->can('access_sell_return') && ! auth()->user()->can('access_own_sell_return')) {
             abort(403, 'Unauthorized action.');
@@ -473,11 +474,11 @@ class SellReturnController extends Controller
      * @return array
      */
     private function receiptContent(
-        $business_id,
-        $location_id,
-        $transaction_id,
-        $printer_type = null
-    ) {
+        int $business_id,
+        int $location_id,
+        int $transaction_id,
+        string $printer_type = null
+    ): array {
         $output = ['is_enabled' => false,
             'print_type' => 'browser',
             'html_content' => null,

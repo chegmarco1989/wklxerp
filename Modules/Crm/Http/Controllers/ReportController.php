@@ -2,6 +2,7 @@
 
 namespace Modules\Crm\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Contact;
 use App\User;
 use App\Utils\Util;
@@ -28,7 +29,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -48,7 +49,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function followUpsByUser()
+    public function followUpsByUser(): Response
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
@@ -144,7 +145,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function followUpsContact()
+    public function followUpsContact(): Response
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
@@ -182,7 +183,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function leadToCustomerConversion()
+    public function leadToCustomerConversion(): Response
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
@@ -210,7 +211,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function showLeadToCustomerConversionDetails($user_id)
+    public function showLeadToCustomerConversionDetails($user_id): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');

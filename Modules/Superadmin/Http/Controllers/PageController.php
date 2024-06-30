@@ -2,6 +2,8 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Utils\ModuleUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +34,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -49,7 +51,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         return view('superadmin::pages.create');
     }
@@ -59,7 +61,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -97,7 +99,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function showPage($slug)
+    public function showPage($slug): View
     {
         $page = SuperadminFrontendPage::where('slug', $slug)->first();
 
@@ -113,7 +115,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $page = SuperadminFrontendPage::findOrFail($id);
 
@@ -125,7 +127,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -166,7 +168,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

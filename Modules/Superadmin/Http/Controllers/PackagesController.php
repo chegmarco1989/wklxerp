@@ -2,6 +2,8 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Business;
 use App\System;
 use App\Utils\BusinessUtil;
@@ -38,7 +40,7 @@ class PackagesController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -65,7 +67,7 @@ class PackagesController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -86,7 +88,7 @@ class PackagesController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -134,7 +136,7 @@ class PackagesController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function show(): View
     {
         return view('superadmin::show');
     }
@@ -144,7 +146,7 @@ class PackagesController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $packages = Package::where('id', $id)
             ->first();
@@ -163,7 +165,7 @@ class PackagesController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -228,7 +230,7 @@ class PackagesController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

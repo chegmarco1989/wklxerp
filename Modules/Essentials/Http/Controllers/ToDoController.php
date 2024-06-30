@@ -2,6 +2,7 @@
 
 namespace Modules\Essentials\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Media;
 use App\User;
 use App\Utils\ModuleUtil;
@@ -57,7 +58,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -188,7 +189,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $business_id = request()->session()->get('user.business_id');
 
@@ -215,7 +216,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -272,7 +273,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module')) && ! auth()->user()->can('essentials.edit_todos')) {
@@ -310,7 +311,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $business_id = $request->session()->get('user.business_id');
 
@@ -386,7 +387,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         $business_id = $request->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module')) && ! auth()->user()->can('essentials.edit_todos')) {
@@ -462,7 +463,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module')) && ! auth()->user()->can('essentials.delete_todos')) {
@@ -503,7 +504,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function addComment(Request $request)
+    public function addComment(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -567,7 +568,7 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function uploadDocument(Request $request)
+    public function uploadDocument(Request $request): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -630,7 +631,7 @@ class ToDoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function deleteComment($id)
+    public function deleteComment(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -663,7 +664,7 @@ class ToDoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function deleteDocument($id)
+    public function deleteDocument(int $id): Response
     {
         $business_id = request()->session()->get('user.business_id');
         if (! (auth()->user()->can('superadmin') || $this->moduleUtil->hasThePermissionInSubscription($business_id, 'essentials_module'))) {
@@ -697,7 +698,7 @@ class ToDoController extends Controller
         return $output;
     }
 
-    public function viewSharedDocs($id)
+    public function viewSharedDocs($id): View
     {
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');

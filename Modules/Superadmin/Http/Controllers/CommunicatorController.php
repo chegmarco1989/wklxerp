@@ -2,6 +2,7 @@
 
 namespace Modules\Superadmin\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Business;
 use App\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class CommunicatorController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');
@@ -36,7 +37,7 @@ class CommunicatorController extends Controller
      *
      * @return Response
      */
-    public function send(Request $request)
+    public function send(Request $request): Response
     {
         if (! auth()->user()->can('superadmin')) {
             abort(403, 'Unauthorized action.');

@@ -23,11 +23,11 @@ class EssentialsUtil extends Util
      * @param  int  $end_date  = null
      */
     public function getTotalWorkDuration(
-        $unit,
-        $user_id,
-        $business_id,
-        $start_date = null,
-        $end_date = null
+        string $unit,
+        int $user_id,
+        int $business_id,
+        int $start_date = null,
+        int $end_date = null
     ) {
         $total_work_duration = 0;
         if ($unit == 'hour') {
@@ -52,7 +52,7 @@ class EssentialsUtil extends Util
      *
      * @param  string  $month_year
      */
-    public function getDateFromMonthYear($month_year)
+    public function getDateFromMonthYear(string $month_year)
     {
         $month_year_arr = explode('/', $month_year);
         $month = $month_year_arr[0];
@@ -71,7 +71,7 @@ class EssentialsUtil extends Util
      * @param  string  $start_date  = null
      * @param  string  $end_date  = null
      */
-    public function getEmployeeAllowancesAndDeductions($business_id, $user_id, $start_date = null, $end_date = null)
+    public function getEmployeeAllowancesAndDeductions(int $business_id, int $user_id, string $start_date = null, string $end_date = null)
     {
         $query = EssentialsAllowanceAndDeduction::join('essentials_user_allowance_and_deductions as euad', 'euad.allowance_deduction_id', '=', 'essentials_allowances_and_deductions.id')
             ->where('business_id', $business_id)
@@ -268,7 +268,7 @@ class EssentialsUtil extends Util
      * @param  string  $start_date
      * @param  string  $end_date
      */
-    public function getTotalLeavesForGivenDateOfAnEmployee($business_id, $employee_id, $start_date, $end_date)
+    public function getTotalLeavesForGivenDateOfAnEmployee(int $business_id, int $employee_id, string $start_date, string $end_date)
     {
         $leaves = EssentialsLeave::where('business_id', $business_id)
             ->where('user_id', $employee_id)

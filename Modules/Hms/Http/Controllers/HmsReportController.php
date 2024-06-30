@@ -2,6 +2,7 @@
 
 namespace Modules\Hms\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Transaction;
 use App\Utils\ModuleUtil;
 use App\Utils\Util;
@@ -32,7 +33,7 @@ class HmsReportController extends Controller
      *
      * @return Renderable
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
 
         $business_id = request()->session()->get('user.business_id');
@@ -322,7 +323,7 @@ class HmsReportController extends Controller
      *
      * @return Renderable
      */
-    public function create()
+    public function create(): View
     {
         return view('hms::create');
     }
@@ -332,7 +333,7 @@ class HmsReportController extends Controller
      *
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): Renderable
     {
         //
     }
@@ -343,7 +344,7 @@ class HmsReportController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('hms::show');
     }
@@ -354,7 +355,7 @@ class HmsReportController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('hms::edit');
     }
@@ -365,7 +366,7 @@ class HmsReportController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Renderable
     {
         //
     }
@@ -376,7 +377,7 @@ class HmsReportController extends Controller
      * @param  int  $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id): Renderable
     {
         //
     }
