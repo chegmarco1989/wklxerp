@@ -5,32 +5,6 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        Unicodeveloper\Paystack\PaystackServiceProvider::class,
-        /*
-         * Package Service Providers...
-         */
-        Laravel\Tinker\TinkerServiceProvider::class,
-
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\MessengerServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-
-        Collective\Html\HtmlServiceProvider::class,
-        //Yajra\Datatables\DatatablesServiceProvider::class,
-        // Spatie\Permission\PermissionServiceProvider::class,
-        Milon\Barcode\BarcodeServiceProvider::class,
-        ConsoleTVs\Charts\ChartsServiceProvider::class,
-        Nwidart\Menus\MenusServiceProvider::class,
-        Knox\Pesapal\PesapalServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class,
-    ])->toArray(),
 
     'aliases' => Facade::defaultAliases()->merge([
         'Carbon' => 'Carbon\Carbon',
