@@ -15,17 +15,20 @@ class InvoiceLayout extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'product_custom_fields' => 'array',
-        'contact_custom_fields' => 'array',
-        'location_custom_fields' => 'array',
-        'common_settings' => 'array',
-        'qr_code_fields' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'product_custom_fields' => 'array',
+            'contact_custom_fields' => 'array',
+            'location_custom_fields' => 'array',
+            'common_settings' => 'array',
+            'qr_code_fields' => 'array',
+        ];
+    }
 
     /**
      * Get the location associated with the invoice layout.

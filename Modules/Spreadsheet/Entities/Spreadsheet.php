@@ -16,20 +16,23 @@ class Spreadsheet extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'sheet_data' => 'array',
-    ];
-
-    /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'sheet_spreadsheets';
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'sheet_data' => 'array',
+        ];
+    }
 
     /**
      * user who created a sheet.

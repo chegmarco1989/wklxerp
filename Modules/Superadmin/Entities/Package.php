@@ -12,9 +12,12 @@ class Package extends Model
 
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'custom_permissions' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'custom_permissions' => 'array',
+        ];
+    }
 
     /**
      * Scope a query to only include active packages.

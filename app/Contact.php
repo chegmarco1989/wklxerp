@@ -23,13 +23,16 @@ class Contact extends Authenticatable
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'shipping_custom_field_details' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'shipping_custom_field_details' => 'array',
+        ];
+    }
 
     /**
      * Get the business that owns the user.

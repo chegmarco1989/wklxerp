@@ -17,13 +17,16 @@ class BusinessLocation extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'featured_products' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'featured_products' => 'array',
+        ];
+    }
 
     /**
      * Return list of locations for a business

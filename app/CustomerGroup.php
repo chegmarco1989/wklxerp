@@ -6,16 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerGroup extends Model
 {
-    protected $casts = [
-        'deleted_at' => 'datetime',
-    ];
-
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
     protected $guarded = ['id'];
+
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * Return list of customer group for a business

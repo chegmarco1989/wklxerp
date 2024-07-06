@@ -13,9 +13,12 @@ class AccountTransaction extends Model
 
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'operation_date' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'operation_date' => 'datetime',
+        ];
+    }
 
     public function media(): MorphMany
     {

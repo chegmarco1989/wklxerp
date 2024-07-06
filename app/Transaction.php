@@ -22,23 +22,26 @@ class Transaction extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'purchase_order_ids' => 'array',
-        'sales_order_ids' => 'array',
-        'export_custom_fields_info' => 'array',
-        'purchase_requisition_ids' => 'array',
-    ];
-
-    /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'transactions';
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'purchase_order_ids' => 'array',
+            'sales_order_ids' => 'array',
+            'export_custom_fields_info' => 'array',
+            'purchase_requisition_ids' => 'array',
+        ];
+    }
 
     public function purchase_lines(): HasMany
     {

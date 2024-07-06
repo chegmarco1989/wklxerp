@@ -22,13 +22,16 @@ class Shift extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'holidays' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'holidays' => 'array',
+        ];
+    }
 
     public function user_shifts($value = ''): HasMany
     {

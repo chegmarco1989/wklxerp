@@ -22,14 +22,17 @@ class Campaign extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'contact_ids' => 'array',
-        'additional_info' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'contact_ids' => 'array',
+            'additional_info' => 'array',
+        ];
+    }
 
     /**
      * user who created a campaign.
