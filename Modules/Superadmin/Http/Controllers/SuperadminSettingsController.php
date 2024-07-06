@@ -164,7 +164,7 @@ class SuperadminSettingsController extends Controller
             ]);
 
             $env_settings['ALLOW_REGISTRATION'] = ! empty($request->input('ALLOW_REGISTRATION')) ? 'true' : 'false';
-            $env_settings['BROADCAST_DRIVER'] = 'pusher';
+            $env_settings['BROADCAST_CONNECTION'] = 'pusher';
 
             $found_envs = [];
             $env_path = base_path('.env');

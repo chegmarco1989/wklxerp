@@ -29,18 +29,21 @@ class Project extends Model
      */
     protected $guarded = ['id'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'settings' => 'array',
-    ];
-
     protected static $logUnguarded = true;
 
     protected static $logOnlyDirty = true;
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'settings' => 'array',
+        ];
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

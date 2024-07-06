@@ -24,14 +24,17 @@ class Schedule extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'notify_via' => 'array',
-        'followup_additional_info' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'notify_via' => 'array',
+            'followup_additional_info' => 'array',
+        ];
+    }
 
     /**
      * The member that belongs to the schedule.

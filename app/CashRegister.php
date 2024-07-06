@@ -8,20 +8,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class CashRegister extends Model
 {
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'denominations' => 'array',
-    ];
-
-    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'denominations' => 'array',
+        ];
+    }
 
     /**
      * Get the Cash registers transactions.

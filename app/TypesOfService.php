@@ -14,13 +14,16 @@ class TypesOfService extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'location_price_group' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'location_price_group' => 'array',
+        ];
+    }
 
     /**
      * Return list of types of service for a business

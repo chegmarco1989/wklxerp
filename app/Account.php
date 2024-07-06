@@ -16,13 +16,16 @@ class Account extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'account_details' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'account_details' => 'array',
+        ];
+    }
 
     public static function forDropdown($business_id, $prepend_none, $closed = false, $show_balance = false)
     {

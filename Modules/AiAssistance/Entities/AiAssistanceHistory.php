@@ -17,9 +17,12 @@ class AiAssistanceHistory extends Model
      */
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'input_data' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'input_data' => 'array',
+        ];
+    }
 
     public function user(): BelongsTo
     {

@@ -31,18 +31,21 @@ class Business extends Model
     protected $hidden = ['woocommerce_api_settings'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'ref_no_prefixes' => 'array',
-        'enabled_modules' => 'array',
-        'email_settings' => 'array',
-        'sms_settings' => 'array',
-        'common_settings' => 'array',
-        'weighing_scale_setting' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'ref_no_prefixes' => 'array',
+            'enabled_modules' => 'array',
+            'email_settings' => 'array',
+            'sms_settings' => 'array',
+            'common_settings' => 'array',
+            'weighing_scale_setting' => 'array',
+        ];
+    }
 
     /**
      * Returns the date formats

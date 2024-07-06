@@ -20,13 +20,16 @@ class Variation extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'combo_variations' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'combo_variations' => 'array',
+        ];
+    }
 
     public function product_variation(): BelongsTo
     {

@@ -21,13 +21,16 @@ class Product extends Model
     protected $appends = ['image_url'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'sub_unit_ids' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'sub_unit_ids' => 'array',
+        ];
+    }
 
     /**
      * Get the products image.
