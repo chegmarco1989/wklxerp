@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\Gate;
 use App\System;
 use App\Utils\ModuleUtil;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -21,6 +25,15 @@ use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * The path to your application's "home" route.
+     *
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
     /**
      * Bootstrap any application services.
      */
@@ -230,6 +243,9 @@ class AppServiceProvider extends ServiceProvider
             echo $formated_number; ?>';
         });
 
+
+        $this->bootAuth();
+        $this->bootRoute();
     }
 
     /**
@@ -250,5 +266,30 @@ class AppServiceProvider extends ServiceProvider
             ClientCommand::class,
             KeysCommand::class,
         ]);
+    }
+
+    public function bootAuth(): void
+    {
+        Gate::before(function ($user, $ability) {
+            if (in_array($ability, ['backup', 'superadmin',
+                'manage_modules', ])) {
+                $administrator_list = config('constants.administrator_usernames');
+
+                if (in_array(strtolower($user->username), explode(',', strtolower($administrator_list)))) {
+                    return true;
+                }
+            } else {
+                if ($user->hasRole('Admin#'.$user->business_id)) {
+                    return true;
+                }
+            }
+        });
+    }
+
+    public function bootRoute(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
     }
 }
